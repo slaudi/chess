@@ -1,4 +1,4 @@
-package schach;
+package chess.model;
 
 /**
  * Example model class which should be replaced with your actual implementation.

@@ -1,4 +1,4 @@
-package schach;
+package chess.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

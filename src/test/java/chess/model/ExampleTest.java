@@ -1,4 +1,4 @@
-package schach;
+package chess.model;
 
 import org.junit.jupiter.api.Test;
 

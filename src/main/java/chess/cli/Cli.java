@@ -1,4 +1,4 @@
-package schach;
+package chess.cli;
 
 /**
  * Starting point of the command line interface
