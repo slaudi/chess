@@ -165,6 +165,14 @@
                         </reports>
                     </reportSet>
                 </reportSets>
+                <configuration>
+                    <excludes>
+                        <!-- Ignore GUI classes for coverage -->
+                        <exclude>chess/cli/**/*</exclude>
+                        <exclude>chess/gui/**/*</exclude>
+                        <exclude>chess/Main.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>
