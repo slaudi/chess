@@ -73,7 +73,7 @@
                 <version>3.1.1</version>
             </plugin>
             <plugin>
-                <!-- The JaCoCo runs JaCoCo to compute coverage of the test cases -->
+                <!-- The JaCoCo plugin runs JaCoCo to compute coverage of the test cases -->
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.6</version>
@@ -149,6 +149,19 @@
                         <reports>
                             <!-- We only want to generate javadocs for the implementation and not for the tests, so we manually exclude the test-javadoc report -->
                             <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <!-- The JaCoCo plugin runs JaCoCo to compute coverage of the test cases -->
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <!-- Disable the JaCoCo Aggregate report by explicitly selecting only the simple report -->
+                            <report>report</report>
                         </reports>
                     </reportSet>
                 </reportSets>
