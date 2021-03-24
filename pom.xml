@@ -63,14 +63,14 @@
                 <version>2.22.2</version>
             </plugin>
             <plugin>
-              <!-- The Site plugin generates a site for the project which includes the project's reports configured below -->
-              <artifactId>maven-site-plugin</artifactId>
-              <version>3.9.1</version>
+                <!-- The Site plugin generates a site for the project which includes the project's reports configured below -->
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
             </plugin>
             <plugin>
-              <!-- The Maven Project Info Reports plugin reports information about the project for the site -->
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>3.1.1</version>
+                <!-- The Maven Project Info Reports plugin reports information about the project for the site -->
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.1.1</version>
             </plugin>
             <plugin>
                 <!-- The JaCoCo runs JaCoCo to compute coverage of the test cases -->
@@ -116,30 +116,43 @@
     </build>
 
     <reporting>
-    <plugins>
-        <plugin>
-            <!-- The JXR Plugin produces a cross-reference of the project's sources, which is handy when used with the PMD Plugin for referencing errors found in the code. -->
-            <artifactId>maven-jxr-plugin</artifactId>
-            <version>3.0.0</version>
-        </plugin>
-        <plugin>
-            <!-- The Surefire Report Plugin parses the generated XML files under target/surefire-reports and renders them using DOXIA, which creates the web interface version of the test results. -->
-            <artifactId>maven-surefire-report-plugin</artifactId>
-            <version>2.22.2</version>
-        </plugin>
-        <plugin>
-            <!-- The PMD plugin runs the PMD code analysis tool on your project's source code and generate a site report with its results. It also supports the separate Copy/Paste Detector tool (or CPD) distributed with PMD. -->
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.14.0</version>
-            <configuration>
-                <!-- Run PMD and CPD on the tests, too -->
-                <includeTests>true</includeTests>
-                <rulesets>
-                    <!-- We are using a custom PMD rule set -->
-                    <ruleset>https://projects.isp.uni-luebeck.de/isp/pmd/-/raw/master/rules.xml</ruleset>
-                </rulesets>
-            </configuration> 
-        </plugin>
-    </plugins>
-</reporting>
+        <plugins>
+            <plugin>
+                <!-- The JXR Plugin produces a cross-reference of the project's sources, which is handy when used with the PMD Plugin for referencing errors found in the code. -->
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <!-- The Surefire Report Plugin parses the generated XML files under target/surefire-reports and renders them using DOXIA, which creates the web interface version of the test results. -->
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <!-- The PMD plugin runs the PMD code analysis tool on your project's source code and generate a site report with its results. It also supports the separate Copy/Paste Detector tool (or CPD) distributed with PMD. -->
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <!-- Run PMD and CPD on the tests, too -->
+                    <includeTests>true</includeTests>
+                    <rulesets>
+                        <!-- We are using a custom PMD rule set -->
+                        <ruleset>https://projects.isp.uni-luebeck.de/isp/pmd/-/raw/master/rules.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- The Javadoc plugin uses the Javadoc tool to generate javadocs for the project -->
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <!-- We only want to generate javadocs for the implementation and not for the tests, so we manually exclude the test-javadoc report -->
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

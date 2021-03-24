@@ -6,7 +6,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * Starting point of the JavaFX GUI
+ */
 public class Gui extends Application {
+    /**
+     * This method is called by the Application to start the GUI.
+     *
+     * @param primaryStage The initial root stage of the application.
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Hello World!");
@@ -20,6 +28,11 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
+    /**
+     * The entry point of the GUI application.
+     *
+     * @param args The command line arguments passed to the application
+     */
     public static void main(String[] args) {
         launch(args);
     }
