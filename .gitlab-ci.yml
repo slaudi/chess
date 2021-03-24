@@ -11,8 +11,7 @@ test:
   tags:
     - docker
   script:
-    - mvn clean
-    - mvn site
+    - mvn clean compile site
   artifacts:
     paths:
       - target/site
