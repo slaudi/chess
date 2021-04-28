@@ -11,7 +11,7 @@ public class Board {
      */
     public Board() {
         board = new Square[64];
-        for (i = 0; i < board.length; i++){
+        for (int i = 0; i < board.length; i++){
             board[i] = new Square(i);
         }
         startingFormation();
@@ -22,8 +22,8 @@ public class Board {
      * TODO insert Piece_Format
      * TODO not very fast implementation
      */
-    public startingFormation() {
-        for (i = 0; i < 64; i++){
+    public void startingFormation() {
+        for (int i = 0; i < 64; i++){
             switch (i){
                 case 0:
                     this.board[i].occupied = true;
