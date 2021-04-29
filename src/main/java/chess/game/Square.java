@@ -1,21 +1,32 @@
 package chess.game;
 
+import chess.pieces.Piece;
+
 /**
  * Square class representing a single square of current Chess-Board.
  */
 public class Square {
-    public int name;
+    public Label label;
     public boolean occupied;
     public Piece occupiedBy;
 
     /**
      * Create a single square instance when starting a new Game.
      *
-     * @param name The Number of the square to be initialized.
+     * @param label Name of Square.
      */
-    public Square(int name) {
-        this.name = name;
+    public Square(Label label) {
+        this.label = label;
         this.occupied = false;
-        this.occupiedBy ="";
+        this.occupiedBy = null;
+    }
+
+    public String toString(){
+        if(this.occupiedBy == null){
+            return " ";
+        }
+        else {
+            return this.occupiedBy.toString();
+        }
     }
 }
