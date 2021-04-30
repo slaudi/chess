@@ -9,14 +9,5 @@ public enum Type {
     BISHOP,
     KNIGHT,
     PAWN,
-    ROOK;
-
-    /**
-     * Returns Type of Chess-Piece
-     *
-     * @return Type of Chess-Piece as String
-     */
-    public String toString() {
-        return this;
+    ROOK
     }
-}
