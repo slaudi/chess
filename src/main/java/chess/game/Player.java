@@ -7,7 +7,7 @@ public class Player {
     public Colour colour;
     public boolean inCheck;
     public boolean isCheckMate;
-    public boolean isLooser;
+    public boolean isLoser;
 
     /**
      * Create a new Player instance.
@@ -18,7 +18,7 @@ public class Player {
         setColour(colour);
         setInCheck(false);
         setCheckMate(false);
-        setLooser(false);
+        setLoser(false);
 
     }
 
@@ -54,8 +54,8 @@ public class Player {
      *
      * @param loose Boolean: true = Player has lost.
      */
-    public void setLooser(boolean loose) {
-        this.isLooser = loose;
+    public void setLoser(boolean loose) {
+        this.isLoser = loose;
     }
 
 
