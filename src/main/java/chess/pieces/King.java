@@ -8,13 +8,19 @@ public class King extends Piece {
     /**
      * Constructor for a King
      *
-     * @param x      the x location of the King
-     * @param y      the y location of the King
+     * @param square the location of the King
      * @param colour the Colour object associated with the King
      */
-    public King(int x, int y, Colour colour) {
-        super(x, y, colour);
+    public King(Square square, Colour colour) {
+        super(square, colour);
         type = Type.KING;
+    }
+
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "K";
+        } else return "k";
     }
 
     @Override
@@ -30,14 +36,13 @@ public class King extends Piece {
     /**
      * Determines if the King is moving only one Square in any direction
      *
-     * @param last_x the final x location
-     * @param last_y the final y location
+     * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(int last_x, int last_y) {
-        int diff_x = Math.abs(last_x - this.x);
-        int diff_y = Math.abs(last_y - this.y);
+    public boolean isAllowedMove(Square finalSquare) {
+        int diff_x = Math.abs(finalSquare.x - this.square.x);
+        int diff_y = Math.abs(finalSquare.y - this.square.y);
         // nicht im Schach: !isChecked()
         // wenn noch kein Move + Rook kein Move + kein Piece im Weg + kein Angriff auf Felder => darf Castling
         if(!isChecked()){
@@ -50,14 +55,11 @@ public class King extends Piece {
      * Draws a path of the King's move and stores it
      * to later determine if another piece is in it's path
      *
-     * @param first_x   the first x position
-     * @param first_y   the first y position
-     * @param last_x   the final x position
-     * @param last_y   the final y position
+     * @param finalSquare the final location
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(int first_x, int first_y, int last_x, int last_y) {
+    public int[][] drawMove(Square finalSquare) {
         // King has no path, moves only one Square at a time
         int squares = 0;
         return new int[2][squares];

@@ -1,7 +1,6 @@
 package chess.pieces;
 
 import chess.game.Colour;
-import chess.game.Player;
 import chess.game.Square;
 import chess.game.Type;
 
@@ -12,13 +11,19 @@ public class Queen extends Piece {
     /**
      * Constructor for a Queen
      *
-     * @param x      the x location of the Queen
-     * @param y      the y location of the Queen
+     * @param square the location of the Queen
      * @param colour the Colour object associated with the Queen
      */
-    public Queen(int x, int y, Colour colour) {
-        super(x, y, colour);
+    public Queen(Square square, Colour colour) {
+        super(square, colour);
         type = Type.QUEEN;
+    }
+
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "Q";
+        } else return "q";
     }
 
     @Override
@@ -34,14 +39,13 @@ public class Queen extends Piece {
     /**
      * Determines if the Queen is moving in a straight line in any direction
      *
-     * @param last_x the final x location
-     * @param last_y the final y location
+     * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(int last_x, int last_y) {
-        int diff_x = Math.abs(last_x - this.x);
-        int diff_y = Math.abs(last_y - this.y);
+    public boolean isAllowedMove(Square finalSquare) {
+        int diff_x = Math.abs(finalSquare.x - this.square.x);
+        int diff_y = Math.abs(finalSquare.y - this.square.y);
 
         return (diff_x == diff_y || diff_x == 0 || diff_y == 0);
     }
@@ -50,32 +54,29 @@ public class Queen extends Piece {
      * Draws a path of the Queen's move and stores it
      * to later determine if another piece is in it's path
      *
-     * @param first_x   the first x position
-     * @param first_y   the first y position
-     * @param last_x    the final x position
-     * @param last_y    the final y position
+     * @param finalSquare the final location of the Queen
      * @return an array of the move's path
      */
     @Override
-    public int[][] drawMove(int first_x, int first_y, int last_x, int last_y) {
+    public int[][] drawMove(Square finalSquare) {
         int squaresVisited;
         int dir_x = 0;
         int dir_y = 0;
-        int diff_x = Math.abs(last_x - first_x);
-        int diff_y = Math.abs(last_y - first_y);
+        int diff_x = Math.abs(finalSquare.x - this.square.x);
+        int diff_y = Math.abs(finalSquare.y - this.square.y);
 
-        if(first_x == last_x) {
+        if(this.square.x == finalSquare.x) {
             // Queen moves vertically
             squaresVisited = diff_y;
-            if(last_y - first_y < 0) {
+            if(finalSquare.y - this.square.y < 0) {
                 dir_y = -1; // Queen moves up
             } else {
                 dir_y = 1; // Queen moves down
             }
-        } else if(first_y == last_y) {
+        } else if(this.square.y == finalSquare.y) {
             // Queen moves horizontally
             squaresVisited = diff_x;
-            if(last_x - first_x < 0) {
+            if(finalSquare.x - this.square.x < 0) {
                 dir_x = -1; // Queen moves to the left
             } else {
                 dir_x = 1; // Queen moves to the right
@@ -83,12 +84,12 @@ public class Queen extends Piece {
         } else {
             // Queen moves diagonally
             squaresVisited = diff_x;
-            if(last_x - first_x < 0) {
+            if(finalSquare.x - this.square.x < 0) {
                 dir_x = -1; // Queen moves diagonally to the left
             } else {
                 dir_x = 1; // Queen moves diagonally to the right
             }
-            if(last_y - first_y < 0) {
+            if(finalSquare.y - this.square.y < 0) {
                 dir_y = 1; // Queen moves diagonally up
             } else {
                 dir_y = -1; // Queen moves diagonally down
@@ -97,11 +98,12 @@ public class Queen extends Piece {
 
         int[][] move = new int[2][squaresVisited];
 
-        // if Queen is moving more than one square
-        if(squaresVisited - 1 > 0) {
-            for (int i = 0; i < squaresVisited; i++) {
-                move[0][i] = first_x + dir_x*(i+1); // storing the path in x direction
-                move[1][i] = first_y + dir_y*(i+1); // storing the path in y direction
+        if(squaresVisited > 1) {
+            // Queen moves more than one square
+            for (int i = 0; i < squaresVisited - 1; i++) {
+                // stores squares except start and final square
+                move[0][i] = this.square.x + dir_x*(i+1); // storing the path in x direction
+                move[1][i] = this.square.y + dir_y*(i+1); // storing the path in y direction
             }
         }
 

@@ -1,7 +1,6 @@
 package chess.pieces;
 
 import chess.game.Colour;
-import chess.game.Player;
 import chess.game.Square;
 import chess.game.Type;
 
@@ -10,15 +9,21 @@ public class Knight extends Piece {
     public Type type;
 
     /**
-     * Constructor for a Piece
+     * Constructor for a Knight
      *
-     * @param x      the x location of the Bishop
-     * @param y      the y location of the Bishop
-     * @param colour the Colour object associated with the Bishop
+     * @param square the location of the Knight
+     * @param colour the Colour object associated with the Knight
      */
-    public Knight(int x, int y, Colour colour) {
-        super(x, y, colour);
+    public Knight(Square square, Colour colour) {
+        super(square, colour);
         type = Type.KNIGHT;
+    }
+
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "N";
+        } else return "n";
     }
 
     @Override
@@ -34,14 +39,13 @@ public class Knight extends Piece {
     /**
      * Determines if the Knight is moving in the shape of an L
      *
-     * @param last_x the final x location
-     * @param last_y the final y location
+     * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(int last_x, int last_y) {
-        int diff_x = Math.abs(last_x - this.x);
-        int diff_y = Math.abs(last_y - this.y);
+    public boolean isAllowedMove(Square finalSquare) {
+        int diff_x = Math.abs(finalSquare.x - this.square.x);
+        int diff_y = Math.abs(finalSquare.y - this.square.y);
 
         return ((diff_x == 2 && diff_y == 1) || (diff_x == 1 && diff_y == 2));
     }
@@ -50,14 +54,11 @@ public class Knight extends Piece {
      * Draws a path of the Knight's move to and stores it
      * to later determine if another piece is in it's path
      *
-     * @param first_x   the first x position
-     * @param first_y   the first y position
-     * @param last_x    the final x position
-     * @param last_y    the final y position
+     * @param finalSquare the final location
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(int first_x, int first_y, int last_x, int last_y) {
+    public int[][] drawMove(Square finalSquare) {
         // a Knight is allowed to jump over pieces, doesn't need a path
         int squares = 0;
         return new int[2][squares];
