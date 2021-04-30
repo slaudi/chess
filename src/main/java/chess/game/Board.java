@@ -1,159 +1,114 @@
 package chess.game;
 
+import chess.pieces.*;
+import javafx.scene.control.Label;
+
+import static chess.game.Colour.BLACK;
+import static chess.game.Colour.WHITE;
+
+
 /**
  * Board class representing the Chess-Board of current game.
  */
 public class Board {
-    public Square[] board;
+    public Square[][] board;
+
 
     /**
      * Create a new Board instance when starting a new Game.
      */
     public Board() {
-        board = new Square[64];
-        for (int i = 0; i < board.length; i++){
-            board[i] = new Square(i);
+        board = new Square[8][8];
+        for (int y = 0; y < 8; y++){
+            for (int x = 0; x < 8; x++){
+                board[x][y] = new Square(Label.values()[(8*x+y)]);
+            }
         }
         startingFormation();
     }
     /**
      * Sets each Chess-Piece on its initial position.
-     *
-     * TODO insert Piece_Format
-     * TODO not very fast implementation
      */
     public void startingFormation() {
-        for (int i = 0; i < 64; i++){
-            switch (i){
-                case 0:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackRook);
-                    break;
-                case 1:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackKnight);
-                    break;
-                case 2:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackBishop);
-                    break;
-                case 3:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackQueen);
-                    break;
-                case 4:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackKing);
-                    break;
-                case 5:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackBishop);
-                    break;
-                case 6:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackKnight);
-                    break;
-                case 7:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackRook);
-                    break;
-                case 8:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 9:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 10:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 11:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 12:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 13:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 14:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 15:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(BlackPawn);
-                    break;
-                case 48:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 49:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 50:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 51:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 52:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 53:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 54:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 55:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhitePawn);
-                    break;
-                case 56:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteRook);
-                    break;
-                case 57:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteKnight);
-                    break;
-                case 58:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteBishop);
-                    break;
-                case 59:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteQueen);
-                    break;
-                case 60:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteKing);
-                    break;
-                case 61:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteBishop);
-                    break;
-                case 62:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteKnight);
-                    break;
-                case 63:
-                    this.board[i].occupied = true;
-                    this.board[i].occupiedBy = PIECE(WhiteRook);
-                    break;
+        this.board[0][0].occupied = true;
+        this.board[0][0].occupiedBy = new Rook(BLACK);
+        this.board[0][1].occupied = true;
+        this.board[0][1].occupiedBy = new Knight(BLACK);
+        this.board[0][2].occupied = true;
+        this.board[0][2].occupiedBy = new Bishop(BLACK);
+        this.board[0][3].occupied = true;
+        this.board[0][3].occupiedBy = new Queen(BLACK);
+        this.board[0][4].occupied = true;
+        this.board[0][4].occupiedBy = new King(BLACK);
+        this.board[0][5].occupied = true;
+        this.board[0][5].occupiedBy = new Bishop(BLACK);
+        this.board[0][6].occupied = true;
+        this.board[0][6].occupiedBy = new Knight(BLACK);
+        this.board[0][7].occupied = true;
+        this.board[0][7].occupiedBy = new Rook(BLACK);
+        this.board[1][0].occupied = true;
+        this.board[1][0].occupiedBy = new Pawn(BLACK);
+        this.board[1][1].occupied = true;
+        this.board[1][1].occupiedBy = new Pawn(BLACK);
+        this.board[1][2].occupied = true;
+        this.board[1][2].occupiedBy = new Pawn(BLACK);
+        this.board[1][3].occupied = true;
+        this.board[1][3].occupiedBy = new Pawn(BLACK);
+        this.board[1][4].occupied = true;
+        this.board[1][4].occupiedBy = new Pawn(BLACK);
+        this.board[1][5].occupied = true;
+        this.board[1][5].occupiedBy = new Pawn(BLACK);
+        this.board[1][6].occupied = true;
+        this.board[1][6].occupiedBy = new Pawn(BLACK);
+        this.board[1][7].occupied = true;
+        this.board[1][7].occupiedBy = new Pawn(BLACK);
+        this.board[6][0].occupied = true;
+        this.board[6][0].occupiedBy = new Pawn(WHITE);
+        this.board[6][1].occupied = true;
+        this.board[6][1].occupiedBy = new Pawn(WHITE);
+        this.board[6][2].occupied = true;
+        this.board[6][2].occupiedBy = new Pawn(WHITE);
+        this.board[6][3].occupied = true;
+        this.board[6][3].occupiedBy = new Pawn(WHITE);
+        this.board[6][4].occupied = true;
+        this.board[6][4].occupiedBy = new Pawn(WHITE);
+        this.board[6][5].occupied = true;
+        this.board[6][5].occupiedBy = new Pawn(WHITE);
+        this.board[6][6].occupied = true;
+        this.board[6][6].occupiedBy = new Pawn(WHITE);
+        this.board[6][7].occupied = true;
+        this.board[6][7].occupiedBy = new Pawn(WHITE);
+        this.board[7][0].occupied = true;
+        this.board[7][0].occupiedBy = new Rook(WHITE);
+        this.board[7][1].occupied = true;
+        this.board[7][1].occupiedBy = new Knight(WHITE);
+        this.board[7][2].occupied = true;
+        this.board[7][2].occupiedBy = new Bishop(WHITE);
+        this.board[7][3].occupied = true;
+        this.board[7][3].occupiedBy = new Queen(WHITE);
+        this.board[7][4].occupied = true;
+        this.board[7][4].occupiedBy = new King(WHITE);
+        this.board[7][5].occupied = true;
+        this.board[7][5].occupiedBy = new Bishop(WHITE);
+        this.board[7][6].occupied = true;
+        this.board[7][6].occupiedBy = new Knight(WHITE);
+        this.board[7][7].occupied = true;
+        this.board[7][7].occupiedBy = new Rook(WHITE);
+    }
+
+    public void toConsole(){
+        for (int y = 0; y < 8; y++){
+            System.out.print(8-y);
+            for (int x = 0; x < 8; x++){
+                if (this.board[y][x].occupied){
+                    System.out.print(" " + this.board[y][x].occupiedBy.toString());
+                }
+                else{
+                    System.out.print("  ");
+                }
             }
+            System.out.println(" ");
         }
+        System.out.println("  a b c d e f g h");
     }
 }
