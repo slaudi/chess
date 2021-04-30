@@ -11,36 +11,54 @@ public class Rook extends Piece {
 
     /**
      * Constructor for a Rook
-     * @param position the location of the Rook
-     * @param player the Player object associated with the Rook
+     *
+     * @param x      the x location of the Rook
+     * @param y      the y location of the Rook
+     * @param colour the Colour object associated with the Rook
      */
-    public Rook(int position, Player player) {
-        super(position, player);
+    public Rook(int x, int y, Colour colour) {
+        super(x, y, colour);
         type = Type.ROOK;
     }
 
     @Override
     public Type getType() {
-        return Type.ROOK;
+        return this.type;
     }
 
     @Override
     public Colour getColour() {
-        return null;
+        return this.colour;
     }
 
     /**
-     * A function which determines if the Rook is moving...
-     * @param finalSquare the final location
+     * Determines if the Rook is moving only horizontally or vertically
+     *
+     * @param last_x the final x location
+     * @param last_y the final y location
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean allowedMove(int finalSquare) {
-        return false;
+    public boolean isAllowedMove(int last_x, int last_y) {
+        int diff_x = Math.abs(last_x - this.x);
+        int diff_y = Math.abs(last_y - this.y);
+
+        return(diff_y == 0 || diff_x == 0);
     }
 
+    /**
+     * Draws a path of the Rook's move and stores it
+     * to later determine if another piece is in it's path
+     *
+     * @param first_x   the first x position
+     * @param first_y   the first y position
+     * @param last_x    the final x position
+     * @param last_y    the final y position
+     * @return a Square array of the path
+     */
     @Override
-    public Square drawMove(int firstSquare, int finalSquare) {
-        return null;
+    public int[][] drawMove(int first_x, int first_y, int last_x, int last_y) {
+        int squares = 0;
+        return new int[2][squares];
     }
 }
