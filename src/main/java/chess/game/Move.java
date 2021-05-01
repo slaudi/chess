@@ -30,8 +30,11 @@ public class Move {
      * @return boolean
      */
     public static boolean validMove( String consoleInput){
-        if (consoleInput.charAt(2) == '-'){
-            return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
+        if(consoleInput.length() > 4) {
+            if (consoleInput.charAt(2) == '-') {
+                return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
+            }
+            return false;
         }
         return false;
     }

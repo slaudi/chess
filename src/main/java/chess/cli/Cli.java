@@ -21,19 +21,22 @@ public class Cli {
         System.out.println("Läuft bis hier hin schon mal");
         Game currentGame = new Game();
         currentGame.board.toConsole();
+        while (true) {
+            System.out.println(generateAnswer(getInput(), currentGame));
+        }
     }
 
     /**
      * Gets input as String from console.
      * @return Input from console as String.
      */
-    public String getInput() {
+    public static String getInput() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Move or Command:");
         return scanner.nextLine();
     }
 
-    public String generateAnswer(String input, Game game){
+    public static String generateAnswer(String input, Game game){
         if(Move.validMove(input)){
             if (game.board.getMovingPieceFromInput(input).isAllowedMove(game.board.getFinalSquareFromInput(input))){
                 return "!" + input;
