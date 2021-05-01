@@ -29,27 +29,10 @@ public class Move {
      *
      * @return boolean
      */
-    public boolean validMove(String consoleInput){
+    public static boolean validMove( String consoleInput){
         if (consoleInput.charAt(2) == '-'){
-            if(Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5))){
-                return true;
-            }
+            return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
         }
         return false;
     }
-
-    /**
-     * Checks if Console Input is a semantically correct Move.
-     * TODO
-     * @param consoleInput Input of active Player as a String.
-     *
-     * @return boolean
-     */
-    public boolean allowedMove(String consoleInput){
-
-
-        return true;
-
-    }
-
 }

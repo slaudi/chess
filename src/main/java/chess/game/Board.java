@@ -90,4 +90,22 @@ public class Board {
         }
         System.out.println("  a b c d e f g h");
     }
+    public Piece getMovingPieceFromInput(String input){
+        String start = input.substring(0, 2);
+        int startX = Square.getXFromString(start);
+        int startY = Square.getYFromString(start);
+        return this.board[startX][startY].occupiedBy;
+    }
+    public Square getStartSquareFromInput(String input){
+        String start = input.substring(0, 2);
+        int startX = Square.getXFromString(start);
+        int startY = Square.getYFromString(start);
+        return this.board[startX][startY];
+    }
+    public Square getFinalSquareFromInput(String input){
+        String end = input.substring(3, 5);
+        int finalX = Square.getXFromString(end);
+        int finalY = Square.getYFromString(end);
+        return this.board[finalX][finalY];
+    }
 }

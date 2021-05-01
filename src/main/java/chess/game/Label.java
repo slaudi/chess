@@ -21,4 +21,7 @@ public enum Label {
         }
         return false;
     }
+    public static String toString(Label label){
+        return label.name();
+    }
 }
