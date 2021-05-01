@@ -1,6 +1,10 @@
 package chess.cli;
 
 import chess.game.Game;
+import chess.game.Move;
+import chess.pieces.Piece;
+
+import java.util.Scanner;
 
 /**
  * Starting point of the command line interface
@@ -17,5 +21,25 @@ public class Cli {
         System.out.println("Läuft bis hier hin schon mal");
         Game currentGame = new Game();
         currentGame.board.toConsole();
+    }
+
+    /**
+     * Gets input as String from console.
+     * @return Input from console as String.
+     */
+    public String getInput() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Move or Command:");
+        return scanner.nextLine();
+    }
+
+    public String generateAnswer(String input, Game game){
+        if(Move.validMove(input)){
+            if (game.board.getMovingPieceFromInput(input).isAllowedMove(game.board.getFinalSquareFromInput(input))){
+                return "!" + input;
+            }
+            else return "!Move not allowed";
+        }
+        else return "!Invalid move";
     }
 }
