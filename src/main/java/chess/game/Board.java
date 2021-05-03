@@ -33,45 +33,45 @@ public class Board {
         // Black pieces
         this.board[0][0].occupied = true;
         this.board[0][0].occupiedBy = new Rook(this.board[0][0],BLACK);
-        this.board[0][1].occupied = true;
-        this.board[0][1].occupiedBy = new Knight(this.board[0][1], BLACK);
-        this.board[0][2].occupied = true;
-        this.board[0][2].occupiedBy = new Bishop(this.board[0][2], BLACK);
-        this.board[0][3].occupied = true;
-        this.board[0][3].occupiedBy = new Queen(this.board[0][3], BLACK);
-        this.board[0][4].occupied = true;
-        this.board[0][4].occupiedBy = new King(this.board[0][4], BLACK);
-        this.board[0][5].occupied = true;
-        this.board[0][5].occupiedBy = new Bishop(this.board[0][5], BLACK);
-        this.board[0][6].occupied = true;
-        this.board[0][6].occupiedBy = new Knight(this.board[0][6], BLACK);
-        this.board[0][7].occupied = true;
-        this.board[0][7].occupiedBy = new Rook(this.board[0][7], BLACK);
+        this.board[1][0].occupied = true;
+        this.board[1][0].occupiedBy = new Knight(this.board[1][0], BLACK);
+        this.board[2][0].occupied = true;
+        this.board[2][0].occupiedBy = new Bishop(this.board[2][0], BLACK);
+        this.board[3][0].occupied = true;
+        this.board[3][0].occupiedBy = new Queen(this.board[3][0], BLACK);
+        this.board[4][0].occupied = true;
+        this.board[4][0].occupiedBy = new King(this.board[4][0], BLACK);
+        this.board[5][0].occupied = true;
+        this.board[5][0].occupiedBy = new Bishop(this.board[5][0], BLACK);
+        this.board[6][0].occupied = true;
+        this.board[6][0].occupiedBy = new Knight(this.board[6][0], BLACK);
+        this.board[7][0].occupied = true;
+        this.board[7][0].occupiedBy = new Rook(this.board[7][0], BLACK);
         for(int i = 0; i < 8; i++) {
-            this.board[1][i].occupied = true;
-            this.board[1][i].occupiedBy = new Pawn(this.board[1][i], BLACK);
+            this.board[i][1].occupied = true;
+            this.board[i][1].occupiedBy = new Pawn(this.board[i][1], BLACK);
         }
 
         // White pieces
-        this.board[7][0].occupied = true;
-        this.board[7][0].occupiedBy = new Rook(this.board[7][0], WHITE);
-        this.board[7][1].occupied = true;
-        this.board[7][1].occupiedBy = new Knight(this.board[7][1], WHITE);
-        this.board[7][2].occupied = true;
-        this.board[7][2].occupiedBy = new Bishop(this.board[7][2], WHITE);
-        this.board[7][3].occupied = true;
-        this.board[7][3].occupiedBy = new Queen(this.board[7][3], WHITE);
-        this.board[7][4].occupied = true;
-        this.board[7][4].occupiedBy = new King(this.board[7][4], WHITE);
-        this.board[7][5].occupied = true;
-        this.board[7][5].occupiedBy = new Bishop(this.board[7][5], WHITE);
-        this.board[7][6].occupied = true;
-        this.board[7][6].occupiedBy = new Knight(this.board[7][6], WHITE);
+        this.board[0][7].occupied = true;
+        this.board[0][7].occupiedBy = new Rook(this.board[0][7], WHITE);
+        this.board[1][7].occupied = true;
+        this.board[1][7].occupiedBy = new Knight(this.board[1][7], WHITE);
+        this.board[2][7].occupied = true;
+        this.board[2][7].occupiedBy = new Bishop(this.board[2][7], WHITE);
+        this.board[3][7].occupied = true;
+        this.board[3][7].occupiedBy = new Queen(this.board[3][7], WHITE);
+        this.board[4][7].occupied = true;
+        this.board[4][7].occupiedBy = new King(this.board[4][7], WHITE);
+        this.board[5][7].occupied = true;
+        this.board[5][7].occupiedBy = new Bishop(this.board[5][7], WHITE);
+        this.board[6][7].occupied = true;
+        this.board[6][7].occupiedBy = new Knight(this.board[6][7], WHITE);
         this.board[7][7].occupied = true;
         this.board[7][7].occupiedBy = new Rook(this.board[7][7], WHITE);
         for(int i = 0; i < 8; i++) {
-            this.board[6][i].occupied = true;
-            this.board[6][i].occupiedBy = new Pawn(this.board[6][i], WHITE);
+            this.board[i][6].occupied = true;
+            this.board[i][6].occupiedBy = new Pawn(this.board[i][6], WHITE);
         }
     }
 
@@ -79,8 +79,8 @@ public class Board {
         for (int y = 0; y < 8; y++){
             System.out.print(8-y);
             for (int x = 0; x < 8; x++){
-                if (this.board[y][x].occupied){
-                    System.out.print(" " + this.board[y][x].occupiedBy.toString());
+                if (this.board[x][y].occupied){
+                    System.out.print(" " + this.board[x][y].occupiedBy.toString());
                 }
                 else{
                     System.out.print("  ");
