@@ -29,13 +29,30 @@ public class Move {
      *
      * @return boolean
      */
-    public static boolean validMove( String consoleInput){
+    public static boolean isValidMove(String consoleInput){
         if(consoleInput.length() > 4) {
             if (consoleInput.charAt(2) == '-') {
                 return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
+            } else return false;
+        } else return false;
+    }
+
+
+    public boolean isAllowedMove() {
+        return (this.movingPiece.isAllowedPath(this.finalSquare) && isPathEmpty() );
+    }
+
+
+    public boolean isPathEmpty() {
+        Square[][] path = this.movingPiece.drawMove(this.finalSquare);
+        boolean emptyPath = true;
+
+        for(int i = 0; i < path.length; i++) {
+            if (path[0][i].occupiedBy == null){
+                emptyPath = false;
+                break;
             }
-            return false;
         }
-        return false;
+        return emptyPath;
     }
 }

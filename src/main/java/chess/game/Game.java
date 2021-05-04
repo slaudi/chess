@@ -5,6 +5,7 @@ import chess.cli.Cli;
 import chess.pieces.Piece;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Game class which defines current game.
@@ -40,19 +41,19 @@ public class Game {
             return false;
         }
 
-        if(selectedPiece.colour != currentPlayer.colour)
+        if(selectedPiece.getColour() != currentPlayer.colour)
         {
             System.out.println("It is not your piece under 'from' coordinates");
             return false;
         }
 
-        if(targetPiece != null && targetPiece.colour == currentPlayer.colour)
+        if(targetPiece != null && targetPiece.getColour() == currentPlayer.colour)
         {
             System.out.println("Cannot move piece onto cell with your another figure");
             return false;
         }
 
-        if (selectedPiece.isAllowedMove(to))
+        if (selectedPiece.isAllowedPath(to))
         {
             if (targetPiece != null)
             {
@@ -60,10 +61,7 @@ public class Game {
             }
 
             to.occupiedBy = from.occupiedBy;
-            to.occupied = true;
-
             from.occupiedBy = null;
-            from.occupied = false;
 
             System.out.println("Piece " + selectedPiece.getType() + " moved successfully");
         }
@@ -76,25 +74,42 @@ public class Game {
         return true;
     }
 
+    /*public boolean isInCheck() {
+        Vector<Piece> enemies = currentPlayer.getEnemyPieces(currentPlayer.colour);
+
+        for(int i = 0; i < enemies.size(); i++) {
+            if(canAttackKing(enemies.elementAt(i), this.square)) {
+                currentPlayer.setInCheck(true);
+                return true;
+            } else {
+                currentPlayer.setInCheck(false);
+                return false;
+            }
+        }
+
+
+        return false;
+    }*/
+
     public void processGame()
     {
         board.toConsole();
 
-        while(true)
+        while(!currentPlayer.isLoser)
         {
             System.out.println("Now playing as " + currentPlayer.colour);
 
             String userInput;
 
-            while (!Move.validMove(userInput = Cli.getInput()))
+            while (!Move.isValidMove(userInput = Cli.getInput()))
             {
-                System.out.println("Invalid syntax");
+                System.out.println("!InvalidMove");
             }
 
             Square from = board.getStartSquareFromInput(userInput);
             Square to = board.getFinalSquareFromInput(userInput);
 
-            if (processMove(from, to) == false)
+            if (!processMove(from, to))
             {
                 // don't switch players or redraw board
                 continue;
@@ -108,6 +123,8 @@ public class Game {
 
             System.out.println("Beaten pieces:" + beatenPieces);
         }
+
+        System.out.println(currentPlayer.colour + " is Loser!");
     }
 
 }
