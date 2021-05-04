@@ -18,7 +18,7 @@ public abstract class Piece {
         this.square = square;
         this.colour = colour;
     }
-
+    @Override
     public abstract String toString();
 
     public abstract Type getType();

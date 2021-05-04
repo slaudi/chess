@@ -26,7 +26,7 @@ public class Square {
         this.occupied = false;
         this.occupiedBy = null;
     }
-
+    @Override
     public String toString(){
         if(this.occupiedBy == null){
             return " ";
@@ -35,6 +35,12 @@ public class Square {
             return this.occupiedBy.toString();
         }
     }
+
+    /**
+     * Get x-Coordinate from Enum Label
+     * @param label Enum to extract x-Coordinate from.
+     * @return x-Coordinate from Enum.
+     */
     public static int getXFromLabel(Label label){
         char i = Label.toString(label).charAt(0);
         int result;
@@ -50,6 +56,11 @@ public class Square {
         return result;
     }
 
+    /**
+     * Get y-Coordinate from Enum Label
+     * @param label Enum to extract y-Coordinate from.
+     * @return y-Coordinate from Enum.
+     */
     public static int getYFromLabel(Label label){
         char i = Label.toString(label).charAt(1);
         int result;
@@ -64,6 +75,12 @@ public class Square {
         else result = 9;
         return result;
     }
+
+    /**
+     * Get x-Coordinate from String
+     * @param string String to extract x-Coordinate from.
+     * @return x-Coordinate from String
+     */
     public static int getXFromString(String string){
         char i = string.charAt(0);
         int result;
@@ -79,6 +96,11 @@ public class Square {
         return result;
     }
 
+    /**
+     * Get y-Coordinate from String
+     * @param string String to extract y-Coordinate from.
+     * @return y-Coordinate from String
+     */
     public static int getYFromString(String string){
         char i = string.charAt(1);
         int result;

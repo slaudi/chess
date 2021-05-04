@@ -2,7 +2,6 @@ package chess.cli;
 
 import chess.game.Game;
 import chess.game.Move;
-import chess.pieces.Piece;
 
 import java.util.Scanner;
 
@@ -29,5 +28,21 @@ public class Cli {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Move or Command:");
         return scanner.nextLine();
+    }
+
+    /**
+     * Computes an answer based on Console-Input and state of current game.
+     * @param input Input from Console as a String
+     * @param game Current game.
+     * @return An answer to the Player if his entered Move is syntactically or semantically correct or incorrect.
+     */
+    public static String generateAnswer(String input, Game game){
+        if(Move.validMove(input)){
+            if (game.board.getMovingPieceFromInput(input).isAllowedMove(game.board.getFinalSquareFromInput(input))){
+                return "!" + input;
+            }
+            else return "!Move not allowed";
+        }
+        else return "!Invalid move";
     }
 }

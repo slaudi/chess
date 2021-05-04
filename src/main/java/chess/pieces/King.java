@@ -46,7 +46,7 @@ public class King extends Piece {
         // nicht im Schach: !isChecked()
         // wenn noch kein Move + Rook kein Move + kein Piece im Weg + kein Angriff auf Felder => darf Castling
         if(!isChecked()){
-            return (diff_x == 1 || diff_y == 1);
+            return diff_x == 1 || diff_y == 1;
         }
         return false;
     }

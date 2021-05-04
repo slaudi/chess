@@ -13,6 +13,11 @@ public enum Label {
     a2, b2, c2, d2, e2, f2, g2, h2,
     a1, b1, c1, d1, e1, f1, g1, h1;
 
+    /**
+     * Looks up if some String is inside Enum.
+     * @param in String to check if inside Enum.
+     * @return Boolean if String is inide Enum.
+     */
     public static boolean contains(String in){
         for (Label x: Label.values()){
             if (x.name().equals(in)){
@@ -21,6 +26,12 @@ public enum Label {
         }
         return false;
     }
+
+    /**
+     * Converts Enum to String
+     * @param label Label to convert.
+     * @return String of Enum.
+     */
     public static String toString(Label label){
         return label.name();
     }
