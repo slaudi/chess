@@ -15,8 +15,8 @@ public class Square {
      * Create a single square instance when starting a new Game.
      *
      * @param label Name of Square.
-     * @param x     X-Coordinate of this Square (line from left to right).
-     * @param y     Y-Coordinate of this Square (column from top to bottom).
+     * @param x x coordinate of this Square (line from left to right).
+     * @param y y oordinate of this Square (column from top to bottom).
      */
     public Square(Label label, int x, int y) {
         this.x = x;
@@ -24,6 +24,7 @@ public class Square {
         this.label = label;
     }
 
+    @Override
     public String toString(){
         if(this.occupiedBy == null){
             return " ";
@@ -33,6 +34,11 @@ public class Square {
         }
     }
 
+    /**
+     * Get x-Coordinate from Enum Label
+     * @param label Enum to extract x-Coordinate from.
+     * @return x-Coordinate from Enum.
+     */
     public static int getXFromLabel(Label label){
         char i = Label.toString(label).charAt(0);
         int result;
@@ -44,10 +50,15 @@ public class Square {
         else if (i == 'f') result = 5;
         else if (i == 'g') result = 6;
         else if (i == 'h') result = 7;
-        else return 9;
+        else result = 9;
         return result;
     }
 
+    /**
+     * Get y-Coordinate from Enum Label
+     * @param label Enum to extract y-Coordinate from.
+     * @return y-Coordinate from Enum.
+     */
     public static int getYFromLabel(Label label){
         char i = Label.toString(label).charAt(1);
         int result;
@@ -62,6 +73,12 @@ public class Square {
         else result = 9;
         return result;
     }
+
+    /**
+     * Get x-Coordinate from String
+     * @param string String to extract x-Coordinate from.
+     * @return x-Coordinate from String
+     */
     public static int getXFromString(String string){
         char i = string.charAt(0);
         int result;
@@ -77,6 +94,11 @@ public class Square {
         return result;
     }
 
+    /**
+     * Get y-Coordinate from String
+     * @param string String to extract y-Coordinate from.
+     * @return y-Coordinate from String
+     */
     public static int getYFromString(String string){
         char i = string.charAt(1);
         int result;

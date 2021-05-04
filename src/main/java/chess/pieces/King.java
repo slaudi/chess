@@ -119,10 +119,6 @@ public class King extends Piece {
         return false;
     }
 
-
-
-
-
     /**
      * Draws a path of the King's move and stores it
      * to later determine if another piece is in it's path

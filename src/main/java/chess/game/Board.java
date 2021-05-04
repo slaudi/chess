@@ -25,7 +25,7 @@ public class Board {
         board = new Square[8][8];
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                board[x][y] = new Square(Label.values()[(8*x+y)], x, y);
+                board[x][y] = new Square(Label.values()[8*x+y], x, y);
             }
         }
         startingFormation();
@@ -74,6 +74,9 @@ public class Board {
         }
     }
 
+    /**
+     * Prints current state of game to console.
+     */
     public void toConsole(){
         for (int y = 0; y < 8; y++){
             System.out.print(8-y);
@@ -89,18 +92,36 @@ public class Board {
         }
         System.out.println("  a b c d e f g h");
     }
+
+    /**
+     * Returns the Piece standing on selected Square.
+     * @param input Console-Input as String
+     * @return Piece which is on selected Square.
+     */
     public Piece getMovingPieceFromInput(String input){
         String start = input.substring(0, 2);
         int startX = Square.getXFromString(start);
         int startY = Square.getYFromString(start);
         return this.board[startX][startY].occupiedBy;
     }
+
+    /**
+     * Computes Square where Piece-Movement should start from console input.
+     * @param input Console-Input as String.
+     * @return Square where Piece-Movement is going to start.
+     */
     public Square getStartSquareFromInput(String input){
         String start = input.substring(0, 2);
         int startX = Square.getXFromString(start);
         int startY = Square.getYFromString(start);
         return this.board[startX][startY];
     }
+
+    /**
+     * Computes Square where Piece-Movement should end from console input.
+     * @param input Console-Input as String
+     * @return Square where Piece-Movement is going to end.
+     */
     public Square getFinalSquareFromInput(String input){
         String end = input.substring(3, 5);
         int finalX = Square.getXFromString(end);
