@@ -1,12 +1,13 @@
 package chess.pieces;
 
 import chess.game.Colour;
+import chess.game.Label;
 import chess.game.Square;
 import chess.game.Type;
 
 public class Bishop extends Piece {
 
-    public Type type;
+    Type type;
     /**
      * Constructor for a Bishop
      *
@@ -19,10 +20,18 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public String toString() {
-        if(this.colour == Colour.WHITE){
-            return "B";
-        } else return "b";
+    public Square getSquare() {
+        return this.square;
+    }
+
+    @Override
+    public void setSquare(Square square) {
+        this.square = square;
+    }
+
+    @Override
+    public Colour getColour() {
+        return this.colour;
     }
 
     @Override
@@ -31,8 +40,26 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Colour getColour() {
-        return this.colour;
+    public boolean getMoved() {
+        return this.moved;
+    }
+
+    @Override
+    public void setMoved(boolean x) {
+        this.moved = x;
+    }
+
+    /**
+     * A function to determine if the Bishop is printed on the chess board in upper or lower case
+     * depending on the colour of it
+     *
+     * @return a String representing the Bishop on the chess board
+     */
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "B";
+        } else return "b";
     }
 
     /**
@@ -42,7 +69,7 @@ public class Bishop extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(Square finalSquare) {
+    public boolean isAllowedPath(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         int diff_y = Math.abs(finalSquare.y - this.square.y);
 
@@ -57,12 +84,11 @@ public class Bishop extends Piece {
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(Square finalSquare) {
-        int dir_x = 0;
-        int dir_y = 0;
-        int diff = Math.abs(finalSquare.x - this.square.x);
+    public Square[][] drawMove(Square finalSquare) {
+        int dir_x;
+        int dir_y;
+        int squaresVisited = Math.abs(finalSquare.x - this.square.x);
 
-        int squaresVisited = diff;
         if(finalSquare.x - this.square.x < 0) {
             // Bishop moves to the left
             if(finalSquare.y - this.square.y < 0) {
@@ -87,14 +113,15 @@ public class Bishop extends Piece {
             }
         }
 
-        int[][] move = new int[2][squaresVisited];
+        Square[][] move = new Square[2][squaresVisited];
 
         if(squaresVisited > 1) {
             // Bishop moves more than one square
             for(int i = 0; i < squaresVisited - 1; i++) {
                 // stores squares except start and final square
-                move[0][i] = this.square.x + dir_x*(i+1);
-                move[0][i] = this.square.y + dir_y*(i+1);
+                int x = this.square.x + dir_x*(i+1);
+                int y = this.square.y + dir_y*(i+1);
+                move[x][y] = new Square(Label.values()[(squaresVisited*x+y)], x, y);
             }
         }
 

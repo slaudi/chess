@@ -1,9 +1,12 @@
 package chess.pieces;
 import chess.game.*;
 
+import java.util.Vector;
+
 public class King extends Piece {
 
-    public Type type;
+    Type type;
+    Player currentPlayer;
 
     /**
      * Constructor for a King
@@ -17,10 +20,18 @@ public class King extends Piece {
     }
 
     @Override
-    public String toString() {
-        if(this.colour == Colour.WHITE){
-            return "K";
-        } else return "k";
+    public Square getSquare() {
+        return this.square;
+    }
+
+    @Override
+    public void setSquare(Square square) {
+        this.square = square;
+    }
+
+    @Override
+    public Colour getColour() {
+        return this.colour;
     }
 
     @Override
@@ -29,8 +40,26 @@ public class King extends Piece {
     }
 
     @Override
-    public Colour getColour() {
-        return this.colour;
+    public boolean getMoved() {
+        return this.moved;
+    }
+
+    @Override
+    public void setMoved(boolean x) {
+        this.moved = x;
+    }
+
+    /**
+     * A function to determine if the King is printed on the chess board in upper or lower case
+     * depending on the colour of it
+     *
+     * @return a String representing the King on the chess board
+     */
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "K";
+        } else return "k";
     }
 
     /**
@@ -40,16 +69,59 @@ public class King extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(Square finalSquare) {
+    public boolean isAllowedPath(Square finalSquare) {
+
+        // TODO nicht im Schach: !isChecked()
+        // Wenn nicht
+        // TODO wenn noch kein Move + Rook kein Move + kein Piece im Weg + kein Angriff auf Felder => canCastle()
+
+        return false;
+    }
+
+    public boolean pathToNotCheck(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         int diff_y = Math.abs(finalSquare.y - this.square.y);
-        // nicht im Schach: !isChecked()
-        // wenn noch kein Move + Rook kein Move + kein Piece im Weg + kein Angriff auf Felder => darf Castling
-        if(!isChecked()){
-            return (diff_x == 1 || diff_y == 1);
+        return false;
+    }
+
+
+
+    public boolean isCheckmate(Square finalSquare) {
+        // egal welcher Move mit irgendeinem Piece, immer noch isChecked():true
+        Vector<Piece> enemies = currentPlayer.getEnemyPieces(this.colour);
+
+        for(int i = 0; i < enemies.size(); i++) {
+            if(canAttackKing(enemies.elementAt(i), finalSquare) && !allyCanDefend()) {
+                currentPlayer.setCheckMate(true);
+                currentPlayer.setLoser(true);
+            }
+        }
+
+
+        return false;
+    }
+
+    public boolean canAttackKing(Piece enemy, Square location) {
+
+        return false;
+    }
+
+    private boolean allyCanDefend() {
+        Vector<Piece> allies = currentPlayer.getAlliedPieces(this.colour);
+        return false;
+    }
+
+
+    public boolean canCastle(Piece rook) {
+        if (!this.moved){
+            return false;
         }
         return false;
     }
+
+
+
+
 
     /**
      * Draws a path of the King's move and stores it
@@ -59,25 +131,10 @@ public class King extends Piece {
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(Square finalSquare) {
+    public Square[][] drawMove(Square finalSquare) {
         // King has no path, moves only one Square at a time
-        int squares = 0;
-        return new int[2][squares];
+        int squaresVisited = 0;
+        return new Square[1][squaresVisited];
     }
-
-    public boolean isChecked() {
-        return false;
-    }
-
-    public boolean isCheckMate() {
-        // egal welcher Move mit irgendeinem Piece, der King ist immer noch isChecked():true
-        return false;
-    }
-
-    public boolean hasMoved() {
-        return false;
-    }
-
-    
 
 }

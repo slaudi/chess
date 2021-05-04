@@ -6,8 +6,9 @@ import chess.game.Type;
 
 public abstract class Piece {
 
-    public Square square;
-    public Colour colour;
+    Square square;
+    Colour colour;
+    boolean moved;
 
     /**
      * Constructor for a Piece
@@ -17,14 +18,28 @@ public abstract class Piece {
     public Piece(Square square, Colour colour) {
         this.square = square;
         this.colour = colour;
+        this.moved = false;
     }
 
-    public abstract String toString();
+    public abstract Square getSquare();
 
-    public abstract Type getType();
+    public abstract void setSquare(Square square);
 
     public abstract Colour getColour();
 
+    public abstract Type getType();
+
+    public abstract boolean getMoved();
+
+    public abstract void setMoved(boolean x);
+
+    /**
+     * A function to determine if a Piece is printed on the chess board in upper or lower case
+     * depending on the colour of it
+     *
+     * @return a String representing the Piece on the chess board
+     */
+    public abstract String toString();
 
     /**
      * Determines if a move is valid based on the type of the Piece
@@ -32,7 +47,7 @@ public abstract class Piece {
      * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
-    public abstract boolean isAllowedMove(Square finalSquare);
+    public abstract boolean isAllowedPath(Square finalSquare);
     // kein Piece darf ziehen, wenn der eigene King im Angriff steht oder dadurch einem Angriff ausgesetzt wird
 
     /**
@@ -42,6 +57,6 @@ public abstract class Piece {
      * @param finalSquare the final position
      * @return an array of the path
      */
-    public abstract int[][] drawMove(Square finalSquare);
+    public abstract Square[][] drawMove(Square finalSquare);
 
 }

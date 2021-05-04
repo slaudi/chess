@@ -1,12 +1,13 @@
 package chess.pieces;
 
 import chess.game.Colour;
+import chess.game.Label;
 import chess.game.Square;
 import chess.game.Type;
 
 public class Rook extends Piece {
 
-    public Type type;
+    Type type;
 
     /**
      * Constructor for a Rook
@@ -18,12 +19,19 @@ public class Rook extends Piece {
         super(square, colour);
         type = Type.ROOK;
     }
+    @Override
+    public Square getSquare() {
+        return this.square;
+    }
 
     @Override
-    public String toString() {
-        if(this.colour == Colour.WHITE){
-            return "R";
-        } else return "r";
+    public void setSquare(Square square) {
+        this.square = square;
+    }
+
+    @Override
+    public Colour getColour() {
+        return this.colour;
     }
 
     @Override
@@ -32,8 +40,26 @@ public class Rook extends Piece {
     }
 
     @Override
-    public Colour getColour() {
-        return this.colour;
+    public boolean getMoved() {
+        return this.moved;
+    }
+
+    @Override
+    public void setMoved(boolean x) {
+        this.moved = x;
+    }
+
+    /**
+     * A function to determine if the Rook is printed on the chess board in upper or lower case
+     * depending on the colour of it
+     *
+     * @return a String representing the Rook on the chess board
+     */
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "R";
+        } else return "r";
     }
 
     /**
@@ -43,7 +69,7 @@ public class Rook extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(Square finalSquare) {
+    public boolean isAllowedPath(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         int diff_y = Math.abs(finalSquare.y - this.square.y);
 
@@ -58,8 +84,8 @@ public class Rook extends Piece {
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(Square finalSquare) {
-        int squaresVisited = 0;
+    public Square[][] drawMove(Square finalSquare) {
+        int squaresVisited;
         int dir_x = 0;
         int dir_y = 0;
         int diff_x = Math.abs(finalSquare.x - this.square.x);
@@ -83,17 +109,17 @@ public class Rook extends Piece {
             }
         }
 
-        int[][] move = new int[2][squaresVisited];
+        Square[][] move = new Square[1][squaresVisited];
 
         if(squaresVisited > 1) {
             // Rook moves more than one Square
             for(int i = 0; i < squaresVisited - 1; i++) {
                 // stores squares except start and final square
-                move[0][i] = this.square.x + dir_x*(i+1);
-                move[1][i] = this.square.y + dir_y*(i+1);
+                int x = this.square.x + dir_x*(i+1);
+                int y = this.square.y + dir_y*(i+1);
+                move[x][y] = new Square(Label.values()[(squaresVisited*x+y)], x, y);
             }
         }
-
         return move;
     }
 }

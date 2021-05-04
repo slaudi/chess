@@ -6,7 +6,7 @@ import chess.game.Type;
 
 public class Knight extends Piece {
 
-    public Type type;
+    Type type;
 
     /**
      * Constructor for a Knight
@@ -20,10 +20,18 @@ public class Knight extends Piece {
     }
 
     @Override
-    public String toString() {
-        if(this.colour == Colour.WHITE){
-            return "N";
-        } else return "n";
+    public Square getSquare() {
+        return this.square;
+    }
+
+    @Override
+    public void setSquare(Square square) {
+        this.square = square;
+    }
+
+    @Override
+    public Colour getColour() {
+        return this.colour;
     }
 
     @Override
@@ -32,8 +40,26 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Colour getColour() {
-        return this.colour;
+    public boolean getMoved() {
+        return this.moved;
+    }
+
+    @Override
+    public void setMoved(boolean x) {
+        this.moved = x;
+    }
+
+    /**
+     * A function to determine if the Knight is printed on the chess board in upper or lower case
+     * depending on the colour of it
+     *
+     * @return a String representing the Knight on the chess board
+     */
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "N";
+        } else return "n";
     }
 
     /**
@@ -43,7 +69,7 @@ public class Knight extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(Square finalSquare) {
+    public boolean isAllowedPath(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         int diff_y = Math.abs(finalSquare.y - this.square.y);
 
@@ -58,9 +84,9 @@ public class Knight extends Piece {
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(Square finalSquare) {
+    public Square[][] drawMove(Square finalSquare) {
         // a Knight is allowed to jump over pieces, doesn't need a path
-        int squares = 0;
-        return new int[2][squares];
+        int squaresVisited = 0;
+        return new Square[1][squaresVisited];
     }
 }

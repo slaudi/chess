@@ -6,7 +6,7 @@ import chess.game.Type;
 
 public class Pawn extends Piece {
 
-    public Type type;
+    Type type;
 
     /**
      * Constructor for a Pawn
@@ -20,10 +20,18 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public String toString() {
-        if(this.colour == Colour.WHITE){
-            return "P";
-        } else return "p";
+    public Square getSquare() {
+        return this.square;
+    }
+
+    @Override
+    public void setSquare(Square square) {
+        this.square = square;
+    }
+
+    @Override
+    public Colour getColour() {
+        return this.colour;
     }
 
     @Override
@@ -32,8 +40,26 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public Colour getColour() {
-        return this.colour;
+    public boolean getMoved() {
+        return this.moved;
+    }
+
+    @Override
+    public void setMoved(boolean x) {
+        this.moved = x;
+    }
+
+    /**
+     * A function to determine if the Pawn is printed on the chess board in upper or lower case
+     * depending on the colour of it
+     *
+     * @return a String representing the Pawn on the chess board
+     */
+    @Override
+    public String toString() {
+        if(this.colour == Colour.WHITE){
+            return "P";
+        } else return "p";
     }
 
     /**
@@ -45,7 +71,7 @@ public class Pawn extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedMove(Square finalSquare) {
+    public boolean isAllowedPath(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         // determines if it is the Pawn's first move to let it move two Squares up/down
         if(pawnIsFirstMove(finalSquare)) {
@@ -87,9 +113,9 @@ public class Pawn extends Piece {
      * @return a Square array of the path
      */
     @Override
-    public int[][] drawMove(Square finalSquare) {
+    public Square[][] drawMove(Square finalSquare) {
         // Pawn has it's own method to determine if a Piece is in it's path
-        int square = 0;
-        return new int[0][square];
+        int squaresVisited = 0;
+        return new Square[1][squaresVisited];
     }
 }
