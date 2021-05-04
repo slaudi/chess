@@ -16,14 +16,9 @@ public class Cli {
      * @param args The command line arguments passed to the application
      */
     public static void main(String[] args) {
-
-
         System.out.println("Läuft bis hier hin schon mal");
         Game currentGame = new Game();
-        currentGame.board.toConsole();
-        while (true) {
-            System.out.println(generateAnswer(getInput(), currentGame));
-        }
+        currentGame.processGame();
     }
 
     /**
@@ -34,15 +29,5 @@ public class Cli {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Move or Command:");
         return scanner.nextLine();
-    }
-
-    public static String generateAnswer(String input, Game game){
-        if(Move.validMove(input)){
-            if (game.board.getMovingPieceFromInput(input).isAllowedMove(game.board.getFinalSquareFromInput(input))){
-                return "!" + input;
-            }
-            else return "!Move not allowed";
-        }
-        else return "!Invalid move";
     }
 }
