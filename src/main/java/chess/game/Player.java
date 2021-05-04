@@ -1,13 +1,18 @@
 package chess.game;
 
+import chess.pieces.Piece;
+
+import java.util.Vector;
+
 /**
  * Player class which defines each of two Players
  */
 public class Player {
     public Colour colour;
-    public boolean inCheck;
-    public boolean isCheckMate;
-    public boolean isLoser;
+    public boolean inCheck = false;
+    public boolean isCheckMate = false;
+    public boolean isLoser = false;
+    public Game currentGame;
 
     /**
      * Create a new Player instance.
@@ -16,14 +21,10 @@ public class Player {
      */
     public Player(Colour colour) {
         setColour(colour);
-        setInCheck(false);
-        setCheckMate(false);
-        setLoser(false);
-
     }
 
     /**
-     * Sets Player-Colour two black or white.
+     * Sets Player-Colour to black or white.
      *
      * @param x Colour: Black or White
      */
@@ -58,5 +59,31 @@ public class Player {
         this.isLoser = loose;
     }
 
+    /**
+     * A function determining all the allied Pieces on the current board of a certain Piece
+     *
+     * @param colour the Colour of the Piece
+     * @return a Vector containing all allied Pieces
+     */
+    public Vector<Piece> getAlliedPieces(Colour colour) {
+        Vector<Piece> alliedPieces;
+        if(colour == Colour.WHITE) {
+            alliedPieces = currentGame.board.whitePieces;
+        } else alliedPieces = currentGame.board.blackPieces;
+        return alliedPieces;
+    }
+
+    /**
+     * A function determining all the enemy Pieces on the current board of a certain Piece
+     * @param colour the Colour of the Piece
+     * @return a Vector containing all enemy Pieces
+     */
+    public Vector<Piece> getEnemyPieces(Colour colour) {
+        Vector<Piece> enemyPieces;
+        if(colour == Colour.WHITE) {
+            enemyPieces = currentGame.board.blackPieces;
+        } else enemyPieces = currentGame.board.whitePieces;
+        return enemyPieces;
+    }
 
 }

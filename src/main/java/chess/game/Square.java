@@ -9,22 +9,19 @@ public class Square {
     public int x;
     public int y;
     public Label label;
-    public boolean occupied;
-    public Piece occupiedBy;
+    public Piece occupiedBy = null;
 
     /**
      * Create a single square instance when starting a new Game.
      *
      * @param label Name of Square.
-     * @param x X-Coordinate of this Square (line from left to right).
-     * @param y Y-Coordinate of this Square (column from top to bottom).
+     * @param x     X-Coordinate of this Square (line from left to right).
+     * @param y     Y-Coordinate of this Square (column from top to bottom).
      */
     public Square(Label label, int x, int y) {
         this.x = x;
         this.y = y;
         this.label = label;
-        this.occupied = false;
-        this.occupiedBy = null;
     }
 
     public String toString(){
@@ -35,6 +32,7 @@ public class Square {
             return this.occupiedBy.toString();
         }
     }
+
     public static int getXFromLabel(Label label){
         char i = Label.toString(label).charAt(0);
         int result;
@@ -46,7 +44,7 @@ public class Square {
         else if (i == 'f') result = 5;
         else if (i == 'g') result = 6;
         else if (i == 'h') result = 7;
-        else result = 9;
+        else return 9;
         return result;
     }
 

@@ -2,6 +2,8 @@ package chess.game;
 
 import chess.pieces.*;
 
+import java.util.Vector;
+
 import static chess.game.Colour.BLACK;
 import static chess.game.Colour.WHITE;
 
@@ -12,6 +14,8 @@ import static chess.game.Colour.WHITE;
  */
 public class Board {
     public Square[][] board;
+    Vector<Piece> whitePieces = new Vector<>(16);
+    Vector<Piece> blackPieces = new Vector<>(16);
 
 
     /**
@@ -25,53 +29,48 @@ public class Board {
             }
         }
         startingFormation();
+        setCollection();
     }
     /**
      * Sets each Chess-Piece on its initial position.
      */
     public void startingFormation() {
         // Black pieces
-        this.board[0][0].occupied = true;
         this.board[0][0].occupiedBy = new Rook(this.board[0][0],BLACK);
-        this.board[1][0].occupied = true;
         this.board[1][0].occupiedBy = new Knight(this.board[1][0], BLACK);
-        this.board[2][0].occupied = true;
         this.board[2][0].occupiedBy = new Bishop(this.board[2][0], BLACK);
-        this.board[3][0].occupied = true;
         this.board[3][0].occupiedBy = new Queen(this.board[3][0], BLACK);
-        this.board[4][0].occupied = true;
         this.board[4][0].occupiedBy = new King(this.board[4][0], BLACK);
-        this.board[5][0].occupied = true;
         this.board[5][0].occupiedBy = new Bishop(this.board[5][0], BLACK);
-        this.board[6][0].occupied = true;
         this.board[6][0].occupiedBy = new Knight(this.board[6][0], BLACK);
-        this.board[7][0].occupied = true;
         this.board[7][0].occupiedBy = new Rook(this.board[7][0], BLACK);
         for(int i = 0; i < 8; i++) {
-            this.board[i][1].occupied = true;
             this.board[i][1].occupiedBy = new Pawn(this.board[i][1], BLACK);
         }
 
         // White pieces
-        this.board[0][7].occupied = true;
         this.board[0][7].occupiedBy = new Rook(this.board[0][7], WHITE);
-        this.board[1][7].occupied = true;
         this.board[1][7].occupiedBy = new Knight(this.board[1][7], WHITE);
-        this.board[2][7].occupied = true;
         this.board[2][7].occupiedBy = new Bishop(this.board[2][7], WHITE);
-        this.board[3][7].occupied = true;
         this.board[3][7].occupiedBy = new Queen(this.board[3][7], WHITE);
-        this.board[4][7].occupied = true;
         this.board[4][7].occupiedBy = new King(this.board[4][7], WHITE);
-        this.board[5][7].occupied = true;
         this.board[5][7].occupiedBy = new Bishop(this.board[5][7], WHITE);
-        this.board[6][7].occupied = true;
         this.board[6][7].occupiedBy = new Knight(this.board[6][7], WHITE);
-        this.board[7][7].occupied = true;
         this.board[7][7].occupiedBy = new Rook(this.board[7][7], WHITE);
         for(int i = 0; i < 8; i++) {
-            this.board[i][6].occupied = true;
             this.board[i][6].occupiedBy = new Pawn(this.board[i][6], WHITE);
+        }
+    }
+
+    /**
+     * Add all pieces on the board to the Vectors whitePieces and blackPieces according to their colour
+     */
+    public void setCollection() {
+        for(int i = 0; i < 8; i++) {
+            whitePieces.add(this.board[i][7].occupiedBy);
+            whitePieces.add(this.board[i][6].occupiedBy);
+            blackPieces.add(this.board[i][0].occupiedBy);
+            blackPieces.add(this.board[i][1].occupiedBy);
         }
     }
 
@@ -79,7 +78,7 @@ public class Board {
         for (int y = 0; y < 8; y++){
             System.out.print(8-y);
             for (int x = 0; x < 8; x++){
-                if (this.board[x][y].occupied){
+                if (this.board[x][y].occupiedBy != null){
                     System.out.print(" " + this.board[x][y].occupiedBy.toString());
                 }
                 else{
