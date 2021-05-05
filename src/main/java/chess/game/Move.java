@@ -44,9 +44,9 @@ public class Move {
 
 
     public boolean isAllowedMove(Board board) {
-        return (this.movingPiece.isAllowedPath(this.finalSquare) && isPathEmpty(this.movingPiece.getType(),this.movingPiece.getSquare(),this.finalSquare, board ) );
+        return (this.movingPiece.isAllowedPath(this.finalSquare) && this.movingPiece.isPathEmpty(this.movingPiece.getType(),this.movingPiece.getSquare(),this.finalSquare, board ) );
     }
-
+/*
     public static boolean isPathEmpty(Type type, Square start, Square end, Board board) {
         Square[][] path = new Square[8][8];
         boolean emptyPath = true;
@@ -58,7 +58,7 @@ public class Move {
         }
         return emptyPath;
     }
-
+*/
 
     /**
      * Generates Path if Piece moves more than one Square
@@ -146,9 +146,14 @@ public class Move {
         }
         return board;
     }
-    public void undoMove (Stack<Move> history){
+    public Board undoMove (Stack<Move> history, Board board){
         Move actualMove = history.pop();
-        actualMove.finalSquare.
+        Square start = actualMove.startSquare;
+        Square finalSquare = actualMove.finalSquare;
+        board.board[start.x][start.y].occupiedBy = actualMove.movingPiece;
+        actualMove.movingPiece.setSquare(start);
+        board.board[finalSquare.x][finalSquare.y].occupiedBy = null;
+        return board;
     }
 
 }

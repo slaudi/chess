@@ -69,7 +69,7 @@ public class Bishop extends Piece {
     public boolean isAllowedPath(Square finalSquare, Board board) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         int diff_y = Math.abs(finalSquare.y - this.square.y);
-        boolean emptypath = Move.isPathEmpty(this.type, this.square, finalSquare, board);
+
 
         return diff_x == diff_y;
     }

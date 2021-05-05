@@ -4,9 +4,7 @@ package chess.game;
 import chess.cli.Cli;
 import chess.pieces.Piece;
 
-import java.util.List;
-import java.util.Stack;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Game class which defines current game.
@@ -16,7 +14,7 @@ public class Game {
     public Player playerWhite;
     public Player playerBlack;
     public Board board;
-    public List<Piece> beatenPieces;
+    public ArrayList<Piece> beatenPieces;
     public Stack<Move> moveHistory;
 
     private Player currentPlayer;
@@ -30,6 +28,9 @@ public class Game {
 
         this.currentPlayer = playerWhite;
         this.board = new Board();
+        this.moveHistory = new Stack<Move>();
+        this.beatenPieces = new ArrayList<Piece>();
+
     }
 
     private boolean processMove(Square from, Square to)
@@ -55,7 +56,7 @@ public class Game {
             System.out.println("Cannot move piece onto cell with your another figure");
             return false;
         }
-
+            //TODO Abfrage ob Pfad blockiert etc.
         if (selectedPiece.isAllowedPath(to, this.board))
         {
             if (targetPiece != null)
@@ -63,10 +64,16 @@ public class Game {
                 beatenPieces.add(targetPiece);
             }
 
-            board = currentMove.doMove(selectedPiece, board);
+            this.board = currentMove.doMove(selectedPiece, this.board);
+            this.board.toConsole();
             moveHistory.add(currentMove);
-            if(checkChess(board, selectedPiece.getColour())){
-                currentMove.undoMove(moveHistory);
+            System.out.println(moveHistory);
+            if(checkChess(this.board, selectedPiece.getColour())){
+                // TODO kein Spielerwechsel bei Schach
+
+                this.board = currentMove.undoMove(moveHistory, this.board);
+                System.out.println(moveHistory);
+                //moveHistory.pop();
             }
             System.out.println("Piece " + selectedPiece.getType() + " moved successfully");
         }
@@ -134,7 +141,10 @@ public class Game {
     public boolean checkChess (Board board, Colour colour){
         if (colour == Colour.WHITE){
             for (int i = 0; i < board.blackPieces.size(); i++){
-                if (isPathEmpty(board.blackPieces.get(i).getType(), board.blackPieces.get(i).getSquare(),board.getSquareOfWhiteKing(),board)){
+
+                if (board.blackPieces.get(i).isAllowedPath(board.getSquareOfWhiteKing(),board)
+                        && board.blackPieces.get(i).isPathEmpty(board.blackPieces.get(i).getType(), board.blackPieces.get(i).getSquare(),board.getSquareOfWhiteKing(),board)){
+                    System.out.println("schach weis true");
                     return true;
                 }
             }
@@ -142,7 +152,9 @@ public class Game {
         }
         else {
             for (int i = 0; i < board.whitePieces.size(); i++){
-                if (isPathEmpty(board.whitePieces.get(i).getType(), board.whitePieces.get(i).getSquare(),board.getSquareOfBlackKing(),board)){
+                if (board.whitePieces.get(i).isAllowedPath(board.getSquareOfBlackKing(),board)
+                        && board.whitePieces.get(i).isPathEmpty(board.whitePieces.get(i).getType(), board.whitePieces.get(i).getSquare(),board.getSquareOfBlackKing(),board)){
+                    System.out.println("schach black true");
                     return true;
                 }
             }

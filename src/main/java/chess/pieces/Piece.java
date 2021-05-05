@@ -74,12 +74,17 @@ public abstract class Piece {
 
     public boolean isPathEmpty(Type type, Square start, Square end, Board board){
         ArrayList<Square> path = Move.generatePath(type,start,end,board);
-        for (int i = 0; i < path.size(); i++){
-            if(path.get(i).occupiedBy != null){
-                return false;
-            }
+        if(path.isEmpty()){
+            return false;
         }
-        return true;
+        else {
+            for (int i = 0; i < path.size(); i++) {
+                if (path.get(i).occupiedBy != null) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
     public boolean finalSquareIsEmpty (Square end, Board board){
         if( board.board[end.x][end.y].occupiedBy == null){
