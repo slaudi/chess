@@ -144,7 +144,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean isSoroundingSquare(Square square) {
+    public boolean isSurroundingSquare(Square square) {
         return false;
     }
 }

@@ -1,8 +1,10 @@
 package chess.game;
 
 import chess.pieces.Piece;
+import chess.game.Game;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.Vector;
 
 /**
@@ -125,6 +127,28 @@ public class Move {
             }
         }
         return path;
+    }
+
+    public Board doMove (Piece piece, Board board){
+        if(piece.getType() == Type.KING){
+            if(piece.checkSafeSquare(this.finalSquare,board, piece.getColour())){
+                piece.setMoved(true);
+                piece.setSquare(finalSquare);
+                board.board[finalSquare.x][finalSquare.y].occupiedBy = piece;
+                board.board[startSquare.x][startSquare.y].occupiedBy = null;
+            }
+        }
+        else {
+            piece.setMoved(true);
+            piece.setSquare(finalSquare);
+            board.board[finalSquare.x][finalSquare.y].occupiedBy = piece;
+            board.board[startSquare.x][startSquare.y].occupiedBy = null;
+        }
+        return board;
+    }
+    public void undoMove (Stack<Move> history){
+        Move actualMove = history.pop();
+        actualMove.finalSquare.
     }
 
 }

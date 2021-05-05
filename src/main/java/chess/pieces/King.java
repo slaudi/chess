@@ -90,7 +90,7 @@ public class King extends Piece {
         return false;
     }
     @Override
-    public boolean isSoroundingSquare(Square square){
+    public boolean isSurroundingSquare(Square square){
         int diffX = this.square.x - square.x;
         int diffY = this.square.y - square.y;
         if(diffX < 2 && diffY < 2){

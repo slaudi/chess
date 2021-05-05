@@ -70,9 +70,9 @@ public abstract class Piece {
      */
     public abstract Square[][] drawMove(Square finalSquare);
 
-    public abstract boolean isSoroundingSquare(Square square);
+    public abstract boolean isSurroundingSquare(Square square);
 
-    public boolean pathIsEmpty (Type type, Square start, Square end, Board board){
+    public boolean isPathEmpty(Type type, Square start, Square end, Board board){
         ArrayList<Square> path = Move.generatePath(type,start,end,board);
         for (int i = 0; i < path.size(); i++){
             if(path.get(i).occupiedBy != null){
@@ -88,29 +88,7 @@ public abstract class Piece {
         else return false;
     }
 
-    public void doMove (Type type, Square start, Square end, Board board){
-        if(type == Type.KING){
-            if(checkSafeSquare(end,board, this.square.occupiedBy.getColour())){
-                this.square = end;
-                this.moved = true;
-                board.board[end.x][end.y].occupiedBy = board.board[start.x][start.y].occupiedBy;
-                board.board[start.x][start.y].occupiedBy = null;
-            }
-        }
-        else {
-            this.square = end;
-            this.moved = true;
-            board.board[end.x][end.y].occupiedBy = board.board[start.x][start.y].occupiedBy;
-            board.board[start.x][start.y].occupiedBy = null;
-            if(checkChess(board,this.square.occupiedBy.getColour())){
-                this.square = start;
-                this.moved = false;
-                board.board[start.x][start.y].occupiedBy = board.board[end.x][end.y].occupiedBy;
-                board.board[end.x][end.y].occupiedBy = null;
-                System.out.println("King would be in Chess.");
-            }
-        }
-    }
+
 
     public abstract boolean pawnCanCapture(Square finalSquare);
 
@@ -118,7 +96,7 @@ public abstract class Piece {
         if (colour == Colour.WHITE){
             for (int i = 0; i < board.blackPieces.size(); i++){
                 if(board.blackPieces.get(i).getType() == Type.BISHOP || board.blackPieces.get(i).getType() == Type.ROOK || board.blackPieces.get(i).getType() == Type.QUEEN) {
-                    if (pathIsEmpty(board.blackPieces.get(i).getType(), board.blackPieces.get(i).getSquare(), board.getSquareOfWhiteKing(), board)) {
+                    if (isPathEmpty(board.blackPieces.get(i).getType(), board.blackPieces.get(i).getSquare(), board.getSquareOfWhiteKing(), board)) {
                         return false;
                     }
                 }
@@ -128,7 +106,7 @@ public abstract class Piece {
                     }
                 }
                 else if (board.blackPieces.get(i).getType() == Type.KING){
-                    if (board.blackPieces.get(i).isSoroundingSquare(end)){
+                    if (board.blackPieces.get(i).isSurroundingSquare(end)){
                         return false;
                     }
                 }
@@ -142,7 +120,7 @@ public abstract class Piece {
         else {
             for (int i = 0; i < board.whitePieces.size(); i++){
                 if(board.whitePieces.get(i).getType() == Type.BISHOP || board.whitePieces.get(i).getType() == Type.ROOK || board.whitePieces.get(i).getType() == Type.QUEEN) {
-                    if (pathIsEmpty(board.whitePieces.get(i).getType(), board.whitePieces.get(i).getSquare(), board.getSquareOfBlackKing(), board)) {
+                    if (isPathEmpty(board.whitePieces.get(i).getType(), board.whitePieces.get(i).getSquare(), board.getSquareOfBlackKing(), board)) {
                         return false;
                     }
                 }
@@ -152,7 +130,7 @@ public abstract class Piece {
                     }
                 }
                 else if (board.whitePieces.get(i).getType() == Type.KING){
-                    if (board.whitePieces.get(i).isSoroundingSquare(end)){
+                    if (board.whitePieces.get(i).isSurroundingSquare(end)){
                         return false;
                     }
                 }
@@ -166,22 +144,5 @@ public abstract class Piece {
         return true;
     }
 
-    public boolean checkChess (Board board, Colour colour){
-        if (colour == Colour.WHITE){
-            for (int i = 0; i < board.blackPieces.size(); i++){
-                if (pathIsEmpty(board.blackPieces.get(i).getType(), board.blackPieces.get(i).getSquare(),board.getSquareOfWhiteKing(),board)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        else {
-            for (int i = 0; i < board.whitePieces.size(); i++){
-                if (pathIsEmpty(board.whitePieces.get(i).getType(), board.whitePieces.get(i).getSquare(),board.getSquareOfBlackKing(),board)){
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+
 }
