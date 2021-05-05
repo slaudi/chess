@@ -1,5 +1,6 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -63,6 +64,18 @@ public class Knight extends Piece {
     }
 
     /**
+     * Determines if a move is valid based on the type of the Piece
+     *
+     * @param finalSquare the final location
+     * @param board
+     * @return a boolean indicating if the move is allowed
+     */
+    @Override
+    public boolean isAllowedPath(Square finalSquare, Board board) {
+        return true;
+    }
+
+    /**
      * Determines if the Knight is moving in the shape of an L
      *
      * @param finalSquare the final location
@@ -88,5 +101,15 @@ public class Knight extends Piece {
         // a Knight is allowed to jump over pieces, doesn't need a path
         int squaresVisited = 0;
         return new Square[1][squaresVisited];
+    }
+
+    @Override
+    public boolean isSoroundingSquare(Square square) {
+        return false;
+    }
+
+    @Override
+    public boolean pawnCanCapture(Square finalSquare) {
+        return false;
     }
 }

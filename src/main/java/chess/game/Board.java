@@ -14,8 +14,8 @@ import static chess.game.Colour.WHITE;
  */
 public class Board {
     public Square[][] board;
-    Vector<Piece> whitePieces = new Vector<>(16);
-    Vector<Piece> blackPieces = new Vector<>(16);
+    public Vector<Piece> whitePieces = new Vector<>(16);
+    public Vector<Piece> blackPieces = new Vector<>(16);
 
 
     /**
@@ -127,5 +127,29 @@ public class Board {
         int finalX = Square.getXFromString(end);
         int finalY = Square.getYFromString(end);
         return this.board[finalX][finalY];
+    }
+    public Square getSquareOfWhiteKing(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(board[i][j].occupiedBy != null) {
+                    if (board[i][j].occupiedBy.getType() == Type.KING && board[i][j].occupiedBy.getColour() == WHITE) {
+                        return board[i][j];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public Square getSquareOfBlackKing(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if (board[i][j].occupiedBy != null) {
+                    if (board[i][j].occupiedBy.getType() == Type.KING && board[i][j].occupiedBy.getColour() == BLACK) {
+                        return board[i][j];
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

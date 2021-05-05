@@ -37,8 +37,8 @@ public class Cli {
      * @return An answer to the Player if his entered Move is syntactically or semantically correct or incorrect.
      */
     public static String generateAnswer(String input, Game game){
-        if(Move.validMove(input)){
-            if (game.board.getMovingPieceFromInput(input).isAllowedMove(game.board.getFinalSquareFromInput(input))){
+        if(Move.isValidMove(input)){
+            if (game.board.getMovingPieceFromInput(input).isAllowedPath(game.board.getFinalSquareFromInput(input))){
                 return "!" + input;
             }
             else return "!Move not allowed";

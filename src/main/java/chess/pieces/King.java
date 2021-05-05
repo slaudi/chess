@@ -63,6 +63,18 @@ public class King extends Piece {
     }
 
     /**
+     * Determines if a move is valid based on the type of the Piece
+     *
+     * @param finalSquare the final location
+     * @param board
+     * @return a boolean indicating if the move is allowed
+     */
+    @Override
+    public boolean isAllowedPath(Square finalSquare, Board board) {
+        return true;
+    }
+
+    /**
      * Determines if the King is moving only one Square in any direction
      *
      * @param finalSquare the final location
@@ -75,6 +87,20 @@ public class King extends Piece {
         // Wenn nicht
         // TODO wenn noch kein Move + Rook kein Move + kein Piece im Weg + kein Angriff auf Felder => canCastle()
 
+        return false;
+    }
+    @Override
+    public boolean isSoroundingSquare(Square square){
+        int diffX = this.square.x - square.x;
+        int diffY = this.square.y - square.y;
+        if(diffX < 2 && diffY < 2){
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public boolean pawnCanCapture(Square finalSquare) {
         return false;
     }
 

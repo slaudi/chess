@@ -1,5 +1,6 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -63,6 +64,18 @@ public class Pawn extends Piece {
     }
 
     /**
+     * Determines if a move is valid based on the type of the Piece
+     *
+     * @param finalSquare the final location
+     * @param board
+     * @return a boolean indicating if the move is allowed
+     */
+    @Override
+    public boolean isAllowedPath(Square finalSquare, Board board) {
+        return true;
+    }
+
+    /**
      * Determines if the Pawn is moving only one Square up/down depending on the Colour of the Pawn
      * OR two up/down during the first move
      * OR one diagonally up/down to capture an enemy piece
@@ -95,9 +108,20 @@ public class Pawn extends Piece {
             return true;
         } else return false;
     }
-
+    // TODO en passant
     public boolean pawnCanCapture(Square finalSquare) {
-        // en passant auch noch beachten beim enemy pawn
+        int diffX = this.square.x - finalSquare.x;
+        int diffY = this.square.y - finalSquare.y;
+        if(this.colour == Colour.WHITE){
+            if(Math.abs(diffX) == 1 && diffY == 1){
+                return true;
+            }
+        }
+        else {
+            if(Math.abs(diffX) == 1 && diffY == -1){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -117,5 +141,10 @@ public class Pawn extends Piece {
         // Pawn has it's own method to determine if a Piece is in it's path
         int squaresVisited = 0;
         return new Square[1][squaresVisited];
+    }
+
+    @Override
+    public boolean isSoroundingSquare(Square square) {
+        return false;
     }
 }

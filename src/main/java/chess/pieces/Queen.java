@@ -1,9 +1,6 @@
 package chess.pieces;
 
-import chess.game.Colour;
-import chess.game.Label;
-import chess.game.Square;
-import chess.game.Type;
+import chess.game.*;
 
 public class Queen extends Piece {
 
@@ -61,6 +58,18 @@ public class Queen extends Piece {
         if(this.colour == Colour.WHITE){
             return "Q";
         } else return "q";
+    }
+
+    /**
+     * Determines if a move is valid based on the type of the Piece
+     *
+     * @param finalSquare the final location
+     * @param board
+     * @return a boolean indicating if the move is allowed
+     */
+    @Override
+    public boolean isAllowedPath(Square finalSquare, Board board) {
+        return true;
     }
 
     /**
@@ -136,5 +145,15 @@ public class Queen extends Piece {
         }
 
         return move;
+    }
+
+    @Override
+    public boolean isSoroundingSquare(Square square) {
+        return false;
+    }
+
+    @Override
+    public boolean pawnCanCapture(Square finalSquare) {
+        return false;
     }
 }

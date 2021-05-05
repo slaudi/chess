@@ -1,9 +1,6 @@
 package chess.pieces;
 
-import chess.game.Colour;
-import chess.game.Label;
-import chess.game.Square;
-import chess.game.Type;
+import chess.game.*;
 
 public class Bishop extends Piece {
 
@@ -69,11 +66,17 @@ public class Bishop extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedPath(Square finalSquare) {
+    public boolean isAllowedPath(Square finalSquare, Board board) {
         int diff_x = Math.abs(finalSquare.x - this.square.x);
         int diff_y = Math.abs(finalSquare.y - this.square.y);
+        boolean emptypath = Move.isPathEmpty(this.type, this.square, finalSquare, board);
 
         return diff_x == diff_y;
+    }
+
+    @Override
+    public boolean isAllowedPath(Square finalSquare) {
+        return true;
     }
 
     /**
@@ -126,5 +129,15 @@ public class Bishop extends Piece {
         }
 
         return move;
+    }
+
+    @Override
+    public boolean isSoroundingSquare(Square square) {
+        return false;
+    }
+
+    @Override
+    public boolean pawnCanCapture(Square finalSquare) {
+        return false;
     }
 }

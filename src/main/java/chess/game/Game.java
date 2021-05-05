@@ -53,15 +53,14 @@ public class Game {
             return false;
         }
 
-        if (selectedPiece.isAllowedPath(to))
+        if (selectedPiece.isAllowedPath(to, this.board))
         {
             if (targetPiece != null)
             {
                 beatenPieces.add(targetPiece);
             }
 
-            to.occupiedBy = from.occupiedBy;
-            from.occupiedBy = null;
+            from.occupiedBy.doMove(from.occupiedBy.getType(),from, to, this.board);
 
             System.out.println("Piece " + selectedPiece.getType() + " moved successfully");
         }
