@@ -65,18 +65,14 @@ public class Bishop extends Piece {
      * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
-    @Override
-    public boolean isAllowedPath(Square finalSquare, Board board) {
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
-
-
-        return diff_x == diff_y;
-    }
 
     @Override
     public boolean isAllowedPath(Square finalSquare) {
-        return true;
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
+
+
+        return diff_x == diff_y;
     }
 
     /**
@@ -90,11 +86,11 @@ public class Bishop extends Piece {
     public Square[][] drawMove(Square finalSquare) {
         int dir_x;
         int dir_y;
-        int squaresVisited = Math.abs(finalSquare.x - this.square.x);
+        int squaresVisited = Math.abs(finalSquare.getX() - this.square.getX());
 
-        if(finalSquare.x - this.square.x < 0) {
+        if(finalSquare.getX() - this.square.getX() < 0) {
             // Bishop moves to the left
-            if(finalSquare.y - this.square.y < 0) {
+            if(finalSquare.getY() - this.square.getY() < 0) {
                 //Bishop moves left up
                 dir_x = -1;
                 dir_y = -1;
@@ -105,7 +101,7 @@ public class Bishop extends Piece {
             }
         } else {
             // Bishop moves to the right
-            if(finalSquare.y - this.square.y < 0) {
+            if(finalSquare.getY() - this.square.getY() < 0) {
                 // Bishop moves right up
                 dir_x = 1;
                 dir_y = -1;
@@ -122,8 +118,8 @@ public class Bishop extends Piece {
             // Bishop moves more than one square
             for(int i = 0; i < squaresVisited - 1; i++) {
                 // stores squares except start and final square
-                int x = this.square.x + dir_x*(i+1);
-                int y = this.square.y + dir_y*(i+1);
+                int x = this.square.getX() + dir_x*(i+1);
+                int y = this.square.getY() + dir_y*(i+1);
                 move[x][y] = new Square(Label.values()[(squaresVisited*x+y)], x, y);
             }
         }

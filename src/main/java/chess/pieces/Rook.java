@@ -2,7 +2,7 @@ package chess.pieces;
 
 import chess.game.*;
 
-public class Rook extends Piece {
+public class Rook extends Piece implements Castling {
 
     Type type;
 
@@ -60,18 +60,6 @@ public class Rook extends Piece {
     }
 
     /**
-     * Determines if a move is valid based on the type of the Piece
-     *
-     * @param finalSquare the final location
-     * @param board
-     * @return a boolean indicating if the move is allowed
-     */
-    @Override
-    public boolean isAllowedPath(Square finalSquare, Board board) {
-        return true;
-    }
-
-    /**
      * Determines if the Rook is moving only horizontally or vertically
      *
      * @param finalSquare the final location
@@ -79,8 +67,8 @@ public class Rook extends Piece {
      */
     @Override
     public boolean isAllowedPath(Square finalSquare) {
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
         return(diff_y == 0 || diff_x == 0);
     }
@@ -97,13 +85,13 @@ public class Rook extends Piece {
         int squaresVisited;
         int dir_x = 0;
         int dir_y = 0;
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
-        if(finalSquare.x == this.square.x) {
+        if(finalSquare.getX() == this.square.getX()) {
             // Rook moves vertically
             squaresVisited = diff_y;
-            if(finalSquare.y - this.square.y < 0) {
+            if(finalSquare.getY() - this.square.getY() < 0) {
                 dir_y = -1; // Rook moves up
             } else {
                 dir_x = 1; // Rook moves down
@@ -111,7 +99,7 @@ public class Rook extends Piece {
         } else {
             // Rook moves horizontally
             squaresVisited = diff_x;
-            if(finalSquare.x - this.square.x < 0) {
+            if(finalSquare.getX() - this.square.getX() < 0) {
                 dir_x = -1; // Rook moves to the left
             } else {
                 dir_x = 1; // Rook moves to the right
@@ -124,8 +112,8 @@ public class Rook extends Piece {
             // Rook moves more than one Square
             for(int i = 0; i < squaresVisited - 1; i++) {
                 // stores squares except start and final square
-                int x = this.square.x + dir_x*(i+1);
-                int y = this.square.y + dir_y*(i+1);
+                int x = this.square.getX() + dir_x*(i+1);
+                int y = this.square.getY() + dir_y*(i+1);
                 move[x][y] = new Square(Label.values()[(squaresVisited*x+y)], x, y);
             }
         }

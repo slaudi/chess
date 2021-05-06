@@ -49,15 +49,6 @@ public abstract class Piece {
      * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
-    public abstract boolean isAllowedPath(Square finalSquare, Board board);
-    // kein Piece darf ziehen, wenn der eigene King im Angriff steht oder dadurch einem Angriff ausgesetzt wird
-
-    /**
-     * Determines if a move is valid based on the type of the Piece
-     *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
-     */
     public abstract boolean isAllowedPath(Square finalSquare);
     // kein Piece darf ziehen, wenn der eigene King im Angriff steht oder dadurch einem Angriff ausgesetzt wird
 
@@ -72,82 +63,17 @@ public abstract class Piece {
 
     public abstract boolean isSurroundingSquare(Square square);
 
-    public boolean isPathEmpty(Type type, Square start, Square end, Board board){
-        ArrayList<Square> path = Move.generatePath(type,start,end,board);
-        if(path.isEmpty()){
-            return false;
-        }
-        else {
-            for (int i = 0; i < path.size(); i++) {
-                if (path.get(i).occupiedBy != null) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
+
     public boolean finalSquareIsEmpty (Square end, Board board){
-        if( board.board[end.x][end.y].occupiedBy == null){
+        if(board.getBoard()[end.getX()][end.getY()].getOccupiedBy() == null){
             return true;
         }
         else return false;
     }
 
-
-
     public abstract boolean pawnCanCapture(Square finalSquare);
 
-    public boolean checkSafeSquare(Square end, Board board, Colour colour){
-        if (colour == Colour.WHITE){
-            for (int i = 0; i < board.blackPieces.size(); i++){
-                if(board.blackPieces.get(i).getType() == Type.BISHOP || board.blackPieces.get(i).getType() == Type.ROOK || board.blackPieces.get(i).getType() == Type.QUEEN) {
-                    if (isPathEmpty(board.blackPieces.get(i).getType(), board.blackPieces.get(i).getSquare(), board.getSquareOfWhiteKing(), board)) {
-                        return false;
-                    }
-                }
-                else if (board.blackPieces.get(i).getType() == Type.KNIGHT){
-                    if (board.blackPieces.get(i).isAllowedPath(end)){
-                        return false;
-                    }
-                }
-                else if (board.blackPieces.get(i).getType() == Type.KING){
-                    if (board.blackPieces.get(i).isSurroundingSquare(end)){
-                        return false;
-                    }
-                }
-                else {
-                    if (board.blackPieces.get(i).pawnCanCapture(end)){
-                        return false;
-                    }
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < board.whitePieces.size(); i++){
-                if(board.whitePieces.get(i).getType() == Type.BISHOP || board.whitePieces.get(i).getType() == Type.ROOK || board.whitePieces.get(i).getType() == Type.QUEEN) {
-                    if (isPathEmpty(board.whitePieces.get(i).getType(), board.whitePieces.get(i).getSquare(), board.getSquareOfBlackKing(), board)) {
-                        return false;
-                    }
-                }
-                else if (board.whitePieces.get(i).getType() == Type.KNIGHT){
-                    if (board.whitePieces.get(i).isAllowedPath(end)){
-                        return false;
-                    }
-                }
-                else if (board.whitePieces.get(i).getType() == Type.KING){
-                    if (board.whitePieces.get(i).isSurroundingSquare(end)){
-                        return false;
-                    }
-                }
-                else {
-                    if (board.whitePieces.get(i).pawnCanCapture(end)){
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
+
 
 
 }

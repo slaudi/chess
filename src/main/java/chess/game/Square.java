@@ -6,10 +6,10 @@ import chess.pieces.Piece;
  * Square class representing a single square of current Chess-Board.
  */
 public class Square {
-    public int x;
-    public int y;
-    public Label label;
-    public Piece occupiedBy = null;
+    int x;
+    int y;
+    Label label;
+    Piece occupiedBy = null;
 
     /**
      * Create a single square instance when starting a new Game.
@@ -34,6 +34,21 @@ public class Square {
         }
     }
 
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public Piece getOccupiedBy() {
+        return this.occupiedBy;
+    }
+
+    public void setOccupiedBy(Piece occupiedBy) {
+        this.occupiedBy = occupiedBy;
+    }
     /**
      * Get x-Coordinate from Enum Label
      * @param label Enum to extract x-Coordinate from.

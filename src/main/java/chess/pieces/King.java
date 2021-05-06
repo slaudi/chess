@@ -1,12 +1,10 @@
 package chess.pieces;
 import chess.game.*;
 
-import java.util.Vector;
 
-public class King extends Piece {
+public class King extends Piece implements Castling {
 
     Type type;
-    Player currentPlayer;
 
     /**
      * Constructor for a King
@@ -63,18 +61,6 @@ public class King extends Piece {
     }
 
     /**
-     * Determines if a move is valid based on the type of the Piece
-     *
-     * @param finalSquare the final location
-     * @param board
-     * @return a boolean indicating if the move is allowed
-     */
-    @Override
-    public boolean isAllowedPath(Square finalSquare, Board board) {
-        return true;
-    }
-
-    /**
      * Determines if the King is moving only one Square in any direction
      *
      * @param finalSquare the final location
@@ -91,12 +77,14 @@ public class King extends Piece {
     }
     @Override
     public boolean isSurroundingSquare(Square square){
-        int diffX = this.square.x - square.x;
-        int diffY = this.square.y - square.y;
+        int diffX = this.square.getX() - square.getX();
+        int diffY = this.square.getY() - square.getY();
         if(diffX < 2 && diffY < 2){
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     @Override
@@ -104,36 +92,16 @@ public class King extends Piece {
         return false;
     }
 
+
     public boolean pathToNotCheck(Square finalSquare) {
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
         return false;
     }
 
-
-
-    public boolean isCheckmate(Square finalSquare) {
-        // egal welcher Move mit irgendeinem Piece, immer noch isChecked():true
-        Vector<Piece> enemies = currentPlayer.getEnemyPieces(this.colour);
-
-        for(int i = 0; i < enemies.size(); i++) {
-            if(canAttackKing(enemies.elementAt(i), finalSquare) && !allyCanDefend()) {
-                currentPlayer.setCheckMate(true);
-                currentPlayer.setLoser(true);
-            }
-        }
-
-
-        return false;
-    }
 
     public boolean canAttackKing(Piece enemy, Square location) {
 
-        return false;
-    }
-
-    private boolean allyCanDefend() {
-        Vector<Piece> allies = currentPlayer.getAlliedPieces(this.colour);
         return false;
     }
 

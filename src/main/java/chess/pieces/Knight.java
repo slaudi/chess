@@ -66,25 +66,13 @@ public class Knight extends Piece {
     /**
      * Determines if a move is valid based on the type of the Piece
      *
-     * @param finalSquare the final location
-     * @param board
      * @return a boolean indicating if the move is allowed
      */
-    @Override
-    public boolean isAllowedPath(Square finalSquare, Board board) {
-        return true;
-    }
 
-    /**
-     * Determines if the Knight is moving in the shape of an L
-     *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
-     */
     @Override
     public boolean isAllowedPath(Square finalSquare) {
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
         return ((diff_x == 2 && diff_y == 1) || (diff_x == 1 && diff_y == 2));
     }

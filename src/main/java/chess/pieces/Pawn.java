@@ -64,18 +64,6 @@ public class Pawn extends Piece {
     }
 
     /**
-     * Determines if a move is valid based on the type of the Piece
-     *
-     * @param finalSquare the final location
-     * @param board
-     * @return a boolean indicating if the move is allowed
-     */
-    @Override
-    public boolean isAllowedPath(Square finalSquare, Board board) {
-        return true;
-    }
-
-    /**
      * Determines if the Pawn is moving only one Square up/down depending on the Colour of the Pawn
      * OR two up/down during the first move
      * OR one diagonally up/down to capture an enemy piece
@@ -85,7 +73,8 @@ public class Pawn extends Piece {
      */
     @Override
     public boolean isAllowedPath(Square finalSquare) {
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
+        return true;
+        /*int diff_x = Math.abs(finalSquare.x - this.square.x);
         // determines if it is the Pawn's first move to let it move two Squares up/down
         if(pawnIsFirstMove(finalSquare)) {
            return true;
@@ -97,21 +86,21 @@ public class Pawn extends Piece {
         // determines if a Piece in front of the Pawn, if not the Pawn is allowed to move forward
         if(pawnIsAllowedForward(finalSquare)) {
             return true;
-        } else return false;
+        } else return false;*/
     }
 
     public boolean pawnIsFirstMove(Square finalSquare) {
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
-        if((this.colour == Colour.WHITE && this.square.y == 6 /*board[] statt 6? */ )
-                || (this.colour == Colour.BLACK && this.square.y == 1) ) {
+        if((this.colour == Colour.WHITE && this.square.getY() == 6 /*board[] statt 6? */ )
+                || (this.colour == Colour.BLACK && this.square.getY() == 1) ) {
             return true;
         } else return false;
     }
     // TODO en passant
     public boolean pawnCanCapture(Square finalSquare) {
-        int diffX = this.square.x - finalSquare.x;
-        int diffY = this.square.y - finalSquare.y;
+        int diffX = this.square.getX() - finalSquare.getX();
+        int diffY = this.square.getY() - finalSquare.getY();
         if(this.colour == Colour.WHITE){
             if(Math.abs(diffX) == 1 && diffY == 1){
                 return true;
@@ -145,6 +134,6 @@ public class Pawn extends Piece {
 
     @Override
     public boolean isSurroundingSquare(Square square) {
-        return false;
+        return true;
     }
 }

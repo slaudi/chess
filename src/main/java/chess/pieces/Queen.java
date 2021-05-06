@@ -61,18 +61,6 @@ public class Queen extends Piece {
     }
 
     /**
-     * Determines if a move is valid based on the type of the Piece
-     *
-     * @param finalSquare the final location
-     * @param board
-     * @return a boolean indicating if the move is allowed
-     */
-    @Override
-    public boolean isAllowedPath(Square finalSquare, Board board) {
-        return true;
-    }
-
-    /**
      * Determines if the Queen is moving in a straight line in any direction
      *
      * @param finalSquare the final location
@@ -80,8 +68,8 @@ public class Queen extends Piece {
      */
     @Override
     public boolean isAllowedPath(Square finalSquare) {
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
         return (diff_x == diff_y || diff_x == 0 || diff_y == 0);
     }
@@ -98,21 +86,21 @@ public class Queen extends Piece {
         int squaresVisited;
         int dir_x = 0;
         int dir_y = 0;
-        int diff_x = Math.abs(finalSquare.x - this.square.x);
-        int diff_y = Math.abs(finalSquare.y - this.square.y);
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
-        if(this.square.x == finalSquare.x) {
+        if(this.square.getX() == finalSquare.getX()) {
             // Queen moves vertically
             squaresVisited = diff_y;
-            if(finalSquare.y - this.square.y < 0) {
+            if(finalSquare.getY() - this.square.getY() < 0) {
                 dir_y = -1; // Queen moves up
             } else {
                 dir_y = 1; // Queen moves down
             }
-        } else if(this.square.y == finalSquare.y) {
+        } else if(this.square.getY() == finalSquare.getY()) {
             // Queen moves horizontally
             squaresVisited = diff_x;
-            if(finalSquare.x - this.square.x < 0) {
+            if(finalSquare.getX() - this.square.getX() < 0) {
                 dir_x = -1; // Queen moves to the left
             } else {
                 dir_x = 1; // Queen moves to the right
@@ -120,12 +108,12 @@ public class Queen extends Piece {
         } else {
             // Queen moves diagonally
             squaresVisited = diff_x;
-            if(finalSquare.x - this.square.x < 0) {
+            if(finalSquare.getX() - this.square.getX() < 0) {
                 dir_x = -1; // Queen moves diagonally to the left
             } else {
                 dir_x = 1; // Queen moves diagonally to the right
             }
-            if(finalSquare.y - this.square.y < 0) {
+            if(finalSquare.getY() - this.square.getY() < 0) {
                 dir_y = 1; // Queen moves diagonally up
             } else {
                 dir_y = -1; // Queen moves diagonally down
@@ -138,8 +126,8 @@ public class Queen extends Piece {
             // Queen moves more than one square
             for (int i = 0; i < squaresVisited - 1; i++) {
                 // stores squares except start and final square
-                int x = this.square.x + dir_x*(i+1);
-                int y = this.square.y + dir_y*(i+1);
+                int x = this.square.getX() + dir_x*(i+1);
+                int y = this.square.getY() + dir_y*(i+1);
                 move[x][y] = new Square(Label.values()[(squaresVisited*x+y)], x, y);
             }
         }
