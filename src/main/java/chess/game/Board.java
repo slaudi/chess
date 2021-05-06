@@ -2,6 +2,8 @@ package chess.game;
 
 import chess.pieces.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import static chess.game.Colour.BLACK;
@@ -13,9 +15,9 @@ import static chess.game.Colour.WHITE;
  * Board class representing the Chess-Board of current game.
  */
 public class Board {
-    public Square[][] board;
-    public Vector<Piece> whitePieces = new Vector<>(16);
-    public Vector<Piece> blackPieces = new Vector<>(16);
+    Square[][] board; // Board can access class Square
+    ArrayList<Piece> whitePieces = new ArrayList<>(16);
+    ArrayList<Piece> blackPieces = new ArrayList<>(16);
 
 
     /**
@@ -29,12 +31,17 @@ public class Board {
             }
         }
         startingFormation();
-        setCollection();
+        setAlliance();
     }
+
+    public Square[][] getBoard() {
+        return board;
+    }
+
     /**
      * Sets each Chess-Piece on its initial position.
      */
-    public void startingFormation() {
+    private void startingFormation() {
         // Black pieces
         this.board[0][0].occupiedBy = new Rook(this.board[0][0],BLACK);
         this.board[1][0].occupiedBy = new Knight(this.board[1][0], BLACK);
@@ -63,9 +70,9 @@ public class Board {
     }
 
     /**
-     * Add all pieces on the board to the Vectors whitePieces and blackPieces according to their colour
+     * Add all pieces on the board to a ArrayList whitePieces and blackPieces according to their colour
      */
-    public void setCollection() {
+    private void setAlliance() {
         for(int i = 0; i < 8; i++) {
             whitePieces.add(this.board[i][7].occupiedBy);
             whitePieces.add(this.board[i][6].occupiedBy);
@@ -74,6 +81,37 @@ public class Board {
         }
     }
 
+    /**
+     * A function determining all the allied Pieces on the current board of a certain Piece
+     *
+     * @param colour the Colour of the Piece
+     * @return an ArrayList containing all allied Pieces
+     */
+    public ArrayList<Piece> getAlliedPieces(Colour colour) {
+        ArrayList<Piece> allies;
+        if(colour == Colour.WHITE) {
+            allies = whitePieces;
+        } else {
+            allies = blackPieces;
+        }
+        return new ArrayList<>(allies);
+    }
+
+    /**
+     * A function determining all the enemy Pieces on the current board of a certain Piece
+     *
+     * @param colour the Colour of the Piece
+     * @return an ArrayList containing all enemy Pieces
+     */
+    public ArrayList<Piece> getEnemyPieces(Colour colour) {
+        ArrayList<Piece> enemies;
+        if(colour == Colour.WHITE) {
+            enemies = blackPieces;
+        } else {
+            enemies = whitePieces;
+        }
+        return new ArrayList<>(enemies);
+    }
     /**
      * Prints current state of game to console.
      */
@@ -128,11 +166,13 @@ public class Board {
         int finalY = Square.getYFromString(end);
         return this.board[finalX][finalY];
     }
-    public Square getSquareOfWhiteKing(){
+
+    protected Square getSquareOfKing(Colour colour){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(board[i][j].occupiedBy != null) {
-                    if (board[i][j].occupiedBy.getType() == Type.KING && board[i][j].occupiedBy.getColour() == WHITE) {
+                    if (board[i][j].occupiedBy.getType() == Type.KING
+                            && board[i][j].occupiedBy.getColour() == colour) {
                         return board[i][j];
                     }
                 }
@@ -140,16 +180,5 @@ public class Board {
         }
         return null;
     }
-    public Square getSquareOfBlackKing(){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if (board[i][j].occupiedBy != null) {
-                    if (board[i][j].occupiedBy.getType() == Type.KING && board[i][j].occupiedBy.getColour() == BLACK) {
-                        return board[i][j];
-                    }
-                }
-            }
-        }
-        return null;
-    }
+
 }

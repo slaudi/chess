@@ -2,16 +2,17 @@ package chess.game;
 
 import chess.pieces.Piece;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
  * Player class which defines each of two Players
  */
 public class Player {
-    public Colour colour;
-    public boolean inCheck = false;
-    public boolean isCheckMate = false;
-    public boolean isLoser = false;
+    Colour colour;
+    boolean inCheck = false;
+    boolean isCheckMate = false;
+    boolean loser = false;
     public Game currentGame;
 
     /**
@@ -21,6 +22,11 @@ public class Player {
      */
     public Player(Colour colour) {
         setColour(colour);
+    }
+
+
+    public Colour getColour() {
+        return colour;
     }
 
     /**
@@ -50,40 +56,19 @@ public class Player {
         this.isCheckMate = x;
     }
 
+    public boolean getLoser() {
+        return loser;
+    }
+
     /**
      * Sets if Player has lost.
      *
      * @param loose Boolean: true = Player has lost.
      */
     public void setLoser(boolean loose) {
-        this.isLoser = loose;
+        this.loser = loose;
     }
 
-    /**
-     * A function determining all the allied Pieces on the current board of a certain Piece
-     *
-     * @param colour the Colour of the Piece
-     * @return a Vector containing all allied Pieces
-     */
-    public Vector<Piece> getAlliedPieces(Colour colour) {
-        Vector<Piece> alliedPieces;
-        if(colour == Colour.WHITE) {
-            alliedPieces = currentGame.board.whitePieces;
-        } else alliedPieces = currentGame.board.blackPieces;
-        return alliedPieces;
-    }
 
-    /**
-     * A function determining all the enemy Pieces on the current board of a certain Piece
-     * @param colour the Colour of the Piece
-     * @return a Vector containing all enemy Pieces
-     */
-    public Vector<Piece> getEnemyPieces(Colour colour) {
-        Vector<Piece> enemyPieces;
-        if(colour == Colour.WHITE) {
-            enemyPieces = currentGame.board.blackPieces;
-        } else enemyPieces = currentGame.board.whitePieces;
-        return enemyPieces;
-    }
 
 }
