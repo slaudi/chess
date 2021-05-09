@@ -26,7 +26,20 @@ public class Cli {
             System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
             String userInput = getInput();
 
+            Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
+            Piece targetPiece = currentGame.board.getFinalSquareFromInput(userInput).getOccupiedBy();
+
             while (!generateAnswer(userInput, currentGame)) {
+                if (selectedPiece == null) {
+                    System.out.println("There is no Piece to move!");
+                }
+                assert selectedPiece != null;
+                if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
+                    System.out.println("This is not your Piece to move!");
+                }
+                if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
+                    System.out.println("You cannot attack your own Piece!");
+                }
                 userInput = getInput();
             }
 
@@ -67,36 +80,23 @@ public class Cli {
     /**
      * Computes an answer based on Console-Input and state of current game.
      *
-     * @param input Input from Console as a String
+     * @param userInput Input from Console as a String
      * @param currentGame the current game
      * @return a boolean indicating if the move is accepted
      */
-    public static boolean generateAnswer(String input, Game currentGame) {
-        Piece selectedPiece = currentGame.board.getMovingPieceFromInput(input);
-        Piece targetPiece = currentGame.board.getFinalSquareFromInput(input).getOccupiedBy();
-        Square finalSquare = currentGame.board.getFinalSquareFromInput(input);
+    public static boolean generateAnswer(String userInput, Game currentGame) {
+        Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
+        Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);;
 
         // TODO: funktioniert noch nicht
-        String beaten = "beaten";
-        if (input.equals(beaten)) {
+        /*String beaten = "beaten";
+        if (userInput.equals(beaten)) {
             System.out.println("Beaten pieces:" + currentGame.beatenPieces);
             return false;
-        }
-        if(currentGame.isValidMove(input)){
-            if (selectedPiece == null) {
-                System.out.println("There is no Piece to move!");
-                return false;
-            }
-            if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
-                System.out.println("This is not your Piece to move!");
-                return false;
-            }
-            if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
-                System.out.println("You cannot attack your own Piece!");
-                return false;
-            }
-            if (selectedPiece.isAllowedPath(finalSquare)/*currentGame.isMoveAllowed(selectedPiece, finalSquare)*/){
-                System.out.println("!" + input);
+        }*/
+        if(currentGame.isValidMove(userInput)){
+            if (currentGame.isMoveAllowed(selectedPiece, finalSquare)){
+                System.out.println("!" + userInput);
                 return true;
             } else {
                 System.out.println("!MoveNotAllowed");
