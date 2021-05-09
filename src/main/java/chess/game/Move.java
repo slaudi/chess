@@ -2,7 +2,6 @@ package chess.game;
 
 import chess.pieces.Piece;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -27,14 +26,12 @@ public class Move {
 
 
     protected void doMove (Piece piece, Board board){
-            piece.setMoved(true);
             piece.setSquare(finalSquare);
             board.board[finalSquare.x][finalSquare.y].occupiedBy = piece;
             board.board[startSquare.x][startSquare.y].occupiedBy = null;
     }
 
     protected void undoMove (Stack<Move> history, Board board){
-        // TODO: Wie 'moved' behandeln? Muss nur zurückgesetzt werden, wenn es der erste Move war!
         Move actualMove = history.pop();
         Square start = actualMove.startSquare;
         Square finalSquare = actualMove.finalSquare;
@@ -43,4 +40,29 @@ public class Move {
         board.board[finalSquare.x][finalSquare.y].occupiedBy = null;
     }
 
+    protected void castlingMove(Board board) {
+        int king_x = this.startSquare.x;
+        int king_y = this.startSquare.y;
+        int rook_x = this.finalSquare.x;
+        int rook_y = this.finalSquare.y;
+
+        int diff = Math.abs(rook_x - king_x);
+
+        board.board[king_x][king_y].occupiedBy = null;
+        board.board[rook_x][rook_y].occupiedBy = null;
+
+        if (diff == 3) {
+            //kingside castling
+            king_x += 2;
+            rook_x -= 2;
+            board.board[king_x][king_y].occupiedBy = this.startSquare.occupiedBy;
+            board.board[rook_x][rook_y].occupiedBy = this.finalSquare.occupiedBy;
+        } else {
+            // queenside castling
+            king_x -= 2;
+            rook_x += 3;
+            board.board[king_x][king_y].occupiedBy = this.startSquare.occupiedBy;
+            board.board[rook_x][rook_y].occupiedBy = this.finalSquare.occupiedBy;
+        }
+    }
 }

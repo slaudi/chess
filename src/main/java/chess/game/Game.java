@@ -1,6 +1,6 @@
 package chess.game;
 
-import chess.pieces.Piece;
+import chess.pieces.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class Game {
      *
      * @param consoleInput Input of active Player as a String.
      *
-     * @return boolean
+     * @return a boolean if the syntax of the input is correct
      */
     public boolean isValidMove(String consoleInput){
         if(consoleInput.length() > 4) {
@@ -54,9 +54,20 @@ public class Game {
     }
 
     // TODO: isMoveAllowed() vervollständigen
-    public boolean isMoveAllowed(Piece piece, Square finalSquare) {
-        return (piece.isAllowedPath(finalSquare) && isPathEmpty(piece, finalSquare, this.board)
-                && !isInCheck(this.board, piece.getColour()));
+    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
+        if (finalSquare.occupiedBy != null) {
+            Piece targetPiece = finalSquare.occupiedBy;
+            // if command is castling, check if it is allowed
+            if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK
+                    && canDoCastling(selectedPiece, targetPiece)) {
+                return true;
+            }
+        } else {
+            return (selectedPiece.isPiecesMove(finalSquare)
+                    && isPathEmpty(selectedPiece, finalSquare)
+                    && !isInCheck(selectedPiece.getColour()));
+        }
+        return false;
     }
 
 
@@ -66,40 +77,41 @@ public class Game {
         Piece targetPiece = finalSquare.occupiedBy;
 
         // check if the move is allowed for this piece
-        if (selectedPiece.isAllowedPath(finalSquare)/*isMoveAllowed(selectedPiece, finalSquare*/) {
-            //
+        if (isMoveAllowed(selectedPiece, finalSquare)) {
+            if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
+                // if the move is castling and it is allowed to do the move
+                currentMove.castlingMove(board);
+                selectedPiece.setHasMoved(true);
+                targetPiece.setHasMoved(true);
+                return true;
+            }
             if (targetPiece != null) {
+                // add a beaten piece to the ArrayList
                 beatenPieces.add(targetPiece);
             }
-            if (selectedPiece.getType() == Type.KING) {
-                if (checkSafeSquare(finalSquare, this.board, selectedPiece.getColour())) {
-                    currentMove.doMove(selectedPiece, this.board);
-                }
-            } else {
-                currentMove.doMove(selectedPiece, this.board);
-                moveHistory.add(currentMove);
-                if (isInCheck(this.board, selectedPiece.getColour())) {
-                    currentMove.undoMove(this.moveHistory, this.board);
-                    return false;
-                }
+            // if the move is not castling and is allowed do the move
+            currentMove.doMove(selectedPiece, this.board);
+            moveHistory.add(currentMove);
+            if (isInCheck(selectedPiece.getColour())) {
+                // if after the move King is in check, undo the move
+                currentMove.undoMove(this.moveHistory, this.board);
+                return false;
             }
+            selectedPiece.setHasMoved(true); // only after checking if the King is in check
         }
-       return true;
+       return true; // the move was not allowed
     }
-        // TODO: draw() -> pattstellung, tote Stellung
+        // TODO: draw() -> pattstellung + tote Stellung
 
-    /**
-     *
-     * @param piece
-     * @param end
-     * @param board
-     * @return
-     */
-    private boolean isPathEmpty (Piece piece, Square end, Board board){
-        ArrayList<Square> path = generatePath(piece.getType(), piece.getSquare(), end, board);
-        if (path.isEmpty()) {
+
+    private boolean isPathEmpty (Piece piece, Square end){
+        ArrayList<Square> path = generatePath(piece.getType(), piece.getSquare(), end);
+        if (path.isEmpty() && piece.getType() == Type.KNIGHT) {
+            // Knight can leap
+            return true;
+        } else if (path.isEmpty()) {
             return false;
-        } else {
+        }  else {
             for (Square visitedSquare : path) {
                 if (visitedSquare.occupiedBy != null) {
                     return false;
@@ -109,14 +121,17 @@ public class Game {
         }
     }
 
-    private boolean isInCheck (Board board, Colour colour){
-        // TODO: Methode in Player, um auf enemy pieces zuzugreifen (momentan NullPointerExecption)
-        // TODO: dadurch nur eine Methode für beide Fälle
+    /**
+     *
+     * @param colour
+     * @return
+     */
+    private boolean isInCheck (Colour colour){
         Square squareKing = board.getSquareOfKing(colour);
         ArrayList<Piece> enemies = board.getEnemyPieces(colour);
         for (Piece enemyPiece : enemies) {
-            if (enemyPiece.isAllowedPath(squareKing)
-                    && isPathEmpty(enemyPiece, squareKing, board)) {
+            if (enemyPiece.isPiecesMove(squareKing)
+                    && isPathEmpty(enemyPiece, squareKing)) {
                 System.out.println("schach" + colour + "true");
                 return true;
             }
@@ -124,54 +139,38 @@ public class Game {
         return false;
     }
 
-    private boolean checkSafeSquare (Square end, Board board, Colour colour) {
-        // TODO: Methode in Player, um auf enemy pieces zuzugreifen (momentan NullPointerExecption)
-        // TODO: dadurch nur eine Methode für beide Fälle
+    /**
+     *
+     * @param finalSquare
+     * @param colour
+     * @return
+     */
+    private boolean checkSafeSquare (Square finalSquare, Colour colour) {
         ArrayList<Piece> enemies = board.getEnemyPieces(colour);
         for (Piece enemyPiece : enemies) {
             if (enemyPiece.getType() == Type.BISHOP
                     || enemyPiece.getType() == Type.ROOK
                     || enemyPiece.getType() == Type.QUEEN) {
-                if (isPathEmpty(enemyPiece, board.getSquareOfKing(colour), board)) {
+                if (isPathEmpty(enemyPiece, board.getSquareOfKing(colour))) {
                     return false;
                 }
             } else if (enemyPiece.getType() == Type.KNIGHT) {
-                if (enemyPiece.isAllowedPath(end)) {
+                if (enemyPiece.isPiecesMove(finalSquare)) {
                     return false;
                 }
             } else if (enemyPiece.getType() == Type.KING) {
-                if (enemyPiece.isSurroundingSquare(end)) {
-                    return false;
+                if (enemyPiece instanceof King) {
+                    if (enemyPiece.isPiecesMove(finalSquare)) {
+                        return false;
+                    }
                 }
             } else {
-                if (enemyPiece.pawnCanCapture(end)) {
-                    return false;
-                }
-            }
-        /*} else {
-            for (int i = 0; i < board.whitePieces.size(); i++) {
-                Piece enemyPiece = board.whitePieces.get(i);
-                if (enemyPiece.getType() == Type.BISHOP
-                        || enemyPiece.getType() == Type.ROOK
-                        || enemyPiece.getType() == Type.QUEEN) {
-                    if (isPathEmpty(enemyPiece, board.getSquareOfKing(colour), board)) {
-                        return false;
-                    }
-                } else if (enemyPiece.getType() == Type.KNIGHT) {
-                    if (enemyPiece.isAllowedPath(end)) {
-                        return false;
-                    }
-                } else if (enemyPiece.getType() == Type.KING) {
-                    if (enemyPiece.isSurroundingSquare(end)) {
-                        return false;
-                    }
-                } else {
-                    if (enemyPiece.pawnCanCapture(end)) {
+                if (enemyPiece instanceof Pawn) {
+                    if (((Pawn)enemyPiece).pawnCanCapture(finalSquare)) {
                         return false;
                     }
                 }
             }
-        }*/
         }
         return true;
     }
@@ -181,10 +180,9 @@ public class Game {
      * @param type Type of Piece
      * @param start Start-Square of Movement
      * @param end End-Square of Movement
-     * @param board Board of current game
      * @return Path of Moving Piece
      */
-    private ArrayList<Square> generatePath(Type type, Square start, Square end, Board board) {
+    private ArrayList<Square> generatePath(Type type, Square start, Square end) {
         ArrayList<Square> path = new ArrayList<>();
         if (type == Type.QUEEN) {
             if (start.x - end.x == 0) {                                 //vertical move
@@ -244,5 +242,36 @@ public class Game {
         }
         return path;
     }
+
+
+    /**
+     *
+     * @param selectedPiece
+     * @param targetPiece
+     * @return
+     */
+    private boolean canDoCastling(Piece selectedPiece, Piece targetPiece) {
+        Colour kingColour = selectedPiece.getColour();
+
+        if (!selectedPiece.getHasMoved() && !targetPiece.getHasMoved() // King and Rook didn't move yet
+                && isPathEmpty(selectedPiece, targetPiece.getSquare())) {   // no pieces between King and Rook
+
+            ArrayList<Piece> enemies = board.getEnemyPieces(kingColour);
+            int diff = Math.abs(targetPiece.getSquare().x - selectedPiece.getSquare().x);
+            int king_x;
+            int king_y = selectedPiece.getSquare().y;
+
+            // check if the Kings current Square or any Squares the King visits are in check/under attack
+            for (Piece enemyPiece : enemies) {
+                for (int i = 0; i < diff; i++) {
+                    king_x = selectedPiece.getSquare().x + i;
+                    Square tempSquare = new Square(Label.values()[king_x + king_y], king_x, king_y);
+                    return enemyPiece.isPiecesMove(tempSquare) && isPathEmpty(enemyPiece, tempSquare);
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
