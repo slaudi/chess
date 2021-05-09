@@ -37,13 +37,13 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean getMoved() {
-        return this.moved;
+    public boolean getHasMoved() {
+        return this.hasMoved;
     }
 
     @Override
-    public void setMoved(boolean x) {
-        this.moved = x;
+    public void setHasMoved(boolean x) {
+        this.hasMoved = x;
     }
 
     /**
@@ -67,7 +67,7 @@ public class Bishop extends Piece {
      */
 
     @Override
-    public boolean isAllowedPath(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
@@ -75,65 +75,4 @@ public class Bishop extends Piece {
         return diff_x == diff_y;
     }
 
-    /**
-     * Draws a path of the Bishop's move and stores it
-     * to later determine if another piece is in it's path
-     *
-     * @param finalSquare the final position
-     * @return a Square array of the path
-     */
-    @Override
-    public Square[][] drawMove(Square finalSquare) {
-        int dir_x;
-        int dir_y;
-        int squaresVisited = Math.abs(finalSquare.getX() - this.square.getX());
-
-        if(finalSquare.getX() - this.square.getX() < 0) {
-            // Bishop moves to the left
-            if(finalSquare.getY() - this.square.getY() < 0) {
-                //Bishop moves left up
-                dir_x = -1;
-                dir_y = -1;
-            } else {
-                // Bishop moves left down
-                dir_x = -1;
-                dir_y = 1;
-            }
-        } else {
-            // Bishop moves to the right
-            if(finalSquare.getY() - this.square.getY() < 0) {
-                // Bishop moves right up
-                dir_x = 1;
-                dir_y = -1;
-            } else {
-                // Bishop moves right down
-                dir_x = 1;
-                dir_y = 1;
-            }
-        }
-
-        Square[][] move = new Square[2][squaresVisited];
-
-        if(squaresVisited > 1) {
-            // Bishop moves more than one square
-            for(int i = 0; i < squaresVisited - 1; i++) {
-                // stores squares except start and final square
-                int x = this.square.getX() + dir_x*(i+1);
-                int y = this.square.getY() + dir_y*(i+1);
-                move[x][y] = new Square(Label.values()[(squaresVisited*x+y)], x, y);
-            }
-        }
-
-        return move;
-    }
-
-    @Override
-    public boolean isSurroundingSquare(Square square) {
-        return false;
-    }
-
-    @Override
-    public boolean pawnCanCapture(Square finalSquare) {
-        return false;
-    }
 }

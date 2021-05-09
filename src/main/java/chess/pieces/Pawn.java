@@ -1,6 +1,5 @@
 package chess.pieces;
 
-import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -41,13 +40,13 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean getMoved() {
-        return this.moved;
+    public boolean getHasMoved() {
+        return this.hasMoved;
     }
 
     @Override
-    public void setMoved(boolean x) {
-        this.moved = x;
+    public void setHasMoved(boolean x) {
+        this.hasMoved = x;
     }
 
     /**
@@ -72,7 +71,7 @@ public class Pawn extends Piece {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isAllowedPath(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare) {
         return true;
         /*int diff_x = Math.abs(finalSquare.x - this.square.x);
         // determines if it is the Pawn's first move to let it move two Squares up/down
@@ -118,22 +117,5 @@ public class Pawn extends Piece {
         return true;
     }
 
-    /**
-     * Draws a path of the Pawn's move and stores it
-     * to later determine if another piece is in it's path
-     *
-     * @param finalSquare the final location
-     * @return a Square array of the path
-     */
-    @Override
-    public Square[][] drawMove(Square finalSquare) {
-        // Pawn has it's own method to determine if a Piece is in it's path
-        int squaresVisited = 0;
-        return new Square[1][squaresVisited];
-    }
 
-    @Override
-    public boolean isSurroundingSquare(Square square) {
-        return true;
-    }
 }

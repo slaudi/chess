@@ -1,6 +1,5 @@
 package chess.pieces;
 
-import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -41,13 +40,13 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean getMoved() {
-        return this.moved;
+    public boolean getHasMoved() {
+        return this.hasMoved;
     }
 
     @Override
-    public void setMoved(boolean x) {
-        this.moved = x;
+    public void setHasMoved(boolean x) {
+        this.hasMoved = x;
     }
 
     /**
@@ -70,34 +69,11 @@ public class Knight extends Piece {
      */
 
     @Override
-    public boolean isAllowedPath(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
         return ((diff_x == 2 && diff_y == 1) || (diff_x == 1 && diff_y == 2));
     }
 
-    /**
-     * Draws a path of the Knight's move to and stores it
-     * to later determine if another piece is in it's path
-     *
-     * @param finalSquare the final location
-     * @return a Square array of the path
-     */
-    @Override
-    public Square[][] drawMove(Square finalSquare) {
-        // a Knight is allowed to jump over pieces, doesn't need a path
-        int squaresVisited = 0;
-        return new Square[1][squaresVisited];
-    }
-
-    @Override
-    public boolean isSurroundingSquare(Square square) {
-        return false;
-    }
-
-    @Override
-    public boolean pawnCanCapture(Square finalSquare) {
-        return false;
-    }
 }
