@@ -13,7 +13,6 @@ public class Player {
     boolean inCheck = false;
     boolean isCheckMate = false;
     boolean loser = false;
-    public Game currentGame;
 
     /**
      * Create a new Player instance.
@@ -38,6 +37,10 @@ public class Player {
         this.colour = x;
     }
 
+    public boolean getInCheck() {
+        return this.inCheck;
+    }
+
     /**
      * Sets Player-Check-Status to true or false.
      *
@@ -45,6 +48,10 @@ public class Player {
      */
     public void setInCheck(boolean x) {
         this.inCheck = x;
+    }
+
+    public boolean getCheckMate() {
+        return this.isCheckMate;
     }
 
     /**

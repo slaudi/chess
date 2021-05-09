@@ -112,6 +112,7 @@ public class Board {
         }
         return new ArrayList<>(enemies);
     }
+
     /**
      * Prints current state of game to console.
      */

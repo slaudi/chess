@@ -11,7 +11,6 @@ import java.util.Scanner;
  */
 public class Cli {
 
-    // TODO: ein Spieler gibt auf!
     /**
      * The entry point of the CLI application.
      *
@@ -21,15 +20,24 @@ public class Cli {
         Game currentGame = new Game();
         currentGame.board.toConsole();
 
-        while(!currentGame.currentPlayer.getLoser() /*&& !currentGame.isADraw() && !aufgegeben*/) {
+        while(!currentGame.currentPlayer.getLoser() && !currentGame.isADraw()) {
 
+            if (currentGame.currentPlayer.getInCheck()) {
+                System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
+            }
             System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
             String userInput = getInput();
 
-            Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
-            Piece targetPiece = currentGame.board.getFinalSquareFromInput(userInput).getOccupiedBy();
 
             while (!generateAnswer(userInput, currentGame)) {
+                if (userInput.equals("beaten") || !currentGame.isValidMove(userInput)) {
+                    userInput = getInput();
+                    continue;
+                }
+
+                Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
+                Piece targetPiece = currentGame.board.getFinalSquareFromInput(userInput).getOccupiedBy();
+
                 if (selectedPiece == null) {
                     System.out.println("There is no Piece to move!");
                 }
@@ -43,6 +51,9 @@ public class Cli {
                 userInput = getInput();
             }
 
+            if (currentGame.currentPlayer.getLoser()) {
+                continue;
+            }
             Square startSquare = currentGame.board.getStartSquareFromInput(userInput);
             Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);
 
@@ -50,8 +61,6 @@ public class Cli {
                 // goes back to the beginning of the while loop, doesn't switch players or redraws board
                 continue;
             }
-            currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite ?
-                    currentGame.playerBlack : currentGame.playerWhite;
 
             currentGame.board.toConsole();
         }
@@ -60,9 +69,7 @@ public class Cli {
             System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
         } else /*if(currentGame.isADraw())*/{
             System.out.println("The game ended in a draw!");
-        } /*else {
-            System.out.println(currentGame.currentPlayer.getColour() + " has given up!");
-            }*/
+        }
 
     }
 
@@ -85,16 +92,20 @@ public class Cli {
      * @return a boolean indicating if the move is accepted
      */
     public static boolean generateAnswer(String userInput, Game currentGame) {
-        Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
-        Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);;
-
-        // TODO: funktioniert noch nicht
-        /*String beaten = "beaten";
+        String beaten = "beaten";
         if (userInput.equals(beaten)) {
             System.out.println("Beaten pieces:" + currentGame.beatenPieces);
             return false;
-        }*/
+        }
+        if (userInput.equals("giveUp")) {
+            System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
+            currentGame.currentPlayer.setLoser(true);
+            return true;
+        }
         if(currentGame.isValidMove(userInput)){
+            Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
+            Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);;
+
             if (currentGame.isMoveAllowed(selectedPiece, finalSquare)){
                 System.out.println("!" + userInput);
                 return true;

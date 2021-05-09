@@ -72,45 +72,36 @@ public class Pawn extends Piece {
      */
     @Override
     public boolean isPiecesMove(Square finalSquare) {
-        return true;
-        /*int diff_x = Math.abs(finalSquare.x - this.square.x);
-        // determines if it is the Pawn's first move to let it move two Squares up/down
-        if(pawnIsFirstMove(finalSquare)) {
-           return true;
-        }
-        // determines if a Pawn moves only one Square diagonally and only if there is an enemy piece on it
-        if(pawnCanCapture(finalSquare)) {
-            return true;
-        }
-        // determines if a Piece in front of the Pawn, if not the Pawn is allowed to move forward
-        if(pawnIsAllowedForward(finalSquare)) {
-            return true;
-        } else return false;*/
-    }
-
-    public boolean pawnIsFirstMove(Square finalSquare) {
-        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
-
-        if((this.colour == Colour.WHITE && this.square.getY() == 6 /*board[] statt 6? */ )
-                || (this.colour == Colour.BLACK && this.square.getY() == 1) ) {
-            return true;
-        } else return false;
-    }
-    // TODO en passant
-    public boolean pawnCanCapture(Square finalSquare) {
-        int diffX = this.square.getX() - finalSquare.getX();
-        int diffY = this.square.getY() - finalSquare.getY();
-        if(this.colour == Colour.WHITE){
-            if(Math.abs(diffX) == 1 && diffY == 1){
-                return true;
+        int diff_y = finalSquare.getY() - this.square.getY();
+        if (!hasMoved) {
+            // Pawn can move one or two Squares
+            if (this.colour == Colour.WHITE) {
+                return diff_y == -1 || diff_y == -2;
+            } else {
+                return diff_y == 1 || diff_y == 2;
             }
+        } else {
+            if (this.colour == Colour.WHITE) {
+                // Pawn can only move up
+                return diff_y == -1;
+            } else {
+                // Pawn can only move down
+                return diff_y == 1;
+            }
+        }
+    }
+
+
+    // TODO en passant
+    public boolean canCapture(Square finalSquare) {
+        int diffX = finalSquare.getX() - this.square.getX();
+        int diffY = finalSquare.getY() - this.square.getY();
+        if(this.colour == Colour.WHITE) {
+            return Math.abs(diffX) == 1 && diffY == -1;
         }
         else {
-            if(Math.abs(diffX) == 1 && diffY == -1){
-                return true;
-            }
+            return Math.abs(diffX) == 1 && diffY == 1;
         }
-        return false;
     }
 
     public boolean pawnIsAllowedForward(Square finalSquare) {
