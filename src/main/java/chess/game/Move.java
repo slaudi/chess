@@ -48,21 +48,18 @@ public class Move {
 
         int diff = Math.abs(rook_x - king_x);
 
-        board.board[king_x][king_y].occupiedBy = null;
-        board.board[rook_x][rook_y].occupiedBy = null;
-
         if (diff == 3) {
             //kingside castling
             king_x += 2;
             rook_x -= 2;
-            board.board[king_x][king_y].occupiedBy = this.startSquare.occupiedBy;
-            board.board[rook_x][rook_y].occupiedBy = this.finalSquare.occupiedBy;
         } else {
             // queenside castling
             king_x -= 2;
             rook_x += 3;
-            board.board[king_x][king_y].occupiedBy = this.startSquare.occupiedBy;
-            board.board[rook_x][rook_y].occupiedBy = this.finalSquare.occupiedBy;
         }
+        board.board[king_x][king_y].occupiedBy = this.startSquare.occupiedBy;
+        board.board[rook_x][rook_y].occupiedBy = this.finalSquare.occupiedBy;
+        board.board[this.startSquare.x][this.startSquare.y].occupiedBy = null;
+        board.board[this.finalSquare.x][this.finalSquare.y].occupiedBy = null;
     }
 }

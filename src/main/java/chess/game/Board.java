@@ -81,37 +81,7 @@ public class Board {
         }
     }
 
-    /**
-     * A function determining all the allied Pieces on the current board of a certain Piece
-     *
-     * @param colour the Colour of the Piece
-     * @return an ArrayList containing all allied Pieces
-     */
-    public ArrayList<Piece> getAlliedPieces(Colour colour) {
-        ArrayList<Piece> allies;
-        if(colour == Colour.WHITE) {
-            allies = whitePieces;
-        } else {
-            allies = blackPieces;
-        }
-        return new ArrayList<>(allies);
-    }
 
-    /**
-     * A function determining all the enemy Pieces on the current board of a certain Piece
-     *
-     * @param colour the Colour of the Piece
-     * @return an ArrayList containing all enemy Pieces
-     */
-    public ArrayList<Piece> getEnemyPieces(Colour colour) {
-        ArrayList<Piece> enemies;
-        if(colour == Colour.WHITE) {
-            enemies = blackPieces;
-        } else {
-            enemies = whitePieces;
-        }
-        return new ArrayList<>(enemies);
-    }
 
     /**
      * Prints current state of game to console.

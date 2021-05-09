@@ -61,14 +61,20 @@ public class Game {
                     return true;
                 } else if (selectedPiece.getType() == Type.PAWN) {
                     return ((Pawn) selectedPiece).canCapture(finalSquare);
+                } else {
+                    return (selectedPiece.isPiecesMove(finalSquare)
+                            && isPathEmpty(selectedPiece, finalSquare)
+                            && !isInCheck());
                 }
             } else {
                 if (selectedPiece.getType() == Type.PAWN) {
                     return selectedPiece.isPiecesMove(finalSquare);
-                } else {
+                } else if (selectedPiece.getType() == Type.KING) {
+                    return (selectedPiece.isPiecesMove(finalSquare) && isSafeSquare(finalSquare));
+                }  else {
                     return (selectedPiece.isPiecesMove(finalSquare)
                             && isPathEmpty(selectedPiece, finalSquare)
-                            && !isInCheck(selectedPiece.getColour()));
+                            && !isInCheck());
                 }
             }
         }
@@ -76,68 +82,69 @@ public class Game {
     }
 
     public boolean isADraw() {
-        if (!isInCheck(currentPlayer.getColour()) ) {
-
-            if (!board.getAlliedPieces(currentPlayer.getColour()).isEmpty()) {
+        if (!isInCheck() ) {
+            if (!getAlliedPieces(currentPlayer.getColour()).isEmpty()) {
                 // if ally exists they can move - not a draw
                 return false;
             }
-            for (int i = 0; i < 8 ; i++) {
-                for (int j = 0; j < 8; j++) {
-                    // looping through board to check if Square is next to King
-                    if (isSurroundingSquare(board.getBoard()[i][j])
-                            && board.getBoard()[i][j].occupiedBy.getColour() != currentPlayer.getColour()) {
-                        // is the square next to the King not occupied by an ally
-                        if(isSafeSquare(board.getBoard()[i][j], currentPlayer.getColour())) {
-                            return false;
-                        }
-                    }
-                }
-            }
+            return !canKingMove();
         }
         return true;
     }
 
+    private boolean canKingMove() {
+        for (int i = 0; i < 8 ; i++) {
+            for (int j = 0; j < 8; j++) {
+                // looping through board to check if Square is next to King
+                if (isSurroundingSquare(board.getBoard()[i][j])
+                        && board.getBoard()[i][j].occupiedBy.getColour() != currentPlayer.getColour()) {
+                    // is the square next to the King not occupied by an ally
+                    if(isSafeSquare(board.getBoard()[i][j])) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public boolean processMove(Square startSquare, Square finalSquare) {
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.occupiedBy;
         Piece targetPiece = finalSquare.occupiedBy;
 
-        // check if the move is allowed for this piece
-        if (isMoveAllowed(selectedPiece, finalSquare)) {
-            if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
-                // if the move is castling and it is allowed to do the move
-                currentMove.castlingMove(board);
-                selectedPiece.setHasMoved(true);
-                targetPiece.setHasMoved(true);
-                return true;
-            }
-            if (targetPiece != null) {
-                // add a beaten piece to the ArrayList
-                beatenPieces.add(targetPiece);
-            }
-            // if the move is not castling and is allowed do the move
-            currentMove.doMove(selectedPiece, this.board);
-            moveHistory.add(currentMove);
-            if (isInCheck(selectedPiece.getColour())) {
-                // if after the move King is in check, undo the move
-                currentMove.undoMove(this.moveHistory, this.board);
-                return false;
-            }
-            selectedPiece.setHasMoved(true); // only after checking if the King is in check
+        if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
+            // if the move is castling and it is allowed to do the move
+            currentMove.castlingMove(board);
+            selectedPiece.setHasMoved(true);
+            targetPiece.setHasMoved(true);
 
-            // change currentPlayer to next Colour
             currentPlayer = currentPlayer == playerWhite ? playerBlack : playerWhite;
-            if (isInCheck(currentPlayer.getColour())) {
-                currentPlayer.setInCheck(true);
-            } else {
-                currentPlayer.setInCheck(false);
-            }
 
             if (isCheckMate()) {
                 currentPlayer.setLoser(true);
             }
+            return true;
+        }
+        if (targetPiece != null) {
+            // add a beaten piece to the ArrayList
+            beatenPieces.add(targetPiece);
+        }
+        // if the move is not castling and is allowed do the move
+        currentMove.doMove(selectedPiece, this.board);
+        moveHistory.add(currentMove);
+        if (isInCheck()) {
+            // if after the move King is in check, undo the move
+            currentMove.undoMove(this.moveHistory, this.board);
+            return false;
+        }
+        selectedPiece.setHasMoved(true); // set only after checking if the King is in check
+
+        // change currentPlayer to next Colour
+        currentPlayer = currentPlayer == playerWhite ? playerBlack : playerWhite;
+
+        if (isCheckMate()) {
+            currentPlayer.setLoser(true);
         }
        return true; // the move was not allowed
     }
@@ -163,12 +170,11 @@ public class Game {
 
     /**
      *
-     * @param colour
      * @return
      */
-    private boolean isInCheck (Colour colour){
-        Square squareKing = board.getSquareOfKing(colour);
-        ArrayList<Piece> enemies = board.getEnemyPieces(colour);
+    private boolean isInCheck (){
+        Square squareKing = this.board.getSquareOfKing(currentPlayer.getColour());
+        ArrayList<Piece> enemies = getEnemyPieces(currentPlayer.getColour());
         for (Piece enemyPiece : enemies) {
             if (enemyPiece.isPiecesMove(squareKing)
                     && isPathEmpty(enemyPiece, squareKing)) {
@@ -182,26 +188,18 @@ public class Game {
 
     public boolean isCheckMate() {
         if (currentPlayer.getInCheck()) {
-            for (int i = 0; i < 8 ; i++) {
-                for (int j = 0; j < 8; j++) {
-                    // looping through board to get all Squares next to King and are not occupied by allied Piece
-                    if (isSurroundingSquare(board.getBoard()[i][j])
-                            && board.getBoard()[i][j].occupiedBy.getColour() != currentPlayer.getColour()) {
-                        // is the square next to the King not occupied by an ally
-                        if(isSafeSquare(board.getBoard()[i][j], currentPlayer.getColour())) {
-                            return false;
-                        }
-                    }
-                }
+            if (canKingMove()) {
+                return false;
             }
             // can ally defend the King if the King can't move
-            ArrayList<Piece> enemies = board.getEnemyPieces(currentPlayer.getColour());
+            ArrayList<Piece> enemies = getEnemyPieces(currentPlayer.getColour());
             for (Piece enemyPiece : enemies) {
                 if (isMoveAllowed(enemyPiece, board.getSquareOfKing(currentPlayer.getColour()))) {
                     return !canDefendKing(enemyPiece);
                 }
             }
             // cannot move and ally can't defend -> checkmate
+            currentPlayer.setCheckMate(true);
             return true;
         } else {
             // King is not in check
@@ -210,7 +208,7 @@ public class Game {
     }
 
     private boolean canDefendKing(Piece enemyPiece) {
-        ArrayList<Piece> allies = board.getAlliedPieces(currentPlayer.getColour());
+        ArrayList<Piece> allies = getAlliedPieces(currentPlayer.getColour());
         for (Piece alliedPiece : allies) {
             if (isMoveAllowed(alliedPiece, enemyPiece.getSquare())) {
                 return true;
@@ -228,16 +226,17 @@ public class Game {
     /**
      *
      * @param finalSquare
-     * @param colour
      * @return
      */
-    private boolean isSafeSquare(Square finalSquare, Colour colour) {
-        ArrayList<Piece> enemies = board.getEnemyPieces(colour);
+    private boolean isSafeSquare(Square finalSquare) {
+        ArrayList<Piece> enemies = getEnemyPieces(currentPlayer.getColour());
+        System.out.println(enemies);
         for (Piece enemyPiece : enemies) {
             if (enemyPiece.getType() == Type.BISHOP
                     || enemyPiece.getType() == Type.ROOK
                     || enemyPiece.getType() == Type.QUEEN) {
-                if (isPathEmpty(enemyPiece, board.getSquareOfKing(colour))) {
+                if (enemyPiece.isPiecesMove(finalSquare) &&
+                        isPathEmpty(enemyPiece, board.getSquareOfKing(currentPlayer.getColour()))) {
                     return false;
                 }
             } else if (enemyPiece.getType() == Type.KNIGHT) {
@@ -245,11 +244,9 @@ public class Game {
                     return false;
                 }
             } else if (enemyPiece.getType() == Type.KING) {
-                if (enemyPiece instanceof King) {
                     if (enemyPiece.isPiecesMove(finalSquare)) {
                         return false;
                     }
-                }
             } else {
                 if (enemyPiece instanceof Pawn) {
                     if (((Pawn)enemyPiece).canCapture(finalSquare)) {
@@ -266,7 +263,7 @@ public class Game {
      * @param type Type of Piece
      * @param start Start-Square of Movement
      * @param end End-Square of Movement
-     * @return Path of Moving Piece
+     * @return Path of moving Piece
      */
     private ArrayList<Square> generatePath(Type type, Square start, Square end) {
         ArrayList<Square> path = new ArrayList<>();
@@ -337,32 +334,83 @@ public class Game {
      * @return
      */
     private boolean canDoCastling(Piece selectedPiece, Piece targetPiece) {
+        // selectedPiece is King, targetPiece is Rook
         Colour kingColour = selectedPiece.getColour();
 
         if (!selectedPiece.getHasMoved() && !targetPiece.getHasMoved() // King and Rook didn't move yet
                 && isPathEmpty(selectedPiece, targetPiece.getSquare())) {   // no pieces between King and Rook
 
-            ArrayList<Piece> enemies = board.getEnemyPieces(kingColour);
+            ArrayList<Piece> enemies = getEnemyPieces(kingColour);
             int diff = Math.abs(targetPiece.getSquare().x - selectedPiece.getSquare().x);
             int king_x;
             int king_y = selectedPiece.getSquare().y;
 
-            // check if the Kings current Square or any Squares the King visits are in check/under attack
+            // check if the Kings current Square and/or any Squares the King visits are in check/under attack
             for (Piece enemyPiece : enemies) {
                 for (int i = 0; i < diff; i++) {
                     king_x = selectedPiece.getSquare().x + i;
                     Square tempSquare = new Square(Label.values()[king_x + king_y], king_x, king_y);
-                    return enemyPiece.isPiecesMove(tempSquare) && isPathEmpty(enemyPiece, tempSquare);
+                    if(enemyPiece.isPiecesMove(tempSquare) && isPathEmpty(enemyPiece, tempSquare)){
+                        return false;
+                    }
                 }
             }
         }
-        return false;
+        return true;
     }
 
     private boolean isSurroundingSquare(Square square){
         int diffX = this.board.getSquareOfKing(currentPlayer.getColour()).getX() - square.getX();
         int diffY = this.board.getSquareOfKing(currentPlayer.colour).getY() - square.getY();
         return diffX < 2 && diffY < 2;
+    }
+
+    /**
+     * A function determining all the allied Pieces on the current board of a certain Piece
+     *
+     * @param colour the Colour of the Piece
+     * @return an ArrayList containing all allied Pieces
+     */
+    public ArrayList<Piece> getAlliedPieces(Colour colour) {
+        ArrayList<Piece> allies;
+        if(colour == Colour.WHITE) {
+            allies = board.whitePieces;
+        } else {
+            allies = board.blackPieces;
+        }
+        for (int i = 0; i < allies.size(); i++) {
+            for (Piece beaten : beatenPieces) {
+                if (allies.get(i).getColour() == beaten.getColour() && allies.get(i).getType() == beaten.getType()
+                    && beaten.equals(allies.get(i))) {
+                    allies.remove(allies.get(i));
+                }
+            }
+        }
+        return new ArrayList<>(allies);
+    }
+
+    /**
+     * A function determining all the enemy Pieces on the current board of a certain Piece
+     *
+     * @param colour the Colour of the Piece
+     * @return an ArrayList containing all active enemy Pieces
+     */
+    public ArrayList<Piece> getEnemyPieces(Colour colour) {
+        ArrayList<Piece> enemies;
+        if(colour == Colour.WHITE) {
+            enemies = board.blackPieces;
+        } else {
+            enemies = board.whitePieces;
+        }
+        for (int i = 0; i < enemies.size(); i++) {
+            for (Piece beaten : beatenPieces) {
+                if (enemies.get(i).getColour() == beaten.getColour() && enemies.get(i).getType() == beaten.getType()
+                    && beaten.equals(enemies.get(i))) {
+                    enemies.remove(enemies.get(i));
+                }
+            }
+        }
+        return new ArrayList<>(enemies);
     }
 }
 
