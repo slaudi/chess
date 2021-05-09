@@ -1,5 +1,6 @@
 package chess.game;
 
+import chess.cli.Cli;
 import chess.pieces.*;
 
 import java.util.ArrayList;
@@ -126,6 +127,31 @@ public class Game {
             }
             return true;
         }
+        else if (selectedPiece.getType() == Type.PAWN &&
+                finalSquare.y == ((currentPlayer == playerWhite) ? 0 : 7))
+        {
+            // Need to do a move as pawn and then change piece
+            currentMove.doMove(selectedPiece, this.board);
+            selectedPiece.setHasMoved(true);
+            moveHistory.add(currentMove);
+
+            while(true)
+            {
+                System.out.println("Please select piece for change (b/n/r/q):");
+                String val = Cli.getInput();
+
+                if (val.equalsIgnoreCase("b"))      selectedPiece = new Bishop(finalSquare, currentPlayer.colour);
+                else if (val.equalsIgnoreCase("n")) selectedPiece = new Knight(finalSquare, currentPlayer.colour);
+                else if (val.equalsIgnoreCase("r")) selectedPiece = new Rook(finalSquare, currentPlayer.colour);
+                else if (val.equalsIgnoreCase("q")) selectedPiece = new Queen(finalSquare, currentPlayer.colour);
+                else continue;
+
+                break;
+            }
+
+            return true;
+        }
+
         if (targetPiece != null) {
             // add a beaten piece to the ArrayList
             beatenPieces.add(targetPiece);
