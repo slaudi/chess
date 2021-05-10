@@ -2,13 +2,10 @@ package chess.game;
 
 import chess.pieces.*;
 
-import com.google.common.collect.ImmutableList;
-import java.util.*;
+import java.util.ArrayList;
 
 import static chess.game.Colour.BLACK;
 import static chess.game.Colour.WHITE;
-
-
 
 /**
  * Board class representing the Chess-Board of current game.
@@ -29,11 +26,14 @@ public class Board {
                 board[x][y] = new Square(Label.values()[8*x+y], x, y);
             }
         }
-        startingFormation();
-        setAlliance();
+        startingFormation();                //sets Pieces on Board to start game
+        setAlliance();                      //generates piece-groups of same colour
     }
 
-
+    /**
+     * Getter of Board
+     * @return Square[][] two-dimensional Sqaure-Array representing the current state of game
+     */
     public Square[][] getBoard() {
         return this.board;
     }
@@ -138,6 +138,11 @@ public class Board {
         return this.board[finalX][finalY];
     }
 
+    /**
+     * Finds Square of King
+     * @param colour Colour of King searched for
+     * @return Square Square King currently stands on
+     */
     protected Square getSquareOfKing(Colour colour){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){

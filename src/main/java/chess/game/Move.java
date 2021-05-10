@@ -36,8 +36,22 @@ public class Move {
             movingPiece.setSquare(finalSquare);
             board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(movingPiece);
             board.getBoard()[startSquare.getX()][startSquare.getY()].setOccupiedBy(null);
+    /**
+     * implementation of doing a move
+     * @param piece Moving piece
+     * @param board current board
+     */
+    protected void doMove (Piece piece, Board board){
+            piece.setSquare(finalSquare);
+            board.board[finalSquare.x][finalSquare.y].occupiedBy = piece;
+            board.board[startSquare.x][startSquare.y].occupiedBy = null;
     }
 
+    /**
+     * undoing a move
+     * @param history Stack of already done movements
+     * @param board current board
+     */
     protected void undoMove (Stack<Move> history, Board board){
         Move actualMove = history.pop();
         Square start = actualMove.startSquare;
@@ -47,6 +61,10 @@ public class Move {
         board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(null);
     }
 
+    /**
+     * switching positions of King and rook
+     * @param board current board
+     */
     protected void castlingMove(Board board) {
         int king_x = this.startSquare.getX();
         int king_y = this.startSquare.getY();
