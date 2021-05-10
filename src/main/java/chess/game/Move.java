@@ -32,19 +32,14 @@ public class Move {
         return finalSquare;
     }
 
-    void doMove(Board board){
+    /**
+     * implementation of doing a move
+     * @param board current board
+     */
+    protected void doMove (Board board){
             movingPiece.setSquare(finalSquare);
             board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(movingPiece);
             board.getBoard()[startSquare.getX()][startSquare.getY()].setOccupiedBy(null);
-    /**
-     * implementation of doing a move
-     * @param piece Moving piece
-     * @param board current board
-     */
-    protected void doMove (Piece piece, Board board){
-            piece.setSquare(finalSquare);
-            board.board[finalSquare.x][finalSquare.y].occupiedBy = piece;
-            board.board[startSquare.x][startSquare.y].occupiedBy = null;
     }
 
     /**

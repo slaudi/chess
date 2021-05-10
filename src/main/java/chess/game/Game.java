@@ -18,7 +18,7 @@ public class Game {
     public ArrayList<Piece> beatenPieces;
     public Stack<Move> moveHistory;
     public Player currentPlayer;
-    public Move move;
+    public Move currentMove;
 
     /**
      * Constructor for a Game
@@ -223,7 +223,7 @@ public class Game {
     /**
      * evaluates if direct path from one square to another is empty
      * @param piece Piece which has to move
-     * @param end Square where piece has to go to
+     * @param finalSquare Square where piece has to go to
      * @return returns if selected path is empty
      */
     private boolean isPathEmpty (Piece piece, Square finalSquare){

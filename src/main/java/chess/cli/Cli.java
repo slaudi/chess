@@ -20,7 +20,7 @@ public class Cli {
         Game currentGame = new Game();                                                          //initilizes new Game
         currentGame.board.toConsole();                                                          //shows initilized Board to Player
 
-        while(!currentGame.currentPlayer.getLoser() && !currentGame.isADraw()) {                //keeps game running
+        while (!currentGame.currentPlayer.getLoser() && !currentGame.isADraw()) {                //keeps game running
 
             if (currentGame.currentPlayer.getInCheck()) {                                       //checks Check-Status of current Player
                 System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
@@ -40,37 +40,38 @@ public class Cli {
 
                 if (selectedPiece == null) {                                                    //evaluates if there is any Piece on selected Square
                     System.out.println("There is no Piece to move!");
-                                                     //Console-Output if selected Piece has wrong Colour
-                if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
-                    System.out.println("This is not your Piece to move!");
-                } else if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
-                    System.out.println("You have to move!");
-                if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {//Console-Output if selected Square to move to is occupied by an own Piece
-                    System.out.println("You cannot attack your own Piece!");
+                    //Console-Output if selected Piece has wrong Colour
+                    if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
+                        System.out.println("This is not your Piece to move!");
+                    } else if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
+                        System.out.println("You have to move!");
+                        if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {//Console-Output if selected Square to move to is occupied by an own Piece
+                            System.out.println("You cannot attack your own Piece!");
+                        }
+                        userInput = getInput();                                                         //sets User_input if everything is semantical correct
+                    }
+
+                    if (currentGame.currentPlayer.getLoser()) {                                         //evaluates if current Player has already lost
+                        continue;
+                    }
+                    Square startSquare = currentGame.board.getStartSquareFromInput(userInput);
+                    Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);
+
+                    if (!currentGame.processMove(startSquare, finalSquare)) {                           //checks if input-move is allowed
+                        // goes back to the beginning of the while loop, doesn't switch players or redraws board
+                        continue;
+                    }
+
+                    currentGame.board.toConsole();                                                      //gives current state of game to console
                 }
-                userInput = getInput();                                                         //sets User_input if everything is semantical correct
-            }
 
-            if (currentGame.currentPlayer.getLoser()) {                                         //evaluates if current Player has already lost
-                continue;
+                if (currentGame.currentPlayer.getLoser()) {                                              //checks if current Player has lost or game is draw
+                    System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
+                } else if (currentGame.isADraw()) {
+                    System.out.println("The game ended in a draw!");
+                }
             }
-            Square startSquare = currentGame.board.getStartSquareFromInput(userInput);
-            Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);
-
-            if (!currentGame.processMove(startSquare, finalSquare)) {                           //checks if input-move is allowed
-                // goes back to the beginning of the while loop, doesn't switch players or redraws board
-                continue;
-            }
-
-            currentGame.board.toConsole();                                                      //gives current state of game to console
         }
-
-        if(currentGame.currentPlayer.getLoser()) {                                              //checks if current Player has lost or game is draw
-            System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
-        } else if (currentGame.isADraw()){
-            System.out.println("The game ended in a draw!");
-        }
-
     }
 
     /**
@@ -78,7 +79,7 @@ public class Cli {
      *
      * @return a String of the input
      */
-    public static String getInput() {
+    public static String getInput () {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Move or Command:");
         return scanner.nextLine();
@@ -91,7 +92,7 @@ public class Cli {
      * @param currentGame the current game
      * @return a boolean indicating if the move is accepted
      */
-    public static boolean generateAnswer(String userInput, Game currentGame) {
+    public static boolean generateAnswer (String userInput, Game currentGame){
         if (userInput.equals("beaten")) {                                                 //gives list of beaten pieces to console
             System.out.println("Beaten pieces:" + currentGame.beatenPieces);
             return false;
@@ -101,11 +102,12 @@ public class Cli {
             currentGame.currentPlayer.setLoser(true);
             return true;
         }
-        if(currentGame.isValidMove(userInput)){                                             //validates user-input syntactically
+        if (currentGame.isValidMove(userInput)) {                                             //validates user-input syntactically
             Piece selectedPiece = currentGame.board.getMovingPieceFromInput(userInput);
-            Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);;
+            Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);
+            ;
 
-            if (currentGame.isMoveAllowed(selectedPiece, finalSquare)){                     //validates user-input semantically
+            if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {                     //validates user-input semantically
                 System.out.println("!" + userInput);
                 return true;
             } else {
@@ -118,3 +120,4 @@ public class Cli {
         }
     }
 }
+
