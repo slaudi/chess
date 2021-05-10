@@ -40,7 +40,7 @@ public class Game {
      * @return a boolean if the syntax of the input is correct
      */
     public boolean isValidMove(String consoleInput){
-        if(consoleInput.length() > 4) {
+        if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.charAt(2) == '-') {
                 return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
             } else {
@@ -51,9 +51,15 @@ public class Game {
         }
     }
 
+    /**
+     * Evaluates semantical correctness of input-move
+     * @param selectedPiece Piece which Player wants to move
+     * @param finalSquare Square which Player wants his Piece to move to
+     * @return boolean Returns if input move is possible
+     */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
-        if (selectedPiece.getColour() == currentPlayer.getColour()) {
-            if (finalSquare.occupiedBy != null) {
+        if (selectedPiece.getColour() == currentPlayer.getColour()) {           //determines if Colour of selected Piece is the same as Player-Colour
+            if (finalSquare.occupiedBy != null) {                               //evaluates if destination-square is empty
                 Piece targetPiece = finalSquare.occupiedBy;
                 // if command is castling, check if it is allowed
                 if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK
@@ -81,6 +87,10 @@ public class Game {
         return false;
     }
 
+    /**
+     * Evaluates if current state of game is draw
+     * @return boolean returns if game is draw or not
+     */
     public boolean isADraw() {
         if (!isInCheck() ) {
             if (!getAlliedPieces(currentPlayer.getColour()).isEmpty()) {
@@ -92,6 +102,10 @@ public class Game {
         return true;
     }
 
+    /**
+     * Evaluates if King is able to move safely
+     * @return boolean Returns if King is able to make a safe move
+     */
     private boolean canKingMove() {
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
@@ -108,6 +122,12 @@ public class Game {
         return false;
     }
 
+    /**
+     * implementation of movement
+     * @param startSquare Square where movement starts
+     * @param finalSquare Square where movement ends
+     * @return returns opposite of "move is allowed"
+     */
     public boolean processMove(Square startSquare, Square finalSquare) {
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.occupiedBy;
@@ -150,6 +170,12 @@ public class Game {
     }
 
 
+    /**
+     * evaluates if direct path from one square to another is empty
+     * @param piece Piece which has to move
+     * @param end Square where piece has to go to
+     * @return returns if selected path is empty
+     */
     private boolean isPathEmpty (Piece piece, Square end){
         Type type = piece.getType();
         ArrayList<Square> path = generatePath(type, piece.getSquare(), end);
@@ -169,8 +195,8 @@ public class Game {
     }
 
     /**
-     *
-     * @return
+     * evaluates if current Players King is in check and sets Value
+     * @return returns checkStatus
      */
     private boolean isInCheck (){
         Square squareKing = this.board.getSquareOfKing(currentPlayer.getColour());
@@ -186,6 +212,10 @@ public class Game {
         return false;
     }
 
+    /**
+     * evaluates if current Players King is in check and if he is able to avoid it and sets Value
+     * @return boolean returns if Player is checkMate or not
+     */
     public boolean isCheckMate() {
         if (currentPlayer.getInCheck()) {
             if (canKingMove()) {
@@ -207,6 +237,11 @@ public class Game {
         }
     }
 
+    /**
+     * evaluates if one of Players Pieces is able to block an enemies attack
+     * @param enemyPiece
+     * @return boolean returns if Player is able to avoid check
+     */
     private boolean canDefendKing(Piece enemyPiece) {
         ArrayList<Piece> allies = getAlliedPieces(currentPlayer.getColour());
         for (Piece alliedPiece : allies) {
@@ -224,9 +259,9 @@ public class Game {
     }
 
     /**
-     *
-     * @param finalSquare
-     * @return
+     * evaluates if King is able to safely move to selected square
+     * @param finalSquare Square King should move to
+     * @return boolean returns if King is able to move safely
      */
     private boolean isSafeSquare(Square finalSquare) {
         ArrayList<Piece> enemies = getEnemyPieces(currentPlayer.getColour());
@@ -328,10 +363,10 @@ public class Game {
 
 
     /**
-     *
+     * evaluates if selected castling-alternative is possible
      * @param selectedPiece
      * @param targetPiece
-     * @return
+     * @return boolean returns is castling is possible
      */
     private boolean canDoCastling(Piece selectedPiece, Piece targetPiece) {
         // selectedPiece is King, targetPiece is Rook
@@ -359,6 +394,11 @@ public class Game {
         return true;
     }
 
+    /**
+     * evaluates if King is able to move to selected square in one move
+     * @param square Square king should move to
+     * @return boolean returns if King is one square away
+     */
     private boolean isSurroundingSquare(Square square){
         int diffX = this.board.getSquareOfKing(currentPlayer.getColour()).getX() - square.getX();
         int diffY = this.board.getSquareOfKing(currentPlayer.colour).getY() - square.getY();
