@@ -40,12 +40,11 @@ public class Cli {
 
                 if (selectedPiece == null) {
                     System.out.println("There is no Piece to move!");
-                }
-                assert selectedPiece != null;
-                if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
+                } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
                     System.out.println("This is not your Piece to move!");
-                }
-                if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
+                } else if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
+                    System.out.println("You have to move!");
+                } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
                     System.out.println("You cannot attack your own Piece!");
                 }
                 userInput = getInput();
@@ -54,6 +53,7 @@ public class Cli {
             if (currentGame.currentPlayer.getLoser()) {
                 continue;
             }
+
             Square startSquare = currentGame.board.getStartSquareFromInput(userInput);
             Square finalSquare = currentGame.board.getFinalSquareFromInput(userInput);
 
@@ -67,7 +67,7 @@ public class Cli {
 
         if(currentGame.currentPlayer.getLoser()) {
             System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
-        } else /*if(currentGame.isADraw())*/{
+        } else if (currentGame.isADraw()){
             System.out.println("The game ended in a draw!");
         }
 
@@ -92,8 +92,7 @@ public class Cli {
      * @return a boolean indicating if the move is accepted
      */
     public static boolean generateAnswer(String userInput, Game currentGame) {
-        String beaten = "beaten";
-        if (userInput.equals(beaten)) {
+        if (userInput.equals("beaten")) {
             System.out.println("Beaten pieces:" + currentGame.beatenPieces);
             return false;
         }
