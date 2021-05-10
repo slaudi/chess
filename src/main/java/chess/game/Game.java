@@ -151,10 +151,10 @@ public class Game {
             return true;
         }
         else if (selectedPiece.getType() == Type.PAWN &&
-                finalSquare.y == ((currentPlayer == playerWhite) ? 0 : 7))
+                finalSquare.getY() == ((currentPlayer == playerWhite) ? 0 : 7))
         {
             // Need to do a move as pawn and then change piece
-            currentMove.doMove(selectedPiece, this.board);
+            currentMove.doMove(this.board);
             selectedPiece.setHasMoved(true);
             moveHistory.add(currentMove);
 
