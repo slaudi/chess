@@ -21,30 +21,37 @@ public class Move {
     public Move(Square start, Square finish) {
         this.startSquare = start;
         this.finalSquare = finish;
-        this.movingPiece = start.occupiedBy;
+        this.movingPiece = start.getOccupiedBy();
     }
 
+    public Square getStartSquare() {
+        return this.startSquare;
+    }
 
-    protected void doMove (Piece piece, Board board){
-            piece.setSquare(finalSquare);
-            board.board[finalSquare.x][finalSquare.y].occupiedBy = piece;
-            board.board[startSquare.x][startSquare.y].occupiedBy = null;
+    public Square getFinalSquare() {
+        return finalSquare;
+    }
+
+    void doMove(Board board){
+            movingPiece.setSquare(finalSquare);
+            board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(movingPiece);
+            board.getBoard()[startSquare.getX()][startSquare.getY()].setOccupiedBy(null);
     }
 
     protected void undoMove (Stack<Move> history, Board board){
         Move actualMove = history.pop();
         Square start = actualMove.startSquare;
         Square finalSquare = actualMove.finalSquare;
-        board.board[start.x][start.y].occupiedBy = actualMove.movingPiece;
+        board.getBoard()[start.getX()][start.getY()].setOccupiedBy(actualMove.movingPiece);
         actualMove.movingPiece.setSquare(start);
-        board.board[finalSquare.x][finalSquare.y].occupiedBy = null;
+        board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(null);
     }
 
     protected void castlingMove(Board board) {
-        int king_x = this.startSquare.x;
-        int king_y = this.startSquare.y;
-        int rook_x = this.finalSquare.x;
-        int rook_y = this.finalSquare.y;
+        int king_x = this.startSquare.getX();
+        int king_y = this.startSquare.getY();
+        int rook_x = this.finalSquare.getX();
+        int rook_y = this.finalSquare.getY();
 
         int diff = Math.abs(rook_x - king_x);
 
@@ -57,9 +64,36 @@ public class Move {
             king_x -= 2;
             rook_x += 3;
         }
-        board.board[king_x][king_y].occupiedBy = this.startSquare.occupiedBy;
-        board.board[rook_x][rook_y].occupiedBy = this.finalSquare.occupiedBy;
-        board.board[this.startSquare.x][this.startSquare.y].occupiedBy = null;
-        board.board[this.finalSquare.x][this.finalSquare.y].occupiedBy = null;
+        board.getBoard()[king_x][king_y].setOccupiedBy(this.startSquare.getOccupiedBy());
+        board.getBoard()[rook_x][rook_y].setOccupiedBy(this.finalSquare.getOccupiedBy());
+        board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
+        board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
     }
+
+    /**
+     * a function executing the en passant and extracting the beaten piece from the last move history
+     *
+     * @param history   a stack where the last moves are stored
+     * @param board     the board on which the move shall be executed
+     * @return a piece which represents the beaten piece in this move
+     */
+    protected Piece enPassantMove(Stack<Move> history, Board board) {
+        Move lastMove = history.pop();
+        Square lastMoveFinalSquare = lastMove.getFinalSquare();
+        int end_x = lastMoveFinalSquare.getX();
+        int end_y = lastMoveFinalSquare.getY();
+        Piece enemyPawn = lastMoveFinalSquare.getOccupiedBy();
+        history.add(lastMove);
+
+        int selectedPawn_x = this.startSquare.getX();
+        int selectedPawn_y = this.startSquare.getY();
+
+        board.getBoard()[selectedPawn_x][selectedPawn_y].setOccupiedBy(null);
+        board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(movingPiece);
+        movingPiece.setSquare(finalSquare);
+        board.getBoard()[end_x][end_y].setOccupiedBy(null);
+
+        return enemyPawn;
+    }
+
 }

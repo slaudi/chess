@@ -2,9 +2,8 @@ package chess.game;
 
 import chess.pieces.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import com.google.common.collect.ImmutableList;
+import java.util.*;
 
 import static chess.game.Colour.BLACK;
 import static chess.game.Colour.WHITE;
@@ -15,7 +14,7 @@ import static chess.game.Colour.WHITE;
  * Board class representing the Chess-Board of current game.
  */
 public class Board {
-    Square[][] board; // Board can access class Square
+    private final Square[][] board; // Board can access class Square
     ArrayList<Piece> whitePieces = new ArrayList<>(16);
     ArrayList<Piece> blackPieces = new ArrayList<>(16);
 
@@ -34,50 +33,51 @@ public class Board {
         setAlliance();
     }
 
+
     public Square[][] getBoard() {
-        return board;
+        return this.board;
     }
 
     /**
      * Sets each Chess-Piece on its initial position.
      */
-    private void startingFormation() {
+    void startingFormation() {
         // Black pieces
-        this.board[0][0].occupiedBy = new Rook(this.board[0][0],BLACK);
-        this.board[1][0].occupiedBy = new Knight(this.board[1][0], BLACK);
-        this.board[2][0].occupiedBy = new Bishop(this.board[2][0], BLACK);
-        this.board[3][0].occupiedBy = new Queen(this.board[3][0], BLACK);
-        this.board[4][0].occupiedBy = new King(this.board[4][0], BLACK);
-        this.board[5][0].occupiedBy = new Bishop(this.board[5][0], BLACK);
-        this.board[6][0].occupiedBy = new Knight(this.board[6][0], BLACK);
-        this.board[7][0].occupiedBy = new Rook(this.board[7][0], BLACK);
+        this.board[0][0].setOccupiedBy(new Rook(this.board[0][0],BLACK));
+        this.board[1][0].setOccupiedBy(new Knight(this.board[1][0], BLACK));
+        this.board[2][0].setOccupiedBy(new Bishop(this.board[2][0], BLACK));;
+        this.board[3][0].setOccupiedBy(new Queen(this.board[3][0], BLACK));
+        this.board[4][0].setOccupiedBy(new King(this.board[4][0], BLACK));
+        this.board[5][0].setOccupiedBy(new Bishop(this.board[5][0], BLACK));
+        this.board[6][0].setOccupiedBy(new Knight(this.board[6][0], BLACK));
+        this.board[7][0].setOccupiedBy(new Rook(this.board[7][0], BLACK));
         for(int i = 0; i < 8; i++) {
-            this.board[i][1].occupiedBy = new Pawn(this.board[i][1], BLACK);
+            this.board[i][1].setOccupiedBy(new Pawn(this.board[i][1], BLACK));
         }
 
         // White pieces
-        this.board[0][7].occupiedBy = new Rook(this.board[0][7], WHITE);
-        this.board[1][7].occupiedBy = new Knight(this.board[1][7], WHITE);
-        this.board[2][7].occupiedBy = new Bishop(this.board[2][7], WHITE);
-        this.board[3][7].occupiedBy = new Queen(this.board[3][7], WHITE);
-        this.board[4][7].occupiedBy = new King(this.board[4][7], WHITE);
-        this.board[5][7].occupiedBy = new Bishop(this.board[5][7], WHITE);
-        this.board[6][7].occupiedBy = new Knight(this.board[6][7], WHITE);
-        this.board[7][7].occupiedBy = new Rook(this.board[7][7], WHITE);
+        this.board[0][7].setOccupiedBy(new Rook(this.board[0][7], WHITE));
+        this.board[1][7].setOccupiedBy(new Knight(this.board[1][7], WHITE));
+        this.board[2][7].setOccupiedBy(new Bishop(this.board[2][7], WHITE));
+        this.board[3][7].setOccupiedBy(new Queen(this.board[3][7], WHITE));
+        this.board[4][7].setOccupiedBy(new King(this.board[4][7], WHITE));
+        this.board[5][7].setOccupiedBy(new Bishop(this.board[5][7], WHITE));
+        this.board[6][7].setOccupiedBy(new Knight(this.board[6][7], WHITE));
+        this.board[7][7].setOccupiedBy(new Rook(this.board[7][7], WHITE));
         for(int i = 0; i < 8; i++) {
-            this.board[i][6].occupiedBy = new Pawn(this.board[i][6], WHITE);
+            this.board[i][6].setOccupiedBy(new Pawn(this.board[i][6], WHITE));
         }
     }
 
     /**
      * Add all pieces on the board to a ArrayList whitePieces and blackPieces according to their colour
      */
-    private void setAlliance() {
+    void setAlliance() {
         for(int i = 0; i < 8; i++) {
-            whitePieces.add(this.board[i][7].occupiedBy);
-            whitePieces.add(this.board[i][6].occupiedBy);
-            blackPieces.add(this.board[i][0].occupiedBy);
-            blackPieces.add(this.board[i][1].occupiedBy);
+            whitePieces.add(this.board[i][7].getOccupiedBy());
+            whitePieces.add(this.board[i][6].getOccupiedBy());
+            blackPieces.add(this.board[i][0].getOccupiedBy());
+            blackPieces.add(this.board[i][1].getOccupiedBy());
         }
     }
 
@@ -90,8 +90,8 @@ public class Board {
         for (int y = 0; y < 8; y++){
             System.out.print(8-y);
             for (int x = 0; x < 8; x++){
-                if (this.board[x][y].occupiedBy != null){
-                    System.out.print(" " + this.board[x][y].occupiedBy.toString());
+                if (this.board[x][y].getOccupiedBy() != null){
+                    System.out.print(" " + this.board[x][y].getOccupiedBy().toString());
                 }
                 else{
                     System.out.print("  ");
@@ -111,7 +111,7 @@ public class Board {
         String start = input.substring(0, 2);
         int startX = Square.getXFromString(start);
         int startY = Square.getYFromString(start);
-        return this.board[startX][startY].occupiedBy;
+        return this.board[startX][startY].getOccupiedBy();
     }
 
     /**
@@ -141,9 +141,9 @@ public class Board {
     protected Square getSquareOfKing(Colour colour){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                if(board[i][j].occupiedBy != null) {
-                    if (board[i][j].occupiedBy.getType() == Type.KING
-                            && board[i][j].occupiedBy.getColour() == colour) {
+                if(board[i][j].getOccupiedBy() != null) {
+                    if (board[i][j].getOccupiedBy().getType() == Type.KING
+                            && board[i][j].getOccupiedBy().getColour() == colour) {
                         return board[i][j];
                     }
                 }

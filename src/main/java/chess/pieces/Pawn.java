@@ -1,8 +1,11 @@
 package chess.pieces;
 
 import chess.game.Colour;
+import chess.game.Move;
 import chess.game.Square;
 import chess.game.Type;
+
+import java.util.Stack;
 
 public class Pawn extends Piece {
 
@@ -72,28 +75,29 @@ public class Pawn extends Piece {
      */
     @Override
     public boolean isPiecesMove(Square finalSquare) {
+        int diff_x = finalSquare.getX() - this.square.getX();
         int diff_y = finalSquare.getY() - this.square.getY();
         if (!hasMoved) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
-                return diff_y == -1 || diff_y == -2;
+                return diff_y == -1 || diff_y == -2 && diff_x == 0;
             } else {
-                return diff_y == 1 || diff_y == 2;
+                return diff_y == 1 || diff_y == 2 && diff_x == 0;
             }
         } else {
             if (this.colour == Colour.WHITE) {
                 // Pawn can only move up
-                return diff_y == -1;
+                return diff_y == -1 && diff_x == 0;
             } else {
                 // Pawn can only move down
-                return diff_y == 1;
+                return diff_y == 1 && diff_x == 0;
             }
         }
     }
 
 
-    // TODO en passant
     public boolean canCapture(Square finalSquare) {
+
         int diffX = finalSquare.getX() - this.square.getX();
         int diffY = finalSquare.getY() - this.square.getY();
         if(this.colour == Colour.WHITE) {
@@ -104,9 +108,28 @@ public class Pawn extends Piece {
         }
     }
 
-    public boolean pawnIsAllowedForward(Square finalSquare) {
-        return true;
-    }
+    /**
+     * a function determining if a pawn can beat another pawn en passant
+     *
+     * @param finalSquare   the square where the selected pawn should end up, here behind the pawn to beat
+     * @param history       a stach which stores all previous moves
+     * @return a boolean indicating if en passant is possible
+     */
+    public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
+        if (!history.isEmpty()) {
+            Move lastMove = history.pop();
+            Square start = lastMove.getStartSquare();
+            Square end = lastMove.getFinalSquare();
+            history.add(lastMove);
+            int diff = Math.abs(start.getY() - end.getY());
 
+            if (diff == 2 && end.getOccupiedBy().getType() == this.type
+                    && end.getOccupiedBy().getColour() != this.colour
+                    && end.getY() == this.square.getY()) {
+                return canCapture(finalSquare);
+            }
+        }
+        return false;
+    }
 
 }

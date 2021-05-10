@@ -6,10 +6,10 @@ import chess.pieces.Piece;
  * Square class representing a single square of current Chess-Board.
  */
 public class Square {
-    int x;
-    int y;
-    Label label;
-    Piece occupiedBy = null;
+    private final int x;
+    private final int y;
+    private Label label;
+    private Piece occupiedBy = null;
 
     /**
      * Create a single square instance when starting a new Game.

@@ -16,7 +16,7 @@ public enum Label {
     /**
      * Looks up if some String is inside Enum.
      * @param in String to check if inside Enum.
-     * @return Boolean if String is inide Enum.
+     * @return a boolean indicating  if String is inside Enum.
      */
     public static boolean contains(String in){
         for (Label x: Label.values()){
