@@ -42,6 +42,10 @@ public class Square {
         return this.y;
     }
 
+    /**
+     * Gets Piece standing on Square
+     * @return
+     */
     public Piece getOccupiedBy() {
         return this.occupiedBy;
     }
