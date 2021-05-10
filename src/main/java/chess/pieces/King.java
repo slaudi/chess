@@ -1,5 +1,8 @@
 package chess.pieces;
-import chess.game.*;
+
+import chess.game.Colour;
+import chess.game.Square;
+import chess.game.Type;
 
 
 public class King extends Piece {
@@ -68,8 +71,8 @@ public class King extends Piece {
      */
     @Override
     public boolean isPiecesMove(Square finalSquare) {
-        int diffX = this.square.getX() - finalSquare.getX();
-        int diffY = this.square.getY() - finalSquare.getY();
+        int diffX = Math.abs(this.square.getX() - finalSquare.getX());
+        int diffY = Math.abs(this.square.getY() - finalSquare.getY());
         return diffX < 2 && diffY < 2;
     }
 

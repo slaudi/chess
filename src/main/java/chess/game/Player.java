@@ -1,10 +1,5 @@
 package chess.game;
 
-import chess.pieces.Piece;
-
-import java.util.ArrayList;
-import java.util.Vector;
-
 /**
  * Player class which defines each of two Players
  */

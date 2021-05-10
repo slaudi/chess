@@ -1,6 +1,8 @@
 package chess.pieces;
 
-import chess.game.*;
+import chess.game.Colour;
+import chess.game.Square;
+import chess.game.Type;
 
 public abstract class Piece {
 
@@ -19,9 +21,7 @@ public abstract class Piece {
         this.hasMoved = false;
     }
 
-    public Square getSquare(){
-        return this.square;
-    }
+    public abstract Square getSquare();
 
     public abstract void setSquare(Square square);
 
@@ -48,7 +48,5 @@ public abstract class Piece {
      * @return a boolean indicating if the move is allowed
      */
     public abstract boolean isPiecesMove(Square finalSquare);
-    // kein Piece darf ziehen, wenn der eigene King im Angriff steht oder dadurch einem Angriff ausgesetzt wird
-
 
 }

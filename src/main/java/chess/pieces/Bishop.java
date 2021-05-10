@@ -1,6 +1,8 @@
 package chess.pieces;
 
-import chess.game.*;
+import chess.game.Colour;
+import chess.game.Square;
+import chess.game.Type;
 
 public class Bishop extends Piece {
 
@@ -70,7 +72,6 @@ public class Bishop extends Piece {
     public boolean isPiecesMove(Square finalSquare) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
-
 
         return diff_x == diff_y;
     }
