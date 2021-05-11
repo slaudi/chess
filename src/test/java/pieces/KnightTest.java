@@ -27,24 +27,24 @@ public class KnightTest {
 
     @Test
     void getSquare() {
-        Assertions.assertEquals(square, knight.getSquare());
+        assertEquals(square, knight.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
         knight.setSquare(square);
-        Assertions.assertEquals(square, knight.getSquare());
+        assertEquals(square, knight.getSquare());
     }
 
     @Test
     void getColour() {
-        Assertions.assertEquals(Colour.WHITE, knight.getColour());
+        assertEquals(Colour.WHITE, knight.getColour());
     }
 
     @Test
     void getType() {
-        Assertions.assertEquals(Type.KNIGHT, knight.getType());
+        assertEquals(Type.KNIGHT, knight.getType());
     }
 
     @Test

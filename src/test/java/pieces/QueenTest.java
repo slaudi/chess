@@ -28,24 +28,24 @@ public class QueenTest {
 
     @Test
     void getSquare() {
-        Assertions.assertEquals(square, queen.getSquare());
+        assertEquals(square, queen.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
         queen.setSquare(square);
-        Assertions.assertEquals(square, queen.getSquare());
+        assertEquals(square, queen.getSquare());
     }
 
     @Test
     void getColour() {
-        Assertions.assertEquals(Colour.WHITE, queen.getColour());
+        assertEquals(Colour.WHITE, queen.getColour());
     }
 
     @Test
     void getType() {
-        Assertions.assertEquals(Type.QUEEN, queen.getType());
+        assertEquals(Type.QUEEN, queen.getType());
     }
 
     @Test

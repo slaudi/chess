@@ -15,11 +15,11 @@ class ColourTest {
 
     @Test
     void values() {
-        Assertions.assertEquals("WHITE", WHITE.name());
+        assertEquals("WHITE", WHITE.name());
     }
 
     @Test
     void valueOf() {
-        Assertions.assertEquals(Colour.WHITE, Colour.valueOf("WHITE"));
+        assertEquals(Colour.WHITE, Colour.valueOf("WHITE"));
     }
 }

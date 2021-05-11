@@ -28,24 +28,24 @@ public class RookTest {
 
     @Test
     void getSquare() {
-        Assertions.assertEquals(square, rook.getSquare());
+        assertEquals(square, rook.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
         rook.setSquare(square);
-        Assertions.assertEquals(square, rook.getSquare());
+        assertEquals(square, rook.getSquare());
     }
 
     @Test
     void getColour() {
-        Assertions.assertEquals(Colour.WHITE, rook.getColour());
+        assertEquals(Colour.WHITE, rook.getColour());
     }
 
     @Test
     void getType() {
-        Assertions.assertEquals(Type.ROOK, rook.getType());
+        assertEquals(Type.ROOK, rook.getType());
     }
 
     @Test

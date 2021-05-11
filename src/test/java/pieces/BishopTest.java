@@ -29,24 +29,24 @@ public class BishopTest {
 
     @Test
     void getSquare() {
-        Assertions.assertEquals(square, bishop.getSquare());
+        assertEquals(square, bishop.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
         bishop.setSquare(square);
-        Assertions.assertEquals(square, bishop.getSquare());
+        assertEquals(square, bishop.getSquare());
     }
 
     @Test
     void getColour() {
-        Assertions.assertEquals(Colour.WHITE, bishop.getColour());
+        assertEquals(Colour.WHITE, bishop.getColour());
     }
 
     @Test
     void getType() {
-        Assertions.assertEquals(Type.BISHOP, bishop.getType());
+        assertEquals(Type.BISHOP, bishop.getType());
     }
 
     @Test
@@ -64,43 +64,43 @@ public class BishopTest {
     @Test
     void upLeftMovement() {
         finalSquare = new Square(a6,0,2);
-        Assertions.assertTrue(bishop.isPiecesMove(finalSquare));
+        assertTrue(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
     void upRightMovement() {
         finalSquare = new Square(f7,5,1);
-        Assertions.assertTrue(bishop.isPiecesMove(finalSquare));
+        assertTrue(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
     void downLeftMovement() {
         finalSquare = new Square(a2,0,6);
-        Assertions.assertTrue(bishop.isPiecesMove(finalSquare));
+        assertTrue(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
     void downRightMovement() {
         finalSquare = new Square(f1,5,7);
-        Assertions.assertTrue(bishop.isPiecesMove(finalSquare));
+        assertTrue(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
     void notAllowedVerticalMovement() {
         finalSquare = new Square(c8,2,0);
-        Assertions.assertFalse(bishop.isPiecesMove(finalSquare));
+        assertFalse(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
     void notAllowedHorizontalMovement() {
         finalSquare = new Square(a3,0,5);
-        Assertions.assertFalse(bishop.isPiecesMove(finalSquare));
+        assertFalse(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
     void notAllowedLMovement() {
         finalSquare = new Square(b6,1,2);
-        Assertions.assertFalse(bishop.isPiecesMove(finalSquare));
+        assertFalse(bishop.isPiecesMove(finalSquare));
     }
 
     @Test
@@ -108,7 +108,8 @@ public class BishopTest {
         bishop.getSquare().setOccupiedBy(null);
         bishop = ((Bishop) game.board.getChessBoard()[5][0].getOccupiedBy());
         finalSquare = new Square(a3,0,5);
-        Assertions.assertFalse(game.isMoveAllowed(bishop,finalSquare));
+        assertFalse(game.isMoveAllowed(bishop,finalSquare));
     }
+
 
 }

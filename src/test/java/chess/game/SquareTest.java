@@ -13,7 +13,7 @@ class SquareTest {
     @Test
     void testToString() {
         Square square = new Square(Label.a1,3,4);
-        Assertions.assertEquals(" ", square.toString(),"Feld sollte leer sein");
+        assertEquals(" ", square.toString(),"Feld sollte leer sein");
     }
 
     @Test

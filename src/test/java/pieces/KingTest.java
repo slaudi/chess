@@ -28,24 +28,24 @@ public class KingTest {
 
     @Test
     void getSquare() {
-        Assertions.assertEquals(square, king.getSquare());
+        assertEquals(square, king.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
         king.setSquare(square);
-        Assertions.assertEquals(square, king.getSquare());
+        assertEquals(square, king.getSquare());
     }
 
     @Test
     void getColour() {
-        Assertions.assertEquals(Colour.WHITE, king.getColour());
+        assertEquals(Colour.WHITE, king.getColour());
     }
 
     @Test
     void getType() {
-        Assertions.assertEquals(Type.KING, king.getType());
+        assertEquals(Type.KING, king.getType());
     }
 
     @Test

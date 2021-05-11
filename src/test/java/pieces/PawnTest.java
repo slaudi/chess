@@ -28,24 +28,24 @@ public class PawnTest {
 
     @Test
     void getSquare() {
-        Assertions.assertEquals(square, pawn.getSquare());
+        assertEquals(square, pawn.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
         pawn.setSquare(square);
-        Assertions.assertEquals(square, pawn.getSquare());
+        assertEquals(square, pawn.getSquare());
     }
 
     @Test
     void getColour() {
-        Assertions.assertEquals(Colour.WHITE, pawn.getColour());
+        assertEquals(Colour.WHITE, pawn.getColour());
     }
 
     @Test
     void getType() {
-        Assertions.assertEquals(Type.PAWN, pawn.getType());
+        assertEquals(Type.PAWN, pawn.getType());
     }
 
     @Test

@@ -14,12 +14,12 @@ class TypeTest {
 
     @Test
     void values() {
-        Assertions.assertEquals("PAWN", PAWN.name());
+        assertEquals("PAWN", PAWN.name());
     }
 
     @Test
     void valueOf() {
-        Assertions.assertEquals(PAWN, Type.valueOf("PAWN"));
+        assertEquals(PAWN, Type.valueOf("PAWN"));
     }
 
 }
