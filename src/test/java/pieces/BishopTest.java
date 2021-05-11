@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The BishopTest class test the methods of the Bishop class
+ */
 public class BishopTest {
 
     private Bishop bishop;

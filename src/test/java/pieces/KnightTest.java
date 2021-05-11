@@ -12,6 +12,9 @@ import static chess.game.Label.c4;
 import static chess.game.Label.g5;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The KnightTest class test the methods of the Knight class
+ */
 public class KnightTest {
     private Knight knight;
     private Square square;

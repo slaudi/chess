@@ -12,6 +12,9 @@ import static chess.game.Label.c4;
 import static chess.game.Label.g5;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The RookTest class test the methods of the Rook class
+ */
 public class RookTest {
 
     private Rook rook;

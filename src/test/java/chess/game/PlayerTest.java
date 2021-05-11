@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The PlayerTest class test the methods of the Player class
+ */
 class PlayerTest {
 
     @Test
