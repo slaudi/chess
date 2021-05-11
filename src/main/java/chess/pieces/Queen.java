@@ -73,7 +73,7 @@ public class Queen extends Piece {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
-        return (diff_x == diff_y);
+        return (diff_x == diff_y || diff_y == 0 || diff_x == 0);
     }
 
 }
