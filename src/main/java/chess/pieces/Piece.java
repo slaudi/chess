@@ -4,6 +4,9 @@ import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
+/**
+ * The Piece class is the Superclass of the chess pieces on the board of the game
+ */
 public abstract class Piece {
 
     Square square;

@@ -4,6 +4,9 @@ import chess.game.*;
 
 import java.util.Stack;
 
+/**
+ * The Pawn class is a Subclass of the Piece class and represents a Piece of the Type Pawn
+ */
 public class Pawn extends Piece {
 
     Type type;

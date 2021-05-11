@@ -4,7 +4,9 @@ import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
-
+/**
+ * The King class is a Subclass of the Piece class and represents a Piece of the Type King
+ */
 public class King extends Piece {
 
     Type type;

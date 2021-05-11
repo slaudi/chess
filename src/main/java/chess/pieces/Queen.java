@@ -4,6 +4,9 @@ import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
+/**
+ * The Queen class is a Subclass of the Piece class and represents a Piece of the Type Queen
+ */
 public class Queen extends Piece {
 
     Type type;
