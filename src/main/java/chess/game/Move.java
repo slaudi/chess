@@ -1,6 +1,6 @@
 package chess.game;
 
-import chess.pieces.Piece;
+import chess.pieces.*;
 
 import java.util.Stack;
 
@@ -29,35 +29,38 @@ public class Move {
     }
 
     public Square getFinalSquare() {
-        return finalSquare;
+        return this.finalSquare;
     }
 
     /**
-     * implementation of doing a move
+     * A function executing a move on the board
+     *
      * @param board current board
      */
     protected void doMove (Board board){
-            movingPiece.setSquare(finalSquare);
-            board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(movingPiece);
-            board.getBoard()[startSquare.getX()][startSquare.getY()].setOccupiedBy(null);
+            this.movingPiece.setSquare(this.finalSquare);
+            board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
+            board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
     }
 
     /**
-     * undoing a move
+     * A function undoing the last move on the board if it meant that the King was in check
+     *
      * @param history Stack of already done movements
      * @param board current board
      */
     protected void undoMove (Stack<Move> history, Board board){
-        Move actualMove = history.pop();
-        Square start = actualMove.startSquare;
-        Square finalSquare = actualMove.finalSquare;
-        board.getBoard()[start.getX()][start.getY()].setOccupiedBy(actualMove.movingPiece);
-        actualMove.movingPiece.setSquare(start);
-        board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(null);
+        Move lastMove = history.pop();
+        Square start = lastMove.startSquare;
+        Square finalSquare = lastMove.finalSquare;
+        board.getChessBoard()[start.getX()][start.getY()].setOccupiedBy(lastMove.movingPiece);
+        lastMove.movingPiece.setSquare(start);
+        board.getChessBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(null);
     }
 
     /**
-     * switching positions of King and rook
+     * A function executing the castling move on the board
+     *
      * @param board current board
      */
     protected void castlingMove(Board board) {
@@ -77,10 +80,10 @@ public class Move {
             king_x -= 2;
             rook_x += 3;
         }
-        board.getBoard()[king_x][king_y].setOccupiedBy(this.startSquare.getOccupiedBy());
-        board.getBoard()[rook_x][rook_y].setOccupiedBy(this.finalSquare.getOccupiedBy());
-        board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
-        board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
+        board.getChessBoard()[king_x][king_y].setOccupiedBy(this.startSquare.getOccupiedBy());
+        board.getChessBoard()[rook_x][rook_y].setOccupiedBy(this.finalSquare.getOccupiedBy());
+        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
+        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
     }
 
     /**
@@ -101,12 +104,34 @@ public class Move {
         int selectedPawn_x = this.startSquare.getX();
         int selectedPawn_y = this.startSquare.getY();
 
-        board.getBoard()[selectedPawn_x][selectedPawn_y].setOccupiedBy(null);
-        board.getBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(movingPiece);
-        movingPiece.setSquare(finalSquare);
-        board.getBoard()[end_x][end_y].setOccupiedBy(null);
+        board.getChessBoard()[selectedPawn_x][selectedPawn_y].setOccupiedBy(null);
+        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
+        this.movingPiece.setSquare(this.finalSquare);
+        board.getChessBoard()[end_x][end_y].setOccupiedBy(null);
 
         return enemyPawn;
+    }
+
+    /**
+     * A function executing a promotion on the board
+     *
+     * @param key   the letter the player enters indicating which Piece they want the Pawn to promote to
+     * @param board the current board
+     */
+    protected void promotion(char key, Board board) {
+        this.movingPiece.getSquare().setOccupiedBy(null);
+        int promo_x = this.finalSquare.getX();
+        int promo_y = this.finalSquare.getY();
+
+        if(key == 'Q' || key == ' ') {
+            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Queen(this.finalSquare, this.movingPiece.getColour()));
+        } else if (key == 'R') {
+            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Rook(this.finalSquare, this.movingPiece.getColour()));
+        } else if (key == 'N') {
+            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Knight(this.finalSquare, this.movingPiece.getColour()));
+        } else if (key == 'B'){
+            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Bishop(this.finalSquare, this.movingPiece.getColour()));
+        }
     }
 
 }
