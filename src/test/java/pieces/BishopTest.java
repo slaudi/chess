@@ -103,7 +103,7 @@ public class BishopTest {
     @Test
     void notAllowedLeaping() {
         bishop.getSquare().setOccupiedBy(null);
-        bishop = ((Bishop) game.board.getBoard()[5][0].getOccupiedBy());
+        bishop = ((Bishop) game.board.getChessBoard()[5][0].getOccupiedBy());
         finalSquare = new Square(a3,0,5);
         Assertions.assertFalse(game.isMoveAllowed(bishop,finalSquare));
     }
