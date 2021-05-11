@@ -50,13 +50,13 @@ public class PawnTest {
 
     @Test
     void getHasMoved() {
-        assertFalse(pawn.getHasMoved());
+        assertFalse(pawn.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
         pawn.setHasMoved(true);
-        assertTrue(pawn.getHasMoved());
+        assertTrue(pawn.isHasMoved());
     }
 
     // TODO: test moves of the pieces

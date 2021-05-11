@@ -43,7 +43,7 @@ public class King extends Piece {
     }
 
     @Override
-    public boolean getHasMoved() {
+    public boolean isHasMoved() {
         return this.hasMoved;
     }
 

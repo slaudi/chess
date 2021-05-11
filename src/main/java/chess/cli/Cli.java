@@ -21,9 +21,9 @@ public class Cli {
         Game currentGame = new Game();                                                          //initilizes new Game
         currentGame.board.toConsole();                                                          //shows initilized Board to Player
 
-        while (!currentGame.currentPlayer.getLoser() && !currentGame.isADraw()) {                //keeps game running
+        while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {                //keeps game running
 
-            if (currentGame.currentPlayer.getInCheck()) {                                       //checks Check-Status of current Player
+            if (currentGame.currentPlayer.isInCheck()) {                                       //checks Check-Status of current Player
                 System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
             }
             System.out.println("Now playing as " + currentGame.currentPlayer.getColour());      //announces current Player-Colour
@@ -49,13 +49,14 @@ public class Cli {
                 }
                 if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
                     System.out.println("You have to move!");
-                } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {//Console-Output if selected Square to move to is occupied by an own Piece
+                }
+                if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {  //Console-Output if selected Square to move to is occupied by an own Piece
                         System.out.println("You cannot attack your own Piece!");
                 }
-                userInput = getInput();                                                         //sets User_input if everything is semantical correct
+                userInput = getInput();                                                         //sets User_input if everything is semantically correct
             }
 
-            if (currentGame.currentPlayer.getLoser()) {                                         //evaluates if current Player has already lost
+            if (currentGame.currentPlayer.isLoser()) {                                         //evaluates if current Player has already lost
                 continue;
             }
             Square startSquare = currentGame.board.getStartSquareFromInput(userInput);
@@ -69,7 +70,7 @@ public class Cli {
 
             currentGame.board.toConsole();                                                      //gives current state of game to console
         }
-        if (currentGame.currentPlayer.getLoser()) {                                              //checks if current Player has lost or game is draw
+        if (currentGame.currentPlayer.isLoser()) {                                              //checks if current Player has lost or game is draw
             System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
         } else if (currentGame.isADraw()) {
             System.out.println("The game ended in a draw!");

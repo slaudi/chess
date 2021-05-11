@@ -32,7 +32,7 @@ public class Player {
         this.colour = x;
     }
 
-    public boolean getInCheck() {
+    public boolean isInCheck() {
         return this.inCheck;
     }
 
@@ -45,7 +45,7 @@ public class Player {
         this.inCheck = x;
     }
 
-    public boolean getCheckMate() {
+    public boolean isCheckMate() {
         return this.isCheckMate;
     }
 
@@ -58,7 +58,7 @@ public class Player {
         this.isCheckMate = x;
     }
 
-    public boolean getLoser() {
+    public boolean isLoser() {
         return loser;
     }
 

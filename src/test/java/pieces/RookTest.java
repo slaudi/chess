@@ -50,13 +50,13 @@ public class RookTest {
 
     @Test
     void getHasMoved() {
-        assertFalse(rook.getHasMoved());
+        assertFalse(rook.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
         rook.setHasMoved(true);
-        assertTrue(rook.getHasMoved());
+        assertTrue(rook.isHasMoved());
     }
 
     // TODO: test moves of the pieces

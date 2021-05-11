@@ -51,13 +51,13 @@ public class BishopTest {
 
     @Test
     void getHasMoved() {
-        assertFalse(bishop.getHasMoved());
+        assertFalse(bishop.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
         bishop.setHasMoved(true);
-        assertTrue(bishop.getHasMoved());
+        assertTrue(bishop.isHasMoved());
     }
 
     // Bishops movement

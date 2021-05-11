@@ -52,7 +52,7 @@ public abstract class Piece {
      * Getter for the variable 'hasMoved', used to determine if the Piece has moved already for castling or en passant
      * @return boolean A boolean indicating if the Piece has moved yet
      */
-    public abstract boolean getHasMoved();
+    public abstract boolean isHasMoved();
 
     /**
      * Setter for the variable 'hasMoved', is set to true after the first move of a Piece

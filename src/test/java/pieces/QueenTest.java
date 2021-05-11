@@ -50,13 +50,13 @@ public class QueenTest {
 
     @Test
     void getHasMoved() {
-        assertFalse(queen.getHasMoved());
+        assertFalse(queen.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
         queen.setHasMoved(true);
-        assertTrue(queen.getHasMoved());
+        assertTrue(queen.isHasMoved());
     }
 
     // TODO: test moves of the pieces

@@ -50,13 +50,13 @@ public class KingTest {
 
     @Test
     void getHasMoved() {
-        assertFalse(king.getHasMoved());
+        assertFalse(king.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
         king.setHasMoved(true);
-        assertTrue(king.getHasMoved());
+        assertTrue(king.isHasMoved());
     }
 
     // TODO: test moves of the pieces

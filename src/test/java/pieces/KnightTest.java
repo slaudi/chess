@@ -49,13 +49,13 @@ public class KnightTest {
 
     @Test
     void getHasMoved() {
-        assertFalse(knight.getHasMoved());
+        assertFalse(knight.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
         knight.setHasMoved(true);
-        assertTrue(knight.getHasMoved());
+        assertTrue(knight.isHasMoved());
     }
 
     // TODO: test moves of the pieces
