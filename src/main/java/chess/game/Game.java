@@ -44,8 +44,7 @@ public class Game {
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
 
-        if (targetPiece != null &&
-                selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
+        if (targetPiece != null && selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
             // if the move is castling and it is allowed to do the move
             currentMove.castlingMove(board);
             moveHistory.add(currentMove);
@@ -450,11 +449,11 @@ public class Game {
         } else {
             allies = board.getBlackAlliance();
         }
-        for (Piece ally : allies) {
+        for (int i = 0; i < allies.size(); i++) {
             for (Piece beaten : beatenPieces) {
-                if (ally.getColour() == beaten.getColour() && ally.getType() == beaten.getType()
-                    && beaten.equals(ally)) {
-                    allies.remove(ally);
+                if (allies.get(i).getColour() == beaten.getColour() && allies.get(i).getType() == beaten.getType()
+                    && beaten.equals(allies.get(i))) {
+                    allies.remove(allies.get(i));
                 }
             }
         }
@@ -473,11 +472,11 @@ public class Game {
         } else {
             enemies = board.getWhiteAlliance();
         }
-        for (Piece enemy : enemies) {
+        for (int i = 0; i < enemies.size(); i++) {
             for (Piece beaten : beatenPieces) {
-                if (enemy.getColour() == beaten.getColour() && enemy.getType() == beaten.getType()
-                    && beaten.equals(enemy)) {
-                    enemies.remove(enemy);
+                if (enemies.get(i).getColour() == beaten.getColour() && enemies.get(i).getType() == beaten.getType()
+                    && beaten.equals(enemies.get(i))) {
+                    enemies.remove(enemies.get(i));
                 }
             }
         }

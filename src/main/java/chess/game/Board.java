@@ -3,6 +3,7 @@ package chess.game;
 import chess.pieces.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static chess.game.Colour.BLACK;
@@ -32,11 +33,15 @@ public class Board {
     }
 
     /**
-     * Getter of Board
-     * @return Square[][] two-dimensional Sqaure-Array representing the current state of game
+     * Getter of a copy of the board
+     * @return Square[][] Two-dimensional Square-Array representing the current state of game
      */
     public Square[][] getChessBoard() {
-        return this.chessBoard;
+        Square[][] deepCopy = new Square[this.chessBoard.length][];
+        for (int i = 0; i < this.chessBoard.length; i++) {
+            deepCopy[i] = Arrays.copyOf(this.chessBoard[i], this.chessBoard[i].length);
+        }
+        return deepCopy;
     }
 
     /**
