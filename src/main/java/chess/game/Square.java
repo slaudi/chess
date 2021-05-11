@@ -8,7 +8,7 @@ import chess.pieces.Piece;
 public class Square {
     private final int x;
     private final int y;
-    private Label label;
+    Label label;
     private Piece occupiedBy = null;
 
     /**
@@ -62,15 +62,25 @@ public class Square {
     public static int getXFromString(String string){
         char i = string.charAt(0);
         int result;
-        if (i == 'a') result = 0;
-        else if (i == 'b') result = 1;
-        else if (i == 'c') result = 2;
-        else if (i == 'd') result = 3;
-        else if (i == 'e') result = 4;
-        else if (i == 'f') result = 5;
-        else if (i == 'g') result = 6;
-        else if (i == 'h') result = 7;
-        else result = 9;
+        if (i == 'a') {
+            result = 0;
+        } else if (i == 'b') {
+            result = 1;
+        } else if (i == 'c') {
+            result = 2;
+        } else if (i == 'd') {
+            result = 3;
+        } else if (i == 'e') {
+            result = 4;
+        } else if (i == 'f') {
+            result = 5;
+        } else if (i == 'g') {
+            result = 6;
+        } else if (i == 'h') {
+            result = 7;
+        } else {
+            result = 9;
+        }
         return result;
     }
 
@@ -82,15 +92,26 @@ public class Square {
     public static int getYFromString(String string){
         char i = string.charAt(1);
         int result;
-        if (i == '8') result = 0;
-        else if (i == '7') result = 1;
-        else if (i == '6') result = 2;
-        else if (i == '5') result = 3;
-        else if (i == '4') result = 4;
-        else if (i == '3') result = 5;
-        else if (i == '2') result = 6;
-        else if (i == '1') result = 7;
-        else result = 9;
+        if (i == '8') {
+            result = 0;
+        } else if (i == '7') {
+            result = 1;
+        } else if (i == '6') {
+            result = 2;
+        }
+        else if (i == '5') {
+            result = 3;
+        } else if (i == '4') {
+            result = 4;
+        } else if (i == '3') {
+            result = 5;
+        } else if (i == '2') {
+            result = 6;
+        } else if (i == '1') {
+            result = 7;
+        } else {
+            result = 9;
+        }
         return result;
     }
 }
