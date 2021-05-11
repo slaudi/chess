@@ -24,16 +24,40 @@ public abstract class Piece {
         this.hasMoved = false;
     }
 
+    /**
+     * Getter for the position of the Piece.
+     * @return Square The location of the Piece
+     */
     public abstract Square getSquare();
 
+    /**
+     * Setter for the location of a Piece, used to update the location after a move.
+     * @param square The new location of a Piece after a move
+     */
     public abstract void setSquare(Square square);
 
+    /**
+     * Getter for the colour of a Piece
+     * @return Colour The colour of the Piece
+     */
     public abstract Colour getColour();
 
+    /**
+     * Getter for the type of a Piece
+     * @return Type The type of the Piece
+     */
     public abstract Type getType();
 
+    /**
+     * Getter for the variable 'hasMoved', used to determine if the Piece has moved already for castling or en passant
+     * @return boolean A boolean indicating if the Piece has moved yet
+     */
     public abstract boolean getHasMoved();
 
+    /**
+     * Setter for the variable 'hasMoved', is set to true after the first move of a Piece
+     * @param x The boolean 'true' after a Piece has moved
+     */
     public abstract void setHasMoved(boolean x);
 
     /**
@@ -42,6 +66,7 @@ public abstract class Piece {
      *
      * @return a String representing the Piece on the chess board
      */
+    @Override
     public abstract String toString();
 
     /**

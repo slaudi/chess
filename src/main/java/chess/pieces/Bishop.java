@@ -51,17 +51,13 @@ public class Bishop extends Piece {
         this.hasMoved = x;
     }
 
-    /**
-     * A function to determine if the Bishop is printed on the chess board in upper or lower case
-     * depending on the colour of it
-     *
-     * @return a String representing the Bishop on the chess board
-     */
     @Override
     public String toString() {
         if(this.colour == Colour.WHITE){
             return "B";
-        } else return "b";
+        } else {
+            return "b";
+        }
     }
 
     /**
