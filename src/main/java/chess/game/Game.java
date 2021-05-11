@@ -284,7 +284,9 @@ public class Game {
                 ArrayList<Square> enemyPath = generatePath(enemyPiece.getType(),
                         enemyPiece.getSquare(), board.getSquareOfKing(currentPlayer.getColour()));
                 for (Square end : enemyPath) {
-                    return isMoveAllowed(alliedPiece, end);
+                    if (isMoveAllowed(alliedPiece, end)) {
+                        return true;
+                    }
                 }
             }
         }

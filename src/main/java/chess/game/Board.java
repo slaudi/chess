@@ -160,16 +160,14 @@ public class Board {
      * @return Square Square King currently stands on
      */
     protected Square getSquareOfKing(Colour colour){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(chessBoard[i][j].getOccupiedBy() != null) {
-                    if (chessBoard[i][j].getOccupiedBy().getType() == Type.KING
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(chessBoard[i][j].getOccupiedBy() != null && chessBoard[i][j].getOccupiedBy().getType() == Type.KING
                             && chessBoard[i][j].getOccupiedBy().getColour() == colour) {
                         return chessBoard[i][j];
                     }
                 }
             }
-        }
         return null;
     }
 

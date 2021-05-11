@@ -136,15 +136,12 @@ public class Cli {
                 char[] keys = {'Q','B','N','R'};
                 for (char key : keys) {
                     if (key != consoleInput.charAt(consoleInput.length()-1)) {
-                        if (key == keys[keys.length-1]) {
+                        if (key == keys[keys.length - 1]) {
                             // key reached R and the input still doesn't contain a char from keys
                             return false;
                         }
-                        // try next char in keys
-                        continue;
+                        break;
                     }
-                    // if input contained a char from keys leave the if-clause
-                    break;
                 }
             }
             if (consoleInput.charAt(2) == '-') {
