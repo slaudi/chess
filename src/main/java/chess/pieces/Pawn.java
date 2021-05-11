@@ -1,9 +1,6 @@
 package chess.pieces;
 
-import chess.game.Colour;
-import chess.game.Move;
-import chess.game.Square;
-import chess.game.Type;
+import chess.game.*;
 
 import java.util.Stack;
 
@@ -95,7 +92,12 @@ public class Pawn extends Piece {
         }
     }
 
-
+    /**
+     * A function determining if a move to capture another Piece is allowed for the Pawn
+     *
+     * @param finalSquare the Square where the enemy Piece is located on
+     * @return a boolean indicating if a capture is allowed
+     */
     public boolean canCapture(Square finalSquare) {
 
         int diffX = finalSquare.getX() - this.square.getX();
@@ -130,6 +132,20 @@ public class Pawn extends Piece {
             }
         }
         return false;
+    }
+
+    /**
+     * A function determining if a promotion is possible
+     *
+     * @param finalSquare the Square where the move of the Pawn ends up
+     * @return a boolean indicating if a promotion is possible
+     */
+    public boolean promotionPossible(Square finalSquare) {
+        if (this.colour == Colour.WHITE) {
+            return finalSquare.getY() == 0;
+        } else {
+            return finalSquare.getY() == 7;
+        }
     }
 
 }
