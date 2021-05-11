@@ -209,7 +209,7 @@ public class Game {
             return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != currentPlayer.getColour();
         }
         Type type = piece.getType();
-        ArrayList<Square> path = generatePath(type, piece.getSquare(), finalSquare);
+        List<Square> path = generatePath(type, piece.getSquare(), finalSquare);
         if (path.isEmpty() && type == Type.KNIGHT || type == Type.PAWN) {
             // Knight can leap, Pawns don't have a path
             return true;
@@ -232,7 +232,7 @@ public class Game {
      */
     private boolean isInCheck (){
         Square squareKing = this.board.getSquareOfKing(currentPlayer.getColour());
-        ArrayList<Piece> enemies = getEnemyPieces();
+        List<Piece> enemies = getEnemyPieces();
         for (Piece enemyPiece : enemies) {
             if (enemyPiece.isPiecesMove(squareKing)
                     && isPathEmpty(enemyPiece, squareKing)) {
@@ -255,7 +255,7 @@ public class Game {
                 return false;
             }
             // can ally defend the King if the King can't move
-            ArrayList<Piece> enemies = getEnemyPieces();
+            List<Piece> enemies = getEnemyPieces();
             for (Piece enemyPiece : enemies) {
                 if (isMoveAllowed(enemyPiece, board.getSquareOfKing(currentPlayer.getColour()))) {
                     return !canDefendKing(enemyPiece);
@@ -276,7 +276,7 @@ public class Game {
      * @return boolean returns if Player is able to avoid check
      */
     private boolean canDefendKing(Piece enemyPiece) {
-        ArrayList<Piece> allies = getAlliedPieces();
+        List<Piece> allies = getAlliedPieces();
         for (Piece alliedPiece : allies) {
             if (isMoveAllowed(alliedPiece, enemyPiece.getSquare())) {
                 return true;
@@ -297,7 +297,7 @@ public class Game {
      * @return boolean returns if King is able to move safely
      */
     private boolean isSafeSquare(Square finalSquare) {
-        ArrayList<Piece> enemies = getEnemyPieces();
+        List<Piece> enemies = getEnemyPieces();
         System.out.println(enemies);
         for (Piece enemyPiece : enemies) {
             if (enemyPiece.getType() == Type.BISHOP
@@ -334,7 +334,7 @@ public class Game {
      * @return Path of moving Piece
      */
     private ArrayList<Square> generatePath(Type type, Square startSquare, Square finalSquare) {
-        ArrayList<Square> path = new ArrayList<>();
+        List<Square> path = new ArrayList<>();
         if (type == Type.QUEEN) {
             if (startSquare.getX() - finalSquare.getX() == 0) {                                 //vertical move
                 if (Math.abs(startSquare.getY() - finalSquare.getY()) > 1) {                    //Queen moves more than one Square
@@ -363,7 +363,6 @@ public class Game {
                 }
             }
 
-
         } else if (type == Type.BISHOP) {
             int diffX = finalSquare.getX() - startSquare.getX();                                // if positive: Bishop moves from up to down
             int diffY = finalSquare.getY() - startSquare.getY();                                // if positive: Bishop moves from left to right
@@ -374,6 +373,7 @@ public class Game {
                     path.add(board.getChessBoard()[startSquare.getX() + i * dirX][startSquare.getY() + i * dirY]);
                 }
             }
+
         } else if (type == Type.ROOK) {
             if (startSquare.getX() - finalSquare.getX() == 0) {                                 //vertical move
                 if (Math.abs(startSquare.getY() - finalSquare.getY()) > 1) {                    //Rook moves more than one Square
@@ -391,7 +391,7 @@ public class Game {
                 }
             }
         }
-        return path;
+        return new ArrayList<>(path);
     }
 
 
@@ -403,12 +403,10 @@ public class Game {
      */
     private boolean canDoCastling(Piece selectedPiece, Piece targetPiece) {
         // selectedPiece is King, targetPiece is Rook
-        Colour kingColour = selectedPiece.getColour();
-
         if (!selectedPiece.getHasMoved() && !targetPiece.getHasMoved() // King and Rook didn't move yet
                 && isPathEmpty(selectedPiece, targetPiece.getSquare())) {   // no pieces between King and Rook
 
-            ArrayList<Piece> enemies = getEnemyPieces();
+            List<Piece> enemies = getEnemyPieces();
             int diff = Math.abs(targetPiece.getSquare().getX() - selectedPiece.getSquare().getX());
             int king_x;
             int king_y = selectedPiece.getSquare().getY();
@@ -451,11 +449,11 @@ public class Game {
         } else {
             allies = board.blackPieces;
         }
-        for (int i = 0; i < allies.size(); i++) {
+        for (Piece ally : allies) {
             for (Piece beaten : beatenPieces) {
-                if (allies.get(i).getColour() == beaten.getColour() && allies.get(i).getType() == beaten.getType()
-                    && beaten.equals(allies.get(i))) {
-                    allies.remove(allies.get(i));
+                if (ally.getColour() == beaten.getColour() && ally.getType() == beaten.getType()
+                    && beaten.equals(ally)) {
+                    allies.remove(ally);
                 }
             }
         }
@@ -474,11 +472,11 @@ public class Game {
         } else {
             enemies = board.whitePieces;
         }
-        for (int i = 0; i < enemies.size(); i++) {
+        for (Piece enemy : enemies) {
             for (Piece beaten : beatenPieces) {
-                if (enemies.get(i).getColour() == beaten.getColour() && enemies.get(i).getType() == beaten.getType()
-                    && beaten.equals(enemies.get(i))) {
-                    enemies.remove(enemies.get(i));
+                if (enemy.getColour() == beaten.getColour() && enemy.getType() == beaten.getType()
+                    && beaten.equals(enemy)) {
+                    enemies.remove(enemy);
                 }
             }
         }
