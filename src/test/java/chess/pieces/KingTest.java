@@ -1,9 +1,9 @@
-package pieces;
+package chess.pieces;
 
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
-import chess.pieces.Knight;
+import chess.pieces.King;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,49 +13,50 @@ import static chess.game.Label.g5;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * The KnightTest class test the methods of the Knight class
+ * The KingTest class test the methods of the King class
  */
-public class KnightTest {
-    private Knight knight;
+public class KingTest {
+
+    private King king;
     private Square square;
 
     @BeforeEach
     void setUp() {
         square = new Square(c4, 2, 4);
-        knight = new Knight(square, Colour.WHITE);
+        king = new King(square, Colour.WHITE);
     }
 
     @Test
     void getSquare() {
-        assertEquals(square, knight.getSquare());
+        assertEquals(square, king.getSquare());
     }
 
     @Test
     void setSquare() {
         square = new Square(g5,7,3);
-        knight.setSquare(square);
-        assertEquals(square, knight.getSquare());
+        king.setSquare(square);
+        assertEquals(square, king.getSquare());
     }
 
     @Test
     void getColour() {
-        assertEquals(Colour.WHITE, knight.getColour());
+        assertEquals(Colour.WHITE, king.getColour());
     }
 
     @Test
     void getType() {
-        assertEquals(Type.KNIGHT, knight.getType());
+        assertEquals(Type.KING, king.getType());
     }
 
     @Test
     void getHasMoved() {
-        assertFalse(knight.isHasMoved());
+        assertFalse(king.isHasMoved());
     }
 
     @Test
     void setHasMoved() {
-        knight.setHasMoved(true);
-        assertTrue(knight.isHasMoved());
+        king.setHasMoved(true);
+        assertTrue(king.isHasMoved());
     }
 
     // TODO: test moves of the pieces
@@ -63,4 +64,5 @@ public class KnightTest {
     void isPiecesMove() {
 
     }
+
 }

@@ -1,12 +1,11 @@
-package pieces;
+package chess.pieces;
 
 import chess.game.*;
-import chess.pieces.Bishop;
-import org.junit.jupiter.api.Assertions;
+import static chess.game.Label.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -22,8 +21,7 @@ public class BishopTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game();
-        square = new Square(c4, 2, 4);
+        square = new Square(c4,2,4);
         bishop = new Bishop(square, Colour.WHITE);
     }
 
@@ -105,6 +103,7 @@ public class BishopTest {
 
     @Test
     void notAllowedLeaping() {
+        game = new Game();
         bishop.getSquare().setOccupiedBy(null);
         bishop = ((Bishop) game.board.getChessBoard()[5][0].getOccupiedBy());
         finalSquare = new Square(a3,0,5);
