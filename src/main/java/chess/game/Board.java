@@ -71,15 +71,31 @@ public class Board {
     }
 
     /**
-     * Add all pieces on the board to a ArrayList whitePieces and blackPieces according to their colour
+     * Add all pieces on the board to an ArrayList according to their colour
      */
-    void setAlliance() {
+    private void setAlliance() {
         for(int i = 0; i < 8; i++) {
             whitePieces.add(this.chessBoard[i][7].getOccupiedBy());
             whitePieces.add(this.chessBoard[i][6].getOccupiedBy());
             blackPieces.add(this.chessBoard[i][0].getOccupiedBy());
             blackPieces.add(this.chessBoard[i][1].getOccupiedBy());
         }
+    }
+
+    /**
+     * Getter for the white alliance
+     * @return ArrayList All white pieces
+     */
+    ArrayList<Piece> getWhiteAlliance() {
+        return new ArrayList<>(whitePieces);
+    }
+
+    /**
+     * Getter for the black alliance
+     * @return ArrayList All black pieces
+     */
+    ArrayList<Piece> getBlackAlliance() {
+        return new ArrayList<>(blackPieces);
     }
 
 
@@ -162,9 +178,9 @@ public class Board {
     protected Square getSquareOfKing(Colour colour){
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                if(chessBoard[i][j].getOccupiedBy() != null && chessBoard[i][j].getOccupiedBy().getType() == Type.KING
-                            && chessBoard[i][j].getOccupiedBy().getColour() == colour) {
-                        return chessBoard[i][j];
+                if(this.chessBoard[i][j].getOccupiedBy() != null && this.chessBoard[i][j].getOccupiedBy().getType() == Type.KING
+                            && this.chessBoard[i][j].getOccupiedBy().getColour() == colour) {
+                        return this.chessBoard[i][j];
                     }
                 }
             }

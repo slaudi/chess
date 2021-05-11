@@ -446,9 +446,9 @@ public class Game {
     public ArrayList<Piece> getAlliedPieces() {
         List<Piece> allies;
         if(currentPlayer.getColour() == Colour.WHITE) {
-            allies = board.whitePieces;
+            allies = board.getWhiteAlliance();
         } else {
-            allies = board.blackPieces;
+            allies = board.getBlackAlliance();
         }
         for (Piece ally : allies) {
             for (Piece beaten : beatenPieces) {
@@ -469,9 +469,9 @@ public class Game {
     public ArrayList<Piece> getEnemyPieces() {
         List<Piece> enemies;
         if(currentPlayer.getColour() == Colour.WHITE) {
-            enemies = board.blackPieces;
+            enemies = board.getBlackAlliance();
         } else {
-            enemies = board.whitePieces;
+            enemies = board.getWhiteAlliance();
         }
         for (Piece enemy : enemies) {
             for (Piece beaten : beatenPieces) {
