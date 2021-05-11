@@ -205,9 +205,8 @@ public class Game {
      * @return returns if selected path is empty
      */
     private boolean isPathEmpty (Piece piece, Square finalSquare){
-        if (isSurroundingSquare(piece.getSquare(), finalSquare) &&
-                finalSquare.getOccupiedBy() != null && finalSquare.getOccupiedBy().getColour() != currentPlayer.getColour()) {
-            return true;
+        if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
+            return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != currentPlayer.getColour();
         }
         Type type = piece.getType();
         ArrayList<Square> path = generatePath(type, piece.getSquare(), finalSquare);
