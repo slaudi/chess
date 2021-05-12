@@ -3,7 +3,6 @@ package chess.game;
 import chess.pieces.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -182,19 +181,17 @@ public class Game {
             return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != currentPlayer.getColour();
         }
         List<Square> path = piece.generatePath(finalSquare);
-        if (path.isEmpty() && piece.getType() == Type.KNIGHT || piece.getType() == Type.PAWN) {
-            // Knight can leap, Pawns don't have a path
+        if (path.isEmpty()) {
+            // Knight can leap, Pawn/King don't have a path
             return true;
-        } else if (path.isEmpty()) {
-            return false;
-        }  else {
+        } else {
             for (Square visitedSquare : path) {
                 if (visitedSquare.getOccupiedBy() != null) {
                     return false;
                 }
             }
-            return true;
         }
+        return true;
     }
 
     /**
@@ -253,7 +250,10 @@ public class Game {
             if (isMoveAllowed(alliedPiece, enemyPiece.getSquare())) {
                 return true;
             } else {
-                List<Square> enemyPath = enemyPiece.generatePath(chessBoard.getSquareOfKing(currentPlayer.getColour()));
+                List<Square> enemyPath = enemyPiece.generatePath(enemyPiece.getSquare());
+                if (enemyPath.isEmpty()) {
+                    return false;
+                }
                 for (Square end : enemyPath) {
                     if (isMoveAllowed(alliedPiece, end)) {
                         return true;
@@ -275,8 +275,8 @@ public class Game {
             if (enemyPiece.getType() == Type.BISHOP
                     || enemyPiece.getType() == Type.ROOK
                     || enemyPiece.getType() == Type.QUEEN) {
-                if (enemyPiece.isPiecesMove(finalSquare) &&
-                        isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
+                if (enemyPiece.isPiecesMove(finalSquare)
+                        && isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
                     return false;
                 }
             } else if (enemyPiece.getType() == Type.KNIGHT) {
@@ -289,7 +289,9 @@ public class Game {
                     }
             } else {
                 if (enemyPiece instanceof Pawn) {
-                    return ((Pawn)enemyPiece).canCapture(finalSquare);
+                    if(((Pawn)enemyPiece).canCapture(finalSquare)) {
+                        return false;
+                    }
                 }
             }
         }
