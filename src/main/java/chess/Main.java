@@ -1,13 +1,14 @@
 package chess;
 
 import chess.cli.Cli;
+import chess.cli.Simple;
 import chess.gui.Gui;
 
 import java.util.Arrays;
 
 /**
- * The common starting point of the GUI and the CLI. Depending on the given command line arguments either the GUI or the
- * CLI interface are initialized.
+ * The common starting point of the GUI and the CLI. Depending on the given command line arguments either
+ * the GUI or the CLI interface are initialized.
  */
 public class Main {
     /**
@@ -16,8 +17,11 @@ public class Main {
      */
     public static void main(String[] args) {
         boolean cli = Arrays.asList(args).contains("--no-gui");
+        boolean simple = Arrays.asList(args).contains("--simple");
         if (cli) {
             Cli.main(args);
+        } else if (simple) {
+            Simple.main(args);
         } else {
             Gui.main(args);
         }
