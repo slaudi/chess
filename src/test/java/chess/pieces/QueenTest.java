@@ -3,8 +3,7 @@ package chess.pieces;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
-import chess.pieces.Queen;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,11 +2,10 @@ package chess.game;
 
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static chess.game.Label.e2;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
