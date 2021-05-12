@@ -75,6 +75,7 @@ public class Queen extends Piece {
         return diff_x == diff_y || diff_y == 0 || diff_x == 0;
     }
 
+    @Override
     public int[][] movingDirection(Square finalSquare) {
         int dir_x = 0;
         int dir_y = 0;
