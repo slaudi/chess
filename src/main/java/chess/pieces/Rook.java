@@ -7,7 +7,7 @@ import chess.game.Type;
 /**
  * The Rook class is a Subclass of the Piece class and represents a Piece of the Type Rook
  */
-public class Rook extends Piece {
+public class Rook extends Piece implements MovingDirection {
 
     Type type;
 
