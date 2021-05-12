@@ -46,7 +46,7 @@ public class Cli {
                 System.out.println("!" + userInput);
                 if (!currentGame.processMove(startSquare, finalSquare, key)) {
                     // if move puts King in check
-                    System.out.println("!Move not allowed\n");
+                    System.out.println("!Move not allowed   \n" + currentGame.currentPlayer.getColour() + " would be in check!\n");
                     break;
                 }
             } else {
