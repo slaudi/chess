@@ -11,6 +11,7 @@ public class Move {
     Square startSquare;
     Square finalSquare;
     Piece movingPiece;
+    Stack<Move> moveHistory;
 
     /**
      * Constructor of Move-Class.
@@ -22,6 +23,7 @@ public class Move {
         this.startSquare = start;
         this.finalSquare = finish;
         this.movingPiece = start.getOccupiedBy();
+        this.moveHistory = new Stack<>();
     }
 
     public Square getStartSquare() {
@@ -30,6 +32,10 @@ public class Move {
 
     public Square getFinalSquare() {
         return this.finalSquare;
+    }
+
+    public Stack<Move> getMoveHistory() {
+        return this.moveHistory;
     }
 
     /**
@@ -49,8 +55,8 @@ public class Move {
      * @param history Stack of already done movements
      * @param board current board
      */
-    protected void undoMove (Stack<Move> history, Board board){
-        Move lastMove = history.pop();
+    protected void undoMove (Board board){
+        Move lastMove = this.moveHistory.pop();
         Square start = lastMove.startSquare;
         Square finalSquare = lastMove.finalSquare;
         board.getChessBoard()[start.getX()][start.getY()].setOccupiedBy(lastMove.movingPiece);
@@ -84,22 +90,22 @@ public class Move {
         board.getChessBoard()[rook_x][rook_y].setOccupiedBy(this.finalSquare.getOccupiedBy());
         board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
         board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
+        this.moveHistory.add(this);
     }
 
     /**
      * a function executing the en passant and extracting the beaten piece from the last move history
      *
-     * @param history   a stack where the last moves are stored
      * @param board     the board on which the move shall be executed
      * @return a piece which represents the beaten piece in this move
      */
-    protected Piece enPassantMove(Stack<Move> history, Board board) {
-        Move lastMove = history.pop();
+    protected Piece enPassantMove(Board board) {
+        Move lastMove = this.moveHistory.pop();
         Square lastMoveFinalSquare = lastMove.getFinalSquare();
         int end_x = lastMoveFinalSquare.getX();
         int end_y = lastMoveFinalSquare.getY();
         Piece enemyPawn = lastMoveFinalSquare.getOccupiedBy();
-        history.add(lastMove);
+        this.moveHistory.add(lastMove);
 
         int selectedPawn_x = this.startSquare.getX();
         int selectedPawn_y = this.startSquare.getY();
@@ -113,12 +119,29 @@ public class Move {
     }
 
     /**
+     * A function undoing the enPassant Move if your own King is in check afterwards.
+     * @param board The current board
+     */
+    protected void undoEnPassant(Board board) {
+        Move lastMove = this.moveHistory.pop();
+        Move secondLastMove = this.moveHistory.pop();
+        Square startPawn = lastMove.startSquare;
+        Square finalEnemy = secondLastMove.finalSquare;
+        Piece enemy = secondLastMove.movingPiece;
+
+        board.getChessBoard()[startPawn.getX()][startPawn.getY()].setOccupiedBy(this.movingPiece);
+        board.getChessBoard()[finalEnemy.getX()][finalEnemy.getY()].setOccupiedBy(enemy);
+        this.moveHistory.add(secondLastMove);
+    }
+
+    /**
      * A function executing a promotion on the board
      *
      * @param key   the letter the player enters indicating which Piece they want the Pawn to promote to
      * @param board the current board
      */
-    protected void promotion(char key, Board board) {
+    protected Piece doPromotion(char key, Board board) {
+        Piece enemy = this.movingPiece.getSquare().getOccupiedBy();
         this.movingPiece.getSquare().setOccupiedBy(null);
         int promo_x = this.finalSquare.getX();
         int promo_y = this.finalSquare.getY();
@@ -132,6 +155,25 @@ public class Move {
         } else if (key == 'B'){
             board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Bishop(this.finalSquare, this.movingPiece.getColour()));
         }
+        moveHistory.add(this);
+        return enemy;
+    }
+
+    /** A function undoing a promotion if your own King is in check afterwards
+     * @param board The current board
+     */
+    protected void undoPromotion(Board board) {
+        Move lastMove = moveHistory.pop();
+        Square start = lastMove.startSquare;
+        Piece pawn = lastMove.movingPiece;
+        Move secondLastMove = moveHistory.pop();
+        Square finish = lastMove.startSquare;
+        Piece enemy = secondLastMove.movingPiece;
+
+        board.getChessBoard()[start.getX()][start.getY()].setOccupiedBy(pawn);
+        board.getChessBoard()[finish.getX()][finish.getY()].setOccupiedBy(enemy);
+
+        moveHistory.add(secondLastMove);
     }
 
 }
