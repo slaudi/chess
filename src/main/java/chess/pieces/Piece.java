@@ -1,8 +1,13 @@
 package chess.pieces;
 
 import chess.game.Colour;
+import chess.game.Label;
 import chess.game.Square;
 import chess.game.Type;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The Piece class is the Superclass of the chess pieces on the board of the game
@@ -76,5 +81,50 @@ public abstract class Piece {
      * @return a boolean indicating if the move is allowed
      */
     public abstract boolean isPiecesMove(Square finalSquare);
+
+    /**
+     * Computes the direction a Piece is moving e.g. up-right vertically would be 1 in x-direction
+     * and -1 in y-direction
+     * @param finalSquare The Square the Piece is moving onto
+     * @return int[][] An Array with two ints, the x-direction and the y-direction
+     */
+    public abstract int[][] movingDirection(Square finalSquare);
+
+    /**
+     * Generates Path if Piece moves more than one Square
+     * @param finalSquare End-Square of Movement
+     * @return Path of moving Piece
+     */
+    public List<Square> generatePath(Square finalSquare) {
+        int[][] dir = this.movingDirection(finalSquare);
+        int dir_x = dir[0][0];
+        int dir_y = dir[0][1];
+        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
+        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
+        int squaresVisited = 0;
+
+        if (diff_x == diff_y || diff_y == 0) {
+            // Piece moves diagonally or horizontally
+            squaresVisited = diff_x;
+        } else {
+            // Piece moves vertically
+            squaresVisited = diff_y;
+        }
+
+        Square[][] move = new Square[1][squaresVisited-1];
+
+        if(squaresVisited > 1) {
+            // Piece moves more than one square
+            for (int i = 0; i < squaresVisited -1; i++) {
+                // stores squares except start and final square
+                int x = this.square.getX() + dir_x * (i + 1);
+                int y = this.square.getY() + dir_y * (i + 1);
+                move[0][i] = new Square(Label.values()[squaresVisited * x + y], x, y);
+            }
+        }
+        List<Square> squares = new ArrayList<>(Arrays.asList(move[0]).subList(0, move[0].length));
+        System.out.println(squares);
+        return squares;
+    }
 
 }
