@@ -75,4 +75,30 @@ public class Rook extends Piece {
         return diff_y == 0 || diff_x == 0;
     }
 
+    @Override
+    public int[][] movingDirection(Square finalSquare) {
+        int dir_x = 0;
+        int dir_y = 0;
+
+        if(finalSquare.getX() == this.square.getX()) {
+            // Rook moves vertically
+            if(finalSquare.getY() - this.square.getY() < 0) {
+                dir_y = -1; // Rook moves up
+            } else {
+                dir_y = 1; // Rook moves down
+            }
+        } else {
+            // Rook moves horizontally
+            if(finalSquare.getX() - this.square.getX() < 0) {
+                dir_x = -1; // Rook moves to the left
+            } else {
+                dir_x = 1; // Rook moves to the right
+            }
+        }
+
+        int[][] dir = new int[1][2];
+        dir[0][0] = dir_x;
+        dir[0][1] = dir_y;
+        return dir;
+    }
 }

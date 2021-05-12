@@ -75,4 +75,38 @@ public class Bishop extends Piece {
         return diff_x == diff_y;
     }
 
+    @Override
+    public int[][] movingDirection(Square finalSquare) {
+        int dir_x = 0;
+        int dir_y = 0;
+
+        if(finalSquare.getX() - this.square.getX() < 0) {
+            // Bishop moves to the left
+            if(finalSquare.getY() - this.square.getY() < 0) {
+                //Bishop moves left up
+                dir_x = -1;
+                dir_y = -1;
+            } else {
+                // Bishop moves left down
+                dir_x = -1;
+                dir_y = 1;
+            }
+        } else {
+            // Bishop moves to the right
+            if(finalSquare.getY() - this.square.getY() < 0) {
+                // Bishop moves right up
+                dir_x = 1;
+                dir_y = -1;
+            } else {
+                // Bishop moves right down
+                dir_x = 1;
+                dir_y = 1;
+            }
+        }
+        int[][] dir = new int[1][2];
+        dir[0][0] = dir_x;
+        dir[0][1] = dir_y;
+        return dir;
+    }
+
 }

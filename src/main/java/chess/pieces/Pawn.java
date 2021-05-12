@@ -147,4 +147,11 @@ public class Pawn extends Piece {
         }
     }
 
+    @Override
+    public int[][] movingDirection(Square finalSquare) {
+        // Pawn doesn't need a path, moves only one Square at a time
+        int squaresVisited = 0;
+        return new int[1][squaresVisited];
+    }
+
 }
