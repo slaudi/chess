@@ -74,11 +74,5 @@ public class King extends Piece {
         return diffX < 2 && diffY < 2;
     }
 
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        // King has no path, moves only one Square at a time
-        int squaresVisited = 0;
-        return new int[1][squaresVisited];
-    }
 
 }
