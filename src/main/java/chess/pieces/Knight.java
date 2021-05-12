@@ -74,11 +74,4 @@ public class Knight extends Piece {
 
         return diff_x == 2 && diff_y == 1 || diff_x == 1 && diff_y == 2;
     }
-
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        // Knight doesn't need a direction, is allowed to leap
-        int squaresVisited = 0;
-        return new int[1][squaresVisited];
-    }
 }

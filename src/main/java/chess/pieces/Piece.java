@@ -83,20 +83,19 @@ public abstract class Piece {
     public abstract boolean isPiecesMove(Square finalSquare);
 
     /**
-     * Computes the direction a Piece is moving e.g. up-right vertically would be 1 in x-direction
-     * and -1 in y-direction
-     * @param finalSquare The Square the Piece is moving onto
-     * @return int[][] An Array with two ints, the x-direction and the y-direction
-     */
-    public abstract int[][] movingDirection(Square finalSquare);
-
-    /**
      * Generates Path if Piece moves more than one Square
      * @param finalSquare End-Square of Movement
      * @return Path of moving Piece
      */
     public List<Square> generatePath(Square finalSquare) {
-        int[][] dir = this.movingDirection(finalSquare);
+        int[][] dir = new int[1][1];
+        if (this instanceof Queen) {
+            dir = ((Queen)this).movingDirection(finalSquare);
+        } else if (this instanceof Bishop) {
+            dir = ((Bishop)this).movingDirection(finalSquare);
+        } else if (this instanceof Rook) {
+            dir = ((Rook)this).movingDirection(finalSquare);
+        }
         int dir_x = dir[0][0];
         int dir_y = dir[0][1];
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
@@ -122,9 +121,7 @@ public abstract class Piece {
                 move[0][i] = new Square(Label.values()[squaresVisited * x + y], x, y);
             }
         }
-        List<Square> squares = new ArrayList<>(Arrays.asList(move[0]).subList(0, move[0].length));
-        System.out.println(squares);
-        return squares;
+        return new ArrayList<>(Arrays.asList(move[0]).subList(0, move[0].length));
     }
 
 }

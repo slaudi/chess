@@ -98,7 +98,6 @@ public class Pawn extends Piece {
      * @return a boolean indicating if a capture is allowed
      */
     public boolean canCapture(Square finalSquare) {
-
         int diffX = finalSquare.getX() - this.square.getX();
         int diffY = finalSquare.getY() - this.square.getY();
         if(this.colour == Colour.WHITE) {
@@ -145,13 +144,6 @@ public class Pawn extends Piece {
         } else {
             return finalSquare.getY() == 7;
         }
-    }
-
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        // Pawn doesn't need a path, moves only one Square at a time
-        int squaresVisited = 0;
-        return new int[1][squaresVisited];
     }
 
 }
