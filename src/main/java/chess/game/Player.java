@@ -6,11 +6,10 @@ package chess.game;
 public class Player {
     Colour colour;
     boolean inCheck = false;
-    boolean isCheckMate = false;
     boolean loser = false;
 
     /**
-     * Create a new Player instance.
+     * Creates a new Player instance.
      *
      * @param colour Decides if Colour of Players Chess-Pieces is black or white
      */
@@ -23,11 +22,6 @@ public class Player {
         return colour;
     }
 
-    /**
-     * Sets Player-Colour to black or white.
-     *
-     * @param x Colour: Black or White
-     */
     public void setColour(Colour x) {
         this.colour = x;
     }
@@ -36,37 +30,18 @@ public class Player {
         return this.inCheck;
     }
 
-    /**
-     * Sets Player-Check-Status to true or false.
-     *
-     * @param x boolean
-     */
     public void setInCheck(boolean x) {
         this.inCheck = x;
     }
 
-    public boolean isCheckMate() {
-        return this.isCheckMate;
-    }
-
     /**
-     * Sets Player-CheckMate-Status to false or true(gameOver).
-     *
-     * @param x boolean
+     * Getter for the variable 'loser'
+     * @return boolean Returns 'true' if the Player lost the game
      */
-    public void setCheckMate(boolean x) {
-        this.isCheckMate = x;
-    }
-
     public boolean isLoser() {
         return loser;
     }
 
-    /**
-     * Sets if Player has lost.
-     *
-     * @param loose Boolean: true = Player has lost.
-     */
     public void setLoser(boolean loose) {
         this.loser = loose;
     }
