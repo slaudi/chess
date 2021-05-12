@@ -20,6 +20,6 @@ class ColourTest {
 
     @Test
     void valueOf() {
-        assertEquals(Colour.WHITE, Colour.valueOf("WHITE"));
+        assertEquals(WHITE, Colour.valueOf("WHITE"));
     }
 }
