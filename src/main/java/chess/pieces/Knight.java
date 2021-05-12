@@ -72,7 +72,7 @@ public class Knight extends Piece {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
-        return ((diff_x == 2 && diff_y == 1) || (diff_x == 1 && diff_y == 2));
+        return diff_x == 2 && diff_y == 1 || diff_x == 1 && diff_y == 2;
     }
 
 }

@@ -17,7 +17,6 @@ public class Board {
     List<Piece> whitePieces = new ArrayList<>(16);
     List<Piece> blackPieces = new ArrayList<>(16);
 
-
     /**
      * Create a new Board instance when starting a new Game.
      */
@@ -34,7 +33,8 @@ public class Board {
 
     /**
      * Getter of a copy of the board
-     * @return Square[][] Two-dimensional Square-Array representing the current state of game
+     *
+     * @return Square[][] A copy of the game
      */
     public Square[][] getChessBoard() {
         Square[][] deepCopy = new Square[this.chessBoard.length][];
@@ -91,7 +91,7 @@ public class Board {
      * Getter for the white alliance
      * @return ArrayList All white pieces
      */
-    ArrayList<Piece> getWhiteAlliance() {
+    List<Piece> getWhiteAlliance() {
         return new ArrayList<>(whitePieces);
     }
 
@@ -99,7 +99,7 @@ public class Board {
      * Getter for the black alliance
      * @return ArrayList All black pieces
      */
-    ArrayList<Piece> getBlackAlliance() {
+    List<Piece> getBlackAlliance() {
         return new ArrayList<>(blackPieces);
     }
 
@@ -162,7 +162,7 @@ public class Board {
 
     /**
      * When a promotion is possible, the function extracts the letter from the input to determine the
-     * Piece to which the player wants to promote the Pawn
+     * Piece to which the player wants to promote the Pawn.
      *
      * @param input a String of the input
      * @return a char representing the requested promotion
