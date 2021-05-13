@@ -4,6 +4,7 @@ import chess.pieces.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -16,7 +17,7 @@ public class Game {
     public Board chessBoard;
     public List<Piece> beatenPieces;
     public Player currentPlayer;
-    Move move;
+    Stack<Move> moveHistory;
 
     /**
      * Constructor for a Game
@@ -27,6 +28,7 @@ public class Game {
         this.currentPlayer = playerWhite;   // White always begins
         this.chessBoard = new Board();
         this.beatenPieces = new ArrayList<>();
+        this.moveHistory = new Stack<>();
     }
 
     /**
@@ -39,51 +41,57 @@ public class Game {
      */
     public boolean processMove(Square startSquare, Square finalSquare, char key) {
         Move currentMove = new Move(startSquare, finalSquare);
+        this.moveHistory.add(currentMove);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
+        Move lastMove = this.moveHistory.peek();
+        Move secondLastMove = this.moveHistory.peek();
 
         if (targetPiece != null && selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
-            // if the move is castling and it is allowed to do the move
+            // move is castling
             currentMove.castlingMove(chessBoard);
             targetPiece.setHasMoved(true);
         }
-        if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, currentMove.moveHistory)) {
-            // if the move is an en passant capture
-            Piece enemy = currentMove.enPassantMove(chessBoard);
-            beatenPieces.add(enemy);
+        if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
+            // move is an en passant capture
+            Piece enemy = currentMove.enPassantMove(lastMove, chessBoard);
             if (isInCheck()) {
-                currentMove.undoEnPassant(this.chessBoard);
-                beatenPieces.remove(enemy);
+                // King is in check, undo move
+                currentMove.undoEnPassant(lastMove, secondLastMove, this.chessBoard);
+                this.moveHistory.remove(lastMove);
                 return false;
             }
+            beatenPieces.add(enemy);
         }
         if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
-            // if the move is a promotion
-            Piece enemy = currentMove.doPromotion(key, chessBoard);
-            beatenPieces.add(enemy);
+            // move is a promotion
+            Piece enemy = currentMove.doPromotion(lastMove, key, chessBoard);
             if (isInCheck()) {
-                currentMove.undoPromotion(this.chessBoard);
-                beatenPieces.remove(enemy);
+                // King is in check, undo move
+                currentMove.undoPromotion(lastMove, secondLastMove, this.chessBoard);
+                moveHistory.remove(lastMove);
                 return false;
             }
+            beatenPieces.add(enemy);
         }
         // all other moves
         currentMove.doMove(this.chessBoard);
+        if (isInCheck()) {
+            // King is in check, undo move
+            currentMove.undoMove(lastMove, this.chessBoard);
+            moveHistory.remove(lastMove);
+            return false;
+        }
         if (targetPiece != null) {
             // add a beaten piece to the ArrayList
             beatenPieces.add(targetPiece);
-        }
-        if (isInCheck()) {
-            // if after the move the King is in check, undo the move
-            currentMove.undoMove(this.chessBoard);
-            return false;
         }
         changePlayer(finalSquare);
         return true;
     }
 
     /**
-     * Evaluates semantically correctness of input/move
+     * Evaluates semantically correctness of input move
      *
      * @param selectedPiece Piece which Player wants to move
      * @param finalSquare Square which Player wants his Piece to move to
@@ -104,25 +112,22 @@ public class Game {
                     return true;
                 } else if (selectedPiece.getType() == Type.PAWN) {
                     // if selected Piece is a Pawn check if it is allowed to capture the enemy Piece
-                    return ((Pawn) selectedPiece).canCapture(finalSquare) && !isInCheck();
+                    return ((Pawn) selectedPiece).canCapture(this.moveHistory);
                 } else {
                     // check for every one else
-                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare)
-                            && !isInCheck();
+                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
                 }
             } else {
                 // the second Square is empty
                 if (selectedPiece.getType() == Type.PAWN) {
-                    // check if it is a Pawn move or en passant is possible
-                    return selectedPiece.isPiecesMove(finalSquare) || ((Pawn) selectedPiece).isEnPassant(finalSquare, move.getMoveHistory())
-                            && !isInCheck();
+                    // is it a Pawn move or is en passant possible
+                    return selectedPiece.isPiecesMove(finalSquare) || ((Pawn) selectedPiece).isEnPassant(finalSquare, this.moveHistory);
                 } else if (selectedPiece.getType() == Type.KING) {
                     // check if it is a King move and it doesn't put the King in check
                     return selectedPiece.isPiecesMove(finalSquare) && isSafeSquare(finalSquare);
                 }  else {
                     // check for every one else
-                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare)
-                            && !isInCheck();
+                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
                 }
             }
         }
@@ -137,11 +142,11 @@ public class Game {
     public boolean isADraw() {
         if (!isInCheck()) {
             // King is not in check
-            if (!getAlliedPieces().isEmpty()) {
+            if (!currentPlayer.getAlliedPieces(beatenPieces, chessBoard).isEmpty()) {
                 // if ally exists - not a draw
                 return false;
             }
-            // if King can Move it's not a draw
+            // if King can move it's not a draw
             return !canKingMove();
         }
         // King is in check, but that's not a draw
@@ -158,7 +163,7 @@ public class Game {
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
                 // looping through board to check if Square is next to King and is not occupied by ally
-                if (isSurroundingSquare(kingSquare, chessBoard.getChessBoard()[i][j])
+                if (Piece.isSurroundingSquare(kingSquare, chessBoard.getChessBoard()[i][j])
                         && chessBoard.getChessBoard()[i][j].getOccupiedBy().getColour() != currentPlayer.getColour()) {
                     // if a Square is next to the King is it safe to move there
                     return isSafeSquare(chessBoard.getChessBoard()[i][j]);
@@ -168,7 +173,33 @@ public class Game {
         return false;
     }
 
-
+    /**
+     * Evaluates if King is able to safely move to selected square
+     * @param finalSquare The Square the King should move to
+     * @return boolean Returns 'true' if King is able to move safely
+     */
+    private boolean isSafeSquare(Square finalSquare) {
+        List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
+        for (Piece enemyPiece : enemies) {
+            if (enemyPiece.getType() == Type.BISHOP
+                    || enemyPiece.getType() == Type.ROOK
+                    || enemyPiece.getType() == Type.QUEEN) {
+                if (enemyPiece.isPiecesMove(finalSquare)
+                        && isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
+                    return false;
+                }
+            } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
+                if (enemyPiece.isPiecesMove(finalSquare)) {
+                    return false;
+                }
+            } else {
+                if(((Pawn)enemyPiece).canCapture(this.moveHistory)) {//NOPMD a 'true'-return would break the for-loop
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     /**
      * Evaluates if direct path from one square to another is empty
@@ -178,24 +209,24 @@ public class Game {
      * @return returns if selected path is empty
      */
     private boolean isPathEmpty (Piece piece, Square finalSquare){
-        if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
+        if (Piece.isSurroundingSquare(piece.getSquare(), finalSquare)) {
             return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != currentPlayer.getColour();
         }
-        Type type = piece.getType();
-        List<Square> path = generatePath(type, piece.getSquare(), finalSquare);
-        if (path.isEmpty() && type == Type.KNIGHT || type == Type.PAWN) {
-            // Knight can leap, Pawns don't have a path
+        List<Square> path = piece.generatePath(finalSquare);
+        if (piece.getType() == Type.BISHOP && path.isEmpty()) {
+            // Knight can leap
             return true;
-        } else if (path.isEmpty()) {
+        } else if (piece.getType() == Type.KING || piece.getType() == Type.PAWN) {
+            // King and Pawn don't have a path
             return false;
-        }  else {
+        } else {
             for (Square visitedSquare : path) {
                 if (visitedSquare.getOccupiedBy() != null) {
                     return false;
                 }
             }
-            return true;
         }
+        return true;
     }
 
     /**
@@ -203,11 +234,14 @@ public class Game {
      *
      * @return returns checkStatus
      */
-    public boolean isInCheck (){
+    private boolean isInCheck(){
+        // TODO: ein Piece einem enemy in den Weg stellen funktioniert noch nicht bei check!?
         Square squareKing = this.chessBoard.getSquareOfKing(currentPlayer.getColour());
-        List<Piece> enemies = getEnemyPieces();
+        List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
         for (Piece enemyPiece : enemies) {
-            if (enemyPiece.isPiecesMove(squareKing)
+            if (enemyPiece instanceof Pawn) {
+                return ((Pawn)enemyPiece).canCapture(this.moveHistory);
+            } else if (enemyPiece.isPiecesMove(squareKing)
                     && isPathEmpty(enemyPiece, squareKing)) {
                 currentPlayer.setInCheck(true);
                 return true;
@@ -222,13 +256,13 @@ public class Game {
      *
      * @return boolean returns if Player is checkMate or not
      */
-    public boolean isCheckMate(Square finalSquare) {
+    private boolean isCheckMate(Square finalSquare) {
         if (currentPlayer.isInCheck()) {
             if (canKingMove()  && isSafeSquare(finalSquare)) {
                 return false;
             }
             // can ally defend the King if the King can't move
-            List<Piece> enemies = getEnemyPieces();
+            List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
             for (Piece enemyPiece : enemies) {
                 if (isMoveAllowed(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
                     return !canDefendKing(enemyPiece);
@@ -249,13 +283,15 @@ public class Game {
      * @return boolean Returns 'true' if Player is able to avoid check by using another Piece
      */
     private boolean canDefendKing(Piece enemyPiece) {
-        List<Piece> allies = getAlliedPieces();
+        List<Piece> allies = currentPlayer.getAlliedPieces(beatenPieces, chessBoard);
         for (Piece alliedPiece : allies) {
             if (isMoveAllowed(alliedPiece, enemyPiece.getSquare())) {
                 return true;
             } else {
-                List<Square> enemyPath = generatePath(enemyPiece.getType(),
-                        enemyPiece.getSquare(), chessBoard.getSquareOfKing(currentPlayer.getColour()));
+                List<Square> enemyPath = enemyPiece.generatePath(enemyPiece.getSquare());
+                if (enemyPath.isEmpty()) {
+                    return false;
+                }
                 for (Square end : enemyPath) {
                     if (isMoveAllowed(alliedPiece, end)) {
                         return true;
@@ -267,107 +303,6 @@ public class Game {
     }
 
     /**
-     * Evaluates if King is able to safely move to selected square
-     * @param finalSquare The Square the King should move to
-     * @return boolean Returns 'true' if King is able to move safely
-     */
-    private boolean isSafeSquare(Square finalSquare) {
-        List<Piece> enemies = getEnemyPieces();
-        for (Piece enemyPiece : enemies) {
-            if (enemyPiece.getType() == Type.BISHOP
-                    || enemyPiece.getType() == Type.ROOK
-                    || enemyPiece.getType() == Type.QUEEN) {
-                if (enemyPiece.isPiecesMove(finalSquare) &&
-                        isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
-                    return false;
-                }
-            } else if (enemyPiece.getType() == Type.KNIGHT) {
-                if (enemyPiece.isPiecesMove(finalSquare)) {
-                    return false;
-                }
-            } else if (enemyPiece.getType() == Type.KING) {
-                    if (enemyPiece.isPiecesMove(finalSquare)) {
-                        return false;
-                    }
-            } else {
-                if (enemyPiece instanceof Pawn) {
-                    return ((Pawn)enemyPiece).canCapture(finalSquare);
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Generates Path if Piece moves more than one Square
-     * @param type Type of Piece
-     * @param startSquare Start-Square of Movement
-     * @param finalSquare End-Square of Movement
-     * @return Path of moving Piece
-     */
-    private List<Square> generatePath(Type type, Square startSquare, Square finalSquare) {
-        List<Square> path = new ArrayList<>();
-        if (type == Type.QUEEN) {
-            if (startSquare.getX() - finalSquare.getX() == 0) {                                 //vertical move
-                if (Math.abs(startSquare.getY() - finalSquare.getY()) > 1) {                    //Queen moves more than one Square
-                    int from = Math.min(startSquare.getY(), finalSquare.getY());
-                    for (int i = 1; i < Math.abs(startSquare.getY() - finalSquare.getY()); i++) {
-                        path.add(chessBoard.getChessBoard()[startSquare.getX()][from + i]);
-                    }
-                }
-            } else if (startSquare.getY() - finalSquare.getY() == 0){                           //horizontal move
-                if (Math.abs(startSquare.getX() - finalSquare.getX()) > 1) {                    //Queen moves more than one Square
-                    int from = Math.min(startSquare.getX(), finalSquare.getX());
-                    for (int i = 1; i < Math.abs(startSquare.getX() - finalSquare.getX()); i++) {
-                        path.add(chessBoard.getChessBoard()[from + i][startSquare.getY()]);
-                    }
-                }
-            }
-            else {
-                int diffX = finalSquare.getX() - startSquare.getX();                                // if positive: Queen moves from up to down
-                int diffY = finalSquare.getY() - startSquare.getY();                                // if positive: Queen moves from left to right
-                int dirX = diffX / Math.abs(diffX);                         // if positive: Queen moves from up to down
-                int dirY = diffY / Math.abs(diffY);                         // if positive: Queen moves from left to right
-                if (Math.abs(diffX) > 1){                                   // Queen moves more than one Square
-                    for (int i = 1; i < Math.abs(diffX); i++){
-                        path.add(chessBoard.getChessBoard()[startSquare.getX() + i * dirX][startSquare.getY() + i * dirY]);
-                    }
-                }
-            }
-
-        } else if (type == Type.BISHOP) {
-            int diffX = finalSquare.getX() - startSquare.getX();                                // if positive: Bishop moves from up to down
-            int diffY = finalSquare.getY() - startSquare.getY();                                // if positive: Bishop moves from left to right
-            int dirX = diffX / Math.abs(diffX);                         // if positive: Bishop moves from up to down
-            int dirY = diffY / Math.abs(diffY);                         // if positive: Bishop moves from left to right
-            if (Math.abs(diffX) > 1){                                   // Bishop moves more than one Square
-                for (int i = 1; i < Math.abs(diffX); i++){
-                    path.add(chessBoard.getChessBoard()[startSquare.getX() + i * dirX][startSquare.getY() + i * dirY]);
-                }
-            }
-
-        } else if (type == Type.ROOK) {
-            if (startSquare.getX() - finalSquare.getX() == 0) {                                 //vertical move
-                if (Math.abs(startSquare.getY() - finalSquare.getY()) > 1) {                    //Rook moves more than one Square
-                    int from = Math.min(startSquare.getY(), finalSquare.getY());
-                    for (int i = 1; i < Math.abs(startSquare.getY() - finalSquare.getY()); i++) {
-                        path.add(chessBoard.getChessBoard()[startSquare.getX()][from + i]);
-                    }
-                }
-            } else {                                                    //horizontal move
-                if (Math.abs(startSquare.getX() - finalSquare.getX()) > 1) {                    //Rook moves more than one Square
-                    int from = Math.min(startSquare.getX(), finalSquare.getX());
-                    for (int i = 1; i < Math.abs(startSquare.getX() - finalSquare.getX()); i++) {
-                        path.add(chessBoard.getChessBoard()[from + i][startSquare.getY()]);
-                    }
-                }
-            }
-        }
-        return new ArrayList<>(path);
-    }
-
-
-    /**
      * Evaluates if the input castling move is possible by checking the selected King and Rook
      * @param selectedPiece The King of the Player, selected first
      * @param targetPiece The selected Rook, which can be kingside or queenside
@@ -377,7 +312,7 @@ public class Game {
         // selectedPiece is King, targetPiece is Rook
         if (!selectedPiece.isHasMoved() && !targetPiece.isHasMoved() // King and Rook didn't move yet
                 && isPathEmpty(selectedPiece, targetPiece.getSquare())) {   // no pieces between King and Rook
-            List<Piece> enemies = getEnemyPieces();
+            List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
             int diff = Math.abs(targetPiece.getSquare().getX() - selectedPiece.getSquare().getX());
             int king_x;
             int king_y = selectedPiece.getSquare().getY();
@@ -396,69 +331,12 @@ public class Game {
         return true;
     }
 
-    /**
-     * Evaluates if a Square is directly next to a selected Piece
-     * @param piecesSquare The Piece which wants to move
-     * @param squareOfInterest The Square where the Piece wants to go to
-     * @return boolean Returns 'true' if selected Square to move to is only one Square away from the Piece
-     */
-    private boolean isSurroundingSquare(Square piecesSquare, Square squareOfInterest){
-        int diffX = piecesSquare.getX() - squareOfInterest.getX();
-        int diffY = piecesSquare.getY() - squareOfInterest.getY();
-        return diffX < 2 && diffY < 2;
-    }
-
-    /**
-     * A function putting all the allied Pieces (the same colour) on the current board of a certain Piece
-     * in a ArrayList.
-     * @return ArrayList Containing all active allied Pieces
-     */
-    public List<Piece> getAlliedPieces() {
-        List<Piece> allies;
-        if(currentPlayer.getColour() == Colour.WHITE) {
-            allies = chessBoard.getWhiteAlliance();
-        } else {
-            allies = chessBoard.getBlackAlliance();
-        }
-        for (int i = 0; i < allies.size(); i++) {//NOPMD if it is ForEach, the iterator doesn't work for getChessBoard//NOPMD
-            for (Piece beaten : beatenPieces) {
-                if (allies.get(i).getColour() == beaten.getColour() && allies.get(i).getType() == beaten.getType()
-                    && beaten.equals(allies.get(i))) {
-                    allies.remove(allies.get(i));
-                }
-            }
-        }
-        return new ArrayList<>(allies);
-    }
-
-    /**
-     * A function putting all the enemy Pieces (the other colour) on the current board of a certain Piece
-     * in a ArrayList.
-     * @return ArrayList Containing all active enemy Pieces.
-     */
-    public List<Piece> getEnemyPieces() {
-        List<Piece> enemies;
-        if(currentPlayer.getColour() == Colour.WHITE) {
-            enemies = chessBoard.getBlackAlliance();
-        } else {
-            enemies = chessBoard.getWhiteAlliance();
-        }
-        for (int i = 0; i < enemies.size(); i++) {//NOPMD if it is ForEach, the iterator doesn't work for getChessBoard
-            for (Piece beaten : beatenPieces) {
-                if (enemies.get(i).getColour() == beaten.getColour() && enemies.get(i).getType() == beaten.getType()
-                    && beaten.equals(enemies.get(i))) {
-                    enemies.remove(enemies.get(i));
-                }
-            }
-        }
-        return new ArrayList<>(enemies);
-    }
-
-    void changePlayer(Square finalSquare) {
+    private void changePlayer(Square finalSquare) {
         // change currentPlayer to next Colour
         currentPlayer = currentPlayer == playerWhite ? playerBlack : playerWhite;
 
         if (isCheckMate(finalSquare)) {
+            // check if this player is checkmate after the move
             currentPlayer.setLoser(true);
         }
     }

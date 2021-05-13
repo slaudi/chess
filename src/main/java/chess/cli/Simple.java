@@ -38,6 +38,7 @@ public class Simple {
                 if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {                     //validates user-input semantically
                     System.out.println("!" + userInput + "\n");
                     if (!currentGame.processMove(startSquare, finalSquare, key)) {
+                        System.out.println("!Move not allowed\n");
                         break;
                     }
                 } else {

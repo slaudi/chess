@@ -74,5 +74,4 @@ public class Knight extends Piece {
 
         return diff_x == 2 && diff_y == 1 || diff_x == 1 && diff_y == 2;
     }
-
 }

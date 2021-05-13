@@ -18,57 +18,17 @@ public class Cli {
      * @param args The command line arguments passed to the application
      */
     public static void main(String[] args) {
-        Game currentGame = new Game();                                                          //initilizes new Game
-        currentGame.chessBoard.toConsole();                                                          //shows initilized Board to Player
+        Game currentGame = new Game();
+        currentGame.chessBoard.toConsole();
 
-        while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {                //keeps game running
+        while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {
+            // to keep the game running
 
-            if (currentGame.currentPlayer.isInCheck()) {                                       //checks Check-Status of current Player
-                System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
-            }
-            System.out.println("Now playing as " + currentGame.currentPlayer.getColour());      //announces current Player-Colour
-            String userInput = getInput();                                                      //gets inPut from current Player from Console
-
-
-            while (!generateAnswer(userInput, currentGame)) {                                   //evaluates Input
-                if (userInput.equals("beaten") || !isValidMove(userInput)) {
-                    userInput = getInput();
-                    continue;
-                }
-
-                Piece selectedPiece = currentGame.chessBoard.getMovingPieceFromInput(userInput);     //sets Moving Piece for evaluation
-                Piece targetPiece = currentGame.chessBoard.getFinalSquareFromInput(userInput).getOccupiedBy();// sets Square to move to for evaluation
-
-                if (selectedPiece == null) {                                                    //evaluates if there is any Piece on selected Square
-                    System.out.println("There is no Piece to move!");
-                }
-                //Console-Output if selected Piece has wrong Colour
-                assert selectedPiece != null;
-                if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
-                    System.out.println("This is not your Piece to move!");
-                }
-                if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
-                    System.out.println("You have to move!");
-                }
-                if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {  //Console-Output if selected Square to move to is occupied by an own Piece
-                    System.out.println("You cannot attack your own Piece!");
-                }
-                userInput = getInput();
-            }
-
-            if (currentGame.currentPlayer.isLoser()) {                                         //evaluates if current Player has already lost
-            continue;
-            }
-            Square startSquare = currentGame.chessBoard.getStartSquareFromInput(userInput);
-            Square finalSquare = currentGame.chessBoard.getFinalSquareFromInput(userInput);
-            char key = currentGame.chessBoard.getPromotionKey(userInput);
-
-            if (!currentGame.processMove(startSquare, finalSquare, key)) {                           //checks if input-move is allowed
-                // back to the beginning of while loop
+            if (!canPieceMove(currentGame)) {
                 continue;
             }
 
-            currentGame.chessBoard.toConsole();                                                      //gives current state of game to console
+            currentGame.chessBoard.toConsole();
         }
         if (currentGame.currentPlayer.isLoser()) {                                              //checks if current Player has lost or game is draw
             System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
@@ -83,43 +43,71 @@ public class Cli {
      *
      * @return a String of the input
      */
-    public static String getInput () {
+    private static String getInput () {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Move or Command:");
         return scanner.nextLine();
     }
 
-    /**
-     * evaluates Console-Input and state of current game
-     *
-     * @param userInput Input from Console as a String
-     * @param currentGame the current game
-     * @return a boolean indicating if the move is accepted
-     */
-    public static boolean generateAnswer (String userInput, Game currentGame){
-        if ("beaten".equals(userInput)) {                                                 //gives list of beaten pieces to console
-            System.out.println("Beaten pieces:" + currentGame.beatenPieces);
+    private static boolean canPieceMove(Game currentGame) {
+        if (currentGame.currentPlayer.isInCheck()) {
+            System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
+        }
+        System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
+        String userInput = getInput();
+        if (userInput.equals("beaten")) {
+            System.out.println(currentGame.beatenPieces);
             return false;
         }
-        if ("giveUp".equals(userInput)) {                                                   //ends game for current player
-            System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
+        if (userInput.equals("giveUp")) {
+            System.out.println(currentGame.currentPlayer.getColour() + "gave up!");
             currentGame.currentPlayer.setLoser(true);
-            return true;
+            return false;
         }
-        if (isValidMove(userInput)) {                                                       //validates user-input syntactically
-            Piece selectedPiece = currentGame.chessBoard.getMovingPieceFromInput(userInput);
-            Square finalSquare = currentGame.chessBoard.getFinalSquareFromInput(userInput);
+        if (!isValidMove(userInput)) {
+            // validates user-input syntactically
+            System.out.println("!Invalid move\n");
+            return false;
+        }
+        Piece selectedPiece = currentGame.chessBoard.getMovingPieceFromInput(userInput);
+        Square startSquare = currentGame.chessBoard.getStartSquareFromInput(userInput);
+        Square finalSquare = currentGame.chessBoard.getFinalSquareFromInput(userInput);
+        char key = currentGame.chessBoard.getPromotionKey(userInput);
 
-            if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {                     //validates user-input semantically
-                System.out.println("!" + userInput);
+        if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
+            // validates user-input semantically
+            System.out.println("!" + userInput);
+            if (currentGame.processMove(startSquare, finalSquare, key)) {
                 return true;
             } else {
-                System.out.println("!Move not allowed");
+                // if move puts King in check
+                System.out.println("!Move not allowed   \n" + currentGame.currentPlayer.getColour() + " would be in check!\n");
                 return false;
             }
         } else {
-            System.out.println("!Invalid move");
+            System.out.println("!Move not allowed\nTry again!");
+            generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
+        }
+    }
+
+    /**
+     * evaluates Console-Input and state of current game
+     *
+     * @param selectedPiece The Piece the player wants to move
+     * @param finalSquare   The Square the piece wants to move to
+     * @param currentGame   The current game
+     */
+    private static void generateAnswer (Piece selectedPiece, Square finalSquare, Game currentGame){
+        Piece targetPiece = finalSquare.getOccupiedBy();
+        if (selectedPiece == null) {
+            System.out.println("There is no Piece to move!\n");
+        } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
+            System.out.println("This is not your Piece to move!\n");
+        } else if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
+            System.out.println("You have to move!\n");
+        } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
+            System.out.println("You cannot attack your own Piece!\n");
         }
     }
 
@@ -129,8 +117,7 @@ public class Cli {
      * @param consoleInput Input of active Player as a String.
      * @return a boolean if the syntax of the input is correct
      */
-    public static boolean isValidMove(String consoleInput){
-
+    private static boolean isValidMove(String consoleInput){
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
                 char[] keys = {'Q','B','N','R'};
@@ -153,7 +140,6 @@ public class Cli {
             return false;
         }
     }
-
 
 }
 

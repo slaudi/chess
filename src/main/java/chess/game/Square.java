@@ -12,7 +12,7 @@ public class Square {
     private Piece occupiedBy = null;
 
     /**
-     * Create a single square instance when starting a new Game.
+     * Constructor for a single square instance when starting a new Game.
      *
      * @param label Name of Square.
      * @param x x coordinate of this Square (line from left to right).
@@ -42,10 +42,6 @@ public class Square {
         return this.y;
     }
 
-    /**
-     * Gets Piece standing on Square
-     * @return
-     */
     public Piece getOccupiedBy() {
         return this.occupiedBy;
     }
@@ -98,8 +94,7 @@ public class Square {
             result = 1;
         } else if (i == '6') {
             result = 2;
-        }
-        else if (i == '5') {
+        } else if (i == '5') {
             result = 3;
         } else if (i == '4') {
             result = 4;
