@@ -100,6 +100,9 @@ public class Pawn extends Piece {
     public boolean canCapture(Square finalSquare) {
         int diffX = finalSquare.getX() - this.square.getX();
         int diffY = finalSquare.getY() - this.square.getY();
+        if (finalSquare.getOccupiedBy() == null) {
+            return false;
+        }
         if(this.colour == Colour.WHITE) {
             return Math.abs(diffX) == 1 && diffY == -1;
         }
@@ -116,19 +119,21 @@ public class Pawn extends Piece {
      * @return a boolean indicating if en passant is possible
      */
     public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
-        if (!history.isEmpty()) {
-            Move lastMove = history.pop();
+        Move thisMove = history.pop();
+        if (history.size() > 0) {
+            Move lastMove = history.peek();
             Square start = lastMove.getStartSquare();
             Square end = lastMove.getFinalSquare();
-            history.add(lastMove);
             int diff = Math.abs(start.getY() - end.getY());
 
             if (diff == 2 && end.getOccupiedBy().getType() == this.type
                     && end.getOccupiedBy().getColour() != this.colour
                     && end.getY() == this.square.getY()) {
+                history.add(thisMove);
                 return canCapture(finalSquare);
             }
         }
+        history.add(thisMove);
         return false;
     }
 
