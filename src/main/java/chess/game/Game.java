@@ -112,7 +112,7 @@ public class Game {
                     return true;
                 } else if (selectedPiece.getType() == Type.PAWN) {
                     // if selected Piece is a Pawn check if it is allowed to capture the enemy Piece
-                    return ((Pawn) selectedPiece).canCapture(finalSquare);
+                    return ((Pawn) selectedPiece).canCapture(this.moveHistory);
                 } else {
                     // check for every one else
                     return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
@@ -178,7 +178,7 @@ public class Game {
      * @param finalSquare The Square the King should move to
      * @return boolean Returns 'true' if King is able to move safely
      */
-    public boolean isSafeSquare(Square finalSquare) {
+    private boolean isSafeSquare(Square finalSquare) {
         List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
         for (Piece enemyPiece : enemies) {
             if (enemyPiece.getType() == Type.BISHOP
@@ -193,7 +193,7 @@ public class Game {
                     return false;
                 }
             } else {
-                if(((Pawn)enemyPiece).canCapture(finalSquare)) {//NOPMD a 'true'-return would break the for-loop
+                if(((Pawn)enemyPiece).canCapture(this.moveHistory)) {//NOPMD a 'true'-return would break the for-loop
                     return false;
                 }
             }
@@ -213,9 +213,12 @@ public class Game {
             return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != currentPlayer.getColour();
         }
         List<Square> path = piece.generatePath(finalSquare);
-        if (path.isEmpty()) {
-            // Knight can leap, Pawn/King don't have a path
+        if (piece.getType() == Type.BISHOP && path.isEmpty()) {
+            // Knight can leap
             return true;
+        } else if (piece.getType() == Type.KING || piece.getType() == Type.PAWN) {
+            // King and Pawn don't have a path
+            return false;
         } else {
             for (Square visitedSquare : path) {
                 if (visitedSquare.getOccupiedBy() != null) {
@@ -231,11 +234,14 @@ public class Game {
      *
      * @return returns checkStatus
      */
-    public boolean isInCheck (){
+    private boolean isInCheck(){
+        // TODO:
         Square squareKing = this.chessBoard.getSquareOfKing(currentPlayer.getColour());
         List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
         for (Piece enemyPiece : enemies) {
-            if (enemyPiece.isPiecesMove(squareKing)
+            if (enemyPiece instanceof Pawn) {
+                return ((Pawn)enemyPiece).canCapture(this.moveHistory);
+            } else if (enemyPiece.isPiecesMove(squareKing)
                     && isPathEmpty(enemyPiece, squareKing)) {
                 currentPlayer.setInCheck(true);
                 return true;
@@ -250,7 +256,7 @@ public class Game {
      *
      * @return boolean returns if Player is checkMate or not
      */
-    public boolean isCheckMate(Square finalSquare) {
+    private boolean isCheckMate(Square finalSquare) {
         if (currentPlayer.isInCheck()) {
             if (canKingMove()  && isSafeSquare(finalSquare)) {
                 return false;
@@ -325,7 +331,7 @@ public class Game {
         return true;
     }
 
-    void changePlayer(Square finalSquare) {
+    private void changePlayer(Square finalSquare) {
         // change currentPlayer to next Colour
         currentPlayer = currentPlayer == playerWhite ? playerBlack : playerWhite;
 

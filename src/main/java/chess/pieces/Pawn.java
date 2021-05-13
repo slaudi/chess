@@ -73,6 +73,9 @@ public class Pawn extends Piece {
     public boolean isPiecesMove(Square finalSquare) {
         int diff_x = finalSquare.getX() - this.square.getX();
         int diff_y = finalSquare.getY() - this.square.getY();
+        if (Math.abs(diff_x) == Math.abs(diff_y)) {
+            return false;
+        }
         if (!hasMoved) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
@@ -94,21 +97,25 @@ public class Pawn extends Piece {
     /**
      * A function determining if a move to capture another Piece is allowed for the Pawn
      *
-     * @param finalSquare the Square where the enemy Piece is located on
+     * @param moveHistory The history of all moves to get the final square of the current move
      * @return a boolean indicating if a capture is allowed
      */
-    public boolean canCapture(Square finalSquare) {
-        int diffX = finalSquare.getX() - this.square.getX();
-        int diffY = finalSquare.getY() - this.square.getY();
-        if (finalSquare.getOccupiedBy() == null) {
-            return false;
+    public boolean canCapture(Stack<Move> moveHistory) {
+        if (moveHistory.size() > 1) {
+            Move currentMove = moveHistory.peek();
+            Square finalSquare = currentMove.getFinalSquare();;
+            int diff_x = finalSquare.getX() - this.square.getX();
+            int diff_y = finalSquare.getY() - this.square.getY();
+            if (finalSquare.getOccupiedBy() == null) {
+                return false;
+            }
+            if (this.colour == Colour.WHITE) {
+                return Math.abs(diff_x) == 1 && diff_y == -1;
+            } else {
+                return Math.abs(diff_x) == 1 && diff_y == 1;
+            }
         }
-        if(this.colour == Colour.WHITE) {
-            return Math.abs(diffX) == 1 && diffY == -1;
-        }
-        else {
-            return Math.abs(diffX) == 1 && diffY == 1;
-        }
+        return false;
     }
 
     /**
@@ -119,21 +126,27 @@ public class Pawn extends Piece {
      * @return a boolean indicating if en passant is possible
      */
     public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
-        Move thisMove = history.pop();
-        if (history.size() > 0) {
+        if (history.size() > 2) {
+            Move thisMove = history.pop();
             Move lastMove = history.peek();
+            history.add(thisMove);
             Square start = lastMove.getStartSquare();
             Square end = lastMove.getFinalSquare();
-            int diff = Math.abs(start.getY() - end.getY());
+            int diff_x = finalSquare.getX() - this.square.getX();
+            int diff_y = finalSquare.getY() - this.square.getY();
+            int diff_enemy = start.getY() - end.getY();
 
-            if (diff == 2 && end.getOccupiedBy().getType() == this.type
+            if (Math.abs(diff_enemy) == 2 && end.getOccupiedBy().getType() == Type.PAWN
                     && end.getOccupiedBy().getColour() != this.colour
                     && end.getY() == this.square.getY()) {
-                history.add(thisMove);
-                return canCapture(finalSquare);
+                if(this.colour == Colour.WHITE) {
+                    return Math.abs(diff_x) == 1 && diff_y == -1;
+                }
+                else {
+                    return Math.abs(diff_x) == 1 && diff_y == 1;
+                }
             }
         }
-        history.add(thisMove);
         return false;
     }
 
