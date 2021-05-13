@@ -74,5 +74,4 @@ public class King extends Piece {
         return diffX < 2 && diffY < 2;
     }
 
-
 }

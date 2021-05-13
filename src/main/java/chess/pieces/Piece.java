@@ -124,4 +124,15 @@ public abstract class Piece {
         return new ArrayList<>(Arrays.asList(move[0]).subList(0, move[0].length));
     }
 
+    /**
+     * Evaluates if a Square is directly next to a selected Piece
+     * @param squareOfInterest The Square where the Piece wants to go to
+     * @return boolean Returns 'true' if selected Square to move to is only one Square away from the Piece
+     */
+    public static boolean isSurroundingSquare(Square piecesSquare, Square squareOfInterest){
+        int diffX = piecesSquare.getX() - squareOfInterest.getX();
+        int diffY = piecesSquare.getY() - squareOfInterest.getY();
+        return diffX < 2 && diffY < 2;
+    }
+
 }
