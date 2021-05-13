@@ -88,13 +88,17 @@ public abstract class Piece {
      * @return Path of moving Piece
      */
     public List<Square> generatePath(Square finalSquare) {
-        int[][] dir = new int[1][1];
+        int[][] dir = new int[1][2];
         if (this instanceof Queen) {
             dir = ((Queen)this).movingDirection(finalSquare);
         } else if (this instanceof Bishop) {
             dir = ((Bishop)this).movingDirection(finalSquare);
         } else if (this instanceof Rook) {
             dir = ((Rook)this).movingDirection(finalSquare);
+        } else {
+            // no one else has a path
+            dir[0][0] = 0;
+            dir[0][1] = 0;
         }
         int dir_x = dir[0][0];
         int dir_y = dir[0][1];
