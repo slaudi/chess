@@ -7,21 +7,25 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * The LabelTest class test the methods of the Label class
  */
-class LabelTest {
+public class LabelTest {
 
     @Test
-    void contains() {
+    public void contains() {
+        assertTrue(Label.contains("e1"));
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
+        assertEquals("e5", Label.toString(Label.e5));
     }
 
     @Test
-    void values() {
+    public void values() {
+        assertEquals(Label.values()[0], Label.a8);
     }
 
     @Test
-    void valueOf() {
+    public void valueOf() {
+        assertEquals(Label.valueOf("a8"), Label.a8);
     }
 }
