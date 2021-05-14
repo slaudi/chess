@@ -7,7 +7,7 @@ import java.util.Stack;
 /**
  * The Pawn class is a Subclass of the Piece class and represents a Piece of the Type Pawn
  */
-public class Pawn extends Piece {
+public class Pawn extends Piece implements MovingDirection {
 
     Type type;
 
@@ -73,17 +73,18 @@ public class Pawn extends Piece {
     public boolean isPiecesMove(Square finalSquare) {
         int diff_x = finalSquare.getX() - this.square.getX();
         int diff_y = finalSquare.getY() - this.square.getY();
-        if (Math.abs(diff_x) == Math.abs(diff_y)) {
+        if (Math.abs(diff_x) == Math.abs(diff_y) || finalSquare.getOccupiedBy() != null) {
             return false;
         }
-        if (!hasMoved) {
+        if (!hasMoved && isPathEmpty(this, finalSquare)) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
                 return diff_y == -1 || diff_y == -2 && diff_x == 0;
             } else {
                 return diff_y == 1 || diff_y == 2 && diff_x == 0;
             }
-        } else {
+        } else if (hasMoved){
+            // Pawn already moved
             if (this.colour == Colour.WHITE) {
                 // Pawn can only move up
                 return diff_y == -1 && diff_x == 0;
@@ -92,7 +93,9 @@ public class Pawn extends Piece {
                 return diff_y == 1 && diff_x == 0;
             }
         }
+        return false;
     }
+
 
     /**
      * A function determining if a move to capture another Piece is allowed for the Pawn
@@ -162,4 +165,19 @@ public class Pawn extends Piece {
         }
     }
 
+    @Override
+    public int[][] movingDirection(Square finalSquare) {
+        int dir_x = 0;
+        int dir_y;
+
+        if (this.colour == Colour.WHITE) {
+            dir_y = -1;
+        } else {
+            dir_y = 1;
+        }
+        int[][] dir = new int[1][2];
+        dir[0][0] = dir_x;
+        dir[0][1] = dir_y;
+        return dir;
+    }
 }
