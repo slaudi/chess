@@ -122,7 +122,8 @@ public class Pawn extends Piece implements MovingDirection {
     }
 
     /**
-     * a function determining if a pawn can beat another pawn en passant
+     * The function is called from isMoveAllowed() before the new move is added to the
+     * moveHistory-Stack and determines if a pawn can beat another pawn en passant.
      *
      * @param finalSquare   The square where the selected pawn should end up, here behind the pawn to beat
      * @param lastEnemyMove The last move of the enemy before this one.
@@ -146,7 +147,8 @@ public class Pawn extends Piece implements MovingDirection {
     }
 
     /**
-     * a function determining if a pawn can beat another pawn en passant
+     * The function is called from processMove() after the current Move ist added to the
+     * moveHistory-Stack and determines if a pawn can beat another pawn en passant
      *
      * @param finalSquare   the square where the selected pawn should end up, here behind the pawn to beat
      * @param history       a stach which stores all previous moves

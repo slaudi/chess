@@ -85,7 +85,7 @@ public class Cli {
                 return false;
             }
         } else {
-            System.out.println("!Move not allowed\nTry again!");
+            System.out.println("!Move not allowed");
             generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
         }

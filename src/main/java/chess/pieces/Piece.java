@@ -91,6 +91,9 @@ public abstract class Piece {
             return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != this.colour;
         }
         List<Square> path = piece.generatePath(finalSquare);
+        if (path.isEmpty()) {
+            return true;
+        }
         if (piece.getType() == Type.BISHOP) {
             // Knights can leap
             return true;

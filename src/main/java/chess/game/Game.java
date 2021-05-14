@@ -60,19 +60,18 @@ public class Game {
                 }
             }
         // final square is empty
-        } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 2) {
-            Move lastEnemyMove = this.moveHistory.peek();
-            Square start = lastEnemyMove.getStartSquare();
-            Square end = lastEnemyMove.getFinalSquare();
-            int diff_enemy = start.getY() - end.getY();
-            if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY()) {
-                // see if en passant is possible
-                return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
-            }
-        } else {
-            return selectedPiece.isPiecesMove(finalSquare) && selectedPiece.isPathEmpty(selectedPiece, finalSquare);
+        } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
+                Move lastEnemyMove = this.moveHistory.peek();
+                Square start = lastEnemyMove.getStartSquare();
+                Square end = lastEnemyMove.getFinalSquare();
+                int diff_enemy = start.getY() - end.getY();
+                if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY()) {
+                    // is en passant possible
+                    return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
+                }
         }
-        return false;
+        return selectedPiece.isPiecesMove(finalSquare) && selectedPiece.isPathEmpty(selectedPiece, finalSquare);
+
     }
 
     /**
