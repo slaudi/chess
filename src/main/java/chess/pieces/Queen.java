@@ -79,8 +79,6 @@ public class Queen extends Piece implements MovingDirection {
     public int[][] movingDirection(Square finalSquare) {
         int dir_x = 0;
         int dir_y = 0;
-        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
-        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
         if (this.square.getX() == finalSquare.getX()) {
             // Queen moves vertically

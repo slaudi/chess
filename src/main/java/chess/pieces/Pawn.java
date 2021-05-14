@@ -103,7 +103,7 @@ public class Pawn extends Piece {
     public boolean canCapture(Stack<Move> moveHistory) {
         if (moveHistory.size() > 1) {
             Move currentMove = moveHistory.peek();
-            Square finalSquare = currentMove.getFinalSquare();;
+            Square finalSquare = currentMove.getFinalSquare();
             int diff_x = finalSquare.getX() - this.square.getX();
             int diff_y = finalSquare.getY() - this.square.getY();
             if (finalSquare.getOccupiedBy() == null) {
