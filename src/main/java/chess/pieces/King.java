@@ -1,5 +1,6 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -7,7 +8,7 @@ import chess.game.Type;
 /**
  * The King class is a Subclass of the Piece class and represents a Piece of the Type King
  */
-public class King extends Piece {
+public class King extends Piece implements MovingDirection {
 
     Type type;
 
@@ -54,7 +55,7 @@ public class King extends Piece {
 
     @Override
     public String toString() {
-        if(this.colour == Colour.WHITE){
+        if (this.colour == Colour.WHITE) {
             return "K";
         } else {
             return "k";
@@ -72,6 +73,25 @@ public class King extends Piece {
         int diffX = Math.abs(this.square.getX() - finalSquare.getX());
         int diffY = Math.abs(this.square.getY() - finalSquare.getY());
         return diffX < 2 && diffY < 2;
+    }
+
+    @Override
+    public int[][] movingDirection(Square finalSquare) {
+        int dir_x;
+        int dir_y = 0;
+        int diff = finalSquare.getX() - this.square.getX();
+
+        if (diff < 0) {
+            // queenside castling
+            dir_x = -1;
+        } else {
+            // kingside castling
+            dir_x = 1;
+        }
+        int[][] dir = new int[1][2];
+        dir[0][0] = dir_x;
+        dir[0][1] = dir_y;
+        return dir;
     }
 
 }
