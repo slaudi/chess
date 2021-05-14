@@ -60,9 +60,9 @@ public class Game {
                 }
             }
         // final square is empty
-        } else if (selectedPiece.getType() == Type.PAWN) {
+        } else if (selectedPiece.getType() == Type.PAWN && selectedPiece.isHasMoved()) {
             // is it a Pawn move / is en passant possible
-            return selectedPiece.isPiecesMove(finalSquare) || ((Pawn) selectedPiece).isEnPassant(finalSquare, this.moveHistory);
+            return ((Pawn) selectedPiece).isEnPassant(finalSquare, this.moveHistory);
         } else {
             return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
         }
@@ -79,52 +79,42 @@ public class Game {
      */
     public boolean processMove(Square startSquare, Square finalSquare, char key) {
         Move currentMove = new Move(startSquare, finalSquare);
-        this.moveHistory.add(currentMove);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
-        Move lastMove = this.moveHistory.pop();
-        Move secondLastMove = this.moveHistory.peek();
-        this.moveHistory.add(lastMove);
+        Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
 
         if (targetPiece != null && selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
             currentMove.castlingMove(chessBoard);
             targetPiece.setHasMoved(true);
-        }
-        if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
+        } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
-            Piece enemy = currentMove.enPassantMove(lastMove, chessBoard);
+            currentMove.enPassantMove(lastEnemyMove, chessBoard);
+            Piece enemy = lastEnemyMove.movingPiece;
             if (isInCheck()) {
-                // King is in check, undo move
-                currentMove.undoEnPassant(lastMove, secondLastMove, this.chessBoard);
-                this.moveHistory.remove(lastMove);
+                // King is in check, undo en passant
+                currentMove.undoEnPassant(enemy, lastEnemyMove, this.chessBoard);
                 return false;
             }
             beatenPieces.add(enemy);
-        }
-        if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
-            // move is a promotion
-            Piece enemy = currentMove.doPromotion(lastMove, key, chessBoard);
-            if (isInCheck()) {
-                // King is in check, undo move
-                currentMove.undoPromotion(lastMove, secondLastMove, this.chessBoard);
-                this.moveHistory.remove(lastMove);
+        } else {
+            currentMove.doMove(this.chessBoard);
+            if (!canMoveStay(targetPiece, currentMove)) {
+                // move puts own King in check, undo move
                 return false;
             }
-            beatenPieces.add(enemy);
+            if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
+                // move allows promotion
+                currentMove.doPromotion(key, chessBoard);
+            }
+            if (targetPiece != null) {
+                // add a beaten piece to the ArrayList
+                beatenPieces.add(targetPiece);
+            }
         }
-        // all other moves
-        currentMove.doMove(this.chessBoard);
-        if (isInCheck()) {
-            // King is in check, undo move
-            currentMove.undoMove(lastMove, this.chessBoard);
-            moveHistory.remove(lastMove);
-            return false;
-        }
-        if (targetPiece != null && targetPiece.getColour() != currentPlayer.getColour()) {
-            // add a beaten piece to the ArrayList (if it's not the Rook from castling)
-            beatenPieces.add(targetPiece);
-        }
+        this.moveHistory.add(currentMove);
+        selectedPiece.setSquare(finalSquare);
+        selectedPiece.setHasMoved(true);
         changePlayer(finalSquare);
         return true;
     }
@@ -188,8 +178,10 @@ public class Game {
                     return false;
                 }
             } else {
-                if(((Pawn)enemyPiece).canCapture(this.moveHistory)) {//NOPMD a 'true'-return would break the for-loop
-                    return false;
+                if (enemyPiece.getType() == Type.PAWN) {
+                    if (((Pawn) enemyPiece).canCapture(this.moveHistory)) {//NOPMD return of 'true' would break the for-loop
+                        return false;
+                    }
                 }
             }
         }
@@ -334,6 +326,19 @@ public class Game {
             // check if this player is checkmate after the move
             currentPlayer.setLoser(true);
         }
+    }
+
+    private boolean canMoveStay(Piece targetPiece, Move currentMove) {
+        if (isInCheck()) {
+            // King is in check, undo move
+            if (targetPiece != null) {
+                currentMove.undoMove(targetPiece, this.chessBoard);
+            } else {
+                currentMove.undoMove(this.chessBoard);
+            }
+            return false;
+        }
+        return true;
     }
 }
 
