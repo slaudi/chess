@@ -127,11 +127,9 @@ public class Pawn extends Piece {
      */
     public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
         if (history.size() > 2) {
-            Move thisMove = history.pop();
-            Move lastMove = history.peek();
-            history.add(thisMove);
-            Square start = lastMove.getStartSquare();
-            Square end = lastMove.getFinalSquare();
+            Move lastEnemyMove = history.peek();
+            Square start = lastEnemyMove.getStartSquare();
+            Square end = lastEnemyMove.getFinalSquare();
             int diff_x = finalSquare.getX() - this.square.getX();
             int diff_y = finalSquare.getY() - this.square.getY();
             int diff_enemy = start.getY() - end.getY();
