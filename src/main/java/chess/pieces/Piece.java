@@ -105,9 +105,11 @@ public abstract class Piece {
     }
 
     /**
-     * Generates Path if Piece moves more than one Square
-     * @param finalSquare End-Square of Movement
-     * @return Path of moving Piece
+     * Generates Path of the visited Squares in between the first and last Square if Piece
+     * moves more than one Square.
+     *
+     * @param finalSquare The final Square of the move.
+     * @return List<Square> A list of the visited Squares except for the first and last one.
      */
     public List<Square> generatePath(Square finalSquare) {
         int[][] dir = piecesDirection(finalSquare);
@@ -163,7 +165,7 @@ public abstract class Piece {
         } else if (this instanceof King) {
             dir = ((King)this).movingDirection(finalSquare);
         } else {
-            // Knight doesn't have a path
+            // Knight doesn't need a path, can leap
             dir[0][0] = 0;
             dir[0][1] = 0;
         }

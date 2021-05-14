@@ -124,13 +124,39 @@ public class Pawn extends Piece implements MovingDirection {
     /**
      * a function determining if a pawn can beat another pawn en passant
      *
+     * @param finalSquare   The square where the selected pawn should end up, here behind the pawn to beat
+     * @param lastEnemyMove The last move of the enemy before this one.
+     * @return boolean Returning 'true': en passant is possible.
+     */
+    public boolean isEnPassant(Square finalSquare, Move lastEnemyMove) {
+        Square end = lastEnemyMove.getFinalSquare();
+        int diff_x = finalSquare.getX() - this.square.getX();
+        int diff_y = finalSquare.getY() - this.square.getY();
+
+        if (end.getOccupiedBy().getType() == Type.PAWN
+                && end.getOccupiedBy().getColour() != this.colour) {
+            if(this.colour == Colour.WHITE) {
+                return Math.abs(diff_x) == 1 && diff_y == -1;
+            }
+            else {
+                return Math.abs(diff_x) == 1 && diff_y == 1;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * a function determining if a pawn can beat another pawn en passant
+     *
      * @param finalSquare   the square where the selected pawn should end up, here behind the pawn to beat
      * @param history       a stach which stores all previous moves
      * @return a boolean indicating if en passant is possible
      */
     public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
         if (history.size() > 2) {
+            Move currentMove = history.pop();
             Move lastEnemyMove = history.peek();
+            history.add(currentMove);
             Square start = lastEnemyMove.getStartSquare();
             Square end = lastEnemyMove.getFinalSquare();
             int diff_x = finalSquare.getX() - this.square.getX();

@@ -60,9 +60,15 @@ public class Game {
                 }
             }
         // final square is empty
-        } else if (selectedPiece.getType() == Type.PAWN && selectedPiece.isHasMoved()) {
-            // is it a Pawn move / is en passant possible
-            return ((Pawn) selectedPiece).isEnPassant(finalSquare, this.moveHistory);
+        } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 2) {
+            Move lastEnemyMove = this.moveHistory.peek();
+            Square start = lastEnemyMove.getStartSquare();
+            Square end = lastEnemyMove.getFinalSquare();
+            int diff_enemy = start.getY() - end.getY();
+            if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY()) {
+                // see if en passant is possible
+                return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
+            }
         } else {
             return selectedPiece.isPiecesMove(finalSquare) && selectedPiece.isPathEmpty(selectedPiece, finalSquare);
         }
@@ -81,7 +87,10 @@ public class Game {
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
-        Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
+        Move lastEnemyMove = currentMove;
+        if (!this.moveHistory.isEmpty()) {
+            lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
+        }
         this.moveHistory.add(currentMove);
 
         if (targetPiece != null && selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
@@ -143,7 +152,7 @@ public class Game {
      *
      * @return boolean Returns if King is able to make a safe move
      */
-    public boolean canKingMove() {
+    private boolean canKingMove() {
         Square kingSquare = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
