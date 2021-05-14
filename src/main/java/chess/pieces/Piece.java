@@ -1,9 +1,6 @@
 package chess.pieces;
 
-import chess.game.Colour;
-import chess.game.Label;
-import chess.game.Square;
-import chess.game.Type;
+import chess.game.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,28 +80,42 @@ public abstract class Piece {
     public abstract boolean isPiecesMove(Square finalSquare);
 
     /**
+     * Evaluates if direct path from one square to another is empty
+     *
+     * @param piece Piece which has to move
+     * @param finalSquare Square where piece has to go to
+     * @return returns if selected path is empty
+     */
+    public boolean isPathEmpty (Piece piece, Square finalSquare){
+        if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
+            return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != this.colour;
+        }
+        List<Square> path = piece.generatePath(finalSquare);
+        if (piece.getType() == Type.BISHOP) {
+            // Knights can leap
+            return true;
+        } else {
+            for (Square visitedSquare : path) {
+                if (visitedSquare.getOccupiedBy() != null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Generates Path if Piece moves more than one Square
      * @param finalSquare End-Square of Movement
      * @return Path of moving Piece
      */
     public List<Square> generatePath(Square finalSquare) {
-        int[][] dir = new int[1][2];
-        if (this instanceof Queen) {
-            dir = ((Queen)this).movingDirection(finalSquare);
-        } else if (this instanceof Bishop) {
-            dir = ((Bishop)this).movingDirection(finalSquare);
-        } else if (this instanceof Rook) {
-            dir = ((Rook)this).movingDirection(finalSquare);
-        } else {
-            // no one else has a path
-            dir[0][0] = 0;
-            dir[0][1] = 0;
-        }
+        int[][] dir = piecesDirection(finalSquare);
         int dir_x = dir[0][0];
         int dir_y = dir[0][1];
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
-        int squaresVisited = 0;
+        int squaresVisited;
 
         if (diff_x == diff_y || diff_y == 0) {
             // Piece moves diagonally or horizontally
@@ -137,6 +148,26 @@ public abstract class Piece {
         int diffX = piecesSquare.getX() - squareOfInterest.getX();
         int diffY = piecesSquare.getY() - squareOfInterest.getY();
         return diffX < 2 && diffY < 2;
+    }
+
+    private int[][] piecesDirection(Square finalSquare) {
+        int[][] dir = new int[1][2];
+        if (this instanceof Queen) {
+            dir = ((Queen)this).movingDirection(finalSquare);
+        } else if (this instanceof Bishop) {
+            dir = ((Bishop)this).movingDirection(finalSquare);
+        } else if (this instanceof Rook) {
+            dir = ((Rook) this).movingDirection(finalSquare);
+        } else if (this instanceof Pawn) {
+            dir = ((Pawn) this).movingDirection(finalSquare);
+        } else if (this instanceof King) {
+            dir = ((King)this).movingDirection(finalSquare);
+        } else {
+            // Knight doesn't have a path
+            dir[0][0] = 0;
+            dir[0][1] = 0;
+        }
+        return dir;
     }
 
 }
