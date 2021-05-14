@@ -8,7 +8,7 @@ import java.util.Stack;
 
 
 /**
- * Game class which defines current game.
+ * Game class which defines and controls the current game.
  */
 
 public class Game {
@@ -20,7 +20,7 @@ public class Game {
     Stack<Move> moveHistory;
 
     /**
-     * Constructor for a Game
+     * Constructor for a Game.
      */
     public Game() {
         this.playerWhite = new Player(Colour.WHITE);
@@ -29,6 +29,44 @@ public class Game {
         this.chessBoard = new Board();
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new Stack<>();
+    }
+
+    /**
+     * Evaluates semantically correctness of input move to return if the move is allowed in the current state
+     * of the game.
+     *
+     * @param selectedPiece Piece which Player wants to move.
+     * @param finalSquare Square which Player wants his Piece to move to.
+     * @return boolean Returns if input move is possible.
+     */
+    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all special cases
+        if (selectedPiece == null || selectedPiece.getColour() != currentPlayer.getColour()) {
+            return false;
+        }
+        Piece targetPiece = finalSquare.getOccupiedBy();
+        if (targetPiece != null) {
+            // the final Square is occupied by another piece
+            if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK
+                    && canDoCastling(selectedPiece, targetPiece)) {
+                // if move is castling (select your own King and Rook)
+                return true;
+            } else if (targetPiece.getColour() != selectedPiece.getColour()) {
+                // you can't attack your own Pieces
+                if (selectedPiece.getType() == Type.PAWN) {
+                    // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
+                    return ((Pawn) selectedPiece).canCapture(this.moveHistory);
+                } else {
+                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
+                }
+            }
+        // final square is empty
+        } else if (selectedPiece.getType() == Type.PAWN) {
+            // is it a Pawn move / is en passant possible
+            return selectedPiece.isPiecesMove(finalSquare) || ((Pawn) selectedPiece).isEnPassant(finalSquare, this.moveHistory);
+        } else {
+            return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
+        }
+        return false;
     }
 
     /**
@@ -44,11 +82,12 @@ public class Game {
         this.moveHistory.add(currentMove);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
-        Move lastMove = this.moveHistory.peek();
+        Move lastMove = this.moveHistory.pop();
         Move secondLastMove = this.moveHistory.peek();
+        this.moveHistory.add(lastMove);
 
         if (targetPiece != null && selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
-            // move is castling
+            // move is castling, afterwards never in check -> is covered in canDoCastling()
             currentMove.castlingMove(chessBoard);
             targetPiece.setHasMoved(true);
         }
@@ -69,7 +108,7 @@ public class Game {
             if (isInCheck()) {
                 // King is in check, undo move
                 currentMove.undoPromotion(lastMove, secondLastMove, this.chessBoard);
-                moveHistory.remove(lastMove);
+                this.moveHistory.remove(lastMove);
                 return false;
             }
             beatenPieces.add(enemy);
@@ -82,56 +121,12 @@ public class Game {
             moveHistory.remove(lastMove);
             return false;
         }
-        if (targetPiece != null) {
-            // add a beaten piece to the ArrayList
+        if (targetPiece != null && targetPiece.getColour() != currentPlayer.getColour()) {
+            // add a beaten piece to the ArrayList (if it's not the Rook from castling)
             beatenPieces.add(targetPiece);
         }
         changePlayer(finalSquare);
         return true;
-    }
-
-    /**
-     * Evaluates semantically correctness of input move
-     *
-     * @param selectedPiece Piece which Player wants to move
-     * @param finalSquare Square which Player wants his Piece to move to
-     * @return boolean Returns if input move is possible
-     */
-    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
-        if (selectedPiece == null) {
-            return false;
-        }
-        if (selectedPiece.getColour() == currentPlayer.getColour()) {
-            // player can only choose their own Piece
-            if (finalSquare.getOccupiedBy() != null) {
-                // the selected second square is not empty
-                Piece targetPiece = finalSquare.getOccupiedBy();
-                if (selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK
-                        && canDoCastling(selectedPiece, targetPiece)) {
-                    // if command is castling (selected King and your own Rook), check if it is allowed
-                    return true;
-                } else if (selectedPiece.getType() == Type.PAWN) {
-                    // if selected Piece is a Pawn check if it is allowed to capture the enemy Piece
-                    return ((Pawn) selectedPiece).canCapture(this.moveHistory);
-                } else {
-                    // check for every one else
-                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
-                }
-            } else {
-                // the second Square is empty
-                if (selectedPiece.getType() == Type.PAWN) {
-                    // is it a Pawn move or is en passant possible
-                    return selectedPiece.isPiecesMove(finalSquare) || ((Pawn) selectedPiece).isEnPassant(finalSquare, this.moveHistory);
-                } else if (selectedPiece.getType() == Type.KING) {
-                    // check if it is a King move and it doesn't put the King in check
-                    return selectedPiece.isPiecesMove(finalSquare) && isSafeSquare(finalSquare);
-                }  else {
-                    // check for every one else
-                    return selectedPiece.isPiecesMove(finalSquare) && isPathEmpty(selectedPiece, finalSquare);
-                }
-            }
-        }
-        return false;
     }
 
     /**
