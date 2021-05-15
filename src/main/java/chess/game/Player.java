@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Player {
     private Colour colour;
-    private boolean isChecked = false;
+    private boolean inCheck = false;
     private boolean loser = false;
 
     /**
@@ -31,12 +31,12 @@ public class Player {
         this.colour = x;
     }
 
-    public boolean isChecked() {
-        return this.isChecked;
+    public boolean isInCheck() {
+        return this.inCheck;
     }
 
-    public void setChecked(boolean x) {
-        this.isChecked = x;
+    public void setInCheck(boolean x) {
+        this.inCheck = x;
     }
 
     public boolean isLoser() {

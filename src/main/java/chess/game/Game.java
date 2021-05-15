@@ -88,7 +88,7 @@ public class Game {
      * @param key           The char for a potential promotion.
      * @return boolean Returns 'true' if the move doesn't put the player in check.
      */
-    public boolean processMove(Square startSquare, Square finalSquare, char key) {
+    public boolean processMove(Square startSquare, Square finalSquare, char key) {//NOPMD to process a move all if-clauses are needed here
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
@@ -132,8 +132,8 @@ public class Game {
     }
 
     /**
-     * Evaluates if the current state of game is draw: when the King is not yet in check but every Square
-     * the King can move to are under attack and no ally can move either.
+     * Evaluates if the current state of game is a draw: when the King is not yet in check but every Square
+     * the King can move to is under attack and no ally can move either.
      *
      * @return boolean Returns 'true' if the game is a draw.
      */
@@ -231,11 +231,11 @@ public class Game {
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
             if (canKillKing(enemyPiece, squareKing)) {
-                this.currentPlayer.setChecked(true);
+                this.currentPlayer.setInCheck(true);
                 return true;
             }
         }
-        this.currentPlayer.setChecked(false);
+        this.currentPlayer.setInCheck(false);
         return false;
     }
 
@@ -247,7 +247,7 @@ public class Game {
      * @return boolean Returns 'true' if the current Player is checkmate.
      */
     private boolean isCheckMate(Square finalSquare) {
-        if (this.currentPlayer.isChecked()) {
+        if (this.currentPlayer.isInCheck()) {
             if (canKingMove() && isSafeSquare(finalSquare)) {
                 return false;
             }

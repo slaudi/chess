@@ -33,6 +33,11 @@ public abstract class Piece {
 
     public abstract Colour getColour();
 
+    /**
+     * Getter for the type of Piece.
+     *
+     * @return Type Returns the type of the Piece.
+     */
     public abstract Type getType();
 
     public abstract boolean isHasMoved();
