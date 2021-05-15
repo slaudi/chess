@@ -69,10 +69,13 @@ public class King extends Piece implements MovingDirection {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
-        int diffX = Math.abs(this.square.getX() - finalSquare.getX());
-        int diffY = Math.abs(this.square.getY() - finalSquare.getY());
-        return diffX < 2 && diffY < 2;
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
+        int diff_x = Math.abs(this.square.getX() - finalSquare.getX());
+        int diff_y = Math.abs(this.square.getY() - finalSquare.getY());
+        if (diff_x == 0 && diff_y == 0) {
+            return false;
+        }
+        return diff_x < 2 && diff_y < 2;
     }
 
     @Override

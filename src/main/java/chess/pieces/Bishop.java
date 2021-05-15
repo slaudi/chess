@@ -1,5 +1,6 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -66,12 +67,14 @@ public class Bishop extends Piece implements MovingDirection {
      * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
-
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
+        if (diff_x == 0 && diff_y == 0) {
+            return false;
+        }
         return diff_x == diff_y;
     }
 

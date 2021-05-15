@@ -1,5 +1,6 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
@@ -68,10 +69,13 @@ public class Queen extends Piece implements MovingDirection {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
+        if (diff_x == 0 && diff_y == 0) {
+            return false;
+        }
         return diff_x == diff_y || diff_y == 0 || diff_x == 0;
     }
 
@@ -97,14 +101,14 @@ public class Queen extends Piece implements MovingDirection {
         } else {
             // Queen moves diagonally
             if (finalSquare.getX() - this.square.getX() < 0) {
-                dir_x = -1; // Queen moves diagonally to the left
+                dir_x = -1; // Queen moves to the left
             } else {
-                dir_x = 1; // Queen moves diagonally to the right
+                dir_x = 1; // Queen moves to the right
             }
             if (finalSquare.getY() - this.square.getY() < 0) {
-                dir_y = 1; // Queen moves diagonally up
+                dir_y = 1; // Queen moves up
             } else {
-                dir_y = -1; // Queen moves diagonally down
+                dir_y = -1; // Queen moves down
             }
         }
         int[][] dir = new int[1][2];
