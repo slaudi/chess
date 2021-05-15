@@ -1,66 +1,103 @@
 package chess.pieces;
 
-import chess.game.Colour;
-import chess.game.Square;
-import chess.game.Type;
+import chess.game.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static chess.game.Label.c4;
-import static chess.game.Label.g5;
+import java.util.Stack;
+
+import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The PawnTest class test the methods of the Pawn class
  */
 public class PawnTest {
-
-    private Pawn pawn;
-    private Square square;
+    public Game game;
+    public Pawn pawn;
+    public Square squareC4;
+    public Square squareF4;
+    public Square squareH6;
+    public Square squareE6;
+    public Square squareC5;
+    public Square squareC8;
+    public Stack<Move> moveHistory;
 
     @BeforeEach
-    void setUp() {
-        square = new Square(c4, 2, 4);
-        pawn = new Pawn(square, Colour.WHITE);
+    public void setUp() {
+        game = new Game();
+        squareC4 = new Square(c4, 2, 4);
+        pawn = new Pawn(squareC4, Colour.WHITE);
+        squareF4 = new Square(f4, 5, 4);
+        squareH6 = new Square(h6, 7, 2);
+        squareE6 = new Square(e6, 4, 2);
+        squareC5 = new Square(c5, 2, 3);
+        squareC8 = new Square(c8, 2, 0);
+        moveHistory = new Stack<>();
     }
 
     @Test
-    void getSquare() {
-        assertEquals(square, pawn.getSquare());
+    public void getSquare() {
+        assertEquals(squareC4, pawn.getSquare());
     }
 
     @Test
-    void setSquare() {
-        square = new Square(g5,7,3);
-        pawn.setSquare(square);
-        assertEquals(square, pawn.getSquare());
+    public void setSquare() {
+        squareC4 = new Square(g5,7,3);
+        pawn.setSquare(squareC4);
+        assertEquals(squareC4, pawn.getSquare());
     }
 
     @Test
-    void getColour() {
+    public void getColour() {
         assertEquals(Colour.WHITE, pawn.getColour());
     }
 
     @Test
-    void getType() {
+    public void getType() {
         assertEquals(Type.PAWN, pawn.getType());
     }
 
     @Test
-    void getHasMoved() {
+    public void getHasMoved() {
         assertFalse(pawn.isHasMoved());
     }
 
     @Test
-    void setHasMoved() {
+    public void setHasMoved() {
         pawn.setHasMoved(true);
         assertTrue(pawn.isHasMoved());
     }
 
-    // TODO: test moves of the pieces
     @Test
-    void isPiecesMove() {
+    public void isPiecesMove() {
+        assertTrue(pawn.isPiecesMove(squareC5));
+    }
 
+    @Test
+    public void isHasMoved() {
+        pawn.setHasMoved(true);
+        assertTrue(pawn.isHasMoved());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("P", pawn.toString());
+    }
+
+    @Test
+    public void canCapture() {
+        assertFalse(pawn.canCapture(moveHistory));
+    }
+
+    @Test
+    public void isEnPassant() {
+        assertFalse(pawn.isEnPassant(squareC5, moveHistory));
+    }
+
+    @Test
+    public void promotionPossible() {
+        assertTrue(pawn.promotionPossible(squareC8));
     }
 }
