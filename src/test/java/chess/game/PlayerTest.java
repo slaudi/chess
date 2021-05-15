@@ -57,11 +57,11 @@ class PlayerTest {
 
     @Test
     public void getAlliedPieces() {
-        assertNotEquals(playerW.getAlliedPieces(game.beatenPieces, game.chessBoard), playerB.getAlliedPieces(game.beatenPieces, game.chessBoard));
+        assertNotEquals(playerW.getAlliedPieces(game.getBeatenPieces(), game.chessBoard), playerB.getAlliedPieces(game.getBeatenPieces(), game.chessBoard));
     }
 
     @Test
     public void getEnemyPieces() {
-        assertNotEquals(playerW.getEnemyPieces(game.beatenPieces, game.chessBoard), playerB.getEnemyPieces(game.beatenPieces, game.chessBoard));
+        assertNotEquals(playerW.getEnemyPieces(game.getBeatenPieces(), game.chessBoard), playerB.getEnemyPieces(game.getBeatenPieces(), game.chessBoard));
     }
 }
