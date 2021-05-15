@@ -106,9 +106,9 @@ public class Queen extends Piece implements MovingDirection {
                 dir_x = 1; // Queen moves to the right
             }
             if (finalSquare.getY() - this.square.getY() < 0) {
-                dir_y = 1; // Queen moves up
+                dir_y = -1; // Queen moves up
             } else {
-                dir_y = -1; // Queen moves down
+                dir_y = 1; // Queen moves down
             }
         }
         int[][] dir = new int[1][2];
