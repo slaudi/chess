@@ -42,7 +42,8 @@ public class Simple {
                         break;
                     }
                 } else {
-                    System.out.println("!Move not allowed \n");
+                    System.out.println("!Move not allowed\n");
+                    break;
                 }
                 currentGame.chessBoard.toConsole();
             }
