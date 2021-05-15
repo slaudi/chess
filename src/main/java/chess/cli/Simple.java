@@ -21,7 +21,7 @@ public class Simple {
             Game currentGame = new Game();
             currentGame.chessBoard.toConsole();
 
-            while(currentGame.currentPlayer.isLoser() || currentGame.isADraw()) {
+            while(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
                 String userInput = getInput();
 
                 if (!Cli.isValidMove(userInput)) {
