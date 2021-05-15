@@ -203,7 +203,6 @@ public class Game {
      * @return returns checkStatus
      */
     private boolean isInCheck(){
-        // TODO: ein Piece einem enemy in den Weg stellen funktioniert noch nicht bei check!?
         Square squareKing = this.chessBoard.getSquareOfKing(currentPlayer.getColour());
         List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
@@ -214,7 +213,6 @@ public class Game {
                 }
             } else if (enemyPiece.isPiecesMove(squareKing, this.chessBoard)
                     && enemyPiece.isPathEmpty(enemyPiece, squareKing, this.chessBoard)) {
-                System.out.println(enemyPiece);
                 currentPlayer.setInCheck(true);
                 return true;
             }
