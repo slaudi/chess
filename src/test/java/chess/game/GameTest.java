@@ -48,16 +48,6 @@ public class GameTest {
     }
 
     @Test
-    public void getAlliedPieces() {
-        assertEquals(game1.getAlliedPieces().get(0), game1.chessBoard.getMovingPieceFromInput("a1-a2"));
-    }
-
-    @Test
-    public void getEnemyPieces() {
-        assertEquals(game1.getEnemyPieces().get(4), game1.chessBoard.getMovingPieceFromInput("c8-c7"));
-    }
-
-    @Test
     public void changePlayer() {
         game1.changePlayer(game1.chessBoard.getFinalSquareFromInput("e2-e3"));
         assertEquals(game1.currentPlayer, game1.playerBlack);
