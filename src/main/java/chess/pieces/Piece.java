@@ -110,16 +110,15 @@ public abstract class Piece {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
         int squaresVisited;
-
         if (diff_x == diff_y || diff_y == 0) {
             // Piece moves diagonally or horizontally
             squaresVisited = diff_x;
-        } else if (dir_x == 0 && dir_y == 0) {
-            // Knight can leap, doesn't need a path
-            squaresVisited = 0;
-        } else {
+        } else if (diff_x == 0) {
             // Piece moves vertically
             squaresVisited = diff_y;
+        } else {
+            // Knight can leap, doesn't need a path
+            squaresVisited = 0;
         }
         /*
         Square[][] move = new Square[1][squaresVisited];
