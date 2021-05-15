@@ -17,24 +17,32 @@ public class BishopTest {
     public Square square;
     public Square finalSquare;
     public Game game;
+    public Square squareF4;
+    public Square squareH6;
+    public Square squareE6;
+    public Square squareC4;
 
 
     @BeforeEach
     public void setUp() {
-        square = new Square(c4,2,4);
-        bishop = new Bishop(square, Colour.WHITE);
+        game = new Game();
+        bishop = new Bishop(game.chessBoard.getFinalSquareFromInput("a1-c4"), Colour.WHITE);
+        squareC4 = new Square(c4,2,4);
+        squareF4 = new Square(f4, 5, 4);
+        squareH6 = new Square(h6, 7, 2);
+        squareE6 = new Square(e6, 4, 2);
     }
 
     @Test
     public void getSquare() {
-        assertEquals(square, bishop.getSquare());
+        assertEquals(squareC4, bishop.getSquare());
     }
 
     @Test
     public void setSquare() {
-        square = new Square(g5,7,3);
-        bishop.setSquare(square);
-        assertEquals(square, bishop.getSquare());
+        squareC4 = new Square(g5,7,3);
+        bishop.setSquare(squareC4);
+        assertEquals(squareC4, bishop.getSquare());
     }
 
     @Test
@@ -111,4 +119,26 @@ public class BishopTest {
     }
 
 
+    @Test
+    public void isHasMoved() {
+        bishop.setHasMoved(true);
+        assertTrue(bishop.isHasMoved());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("B", bishop.toString());
+    }
+
+    @Test
+    public void isPiecesMove() {
+        assertTrue(bishop.isPiecesMove(squareF4));
+    }
+
+    @Test
+    public void movingDirection() {
+        int[][] testInt = bishop.movingDirection(squareE6);
+        assertTrue(testInt instanceof int[][]);
+
+    }
 }
