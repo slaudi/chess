@@ -62,6 +62,8 @@ public class Game {
                 } else {
                     return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(selectedPiece, finalSquare, this.chessBoard);
                 }
+            } else if (targetPiece.getColour() == selectedPiece.getColour()) {
+                return false;
             }
         // final square is empty
         } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
