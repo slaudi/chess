@@ -1,66 +1,89 @@
 package chess.pieces;
 
 import chess.game.Colour;
+import chess.game.Game;
 import chess.game.Square;
 import chess.game.Type;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static chess.game.Label.c4;
-import static chess.game.Label.g5;
+import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The RookTest class test the methods of the Rook class
  */
 public class RookTest {
-
-    private Rook rook;
-    private Square square;
+    public Game game;
+    public Rook rook;
+    public Square squareC4;
+    public Square squareF4;
+    public Square squareH6;
+    public Square squareE6;
 
     @BeforeEach
-    void setUp() {
-        square = new Square(c4, 2, 4);
-        rook = new Rook(square, Colour.WHITE);
+    public void setUp() {
+        game = new Game();
+        squareC4 = new Square(c4, 2, 4);
+        rook = new Rook(squareC4, Colour.WHITE);
+        squareF4 = new Square(f4, 5, 4);
+        squareH6 = new Square(h6, 7, 2);
+        squareE6 = new Square(e6, 4, 2);
     }
 
     @Test
-    void getSquare() {
-        assertEquals(square, rook.getSquare());
+    public void getSquare() {
+        assertEquals(squareC4, rook.getSquare());
     }
 
     @Test
-    void setSquare() {
-        square = new Square(g5,7,3);
-        rook.setSquare(square);
-        assertEquals(square, rook.getSquare());
+    public void setSquare() {
+        squareC4 = new Square(g5,7,3);
+        rook.setSquare(squareC4);
+        assertEquals(squareC4, rook.getSquare());
     }
 
     @Test
-    void getColour() {
+    public void getColour() {
         assertEquals(Colour.WHITE, rook.getColour());
     }
 
     @Test
-    void getType() {
+    public void getType() {
         assertEquals(Type.ROOK, rook.getType());
     }
 
     @Test
-    void getHasMoved() {
+    public void getHasMoved() {
         assertFalse(rook.isHasMoved());
     }
 
     @Test
-    void setHasMoved() {
+    public void setHasMoved() {
         rook.setHasMoved(true);
         assertTrue(rook.isHasMoved());
     }
 
-    // TODO: test moves of the pieces
     @Test
-    void isPiecesMove() {
+    public void isPiecesMove() {
+        assertTrue(rook.isPiecesMove(squareF4));
+    }
 
+    @Test
+    public void isHasMoved() {
+        rook.setHasMoved(true);
+        assertTrue(rook.isHasMoved());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("R", rook.toString());
+    }
+
+    @Test
+    public void movingDirection() {
+        int[][] testInt = rook.movingDirection(squareF4);
+        assertTrue(testInt instanceof int[][]);
     }
 }
