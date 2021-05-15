@@ -13,7 +13,7 @@ public abstract class Piece {
 
     Square square;
     Colour colour;
-    boolean notMoved;
+    boolean notMoved = true;
 
     /**
      * Constructor for creating a Piece.
@@ -24,7 +24,6 @@ public abstract class Piece {
     public Piece(Square square, Colour colour) {
         this.square = square;
         this.colour = colour;
-        this.notMoved = true;
     }
 
     public abstract Square getSquare();
@@ -40,6 +39,11 @@ public abstract class Piece {
      */
     public abstract Type getType();
 
+    /**
+     * Getter for the variable 'notMoved' to determine if a Piece has moved yet.
+     *
+     * @return boolean Returns 'true' if the Piece has not moved yet.
+     */
     public abstract boolean hasNotMoved();
 
     public abstract void setNotMoved(boolean x);
