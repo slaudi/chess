@@ -27,12 +27,4 @@ public enum Label {
         return false;
     }
 
-    /**
-     * Converts Enum to String
-     * @param label Label to convert.
-     * @return String of Enum.
-     */
-    public static String toString(Label label){
-        return label.name();
-    }
 }
