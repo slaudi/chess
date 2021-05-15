@@ -8,7 +8,7 @@ import java.util.Stack;
 
 
 /**
- * Game class which defines and controls the current game.
+ * The Game class which defines and controls the current game.
  */
 
 public class Game {
@@ -20,7 +20,7 @@ public class Game {
     public Player currentPlayer;
 
     /**
-     * Constructor for a Game.
+     * Constructor for creating a new Game.
      */
     public Game() {
         this.playerWhite = new Player(Colour.WHITE);
@@ -36,12 +36,12 @@ public class Game {
     }
 
     /**
-     * Evaluates semantically correctness of input move to return if the move is allowed in the current state
-     * of the game.
+     * Evaluates the semantically correctness of the console input, determining if the move is
+     * allowed for the selected Piece and in the current state of the Game.
      *
-     * @param selectedPiece Piece which Player wants to move.
-     * @param finalSquare Square which Player wants his Piece to move to.
-     * @return boolean Returns if input move is possible.
+     * @param selectedPiece The Piece which the Player wants to move.
+     * @param finalSquare   The Square which the Player wants his Piece to move to.
+     * @return boolean Returns 'true' if the move is possible.
      */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all special cases
         if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
@@ -79,12 +79,14 @@ public class Game {
     }
 
     /**
-     * implementation of movement
+     * A function which processes the move: it calls the Move class to execute the move and checks afterwards
+     * if the player has put themself in check. If so the function calls the Move class again to undo
+     * the move and returns the failure of the move.
      *
-     * @param startSquare   Square where movement starts
-     * @param finalSquare   Square where movement ends
-     * @param key           the potential char for a promotion
-     * @return returns opposite of "move is allowed"
+     * @param startSquare   The Square where the move starts.
+     * @param finalSquare   The Square where the move ends.
+     * @param key           The char for a potential promotion.
+     * @return boolean Returns 'true' if the move doesn't put the player in check.
      */
     public boolean processMove(Square startSquare, Square finalSquare, char key) {
         Move currentMove = new Move(startSquare, finalSquare);
@@ -130,21 +132,33 @@ public class Game {
     }
 
     /**
-     * Evaluates if current state of game is draw
+     * Evaluates if the current state of game is draw: when the King is not yet in check but every Square
+     * the King can move to are under attack and no ally can move either.
      *
-     * @return boolean returns if game is draw or not
+     * @return boolean Returns 'true' if the game is a draw.
      */
     public boolean isADraw() {
-        if (!isInCheck()) {
-            // King is not in check
-            if (!this.currentPlayer.getAlliedPieces(this.beatenPieces, this.chessBoard).isEmpty()) {
-                // if ally exists - not a draw
-                return false;
-            }
-            // if King can move it's not a draw
-            return !canKingMove();
+        if (canKingMove()) {
+            // King can move
+            return false;
         }
-        // King is in check, but that's not a draw
+        if (!isInCheck()) {
+            // King is not in check but can't move
+            List<Piece> allies = this.currentPlayer.getAlliedPieces(this.beatenPieces, this.chessBoard);
+            if (allies.isEmpty()) {
+                // if no ally exists -> it's a draw
+                return true;
+            } else {
+                // if ally exists
+                for (Piece ally : allies) {
+                    if (ally.canPieceMove(this.chessBoard, this)) {
+                        // check if they can move somewhere -> it's not a draw
+                        return false;
+                    }
+                }
+            }
+        }
+        // King is in check, but that's not a draw (might be checkmate though)
         return false;
     }
 

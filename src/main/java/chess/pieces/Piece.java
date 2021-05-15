@@ -166,6 +166,26 @@ public abstract class Piece {
         return Math.abs(diffX) < 2 && Math.abs(diffY) < 2;
     }
 
+    /**
+     *
+     * @param currentBoard
+     * @return
+     */
+    public boolean canPieceMove(Board currentBoard, Game game) {
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if (currentBoard.getChessBoard()[i][j].getOccupiedBy() == null) {
+                    Square possibleFinalSquare = currentBoard.getChessBoard()[i][j];
+                    if (this.isPiecesMove(possibleFinalSquare, currentBoard)
+                            && isPathEmpty(this, possibleFinalSquare, currentBoard)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private int[][] piecesDirection(Square finalSquare) {
         int[][] dir = new int[1][2];
         if (this instanceof Queen) {
