@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Player {
     private Colour colour;
-    private boolean inCheck = false;
-    private boolean loser = false;
+    boolean inCheck = false;
+    boolean loser = false;
 
     /**
      * Constructor for creating a new player.

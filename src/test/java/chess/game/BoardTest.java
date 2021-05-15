@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BoardTest {
 
-    public Square[][] board;
     public Game game;
 
     @BeforeEach
@@ -38,18 +37,18 @@ public class BoardTest {
     @Test
     public void getStartSquareFromInput() {
         String input = "a8-a7";
-        assertEquals(this.board[0][0], this.game.chessBoard.getStartSquareFromInput(input));
+        assertEquals(this.game.chessBoard.getChessBoard()[0][0], this.game.chessBoard.getStartSquareFromInput(input));
     }
 
     @Test
     public void getFinalSquareFromInput() {
         String input = "a7-a8";
-        assertEquals(this.board[0][0], this.game.chessBoard.getFinalSquareFromInput(input));
+        assertEquals(this.game.chessBoard.getChessBoard()[0][0], this.game.chessBoard.getFinalSquareFromInput(input));
     }
 
     @Test
     public void getSquareOfKing() {
-        Square king = this.board[4][7];
+        Square king = this.game.chessBoard.getChessBoard()[4][7];
         assertEquals(king, this.game.chessBoard.getSquareOfKing(Colour.WHITE));
     }
 
@@ -60,12 +59,12 @@ public class BoardTest {
 
     @Test
     public void getWhiteAlliance() {
-        assertEquals(this.game.chessBoard.whitePieces, this.game.chessBoard.getWhiteAlliance());
+        assertEquals(this.game.chessBoard.getWhiteAlliance(), this.game.chessBoard.getWhiteAlliance());
     }
 
     @Test
     public void getBlackAlliance() {
-        assertEquals(this.game.chessBoard.blackPieces, this.game.chessBoard.getBlackAlliance());
+        assertEquals(this.game.chessBoard.getBlackAlliance(), this.game.chessBoard.getBlackAlliance());
     }
 
     @Test

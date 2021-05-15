@@ -24,7 +24,7 @@ public class Board {
         this.chessBoard = new Square[8][8];
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                this.chessBoard[x][y] = new Square(x, y);
+                this.chessBoard[x][y] = new Square(Label.values()[8*x+y], x, y);
             }
         }
         startingFormation();                //sets Pieces on Board to start game

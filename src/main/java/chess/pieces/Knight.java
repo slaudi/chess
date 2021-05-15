@@ -10,7 +10,7 @@ import chess.game.Type;
  */
 public class Knight extends Piece {
 
-    public final Type type = Type.KNIGHT;
+    final Type type = Type.KNIGHT;
 
     /**
      * Constructor for creating a Knight piece.

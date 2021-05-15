@@ -1,6 +1,7 @@
 package chess.pieces;
 
 import chess.game.Colour;
+import chess.game.Game;
 import chess.game.Square;
 import chess.game.Type;
 
@@ -17,13 +18,15 @@ public class KingTest {
 
     public King king;
     public Square square;
-    public Square squarec3;
+    public Square squareC3;
+    private Game game;
 
     @BeforeEach
     public void setUp() {
+        game = new Game();
         square = new Square(c4, 2, 4);
         king = new King(square, Colour.WHITE);
-        squarec3 = new Square(c3,2, 5);
+        squareC3 = new Square(c3,2, 5);
     }
 
     @Test
@@ -49,26 +52,25 @@ public class KingTest {
     }
 
     @Test
-    public void getHasMoved() {
-        assertFalse(king.isHasMoved());
+    public void hasNotMoved() {
+        assertTrue(king.hasNotMoved());
     }
 
     @Test
     public void setHasMoved() {
-        king.setHasMoved(true);
-        assertTrue(king.isHasMoved());
+        king.setNotMoved(false);
+        assertFalse(king.hasNotMoved());
     }
 
-    // TODO: test moves of the pieces
     @Test
     public void isPiecesMove() {
-        assertTrue(king.isPiecesMove(squarec3));
+        assertTrue(king.isPiecesMove(squareC3, game.chessBoard));
     }
 
     @Test
     public void isHasMoved() {
-        king.setHasMoved(true);
-        assertTrue(king.isHasMoved());
+        king.setNotMoved(false);
+        assertFalse(king.hasNotMoved());
     }
 
     @Test

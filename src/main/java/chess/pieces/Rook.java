@@ -11,7 +11,7 @@ import chess.game.Type;
  */
 public class Rook extends Piece implements MovingDirection {
 
-    private final Type type = Type.ROOK;
+    final Type type = Type.ROOK;
 
     /**
      * Constructor for creating a Rook piece.

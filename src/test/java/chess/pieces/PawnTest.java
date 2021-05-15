@@ -61,24 +61,24 @@ public class PawnTest {
 
     @Test
     public void getHasMoved() {
-        assertFalse(pawn.isHasMoved());
+        assertTrue(pawn.hasNotMoved());
     }
 
     @Test
     public void setHasMoved() {
-        pawn.setHasMoved(true);
-        assertTrue(pawn.isHasMoved());
+        pawn.setNotMoved(false);
+        assertFalse(pawn.hasNotMoved());
     }
 
     @Test
     public void isPiecesMove() {
-        assertTrue(pawn.isPiecesMove(squareC5));
+        assertTrue(pawn.isPiecesMove(squareC5, game.chessBoard));
     }
 
     @Test
     public void isHasMoved() {
-        pawn.setHasMoved(true);
-        assertTrue(pawn.isHasMoved());
+        pawn.setNotMoved(false);
+        assertFalse(pawn.hasNotMoved());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class PawnTest {
 
     @Test
     public void canCapture() {
-        assertFalse(pawn.canCapture(moveHistory));
+        assertFalse(pawn.canCapture(squareF4));
     }
 
     @Test

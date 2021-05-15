@@ -100,7 +100,7 @@ public class Move {
 
         // set the square of the Rook to it's new square
         Square rookSquare = board.getChessBoard()[rook_x][rook_y];
-        finalSquare.getOccupiedBy().setSquare(rookSquare);
+        this.finalSquare.getOccupiedBy().setSquare(rookSquare);
     }
 
     /**

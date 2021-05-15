@@ -133,7 +133,7 @@ public abstract class Piece {
                 // stores squares except start and final square
                 int x = this.square.getX() + dir_x * (i + 1);
                 int y = this.square.getY() + dir_y * (i + 1);
-                move[0][i] = new Square(x, y);
+                move[0][i] = new Square(Label.values()[x+y], x, y);
             }
         }
         return new ArrayList<>(Arrays.asList(move[0]).subList(0, move[0].length));

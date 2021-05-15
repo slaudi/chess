@@ -13,9 +13,9 @@ import java.util.Stack;
 
 public class Game {
     private final Player playerWhite;
-    private final Player playerBlack;
-    private final List<Piece> beatenPieces;
-    private final Stack<Move> moveHistory;
+    final Player playerBlack;
+    final List<Piece> beatenPieces;
+    final Stack<Move> moveHistory;
     public Board chessBoard;
     public Player currentPlayer;
 
@@ -226,7 +226,7 @@ public class Game {
      *
      * @return boolean Returns 'true' if the King of the current Player is in check.
      */
-    private boolean isInCheck(){
+    boolean isInCheck(){
         Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
@@ -246,7 +246,7 @@ public class Game {
      *
      * @return boolean Returns 'true' if the current Player is checkmate.
      */
-    private boolean isCheckMate(Square finalSquare) {
+    boolean isCheckMate(Square finalSquare) {
         if (this.currentPlayer.isInCheck()) {
             if (canKingMove() && isSafeSquare(finalSquare)) {
                 return false;
@@ -314,7 +314,7 @@ public class Game {
             for (Piece enemyPiece : enemies) {
                 for (int i = 0; i < diff; i++) {
                     king_x = selectedPiece.getSquare().getX() + i;
-                    Square tempSquare = new Square(king_x, king_y);
+                    Square tempSquare = new Square(Label.values()[king_x+king_y], king_x, king_y);
                     if(enemyPiece.isPiecesMove(tempSquare, this.chessBoard) && enemyPiece.isPathEmpty(enemyPiece, tempSquare, this.chessBoard)){
                         return false;
                     }
@@ -324,7 +324,7 @@ public class Game {
         return true;
     }
 
-    private void changePlayer(Square finalSquare) {
+    void changePlayer(Square finalSquare) {
         // change currentPlayer to next Colour
         this.currentPlayer = this.currentPlayer == this.playerWhite ? this.playerBlack : this.playerWhite;
 

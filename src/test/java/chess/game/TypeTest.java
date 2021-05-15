@@ -1,15 +1,14 @@
 package chess.game;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import static chess.game.Type.PAWN;
 
 /**
  * The TypeTest class test the methods of the Type class
  */
-import static chess.game.Type.PAWN;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class TypeTest {
 
     @Test

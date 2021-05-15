@@ -59,24 +59,24 @@ public class QueenTest {
 
     @Test
     public void getHasMoved() {
-        assertFalse(queen.isHasMoved());
+        assertTrue(queen.hasNotMoved());
     }
 
     @Test
     public void setHasMoved() {
-        queen.setHasMoved(true);
-        assertTrue(queen.isHasMoved());
+        queen.setNotMoved(false);
+        assertFalse(queen.hasNotMoved());
     }
 
     @Test
     public void isPiecesMove() {
-        assertTrue(queen.isPiecesMove(squareE6));
+        assertTrue(queen.isPiecesMove(squareE6, game.chessBoard));
     }
 
     @Test
     public void isHasMoved() {
-        queen.setHasMoved(true);
-        assertTrue(queen.isHasMoved());
+        queen.setNotMoved(true);
+        assertTrue(queen.hasNotMoved());
     }
 
     @Test

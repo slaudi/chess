@@ -15,11 +15,6 @@ public class LabelTest {
     }
 
     @Test
-    public void testToString() {
-        assertEquals("e5", Label.toString(Label.e5));
-    }
-
-    @Test
     public void values() {
         assertEquals(Label.values()[0], Label.a8);
     }

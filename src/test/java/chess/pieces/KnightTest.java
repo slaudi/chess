@@ -58,24 +58,24 @@ public class KnightTest {
 
     @Test
     public void getHasMoved() {
-        assertFalse(knight.isHasMoved());
+        assertTrue(knight.hasNotMoved());
     }
 
     @Test
     public void setHasMoved() {
-        knight.setHasMoved(true);
-        assertTrue(knight.isHasMoved());
+        knight.setNotMoved(false);
+        assertFalse(knight.notMoved);
     }
 
     @Test
     public void isPiecesMove() {
-        assertTrue(knight.isPiecesMove(squareB2));
+        assertTrue(knight.isPiecesMove(squareB2, game.chessBoard));
     }
 
     @Test
     public void isHasMoved() {
-        knight.setHasMoved(true);
-        assertTrue(knight.isHasMoved());
+        knight.setNotMoved(false);
+        assertFalse(knight.hasNotMoved());
     }
 
     @Test

@@ -1,7 +1,7 @@
 package chess.game;
 
 import chess.pieces.Rook;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ public class SquareTest {
 
     @Test
     public void getOccupiedBy() {
-        assertEquals(null, square.getOccupiedBy());
+        assertNull(square.getOccupiedBy());
     }
 
     @Test
@@ -53,6 +53,6 @@ public class SquareTest {
 
     @Test
     public void getYFromString() {
-        assertEquals(7, Square.getYFromString("a8"));
+        assertEquals(7, Square.getYFromString("a1"));
     }
 }

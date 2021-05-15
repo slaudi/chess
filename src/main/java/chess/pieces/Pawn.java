@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class Pawn extends Piece implements MovingDirection {
 
-    private final Type type = Type.PAWN;
+    final Type type = Type.PAWN;
 
     /**
      * Constructor for creating a Pawn piece.

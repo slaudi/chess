@@ -10,6 +10,7 @@ public class Square {
     private final int x;
     private final int y;
     private Piece occupiedBy = null;
+    Label label;
 
     /**
      * Constructor for creating a single square when starting a new Game.
@@ -17,9 +18,10 @@ public class Square {
      * @param x The x coordinate of this Square in the Board array (line from left to right).
      * @param y The y coordinate of this Square in the Board array (column from top to bottom).
      */
-    public Square(int x, int y) {
+    public Square(Label label, int x, int y) {
         this.x = x;
         this.y = y;
+        this.label = label;
     }
 
     @Override

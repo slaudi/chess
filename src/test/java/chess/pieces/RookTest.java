@@ -56,24 +56,24 @@ public class RookTest {
 
     @Test
     public void getHasMoved() {
-        assertFalse(rook.isHasMoved());
+        assertTrue(rook.hasNotMoved());
     }
 
     @Test
     public void setHasMoved() {
-        rook.setHasMoved(true);
-        assertTrue(rook.isHasMoved());
+        rook.setNotMoved(false);
+        assertFalse(rook.hasNotMoved());
     }
 
     @Test
     public void isPiecesMove() {
-        assertTrue(rook.isPiecesMove(squareF4));
+        assertTrue(rook.isPiecesMove(squareF4, game.chessBoard));
     }
 
     @Test
     public void isHasMoved() {
-        rook.setHasMoved(true);
-        assertTrue(rook.isHasMoved());
+        rook.setNotMoved(false);
+        assertFalse(rook.hasNotMoved());
     }
 
     @Test

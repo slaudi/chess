@@ -11,7 +11,7 @@ import chess.game.Type;
  */
 public class Queen extends Piece implements MovingDirection {
 
-    private final Type type = Type.QUEEN;
+    final Type type = Type.QUEEN;
 
     /**
      * Constructor for creating a Queen piece.

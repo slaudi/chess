@@ -11,7 +11,7 @@ import chess.game.Type;
  */
 public class Bishop extends Piece implements MovingDirection {
 
-    private final Type type = Type.BISHOP;
+    final Type type = Type.BISHOP;
 
     /**
      * Constructor for creating a Bishop piece.
