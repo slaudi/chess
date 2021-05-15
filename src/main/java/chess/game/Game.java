@@ -86,11 +86,6 @@ public class Game {
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
-        Move lastEnemyMove = currentMove;
-        if (!this.moveHistory.isEmpty()) {
-            lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
-        }
-        this.moveHistory.add(currentMove);
 
         if (targetPiece != null && selectedPiece.getType() == Type.KING && targetPiece.getType() == Type.ROOK) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
@@ -98,6 +93,7 @@ public class Game {
             targetPiece.setHasMoved(true);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
+            Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
             currentMove.enPassantMove(lastEnemyMove, chessBoard);
             Piece enemy = lastEnemyMove.movingPiece;
             this.beatenPieces.add(enemy);
@@ -122,6 +118,7 @@ public class Game {
                 currentMove.doPromotion(key, chessBoard);
             }
         }
+        this.moveHistory.add(currentMove);
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setHasMoved(true);
         changePlayer(finalSquare);
@@ -228,6 +225,7 @@ public class Game {
             List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
             for (Piece enemyPiece : enemies) {
                 if (isMoveAllowed(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
+                    // if they can defend it's not checkmate
                     return !canDefendKing(enemyPiece);
                 }
             }

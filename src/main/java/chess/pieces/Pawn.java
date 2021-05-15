@@ -150,10 +150,8 @@ public class Pawn extends Piece implements MovingDirection {
      * @return a boolean indicating if en passant is possible
      */
     public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
-        if (history.size() > 2) {
-            Move currentMove = history.pop();
+        if (history.size() > 1) {
             Move lastEnemyMove = history.peek();
-            history.add(currentMove);
             Square start = lastEnemyMove.getStartSquare();
             Square end = lastEnemyMove.getFinalSquare();
             int diff_x = finalSquare.getX() - this.square.getX();
