@@ -9,7 +9,7 @@ import chess.pieces.Piece;
 import java.util.Scanner;
 
 /**
- * Starting point of the command line interface with argument '--simple'
+ * Starting point of the command line interface with the argument '--simple'
  */
 public class Simple {
 
@@ -51,9 +51,9 @@ public class Simple {
 
 
     /**
-     * Gets input as a String from the console.
+     * Gets the input as a String from the console.
      *
-     * @return a String of the input
+     * @return String A String of the console input.
      */
     public static String getInput () {
         Scanner scanner = new Scanner(System.in);
@@ -61,10 +61,10 @@ public class Simple {
     }
 
     /**
-     * Checks if Console Input is a syntactical correct Move.
+     * Checks if the console input is a syntactical correct move.
      *
-     * @param consoleInput Input of active Player as a String.
-     * @return a boolean if the syntax of the input is correct
+     * @param consoleInput The console input of the active Player as a String.
+     * @return boolean Returns 'true' if the syntax of the input is correct.
      */
     public static boolean isValidMove(String consoleInput){
 

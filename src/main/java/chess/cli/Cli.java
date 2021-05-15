@@ -39,9 +39,9 @@ public class Cli {
 
 
     /**
-     * Gets input as a String from the console.
+     * Gets the input as a String from the console.
      *
-     * @return a String of the input
+     * @return String A String of the console input.
      */
     private static String getInput () {
         Scanner scanner = new Scanner(System.in);
@@ -92,11 +92,12 @@ public class Cli {
     }
 
     /**
-     * evaluates Console-Input and state of current game
+     * Evaluates console input if a move is not allowed and based on state of current game
+     * generates an output as to why it's not allowed.
      *
-     * @param selectedPiece The Piece the player wants to move
-     * @param finalSquare   The Square the piece wants to move to
-     * @param currentGame   The current game
+     * @param selectedPiece The Piece the player wants to move.
+     * @param finalSquare   The Square the piece wants to move to.
+     * @param currentGame   The current game.
      */
     private static void generateAnswer (Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
@@ -112,10 +113,10 @@ public class Cli {
     }
 
     /**
-     * Checks if Console Input is a syntactical correct Move.
+     * Checks if the console input is a syntactical correct move.
      *
-     * @param consoleInput Input of active Player as a String.
-     * @return a boolean if the syntax of the input is correct
+     * @param consoleInput The console input of the active Player as a String.
+     * @return boolean Returns 'true' if the syntax of the input is correct.
      */
     private static boolean isValidMove(String consoleInput){
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
