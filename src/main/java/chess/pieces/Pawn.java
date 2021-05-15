@@ -5,17 +5,18 @@ import chess.game.*;
 import java.util.Stack;
 
 /**
- * The Pawn class is a Subclass of the Piece class and represents a Piece of the Type Pawn
+ * The Pawn class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type Pawn.
  */
 public class Pawn extends Piece implements MovingDirection {
 
     private final Type type = Type.PAWN;
 
     /**
-     * Constructor for a Pawn
+     * Constructor for creating a Pawn piece.
      *
-     * @param square the location of the Pawn
-     * @param colour the Colour object associated with the Pawn
+     * @param square The location of the Pawn on the board.
+     * @param colour The Colour associated with the Pawn.
      */
     public Pawn(Square square, Colour colour) {
         super(square, colour);
@@ -61,12 +62,13 @@ public class Pawn extends Piece implements MovingDirection {
     }
 
     /**
-     * Determines if the Pawn is moving only one Square up/down depending on the Colour of the Pawn
-     * OR two up/down during the first move
-     * OR one diagonally up/down to capture an enemy piece
+     * A function determining if the Pawn is moving only one Square up/down
+     * OR two up/down during the first move (depending on it's Colour) and doesn't
+     * stay on its original square..
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Pawn should move to.
+     * @return boolean  Returns 'true' if the Pawn is moving only one Square up/down
+     *                  OR two up/down during the first move (depending on it's Colour).
      */
     @Override
     public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
@@ -97,10 +99,12 @@ public class Pawn extends Piece implements MovingDirection {
 
 
     /**
-     * A function determining if a move to capture another Piece is allowed for the Pawn
+     * A function determining if the piece a Pawn wants to capture is standing on a square
+     * one square diagonally away from the Pawn - if the Pawn is white diagonally up
+     * and if it's black diagonally down.
      *
-     * @param enemySquare The square on which the Pawn wants to capture a Piece
-     * @return a boolean indicating if a capture is allowed
+     * @param enemySquare The square on which the Pawn wants to capture a Piece.
+     * @return boolean Returns 'true' if the capture is allowed.
      */
     public boolean canCapture(Square enemySquare) {
         int diff_x = enemySquare.getX() - this.square.getX();
@@ -119,7 +123,7 @@ public class Pawn extends Piece implements MovingDirection {
      * The function is called from isMoveAllowed() before the new move is added to the
      * moveHistory-Stack and determines if a pawn can beat another pawn en passant.
      *
-     * @param finalSquare   The square where the selected pawn should end up, here behind the pawn to beat
+     * @param finalSquare   The square where the selected pawn should end up, here behind the pawn to beat.
      * @param lastEnemyMove The last move of the enemy before this one.
      * @return boolean Returning 'true': en passant is possible.
      */
@@ -142,11 +146,11 @@ public class Pawn extends Piece implements MovingDirection {
 
     /**
      * The function is called from processMove() after the current Move ist added to the
-     * moveHistory-Stack and determines if a pawn can beat another pawn en passant
+     * moveHistory-Stack and determines if a pawn can beat another pawn en passant.
      *
-     * @param finalSquare   the square where the selected pawn should end up, here behind the pawn to beat
-     * @param history       a stach which stores all previous moves
-     * @return a boolean indicating if en passant is possible
+     * @param finalSquare   The square where the selected pawn should end up, here behind the pawn to beat.
+     * @param history       A Stack which stores all previous moves.
+     * @return boolean Returns 'true' if en passant is possible.
      */
     public boolean isEnPassant(Square finalSquare, Stack<Move> history) {
         if (history.size() > 1) {
@@ -172,10 +176,12 @@ public class Pawn extends Piece implements MovingDirection {
     }
 
     /**
-     * A function determining if a promotion is possible
+     * A function determining if a Pawn has arrived on a Square on the far end of
+     * the board so the a promotion to a Queen, Bishop, Knight or Rook is possible
      *
-     * @param finalSquare the Square where the move of the Pawn ends up
-     * @return a boolean indicating if a promotion is possible
+     * @param finalSquare The Square where the move of the Pawn ends.
+     * @return boolean Returns 'true' if the move puts the Pawn on the last Square
+     * on the board so that a promotion is possible.
      */
     public boolean promotionPossible(Square finalSquare) {
         if (this.colour == Colour.WHITE) {

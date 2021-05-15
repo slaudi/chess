@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The Piece class is the Superclass of the chess pieces on the board of the game
+ * The Piece class is the Superclass of the chess pieces on the board of the game.
  */
 public abstract class Piece {
 
@@ -16,9 +16,10 @@ public abstract class Piece {
     boolean hasMoved;
 
     /**
-     * Constructor for a Piece
-     * @param square the location of the Piece
-     * @param colour the Colour object associated with the Piece
+     * Constructor for creating a Piece.
+     *
+     * @param square The location of the Piece on the board.
+     * @param colour The Colour associated with the Piece.
      */
     public Piece(Square square, Colour colour) {
         this.square = square;
@@ -26,65 +27,42 @@ public abstract class Piece {
         this.hasMoved = false;
     }
 
-    /**
-     * Getter for the position of the Piece.
-     * @return Square The location of the Piece
-     */
     public abstract Square getSquare();
 
-    /**
-     * Setter for the location of a Piece, used to update the location after a move.
-     * @param square The new location of a Piece after a move
-     */
     public abstract void setSquare(Square square);
 
-    /**
-     * Getter for the colour of a Piece
-     * @return Colour The colour of the Piece
-     */
     public abstract Colour getColour();
 
-    /**
-     * Getter for the type of a Piece
-     * @return Type The type of the Piece
-     */
     public abstract Type getType();
 
-    /**
-     * Getter for the variable 'hasMoved', used to determine if the Piece has moved already for castling or en passant
-     * @return boolean A boolean indicating if the Piece has moved yet
-     */
     public abstract boolean isHasMoved();
 
-    /**
-     * Setter for the variable 'hasMoved', is set to true after the first move of a Piece
-     * @param x The boolean 'true' after a Piece has moved
-     */
     public abstract void setHasMoved(boolean x);
 
     /**
      * A function to determine if a Piece is printed on the chess board in upper or lower case
-     * depending on the colour of it
+     * depending on its colour.
      *
-     * @return a String representing the Piece on the chess board
+     * @return String Represents the Piece and its colour on the printed chess board.
      */
     @Override
     public abstract String toString();
 
     /**
-     * Determines if a move is valid based on the type of the Piece
+     * A function determining if a move is valid based on the type of the Piece.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Piece should move to.
+     * @return boolean Returns 'true' if the move is allowed for the Piece.
      */
     public abstract boolean isPiecesMove(Square finalSquare, Board chessBoard);
 
     /**
-     * Evaluates if direct path from one square to another is empty
+     * A function determining if the direct path from one square to another is empty
+     * except for the start and final Square.
      *
-     * @param piece Piece which has to move
-     * @param finalSquare Square where piece has to go to
-     * @return returns if selected path is empty
+     * @param piece         The Piece the player wants to move.
+     * @param finalSquare   The Square where the Piece should go to.
+     * @return boolean Returns 'true' if the path is empty.
      */
     public boolean isPathEmpty (Piece piece, Square finalSquare, Board chessBoard){
         if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
@@ -110,7 +88,7 @@ public abstract class Piece {
     }
 
     /**
-     * Generates Path of the visited Squares in between the first and last Square if Piece
+     * A function generating a path of the visited Squares in between the first and last Square if Piece
      * moves more than one Square.
      *
      * @param finalSquare The final Square of the move.
@@ -153,9 +131,10 @@ public abstract class Piece {
     }
 
     /**
-     * Evaluates if a Square is directly next to a selected Piece
-     * @param squareOfInterest The Square where the Piece wants to go to
-     * @return boolean Returns 'true' if selected Square to move to is only one Square away from the Piece
+     * A function determining if a Square is directly next to a selected Piece.
+     *
+     * @param squareOfInterest The Square where the Piece should move to.
+     * @return boolean Returns 'true' if the selected Square is only one Square away from the Piece.
      */
     public static boolean isSurroundingSquare(Square piecesSquare, Square squareOfInterest){
         int diffX = piecesSquare.getX() - squareOfInterest.getX();
@@ -167,11 +146,13 @@ public abstract class Piece {
     }
 
     /**
+     * A function determining if a Piece can move to at least one square on the board to help find
+     * out if a game is in a draw.
      *
-     * @param currentBoard
-     * @return
+     * @param currentBoard The current board.
+     * @return boolean Returns 'true' if the Piece can move somewhere on the board.
      */
-    public boolean canPieceMove(Board currentBoard, Game game) {
+    public boolean canPieceMove(Board currentBoard) {
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 if (currentBoard.getChessBoard()[i][j].getOccupiedBy() == null) {

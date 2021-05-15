@@ -1,7 +1,7 @@
 package chess.game;
 
 /**
- * enum Type: Type of Chess-Piece, e.g. King, Queen, Bishop, Knight, Rook, Pawn.
+ * enum Type: The Type of chess piece: King, Queen, Bishop, Knight, Rook or Pawn.
  */
 public enum Type {
     KING,

@@ -6,17 +6,18 @@ import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The King class is a Subclass of the Piece class and represents a Piece of the Type King
+ * The King class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type King.
  */
 public class King extends Piece implements MovingDirection {
 
     private final Type type = Type.KING;;
 
     /**
-     * Constructor for a King
+     * Constructor for creating a King piece.
      *
-     * @param square the location of the King
-     * @param colour the Colour object associated with the King
+     * @param square The location of the King on the board.
+     * @param colour The Colour associated with the King.
      */
     public King(Square square, Colour colour) {
         super(square, colour);
@@ -62,10 +63,11 @@ public class King extends Piece implements MovingDirection {
     }
 
     /**
-     * Determines if the King is moving only one Square in any direction
+     * A function determining if the King is moving only one Square in any direction and doesn't
+     * stay on its original square.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Bishop should move to.
+     * @return boolean Returns 'true' if the move is only one Square in any direction.
      */
     @Override
     public boolean isPiecesMove(Square finalSquare, Board chessBoard) {

@@ -6,22 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Player class which defines each of two Players
+ * The Player class defines each of the two Players and their allies and enemies on the board.
  */
 public class Player {
     private Colour colour;
-    private boolean inCheck = false;
+    private boolean isChecked = false;
     private boolean loser = false;
 
     /**
-     * Creates a new Player instance.
+     * Constructor for creating a new player.
      *
-     * @param colour Decides if Colour of Players Chess-Pieces is black or white
+     * @param colour The colour determines if the player is allied with the white or black
+     *               chess pieces.
      */
     public Player(Colour colour) {
         this.colour = colour;
     }
-
 
     public Colour getColour() {
         return colour;
@@ -31,12 +31,12 @@ public class Player {
         this.colour = x;
     }
 
-    public boolean isInCheck() {
-        return this.inCheck;
+    public boolean isChecked() {
+        return this.isChecked;
     }
 
-    public void setInCheck(boolean x) {
-        this.inCheck = x;
+    public void setChecked(boolean x) {
+        this.isChecked = x;
     }
 
     public boolean isLoser() {
@@ -48,9 +48,10 @@ public class Player {
     }
 
     /**
-     * A function putting all the allied Pieces (the same colour) on the current board of a certain Piece
-     * in a ArrayList.
-     * @return ArrayList Containing all active allied Pieces
+     * A function gathering all allied Pieces of a player on the current board
+     * in a ArrayList by removing the already beaten pieces from the Alliance.
+     *
+     * @return ArrayList Contains all active allied Pieces
      */
     List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> allies;
@@ -75,9 +76,10 @@ public class Player {
     }
 
     /**
-     * A function putting all the enemy Pieces (the other colour) on the current board of a certain Piece
-     * in a ArrayList.
-     * @return ArrayList Containing all active enemy Pieces.
+     * A function gathering all enemy Pieces of a player on the current board
+     * in a ArrayList by removing the already beaten pieces from the Alliance.
+     *
+     * @return ArrayList Contains all active enemy Pieces.
      */
     List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> enemies;

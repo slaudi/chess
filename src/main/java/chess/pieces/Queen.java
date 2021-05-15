@@ -6,17 +6,18 @@ import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The Queen class is a Subclass of the Piece class and represents a Piece of the Type Queen
+ * The Queen class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type Queen.
  */
 public class Queen extends Piece implements MovingDirection {
 
     private final Type type = Type.QUEEN;
 
     /**
-     * Constructor for a Queen
+     * Constructor for creating a Queen piece.
      *
-     * @param square the location of the Queen
-     * @param colour the Colour object associated with the Queen
+     * @param square The location of the Queen on the board.
+     * @param colour The Colour associated with the Queen.
      */
     public Queen(Square square, Colour colour) {
         super(square, colour);
@@ -62,10 +63,11 @@ public class Queen extends Piece implements MovingDirection {
     }
 
     /**
-     * Determines if the Queen is moving in a straight line in any direction
+     * A function determining if the Queen is moving in a straight line in any direction
+     * and doesn't stay on its original square.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Queen should move to.
+     * @return boolean Returns 'true' if the Queen is moving in a straight line in any direction.
      */
     @Override
     public boolean isPiecesMove(Square finalSquare, Board chessBoard) {

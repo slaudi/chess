@@ -6,17 +6,18 @@ import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The Bishop class is a Subclass of the Piece class and represents a Piece of the Type Bishop
+ * The Bishop class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type Bishop.
  */
 public class Bishop extends Piece implements MovingDirection {
 
     private final Type type = Type.BISHOP;
 
     /**
-     * Constructor for a Bishop
+     * Constructor for creating a Bishop piece.
      *
-     * @param square the location of the Bishop
-     * @param colour the Colour object associated with the Bishop
+     * @param square The location of the Bishop on the board.
+     * @param colour The Colour associated with the Bishop.
      */
     public Bishop(Square square, Colour colour) {
         super(square, colour);
@@ -62,10 +63,11 @@ public class Bishop extends Piece implements MovingDirection {
     }
 
     /**
-     * Determines if the Bishop is moving diagonally
+     * A function determining if the Bishop is only moving diagonally in any direction and doesn't
+     * stay on its original square.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Bishop should move to.
+     * @return boolean Returns 'true' if the move is diagonal.
      */
     @Override
     public boolean isPiecesMove(Square finalSquare, Board chessBoard) {

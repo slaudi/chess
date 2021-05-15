@@ -4,7 +4,8 @@ import chess.game.Square;
 
 /**
  * The MovingDirection Interface is implemented by Queen, Rook and Bishop to help generate their
- * paths on the board.
+ * paths on the board and by King to check the possibility of castling and by Pawn the possibility
+ * of moving 2 Square the first time moving.
  */
 public interface MovingDirection {
 

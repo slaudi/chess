@@ -3,7 +3,8 @@ package chess.game;
 import chess.pieces.*;
 
 /**
- * Move class to calculate and save the movement of a Chess-Piece.
+ * The Move class executes moves and undoes them if it is evaluated that the move would put the
+ * King of the current Player doing the move in check.
  */
 public class Move {
     private final Square startSquare;
@@ -11,7 +12,7 @@ public class Move {
     private final Piece movingPiece;
 
     /**
-     * Constructor of Move-Class.
+     * Constructor for creating new player.
      *
      * @param start The Square the Movement of Chess-Piece starts at.
      * @param finish The Square the Movement goes to.
@@ -46,8 +47,8 @@ public class Move {
     }
 
     /**
-     * A function undoing the last move on the board if it it would put your King in check
-     * if the final Square was empty.
+     * A function undoing the last move on the board if it would put the current players King
+     * in check (if the final Square was empty).
      *
      * @param board The current board.
      */
@@ -58,10 +59,10 @@ public class Move {
     }
 
     /**
-     * A function undoing the last move on the board if it would put your King in check
-     * if the final Square was occupied by an enemy Piece.
+     * A function undoing the last move on the board if it would put the current players King
+     * in check (if the final Square was occupied by an enemy Piece).
      *
-     * @param targetPiece   The Piece the move of the selected Piece captured.
+     * @param targetPiece   The Piece captured by the move of the selected Piece.
      * @param board         The current board.
      */
     void undoMove (Piece targetPiece, Board board){
@@ -121,7 +122,7 @@ public class Move {
     }
 
     /**
-     * A function undoing the en passant move if it would put your King in check.
+     * A function undoing the en passant move if it would put the current players King in check.
      *
      * @param board The current board.
      */
@@ -138,6 +139,7 @@ public class Move {
      * put your King in check.
      *
      * @param key   The letter the player entered indicating which Piece they want the Pawn to promote to.
+     *              If the player didn't enter a letter the promotion is automatically to a Queen.
      * @param board The current board.
      */
     void doPromotion(char key, Board board) {

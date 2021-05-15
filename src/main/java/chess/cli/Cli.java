@@ -50,7 +50,7 @@ public class Cli {
     }
 
     private static boolean canPieceMove(Game currentGame) {
-        if (currentGame.currentPlayer.isInCheck()) {
+        if (currentGame.currentPlayer.isChecked()) {
             System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
         }
         System.out.println("Now playing as " + currentGame.currentPlayer.getColour());

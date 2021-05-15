@@ -10,7 +10,7 @@ import static chess.game.Colour.BLACK;
 import static chess.game.Colour.WHITE;
 
 /**
- * Board class representing the Chess-Board of current game.
+ * Board class representing the chess board of the current game.
  */
 public class Board {
     private final Square[][] chessBoard; // Board can access class Square
@@ -18,7 +18,7 @@ public class Board {
     private final List<Piece> blackPieces = new ArrayList<>(16);
 
     /**
-     * Create a new Board instance when starting a new Game.
+     * Constructor for creating a new chess board when starting a new Game.
      */
     public Board() {
         this.chessBoard = new Square[8][8];
@@ -32,9 +32,9 @@ public class Board {
     }
 
     /**
-     * Getter of a copy of the board
+     * Getter of a deep copy of the current board.
      *
-     * @return Square[][] A copy of the game
+     * @return Square[][] A copy of the current board.
      */
     public Square[][] getChessBoard() {
         Square[][] deepCopy = new Square[this.chessBoard.length][];
@@ -45,7 +45,7 @@ public class Board {
     }
 
     /**
-     * Sets each Chess-Piece on its initial position.
+     * Sets each Chess-Piece on its initial position when starting a new Game.
      */
     void startingFormation() {
         // Black pieces
@@ -75,9 +75,6 @@ public class Board {
         }
     }
 
-    /**
-     * Add all pieces on the board to an ArrayList according to their colour
-     */
     private void setAlliance() {
         for(int i = 0; i < 8; i++) {
             this.whitePieces.add(this.chessBoard[i][7].getOccupiedBy());
@@ -88,16 +85,16 @@ public class Board {
     }
 
     /**
-     * Getter for the white alliance
-     * @return ArrayList All white pieces
+     * Getter for the white alliance.
+     * @return ArrayList All white pieces.
      */
     List<Piece> getWhiteAlliance() {
         return new ArrayList<>(whitePieces);
     }
 
     /**
-     * Getter for the black alliance
-     * @return ArrayList All black pieces
+     * Getter for the black alliance.
+     * @return ArrayList All black pieces.
      */
     List<Piece> getBlackAlliance() {
         return new ArrayList<>(blackPieces);
@@ -125,9 +122,10 @@ public class Board {
     }
 
     /**
-     * Returns the Piece standing on selected Square.
-     * @param input Console-Input as String
-     * @return Piece which is on selected Square.
+     * Determines the Piece standing on the selected Square.
+     *
+     * @param input The console input as a String.
+     * @return Piece The Piece which was selected by the player.
      */
     public Piece getMovingPieceFromInput(String input){
         String start = input.substring(0, 2);
@@ -137,9 +135,10 @@ public class Board {
     }
 
     /**
-     * Computes Square where Piece-Movement should start from console input.
-     * @param input Console-Input as String.
-     * @return Square where Piece-Movement is going to start.
+     * Determines from the Console-Input the Square where the move should start.
+     *
+     * @param input The console input as a String.
+     * @return Square The square where the move is going to start.
      */
     public Square getStartSquareFromInput(String input){
         String start = input.substring(0, 2);
@@ -149,9 +148,10 @@ public class Board {
     }
 
     /**
-     * Computes Square where Piece-Movement should end from console input.
-     * @param input Console-Input as String
-     * @return Square where Piece-Movement is going to end.
+     * Determines from the Console-Input the Square where the move should end.
+     *
+     * @param input The console input as a String.
+     * @return Square The square where the move is going to end.
      */
     public Square getFinalSquareFromInput(String input){
         String end = input.substring(3, 5);
@@ -164,8 +164,9 @@ public class Board {
      * When a promotion is possible, the function extracts the letter from the input to determine the
      * Piece to which the player wants to promote the Pawn.
      *
-     * @param input a String of the input
-     * @return a char representing the requested promotion
+     * @param input The console input as a String.
+     * @return char A letter representing the requested promotion; Q = Queen, B = Bishop, N = knight,
+     *              R = Rook.
      */
     public char getPromotionKey(String input) {
         if (input.length() == 6) {
@@ -176,9 +177,10 @@ public class Board {
     }
 
     /**
-     * Finds Square of King
-     * @param colour Colour of King searched for
-     * @return Square Square King currently stands on
+     * Finds the Square of the current players King.
+     *
+     * @param colour The colour of the player which needs the position of their King.
+     * @return Square The Square the King currently stands on
      */
     protected Square getSquareOfKing(Colour colour){
         for(int i = 0; i < 8; i++) {
