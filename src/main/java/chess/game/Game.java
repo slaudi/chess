@@ -14,8 +14,8 @@ import java.util.Stack;
 public class Game {
     private final Player playerWhite;
     final Player playerBlack;
-    final List<Piece> beatenPieces;
-    final Stack<Move> moveHistory;
+    private final List<Piece> beatenPieces;
+    private final Stack<Move> moveHistory;
     public Board chessBoard;
     public Player currentPlayer;
 

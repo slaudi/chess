@@ -17,7 +17,7 @@ public class Main {
      */
     public static void main(String[] args) {
         boolean cli = Arrays.asList(args).contains("--no-gui");
-        boolean simple = Arrays.asList(args).contains("--simple");
+        boolean simple = Arrays.asList(args).contains("--no-gui --simple");
         if (cli) {
             Cli.main(args);
         } else if (simple) {

@@ -21,7 +21,7 @@ public class Simple {
             Game currentGame = new Game();
             currentGame.chessBoard.toConsole();
 
-            while(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
+            while(currentGame.currentPlayer.isLoser() || currentGame.isADraw()) {
                 String userInput = getInput();
 
                 if (!Cli.isValidMove(userInput)) {
@@ -34,7 +34,8 @@ public class Simple {
                 Square finalSquare = currentGame.chessBoard.getFinalSquareFromInput(userInput);
                 char key = currentGame.chessBoard.getPromotionKey(userInput);
 
-                if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {                     //validates user-input semantically
+                if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
+                    //validates user-input semantically
                     System.out.println("!" + userInput + "\n");
                     if (!currentGame.processMove(startSquare, finalSquare, key)) {
                         System.out.println("!Move not allowed\n");
