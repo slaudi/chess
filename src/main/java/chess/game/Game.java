@@ -179,10 +179,10 @@ public class Game {
                     if (tempSquare.getOccupiedBy() != null) {
                         if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour()) {
                             // if a Square is next to the King is it safe to move there
-                            return isSafeSquare(this.chessBoard.getChessBoard()[i][j]);
+                            return isSafeSquare(tempSquare);
                         }
                     } else {
-                        return isSafeSquare(this.chessBoard.getChessBoard()[i][j]);
+                        return isSafeSquare(tempSquare);
                     }
                 }
             }
@@ -209,7 +209,7 @@ public class Game {
     /**
      * A function to evaluate if an enemy Piece can kill the King in the current state of the game.
      *
-     * @param enemyPiece    The enemy piece eventually attacking the King.
+     * @param enemyPiece   The enemy piece eventually attacking the King.
      * @param kingSquare   The Square the King is standing or might stand on.
      * @return boolean  Returns 'true' if an enemy can attack the King where it's now standing or
      *                  where the King wants to move to.
