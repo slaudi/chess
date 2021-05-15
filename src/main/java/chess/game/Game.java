@@ -175,26 +175,25 @@ public class Game {
     private boolean isSafeSquare(Square finalSquare) {
         List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
         for (Piece enemyPiece : enemies) {
-            if (enemyPiece.getType() == Type.BISHOP
-                    || enemyPiece.getType() == Type.ROOK
-                    || enemyPiece.getType() == Type.QUEEN) {
-                if (enemyPiece.isPiecesMove(finalSquare, this.chessBoard)
-                        && enemyPiece.isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()), this.chessBoard)) {
-                    return false;
-                }
-            } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
-                if (enemyPiece.isPiecesMove(finalSquare, this.chessBoard)) {
-                    return false;
-                }
-            } else {
-                if (enemyPiece.getType() == Type.PAWN) {
-                    if (((Pawn) enemyPiece).canCapture(finalSquare)) {//NOPMD return of 'true' would break the for-loop
-                        return false;
-                    }
-                }
+            if (canKillKing(enemyPiece, finalSquare)) {
+                return false;
             }
         }
         return true;
+    }
+
+    private boolean canKillKing(Piece enemyPiece, Square finalSquare) {
+        if (enemyPiece.getType() == Type.BISHOP
+                || enemyPiece.getType() == Type.ROOK
+                || enemyPiece.getType() == Type.QUEEN) {
+            return enemyPiece.isPiecesMove(finalSquare, this.chessBoard)
+                    && enemyPiece.isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()), this.chessBoard);
+        } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
+            return enemyPiece.isPiecesMove(finalSquare, this.chessBoard);
+        } else {
+            assert enemyPiece instanceof Pawn;
+            return ((Pawn) enemyPiece).canCapture(finalSquare);
+            }
     }
 
     /**
@@ -206,13 +205,7 @@ public class Game {
         Square squareKing = this.chessBoard.getSquareOfKing(currentPlayer.getColour());
         List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
-            if (enemyPiece instanceof Pawn) {
-                if (((Pawn)enemyPiece).canCapture(squareKing)) {
-                    currentPlayer.setInCheck(true);
-                    return true;
-                }
-            } else if (enemyPiece.isPiecesMove(squareKing, this.chessBoard)
-                    && enemyPiece.isPathEmpty(enemyPiece, squareKing, this.chessBoard)) {
+            if (canKillKing(enemyPiece, squareKing)) {
                 currentPlayer.setInCheck(true);
                 return true;
             }
