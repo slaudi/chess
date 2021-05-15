@@ -80,7 +80,7 @@ public class Pawn extends Piece implements MovingDirection {
         if (notMoved && isPathEmpty(this, finalSquare, chessBoard)) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
-                return diff_y == -1 || diff_y == -2 && diff_x == 0;
+                return (diff_y == -1 || diff_y == -2) && diff_x == 0;
             } else {
                 return (diff_y == 1 || diff_y == 2) && diff_x == 0;
             }
