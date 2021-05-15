@@ -44,13 +44,13 @@ public class Queen extends Piece implements MovingDirection {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override

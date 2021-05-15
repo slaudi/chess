@@ -11,7 +11,7 @@ import chess.game.Type;
  */
 public class King extends Piece implements MovingDirection {
 
-    private final Type type = Type.KING;;
+    private final Type type = Type.KING;
 
     /**
      * Constructor for creating a King piece.
@@ -44,13 +44,13 @@ public class King extends Piece implements MovingDirection {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override

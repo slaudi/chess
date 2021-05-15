@@ -2,7 +2,6 @@ package chess.cli;
 
 
 import chess.game.Game;
-import chess.game.Label;
 import chess.game.Square;
 import chess.pieces.Piece;
 
@@ -25,7 +24,7 @@ public class Simple {
             while(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
                 String userInput = getInput();
 
-                if (!isValidMove(userInput)) {
+                if (!Cli.isValidMove(userInput)) {
                     //validates user-input syntactically
                     System.out.println("!Invalid move\n");
                     continue;
@@ -49,7 +48,6 @@ public class Simple {
             }
         }
 
-
     /**
      * Gets the input as a String from the console.
      *
@@ -58,36 +56,5 @@ public class Simple {
     public static String getInput () {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
-    }
-
-    /**
-     * Checks if the console input is a syntactical correct move.
-     *
-     * @param consoleInput The console input of the active Player as a String.
-     * @return boolean Returns 'true' if the syntax of the input is correct.
-     */
-    public static boolean isValidMove(String consoleInput){
-
-        if(consoleInput.length() > 4 && consoleInput.length() < 7) {
-            if (consoleInput.length() == 6) {
-                char[] keys = {'Q','B','N','R'};
-                for (char key : keys) {
-                    if (key != consoleInput.charAt(consoleInput.length()-1)) {
-                        if (key == keys[keys.length - 1]) {
-                            // key reached R and the input still doesn't contain a char from keys
-                            return false;
-                        }
-                        break;
-                    }
-                }
-            }
-            if (consoleInput.charAt(2) == '-') {
-                return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
 }

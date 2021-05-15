@@ -43,13 +43,13 @@ public class Pawn extends Piece implements MovingDirection {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override
@@ -77,14 +77,14 @@ public class Pawn extends Piece implements MovingDirection {
         if (Math.abs(diff_x) == Math.abs(diff_y) || finalSquare.getOccupiedBy() != null) {
             return false;
         }
-        if (!hasMoved && isPathEmpty(this, finalSquare, chessBoard)) {
+        if (!notMoved && isPathEmpty(this, finalSquare, chessBoard)) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
                 return diff_y == -1 || diff_y == -2 && diff_x == 0;
             } else {
                 return diff_y == 1 || diff_y == 2 && diff_x == 0;
             }
-        } else if (hasMoved){
+        } else if (notMoved){
             // Pawn already moved
             if (this.colour == Colour.WHITE) {
                 // Pawn can only move up

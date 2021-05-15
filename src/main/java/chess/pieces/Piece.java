@@ -13,7 +13,7 @@ public abstract class Piece {
 
     Square square;
     Colour colour;
-    boolean hasMoved;
+    boolean notMoved;
 
     /**
      * Constructor for creating a Piece.
@@ -24,7 +24,7 @@ public abstract class Piece {
     public Piece(Square square, Colour colour) {
         this.square = square;
         this.colour = colour;
-        this.hasMoved = false;
+        this.notMoved = true;
     }
 
     public abstract Square getSquare();
@@ -40,9 +40,9 @@ public abstract class Piece {
      */
     public abstract Type getType();
 
-    public abstract boolean isHasMoved();
+    public abstract boolean hasNotMoved();
 
-    public abstract void setHasMoved(boolean x);
+    public abstract void setNotMoved(boolean x);
 
     /**
      * A function to determine if a Piece is printed on the chess board in upper or lower case

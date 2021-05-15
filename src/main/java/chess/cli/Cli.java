@@ -118,7 +118,7 @@ public class Cli {
      * @param consoleInput The console input of the active Player as a String.
      * @return boolean Returns 'true' if the syntax of the input is correct.
      */
-    private static boolean isValidMove(String consoleInput){
+    static boolean isValidMove(String consoleInput){
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
                 char[] keys = {'Q','B','N','R'};
