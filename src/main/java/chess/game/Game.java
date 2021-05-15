@@ -172,10 +172,16 @@ public class Game {
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
                 // looping through board to check if Square is next to King and is not occupied by ally
-                if (Piece.isSurroundingSquare(kingSquare, this.chessBoard.getChessBoard()[i][j])
-                        && this.chessBoard.getChessBoard()[i][j].getOccupiedBy().getColour() != this.currentPlayer.getColour()) {
-                    // if a Square is next to the King is it safe to move there
-                    return isSafeSquare(this.chessBoard.getChessBoard()[i][j]);
+                Square tempSquare = this.chessBoard.getChessBoard()[i][j];
+                if (Piece.isSurroundingSquare(kingSquare, tempSquare)) {
+                    if (tempSquare.getOccupiedBy() != null) {
+                        if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour()) {
+                            // if a Square is next to the King is it safe to move there
+                            return isSafeSquare(this.chessBoard.getChessBoard()[i][j]);
+                        }
+                    } else {
+                        return isSafeSquare(this.chessBoard.getChessBoard()[i][j]);
+                    }
                 }
             }
         }
