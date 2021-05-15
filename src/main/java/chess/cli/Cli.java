@@ -104,7 +104,7 @@ public class Cli {
             System.out.println("There is no Piece to move!\n");
         } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
             System.out.println("This is not your Piece to move!\n");
-        } else if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
+        } else if (targetPiece != null && selectedPiece.getSquare() == finalSquare) {
             System.out.println("You have to move!\n");
         } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
             System.out.println("You cannot attack your own Piece!\n");

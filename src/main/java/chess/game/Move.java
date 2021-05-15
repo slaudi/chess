@@ -48,11 +48,9 @@ public class Move {
      * @param board The current board.
      */
     protected void undoMove (Board board){
-        Square start = this.startSquare;
-        Square finalSquare = this.finalSquare;
-        board.getChessBoard()[start.getX()][start.getY()].setOccupiedBy(this.movingPiece);
-        this.movingPiece.setSquare(start);
-        board.getChessBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(null);
+        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
+        this.movingPiece.setSquare(this.startSquare);
+        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
     }
 
     /**
@@ -63,11 +61,9 @@ public class Move {
      * @param board         The current board.
      */
     protected void undoMove (Piece targetPiece, Board board){
-        Square start = this.startSquare;
-        Square finalSquare = this.finalSquare;
-        board.getChessBoard()[start.getX()][start.getY()].setOccupiedBy(this.movingPiece);
-        this.movingPiece.setSquare(start);
-        board.getChessBoard()[finalSquare.getX()][finalSquare.getY()].setOccupiedBy(targetPiece);
+        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
+        this.movingPiece.setSquare(this.startSquare);
+        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(targetPiece);
     }
 
     /**
@@ -126,11 +122,11 @@ public class Move {
      * @param board The current board.
      */
     protected void undoEnPassant(Piece enemy, Move lastEnemyMove, Board board) {
-        Square finalEnemy = lastEnemyMove.finalSquare; // the square the enemy stood on before being captured
+        Square finalEnemySquare = lastEnemyMove.finalSquare; // the square the enemy stood on before being captured
 
         board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
-        board.getChessBoard()[this.finalSquare.getY()][this.finalSquare.getY()].setOccupiedBy(null);
-        board.getChessBoard()[finalEnemy.getX()][finalEnemy.getY()].setOccupiedBy(enemy);
+        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
+        board.getChessBoard()[finalEnemySquare.getX()][finalEnemySquare.getY()].setOccupiedBy(enemy);
     }
 
     /**

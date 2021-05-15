@@ -85,7 +85,7 @@ public class Square {
      * @param string String to extract y-Coordinate from.
      * @return y-Coordinate from String
      */
-    public static int getYFromString(String string){
+    public static int getYFromString(String string) {
         char i = string.charAt(1);
         int result;
         if (i == '8') {

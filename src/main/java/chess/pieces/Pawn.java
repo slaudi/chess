@@ -70,13 +70,13 @@ public class Pawn extends Piece implements MovingDirection {
      * @return a boolean indicating if the move is allowed
      */
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = finalSquare.getX() - this.square.getX();
         int diff_y = finalSquare.getY() - this.square.getY();
         if (Math.abs(diff_x) == Math.abs(diff_y) || finalSquare.getOccupiedBy() != null) {
             return false;
         }
-        if (!hasMoved && isPathEmpty(this, finalSquare)) {
+        if (!hasMoved && isPathEmpty(this, finalSquare, chessBoard)) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
                 return diff_y == -1 || diff_y == -2 && diff_x == 0;
@@ -100,25 +100,20 @@ public class Pawn extends Piece implements MovingDirection {
     /**
      * A function determining if a move to capture another Piece is allowed for the Pawn
      *
-     * @param moveHistory The history of all moves to get the final square of the current move
+     * @param enemySquare The square on which the Pawn wants to capture a Piece
      * @return a boolean indicating if a capture is allowed
      */
-    public boolean canCapture(Stack<Move> moveHistory) {
-        if (moveHistory.size() > 1) {
-            Move currentMove = moveHistory.peek();
-            Square finalSquare = currentMove.getFinalSquare();
-            int diff_x = finalSquare.getX() - this.square.getX();
-            int diff_y = finalSquare.getY() - this.square.getY();
-            if (finalSquare.getOccupiedBy() == null) {
-                return false;
-            }
-            if (this.colour == Colour.WHITE) {
-                return Math.abs(diff_x) == 1 && diff_y == -1;
-            } else {
-                return Math.abs(diff_x) == 1 && diff_y == 1;
-            }
+    public boolean canCapture(Square enemySquare) {
+        int diff_x = enemySquare.getX() - this.square.getX();
+        int diff_y = enemySquare.getY() - this.square.getY();
+        if (enemySquare.getOccupiedBy() == null) {
+            return false;
         }
-        return false;
+        if (this.colour == Colour.WHITE) {
+            return Math.abs(diff_x) == 1 && diff_y == -1;
+        } else {
+            return Math.abs(diff_x) == 1 && diff_y == 1;
+        }
     }
 
     /**

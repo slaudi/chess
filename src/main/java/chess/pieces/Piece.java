@@ -77,7 +77,7 @@ public abstract class Piece {
      * @param finalSquare the final location
      * @return a boolean indicating if the move is allowed
      */
-    public abstract boolean isPiecesMove(Square finalSquare);
+    public abstract boolean isPiecesMove(Square finalSquare, Board chessBoard);
 
     /**
      * Evaluates if direct path from one square to another is empty
@@ -86,7 +86,7 @@ public abstract class Piece {
      * @param finalSquare Square where piece has to go to
      * @return returns if selected path is empty
      */
-    public boolean isPathEmpty (Piece piece, Square finalSquare){
+    public boolean isPathEmpty (Piece piece, Square finalSquare, Board chessBoard){
         if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
             return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != this.colour;
         }
@@ -94,12 +94,14 @@ public abstract class Piece {
         if (path.isEmpty()) {
             return true;
         }
-        if (piece.getType() == Type.BISHOP) {
+        if (piece.getType() == Type.KNIGHT) {
             // Knights can leap
             return true;
         } else {
             for (Square visitedSquare : path) {
-                if (visitedSquare.getOccupiedBy() != null) {
+                int visitedSquare_x = visitedSquare.getX();
+                int visitedSquare_y = visitedSquare.getY();
+                if (chessBoard.getChessBoard()[visitedSquare_x][visitedSquare_y].getOccupiedBy() != null) {
                     return false;
                 }
             }
@@ -125,14 +127,20 @@ public abstract class Piece {
         if (diff_x == diff_y || diff_y == 0) {
             // Piece moves diagonally or horizontally
             squaresVisited = diff_x;
+        } else if (dir_x == 0 && dir_y == 0) {
+            // Knight can leap, doesn't need a path
+            squaresVisited = 0;
         } else {
             // Piece moves vertically
             squaresVisited = diff_y;
         }
 
-        Square[][] move = new Square[1][squaresVisited-1];
+        Square[][] move = new Square[1][squaresVisited];
+        if (squaresVisited > 0) {
+            move = new Square[1][squaresVisited - 1];
+        }
 
-        if(squaresVisited > 1) {
+        if(squaresVisited - 1 >= 1) {
             // Piece moves more than one square
             for (int i = 0; i < squaresVisited -1; i++) {
                 // stores squares except start and final square
@@ -152,7 +160,10 @@ public abstract class Piece {
     public static boolean isSurroundingSquare(Square piecesSquare, Square squareOfInterest){
         int diffX = piecesSquare.getX() - squareOfInterest.getX();
         int diffY = piecesSquare.getY() - squareOfInterest.getY();
-        return diffX < 2 && diffY < 2;
+        if (diffX == 0 && diffY == 0) {
+            return false;
+        }
+        return Math.abs(diffX) < 2 && Math.abs(diffY) < 2;
     }
 
     private int[][] piecesDirection(Square finalSquare) {

@@ -54,9 +54,9 @@ public class Game {
                 // you can't attack your own Pieces
                 if (selectedPiece.getType() == Type.PAWN) {
                     // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
-                    return ((Pawn) selectedPiece).canCapture(this.moveHistory);
+                    return ((Pawn) selectedPiece).canCapture(finalSquare);
                 } else {
-                    return selectedPiece.isPiecesMove(finalSquare) && selectedPiece.isPathEmpty(selectedPiece, finalSquare);
+                    return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(selectedPiece, finalSquare, this.chessBoard);
                 }
             }
         // final square is empty
@@ -70,7 +70,7 @@ public class Game {
                     return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
                 }
         }
-        return selectedPiece.isPiecesMove(finalSquare) && selectedPiece.isPathEmpty(selectedPiece, finalSquare);
+        return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(selectedPiece, finalSquare, this.chessBoard);
 
     }
 
@@ -100,14 +100,19 @@ public class Game {
             // move is an en passant capture
             currentMove.enPassantMove(lastEnemyMove, chessBoard);
             Piece enemy = lastEnemyMove.movingPiece;
+            this.beatenPieces.add(enemy);
             if (isInCheck()) {
                 // King is in check, undo en passant
                 currentMove.undoEnPassant(enemy, lastEnemyMove, this.chessBoard);
+                this.beatenPieces.remove(enemy);
                 return false;
             }
-            beatenPieces.add(enemy);
         } else {
             currentMove.doMove(this.chessBoard);
+            if (targetPiece != null) {
+                // add a beaten piece to the ArrayList
+                beatenPieces.add(targetPiece);
+            }
             if (!canMoveStay(targetPiece, currentMove)) {
                 // move puts own King in check, undo move
                 return false;
@@ -115,10 +120,6 @@ public class Game {
             if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
                 // move allows promotion
                 currentMove.doPromotion(key, chessBoard);
-            }
-            if (targetPiece != null) {
-                // add a beaten piece to the ArrayList
-                beatenPieces.add(targetPiece);
             }
         }
         selectedPiece.setSquare(finalSquare);
@@ -177,17 +178,17 @@ public class Game {
             if (enemyPiece.getType() == Type.BISHOP
                     || enemyPiece.getType() == Type.ROOK
                     || enemyPiece.getType() == Type.QUEEN) {
-                if (enemyPiece.isPiecesMove(finalSquare)
-                        && enemyPiece.isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()))) {
+                if (enemyPiece.isPiecesMove(finalSquare, this.chessBoard)
+                        && enemyPiece.isPathEmpty(enemyPiece, chessBoard.getSquareOfKing(currentPlayer.getColour()), this.chessBoard)) {
                     return false;
                 }
             } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
-                if (enemyPiece.isPiecesMove(finalSquare)) {
+                if (enemyPiece.isPiecesMove(finalSquare, this.chessBoard)) {
                     return false;
                 }
             } else {
                 if (enemyPiece.getType() == Type.PAWN) {
-                    if (((Pawn) enemyPiece).canCapture(this.moveHistory)) {//NOPMD return of 'true' would break the for-loop
+                    if (((Pawn) enemyPiece).canCapture(finalSquare)) {//NOPMD return of 'true' would break the for-loop
                         return false;
                     }
                 }
@@ -204,12 +205,16 @@ public class Game {
     private boolean isInCheck(){
         // TODO: ein Piece einem enemy in den Weg stellen funktioniert noch nicht bei check!?
         Square squareKing = this.chessBoard.getSquareOfKing(currentPlayer.getColour());
-        List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
+        List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
             if (enemyPiece instanceof Pawn) {
-                return ((Pawn)enemyPiece).canCapture(this.moveHistory);
-            } else if (enemyPiece.isPiecesMove(squareKing)
-                    && enemyPiece.isPathEmpty(enemyPiece, squareKing)) {
+                if (((Pawn)enemyPiece).canCapture(squareKing)) {
+                    currentPlayer.setInCheck(true);
+                    return true;
+                }
+            } else if (enemyPiece.isPiecesMove(squareKing, this.chessBoard)
+                    && enemyPiece.isPathEmpty(enemyPiece, squareKing, this.chessBoard)) {
+                System.out.println(enemyPiece);
                 currentPlayer.setInCheck(true);
                 return true;
             }
@@ -278,7 +283,7 @@ public class Game {
     private boolean canDoCastling(Piece selectedPiece, Piece targetPiece) {
         // selectedPiece is King, targetPiece is Rook
         if (!selectedPiece.isHasMoved() && !targetPiece.isHasMoved() // King and Rook didn't move yet
-                && selectedPiece.isPathEmpty(selectedPiece, targetPiece.getSquare())) {   // no pieces between King and Rook
+                && selectedPiece.isPathEmpty(selectedPiece, targetPiece.getSquare(), this.chessBoard)) {   // no pieces between King and Rook
             List<Piece> enemies = currentPlayer.getEnemyPieces(beatenPieces, chessBoard);
             int diff = Math.abs(targetPiece.getSquare().getX() - selectedPiece.getSquare().getX());
             int king_x;
@@ -289,7 +294,7 @@ public class Game {
                 for (int i = 0; i < diff; i++) {
                     king_x = selectedPiece.getSquare().getX() + i;
                     Square tempSquare = new Square(Label.values()[king_x + king_y], king_x, king_y);
-                    if(enemyPiece.isPiecesMove(tempSquare) && enemyPiece.isPathEmpty(enemyPiece, tempSquare)){
+                    if(enemyPiece.isPiecesMove(tempSquare, this.chessBoard) && enemyPiece.isPathEmpty(enemyPiece, tempSquare, this.chessBoard)){
                         return false;
                     }
                 }
@@ -309,10 +314,11 @@ public class Game {
     }
 
     private boolean canMoveStay(Piece targetPiece, Move currentMove) {
-        if (isInCheck()) {
+        if (this.isInCheck()) {
             // King is in check, undo move
             if (targetPiece != null) {
                 currentMove.undoMove(targetPiece, this.chessBoard);
+                this.beatenPieces.remove(targetPiece);
             } else {
                 currentMove.undoMove(this.chessBoard);
             }
