@@ -10,7 +10,7 @@ import chess.game.Type;
  */
 public class Rook extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.ROOK;
 
     /**
      * Constructor for a Rook
@@ -20,7 +20,6 @@ public class Rook extends Piece implements MovingDirection {
      */
     public Rook(Square square, Colour colour) {
         super(square, colour);
-        type = Type.ROOK;
     }
 
     @Override

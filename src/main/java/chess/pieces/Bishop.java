@@ -10,7 +10,8 @@ import chess.game.Type;
  */
 public class Bishop extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.BISHOP;
+
     /**
      * Constructor for a Bishop
      *
@@ -19,7 +20,6 @@ public class Bishop extends Piece implements MovingDirection {
      */
     public Bishop(Square square, Colour colour) {
         super(square, colour);
-        type = Type.BISHOP;
     }
 
     @Override
@@ -80,8 +80,8 @@ public class Bishop extends Piece implements MovingDirection {
 
     @Override
     public int[][] movingDirection(Square finalSquare) {
-        int dir_x = 0;
-        int dir_y = 0;
+        int dir_x;
+        int dir_y;
 
         if(finalSquare.getX() - this.square.getX() < 0) {
             // Bishop moves to the left

@@ -9,9 +9,9 @@ import java.util.List;
  * Player class which defines each of two Players
  */
 public class Player {
-    Colour colour;
-    boolean inCheck = false;
-    boolean loser = false;
+    private Colour colour;
+    private boolean inCheck = false;
+    private boolean loser = false;
 
     /**
      * Creates a new Player instance.
@@ -19,7 +19,7 @@ public class Player {
      * @param colour Decides if Colour of Players Chess-Pieces is black or white
      */
     public Player(Colour colour) {
-        setColour(colour);
+        this.colour = colour;
     }
 
 
@@ -39,16 +39,12 @@ public class Player {
         this.inCheck = x;
     }
 
-    /**
-     * Getter for the variable 'loser'
-     * @return boolean Returns 'true' if the Player lost the game
-     */
     public boolean isLoser() {
-        return loser;
+        return this.loser;
     }
 
-    public void setLoser(boolean loose) {
-        this.loser = loose;
+    public void setLoser(boolean lost) {
+        this.loser = lost;
     }
 
     /**
@@ -56,7 +52,7 @@ public class Player {
      * in a ArrayList.
      * @return ArrayList Containing all active allied Pieces
      */
-    public List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
+    List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> allies;
         List<Piece> piecesToRemove = new ArrayList<>();
         if(this.getColour() == Colour.WHITE) {
@@ -83,7 +79,7 @@ public class Player {
      * in a ArrayList.
      * @return ArrayList Containing all active enemy Pieces.
      */
-    public List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
+    List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> enemies;
         List<Piece> piecesToRemove = new ArrayList<>();
         if(this.getColour() == Colour.WHITE) {

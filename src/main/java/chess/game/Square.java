@@ -8,20 +8,17 @@ import chess.pieces.Piece;
 public class Square {
     private final int x;
     private final int y;
-    Label label;
     private Piece occupiedBy = null;
 
     /**
      * Constructor for a single square instance when starting a new Game.
      *
-     * @param label Name of Square.
      * @param x x coordinate of this Square (line from left to right).
      * @param y y oordinate of this Square (column from top to bottom).
      */
-    public Square(Label label, int x, int y) {
+    public Square(int x, int y) {
         this.x = x;
         this.y = y;
-        this.label = label;
     }
 
     @Override

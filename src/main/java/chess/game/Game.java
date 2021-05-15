@@ -99,7 +99,7 @@ public class Game {
             // move is an en passant capture
             Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
             currentMove.enPassantMove(lastEnemyMove, this.chessBoard);
-            Piece enemy = lastEnemyMove.movingPiece;
+            Piece enemy = lastEnemyMove.getMovingPiece();
             this.beatenPieces.add(enemy);
             if (isInCheck()) {
                 // King is in check, undo en passant
@@ -286,7 +286,7 @@ public class Game {
             for (Piece enemyPiece : enemies) {
                 for (int i = 0; i < diff; i++) {
                     king_x = selectedPiece.getSquare().getX() + i;
-                    Square tempSquare = new Square(Label.values()[king_x + king_y], king_x, king_y);
+                    Square tempSquare = new Square(king_x, king_y);
                     if(enemyPiece.isPiecesMove(tempSquare, this.chessBoard) && enemyPiece.isPathEmpty(enemyPiece, tempSquare, this.chessBoard)){
                         return false;
                     }

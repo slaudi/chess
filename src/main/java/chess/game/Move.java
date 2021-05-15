@@ -6,9 +6,9 @@ import chess.pieces.*;
  * Move class to calculate and save the movement of a Chess-Piece.
  */
 public class Move {
-    Square startSquare;
-    Square finalSquare;
-    Piece movingPiece;
+    private final Square startSquare;
+    private final Square finalSquare;
+    private final Piece movingPiece;
 
     /**
      * Constructor of Move-Class.
@@ -30,12 +30,16 @@ public class Move {
         return this.finalSquare;
     }
 
+    public Piece getMovingPiece() {
+        return movingPiece;
+    }
+
     /**
      * A function executing a move on the board.
      *
      * @param board The current board.
      */
-    protected void doMove (Board board){
+    void doMove (Board board){
             this.movingPiece.setSquare(this.finalSquare);
             board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
             board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
@@ -47,7 +51,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    protected void undoMove (Board board){
+    void undoMove (Board board){
         board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
         this.movingPiece.setSquare(this.startSquare);
         board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
@@ -60,7 +64,7 @@ public class Move {
      * @param targetPiece   The Piece the move of the selected Piece captured.
      * @param board         The current board.
      */
-    protected void undoMove (Piece targetPiece, Board board){
+    void undoMove (Piece targetPiece, Board board){
         board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
         this.movingPiece.setSquare(this.startSquare);
         board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(targetPiece);
@@ -71,7 +75,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    protected void castlingMove(Board board) {
+    void castlingMove(Board board) {
         int king_x = this.startSquare.getX();
         int king_y = this.startSquare.getY();
         int rook_x = this.finalSquare.getX();
@@ -103,7 +107,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    protected void enPassantMove(Move lastEnemyMove, Board board) {
+    void enPassantMove(Move lastEnemyMove, Board board) {
         Square lastMoveFinalSquare = lastEnemyMove.getFinalSquare();
         int end_x = lastMoveFinalSquare.getX();
         int end_y = lastMoveFinalSquare.getY();
@@ -121,7 +125,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    protected void undoEnPassant(Piece enemy, Move lastEnemyMove, Board board) {
+    void undoEnPassant(Piece enemy, Move lastEnemyMove, Board board) {
         Square finalEnemySquare = lastEnemyMove.finalSquare; // the square the enemy stood on before being captured
 
         board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
@@ -136,7 +140,7 @@ public class Move {
      * @param key   The letter the player entered indicating which Piece they want the Pawn to promote to.
      * @param board The current board.
      */
-    protected void doPromotion(char key, Board board) {
+    void doPromotion(char key, Board board) {
         this.movingPiece.getSquare().setOccupiedBy(null);
 
         int promo_x = this.finalSquare.getX();

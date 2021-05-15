@@ -14,17 +14,17 @@ import static chess.game.Colour.WHITE;
  */
 public class Board {
     private final Square[][] chessBoard; // Board can access class Square
-    List<Piece> whitePieces = new ArrayList<>(16);
-    List<Piece> blackPieces = new ArrayList<>(16);
+    private final List<Piece> whitePieces = new ArrayList<>(16);
+    private final List<Piece> blackPieces = new ArrayList<>(16);
 
     /**
      * Create a new Board instance when starting a new Game.
      */
     public Board() {
-        chessBoard = new Square[8][8];
+        this.chessBoard = new Square[8][8];
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                chessBoard[x][y] = new Square(Label.values()[8*x+y], x, y);
+                this.chessBoard[x][y] = new Square(x, y);
             }
         }
         startingFormation();                //sets Pieces on Board to start game
@@ -80,10 +80,10 @@ public class Board {
      */
     private void setAlliance() {
         for(int i = 0; i < 8; i++) {
-            whitePieces.add(this.chessBoard[i][7].getOccupiedBy());
-            whitePieces.add(this.chessBoard[i][6].getOccupiedBy());
-            blackPieces.add(this.chessBoard[i][0].getOccupiedBy());
-            blackPieces.add(this.chessBoard[i][1].getOccupiedBy());
+            this.whitePieces.add(this.chessBoard[i][7].getOccupiedBy());
+            this.whitePieces.add(this.chessBoard[i][6].getOccupiedBy());
+            this.blackPieces.add(this.chessBoard[i][0].getOccupiedBy());
+            this.blackPieces.add(this.chessBoard[i][1].getOccupiedBy());
         }
     }
 

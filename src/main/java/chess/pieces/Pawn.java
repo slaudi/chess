@@ -9,7 +9,7 @@ import java.util.Stack;
  */
 public class Pawn extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.PAWN;
 
     /**
      * Constructor for a Pawn
@@ -19,7 +19,6 @@ public class Pawn extends Piece implements MovingDirection {
      */
     public Pawn(Square square, Colour colour) {
         super(square, colour);
-        type = Type.PAWN;
     }
 
     @Override

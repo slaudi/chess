@@ -10,7 +10,7 @@ import chess.game.Type;
  */
 public class King extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.KING;;
 
     /**
      * Constructor for a King
@@ -20,7 +20,6 @@ public class King extends Piece implements MovingDirection {
      */
     public King(Square square, Colour colour) {
         super(square, colour);
-        type = Type.KING;
     }
 
     @Override

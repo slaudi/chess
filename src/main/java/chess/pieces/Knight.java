@@ -10,7 +10,7 @@ import chess.game.Type;
  */
 public class Knight extends Piece {
 
-    Type type;
+    public final Type type = Type.KNIGHT;
 
     /**
      * Constructor for a Knight
@@ -20,7 +20,6 @@ public class Knight extends Piece {
      */
     public Knight(Square square, Colour colour) {
         super(square, colour);
-        type = Type.KNIGHT;
     }
 
     @Override
