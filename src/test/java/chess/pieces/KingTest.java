@@ -7,8 +7,7 @@ import chess.game.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static chess.game.Label.c4;
-import static chess.game.Label.g5;
+import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -16,52 +15,64 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class KingTest {
 
-    private King king;
-    private Square square;
+    public King king;
+    public Square square;
+    public Square squarec3;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         square = new Square(c4, 2, 4);
         king = new King(square, Colour.WHITE);
+        squarec3 = new Square(c3,2, 5);
     }
 
     @Test
-    void getSquare() {
+    public void getSquare() {
         assertEquals(square, king.getSquare());
     }
 
     @Test
-    void setSquare() {
+    public void setSquare() {
         square = new Square(g5,7,3);
         king.setSquare(square);
         assertEquals(square, king.getSquare());
     }
 
     @Test
-    void getColour() {
+    public void getColour() {
         assertEquals(Colour.WHITE, king.getColour());
     }
 
     @Test
-    void getType() {
+    public void getType() {
         assertEquals(Type.KING, king.getType());
     }
 
     @Test
-    void getHasMoved() {
+    public void getHasMoved() {
         assertFalse(king.isHasMoved());
     }
 
     @Test
-    void setHasMoved() {
+    public void setHasMoved() {
         king.setHasMoved(true);
         assertTrue(king.isHasMoved());
     }
 
     // TODO: test moves of the pieces
     @Test
-    void isPiecesMove() {
-
+    public void isPiecesMove() {
+        assertTrue(king.isPiecesMove(squarec3));
     }
 
+    @Test
+    public void isHasMoved() {
+        king.setHasMoved(true);
+        assertTrue(king.isHasMoved());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("K", king.toString());
+    }
 }
