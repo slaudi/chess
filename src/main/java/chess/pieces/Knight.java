@@ -1,25 +1,25 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The Knight class is a Subclass of the Piece class and represents a Piece of the Type Knight
+ * The Knight class is a Subclass of the Piece class and represents a Piece of the Type Knight.
  */
 public class Knight extends Piece {
 
-    Type type;
+    public final Type type = Type.KNIGHT;
 
     /**
-     * Constructor for a Knight
+     * Constructor for creating a Knight piece.
      *
-     * @param square the location of the Knight
-     * @param colour the Colour object associated with the Knight
+     * @param square The location of the Knight on the board.
+     * @param colour The Colour associated with the Knight.
      */
     public Knight(Square square, Colour colour) {
         super(square, colour);
-        type = Type.KNIGHT;
     }
 
     @Override
@@ -43,13 +43,13 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override
@@ -62,16 +62,20 @@ public class Knight extends Piece {
     }
 
     /**
-     * Determines if a move is valid based on the type of the Piece
+     * A function determining if the Knight is only moving in the shape of an L and doesn't
+     * stay on its original square.
      *
-     * @return a boolean indicating if the move is allowed
+     * @return boolean Returns 'true' if the move is in the shape of an L.
      */
 
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
+        if (diff_x == 0 && diff_y == 0) {
+            return false;
+        }
         return diff_x == 2 && diff_y == 1 || diff_x == 1 && diff_y == 2;
     }
 }

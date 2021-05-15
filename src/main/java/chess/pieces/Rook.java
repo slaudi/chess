@@ -1,25 +1,26 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The Rook class is a Subclass of the Piece class and represents a Piece of the Type Rook
+ * The Rook class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type Rook.
  */
 public class Rook extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.ROOK;
 
     /**
-     * Constructor for a Rook
+     * Constructor for creating a Rook piece.
      *
-     * @param square the location of the Rook
-     * @param colour the Colour object associated with the Rook
+     * @param square The location of the Bishop on the board.
+     * @param colour The Colour associated with the Rook.
      */
     public Rook(Square square, Colour colour) {
         super(square, colour);
-        type = Type.ROOK;
     }
 
     @Override
@@ -43,13 +44,13 @@ public class Rook extends Piece implements MovingDirection {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override
@@ -62,16 +63,20 @@ public class Rook extends Piece implements MovingDirection {
     }
 
     /**
-     * Determines if the Rook is moving only horizontally or vertically
+     * Determines if the Rook is moving only horizontally or vertically in any direction and doesn't
+     * stay on its original square.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Bishop should move to.
+     * @return boolean Returns 'true' if the Rook is moving only horizontally or vertically in any direction.
      */
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
+        if (diff_x == diff_y) {
+            return false;
+        }
         return diff_y == 0 || diff_x == 0;
     }
 

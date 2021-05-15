@@ -1,7 +1,7 @@
 package chess.game;
 
 /**
- * enum Colour: Colour of Chess-Pieces.
+ * enum Colour: The possible colours of the chess pieces.
  */
 public enum Colour {
     BLACK,

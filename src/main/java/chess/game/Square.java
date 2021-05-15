@@ -3,25 +3,23 @@ package chess.game;
 import chess.pieces.Piece;
 
 /**
- * Square class representing a single square of current Chess-Board.
+ * The Square class represents a single square of the current chess board. It knows its
+ * coordinates in the Board array and if it is occupied by a figure (and which one) or not.
  */
 public class Square {
     private final int x;
     private final int y;
-    Label label;
     private Piece occupiedBy = null;
 
     /**
-     * Constructor for a single square instance when starting a new Game.
+     * Constructor for creating a single square when starting a new Game.
      *
-     * @param label Name of Square.
-     * @param x x coordinate of this Square (line from left to right).
-     * @param y y oordinate of this Square (column from top to bottom).
+     * @param x The x coordinate of this Square in the Board array (line from left to right).
+     * @param y The y coordinate of this Square in the Board array (column from top to bottom).
      */
-    public Square(Label label, int x, int y) {
+    public Square(int x, int y) {
         this.x = x;
         this.y = y;
-        this.label = label;
     }
 
     @Override
@@ -51,12 +49,13 @@ public class Square {
     }
 
     /**
-     * Get x-Coordinate from String
-     * @param string String to extract x-Coordinate from.
-     * @return x-Coordinate from String
+     * A function determining the x-coordinate of a selected square from the console input.
+     *
+     * @param in The console input as a String.
+     * @return int The x-coordinate of the selected square.
      */
-    public static int getXFromString(String string){
-        char i = string.charAt(0);
+    public static int getXFromString(String in){
+        char i = in.charAt(0);
         int result;
         if (i == 'a') {
             result = 0;
@@ -81,12 +80,13 @@ public class Square {
     }
 
     /**
-     * Get y-Coordinate from String
-     * @param string String to extract y-Coordinate from.
-     * @return y-Coordinate from String
+     * A function determining the y-coordinate of a selected square from the console input.
+     *
+     * @param in The console input as a String.
+     * @return int The y-coordinate of the selected square.
      */
-    public static int getYFromString(String string){
-        char i = string.charAt(1);
+    public static int getYFromString(String in) {
+        char i = in.charAt(1);
         int result;
         if (i == '8') {
             result = 0;

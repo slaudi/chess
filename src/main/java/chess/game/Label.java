@@ -1,7 +1,7 @@
 package chess.game;
 
 /**
- * enum Label: Label of Chessboard-Square
+ * enum Label: the labels of the chess board squares
  */
 public enum Label {
     a8, b8, c8, d8, e8, f8, g8, h8,
@@ -14,9 +14,10 @@ public enum Label {
     a1, b1, c1, d1, e1, f1, g1, h1;
 
     /**
-     * Looks up if some String is inside Enum.
-     * @param in String to check if inside Enum.
-     * @return a boolean indicating  if String is inside Enum.
+     * Looks up if the selected Squares of an console input is included in Enum.
+     *
+     * @param in The console input as a String.
+     * @return boolean Returns 'true' if the selected Squares are is inside Enum.
      */
     public static boolean contains(String in){
         for (Label x: Label.values()){
@@ -27,12 +28,4 @@ public enum Label {
         return false;
     }
 
-    /**
-     * Converts Enum to String
-     * @param label Label to convert.
-     * @return String of Enum.
-     */
-    public static String toString(Label label){
-        return label.name();
-    }
 }

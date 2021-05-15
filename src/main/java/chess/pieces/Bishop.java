@@ -1,24 +1,26 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The Bishop class is a Subclass of the Piece class and represents a Piece of the Type Bishop
+ * The Bishop class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type Bishop.
  */
 public class Bishop extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.BISHOP;
+
     /**
-     * Constructor for a Bishop
+     * Constructor for creating a Bishop piece.
      *
-     * @param square the location of the Bishop
-     * @param colour the Colour object associated with the Bishop
+     * @param square The location of the Bishop on the board.
+     * @param colour The Colour associated with the Bishop.
      */
     public Bishop(Square square, Colour colour) {
         super(square, colour);
-        type = Type.BISHOP;
     }
 
     @Override
@@ -42,13 +44,13 @@ public class Bishop extends Piece implements MovingDirection {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override
@@ -61,24 +63,27 @@ public class Bishop extends Piece implements MovingDirection {
     }
 
     /**
-     * Determines if the Bishop is moving diagonally
+     * A function determining if the Bishop is only moving diagonally in any direction and doesn't
+     * stay on its original square.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Bishop should move to.
+     * @return boolean Returns 'true' if the move is diagonal.
      */
-
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
 
+        if (diff_x == 0 && diff_y == 0) {
+            return false;
+        }
         return diff_x == diff_y;
     }
 
     @Override
     public int[][] movingDirection(Square finalSquare) {
-        int dir_x = 0;
-        int dir_y = 0;
+        int dir_x;
+        int dir_y;
 
         if(finalSquare.getX() - this.square.getX() < 0) {
             // Bishop moves to the left

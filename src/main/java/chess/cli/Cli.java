@@ -39,9 +39,9 @@ public class Cli {
 
 
     /**
-     * Gets input as a String from the console.
+     * Gets the input as a String from the console.
      *
-     * @return a String of the input
+     * @return String A String of the console input.
      */
     private static String getInput () {
         Scanner scanner = new Scanner(System.in);
@@ -56,7 +56,7 @@ public class Cli {
         System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
         String userInput = getInput();
         if (userInput.equals("beaten")) {
-            System.out.println(currentGame.beatenPieces);
+            System.out.println(currentGame.getBeatenPieces());
             return false;
         }
         if (userInput.equals("giveUp")) {
@@ -85,18 +85,19 @@ public class Cli {
                 return false;
             }
         } else {
-            System.out.println("!Move not allowed\nTry again!");
+            System.out.println("!Move not allowed");
             generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
         }
     }
 
     /**
-     * evaluates Console-Input and state of current game
+     * Evaluates console input if a move is not allowed and based on state of current game
+     * generates an output as to why it's not allowed.
      *
-     * @param selectedPiece The Piece the player wants to move
-     * @param finalSquare   The Square the piece wants to move to
-     * @param currentGame   The current game
+     * @param selectedPiece The Piece the player wants to move.
+     * @param finalSquare   The Square the piece wants to move to.
+     * @param currentGame   The current game.
      */
     private static void generateAnswer (Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
@@ -104,7 +105,7 @@ public class Cli {
             System.out.println("There is no Piece to move!\n");
         } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
             System.out.println("This is not your Piece to move!\n");
-        } else if (targetPiece != null && selectedPiece.getSquare() == targetPiece.getSquare()) {
+        } else if (targetPiece != null && selectedPiece.getSquare() == finalSquare) {
             System.out.println("You have to move!\n");
         } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
             System.out.println("You cannot attack your own Piece!\n");
@@ -112,12 +113,12 @@ public class Cli {
     }
 
     /**
-     * Checks if Console Input is a syntactical correct Move.
+     * Checks if the console input is a syntactical correct move.
      *
-     * @param consoleInput Input of active Player as a String.
-     * @return a boolean if the syntax of the input is correct
+     * @param consoleInput The console input of the active Player as a String.
+     * @return boolean Returns 'true' if the syntax of the input is correct.
      */
-    private static boolean isValidMove(String consoleInput){
+    static boolean isValidMove(String consoleInput){
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
                 char[] keys = {'Q','B','N','R'};

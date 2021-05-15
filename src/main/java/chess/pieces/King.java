@@ -1,25 +1,26 @@
 package chess.pieces;
 
+import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Square;
 import chess.game.Type;
 
 /**
- * The King class is a Subclass of the Piece class and represents a Piece of the Type King
+ * The King class is a Subclass of the Piece class, implements the interface MovingDirection
+ * and represents a Piece of the Type King.
  */
-public class King extends Piece {
+public class King extends Piece implements MovingDirection {
 
-    Type type;
+    private final Type type = Type.KING;
 
     /**
-     * Constructor for a King
+     * Constructor for creating a King piece.
      *
-     * @param square the location of the King
-     * @param colour the Colour object associated with the King
+     * @param square The location of the King on the board.
+     * @param colour The Colour associated with the King.
      */
     public King(Square square, Colour colour) {
         super(square, colour);
-        type = Type.KING;
     }
 
     @Override
@@ -43,18 +44,18 @@ public class King extends Piece {
     }
 
     @Override
-    public boolean isHasMoved() {
-        return this.hasMoved;
+    public boolean hasNotMoved() {
+        return this.notMoved;
     }
 
     @Override
-    public void setHasMoved(boolean x) {
-        this.hasMoved = x;
+    public void setNotMoved(boolean x) {
+        this.notMoved = x;
     }
 
     @Override
     public String toString() {
-        if(this.colour == Colour.WHITE){
+        if (this.colour == Colour.WHITE) {
             return "K";
         } else {
             return "k";
@@ -62,16 +63,39 @@ public class King extends Piece {
     }
 
     /**
-     * Determines if the King is moving only one Square in any direction
+     * A function determining if the King is moving only one Square in any direction and doesn't
+     * stay on its original square.
      *
-     * @param finalSquare the final location
-     * @return a boolean indicating if the move is allowed
+     * @param finalSquare The square where the Bishop should move to.
+     * @return boolean Returns 'true' if the move is only one Square in any direction.
      */
     @Override
-    public boolean isPiecesMove(Square finalSquare) {
-        int diffX = Math.abs(this.square.getX() - finalSquare.getX());
-        int diffY = Math.abs(this.square.getY() - finalSquare.getY());
-        return diffX < 2 && diffY < 2;
+    public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
+        int diff_x = Math.abs(this.square.getX() - finalSquare.getX());
+        int diff_y = Math.abs(this.square.getY() - finalSquare.getY());
+        if (diff_x == 0 && diff_y == 0) {
+            return false;
+        }
+        return diff_x < 2 && diff_y < 2;
+    }
+
+    @Override
+    public int[][] movingDirection(Square finalSquare) {
+        int dir_x;
+        int dir_y = 0;
+        int diff = finalSquare.getX() - this.square.getX();
+
+        if (diff < 0) {
+            // queenside castling
+            dir_x = -1;
+        } else {
+            // kingside castling
+            dir_x = 1;
+        }
+        int[][] dir = new int[1][2];
+        dir[0][0] = dir_x;
+        dir[0][1] = dir_y;
+        return dir;
     }
 
 }
