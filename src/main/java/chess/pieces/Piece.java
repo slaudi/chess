@@ -3,8 +3,6 @@ package chess.pieces;
 import chess.game.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * The Piece class is the Superclass of the chess pieces on the board of the game.
@@ -101,7 +99,7 @@ public abstract class Piece {
      * moves more than one Square.
      *
      * @param finalSquare The final Square of the move.
-     * @return List<Square> A list of the visited Squares except for the first and last one.
+     * @return ArrayList<Square> A list of the visited Squares except for the first and last one.
      */
     public ArrayList<Square> generatePath(Square finalSquare, Board chessboard) {
         int[][] dir = piecesDirection(finalSquare);
