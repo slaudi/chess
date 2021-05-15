@@ -288,7 +288,7 @@ public class Game {
             if (isMoveAllowed(alliedPiece, enemyPiece.getSquare())) {
                 return true;
             } else {
-                List<Square> enemyPath = enemyPiece.generatePath(enemyPiece.getSquare());
+                List<Square> enemyPath = enemyPiece.generatePath(enemyPiece.getSquare(), this.chessBoard);
                 if (enemyPath.isEmpty()) {
                     return false;
                 }

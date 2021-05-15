@@ -83,6 +83,9 @@ public class Board {
             this.blackPieces.add(this.chessBoard[i][1].getOccupiedBy());
         }
     }
+    public Square[][] getBoard(){
+        return this.chessBoard;
+    }
 
     /**
      * Getter for the white alliance.

@@ -23,18 +23,36 @@ public class Player {
         this.colour = colour;
     }
 
+    /**
+     * Getter of Player-colour
+     * @return returns Player-Colour
+     */
     public Colour getColour() {
         return colour;
     }
 
+    /**
+     * Sets Player-Colour to black or white.
+     *
+     * @param x Colour: Black or White
+     */
     public void setColour(Colour x) {
         this.colour = x;
     }
 
+    /**
+     * Gets Player Check-Status
+     * @return returns Players check-status
+     */
     public boolean isInCheck() {
         return this.inCheck;
     }
 
+    /**
+     * Sets Player-Check-Status to true or false.
+     *
+     * @param x boolean
+     */
     public void setInCheck(boolean x) {
         this.inCheck = x;
     }

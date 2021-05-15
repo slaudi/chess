@@ -75,9 +75,9 @@ public abstract class Piece {
      */
     public boolean isPathEmpty (Piece piece, Square finalSquare, Board chessBoard){
         if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
-            return finalSquare.getOccupiedBy() == null || finalSquare.getOccupiedBy().getColour() != this.colour;
+            return true;
         }
-        List<Square> path = piece.generatePath(finalSquare);
+        ArrayList<Square> path = piece.generatePath(finalSquare, chessBoard);
         if (path.isEmpty()) {
             return true;
         }
@@ -103,7 +103,7 @@ public abstract class Piece {
      * @param finalSquare The final Square of the move.
      * @return List<Square> A list of the visited Squares except for the first and last one.
      */
-    public List<Square> generatePath(Square finalSquare) {
+    public ArrayList<Square> generatePath(Square finalSquare, Board chessboard) {
         int[][] dir = piecesDirection(finalSquare);
         int dir_x = dir[0][0];
         int dir_y = dir[0][1];
@@ -121,22 +121,24 @@ public abstract class Piece {
             // Piece moves vertically
             squaresVisited = diff_y;
         }
-
+        /*
         Square[][] move = new Square[1][squaresVisited];
         if (squaresVisited > 0) {
             move = new Square[1][squaresVisited - 1];
         }
-
-        if(squaresVisited - 1 >= 1) {
+        */
+        ArrayList<Square> path = new ArrayList<>();
+        if(squaresVisited > 1) {
             // Piece moves more than one square
-            for (int i = 0; i < squaresVisited -1; i++) {
+            for (int i = 1; i < squaresVisited; i++) {
                 // stores squares except start and final square
-                int x = this.square.getX() + dir_x * (i + 1);
-                int y = this.square.getY() + dir_y * (i + 1);
-                move[0][i] = new Square(Label.values()[x+y], x, y);
+                int x = this.square.getX() + dir_x * i;
+                int y = this.square.getY() + dir_y * i;
+                //move[0][i] = new Square(Label.values()[x+y], x, y);
+                path.add(chessboard.getBoard()[x][y]);
             }
         }
-        return new ArrayList<>(Arrays.asList(move[0]).subList(0, move[0].length));
+        return path;
     }
 
     /**
