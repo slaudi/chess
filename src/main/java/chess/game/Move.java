@@ -154,18 +154,29 @@ public class Move {
      */
     void doPromotion(char key, Board board) {
         this.movingPiece.getSquare().setOccupiedBy(null);
-
+        Piece piece = null;
         int promo_x = this.finalSquare.getX();
         int promo_y = this.finalSquare.getY();
         if(key == 'Q' || key == ' ') {
-            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Queen(this.finalSquare, this.movingPiece.getColour()));
+            piece = new Queen(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
         } else if (key == 'R') {
-            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Rook(this.finalSquare, this.movingPiece.getColour()));
+            piece = new Rook(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
         } else if (key == 'N') {
-            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Knight(this.finalSquare, this.movingPiece.getColour()));
+            piece = new Knight(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
         } else if (key == 'B'){
-            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Bishop(this.finalSquare, this.movingPiece.getColour()));
+            piece = new Bishop(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
         }
+        Colour colour = movingPiece.getColour();
+        if (colour == Colour.WHITE) {
+            board.addWhiteAlliance(piece);
+        } else {
+            board.addBlackAlliance(piece);
+        }
+
     }
 
 }
