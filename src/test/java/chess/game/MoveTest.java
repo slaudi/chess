@@ -138,9 +138,6 @@ class MoveTest {
         assertEquals(bishop.getType(), end1.getOccupiedBy().getType());
     }
 
-    @Test
-    public void getMovingPiece() {
-    }
 
     /**
      * tests castling white kingside
@@ -149,8 +146,8 @@ class MoveTest {
     public void castlingMoveWhiteKingside() {
         game1.chessBoard.setPieceAt(5, 7, null);
         game1.chessBoard.setPieceAt(6, 7, null);
-        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(6, 7));
-        assertEquals(null, game.chessBoard.getPieceAt(7, 7));
+        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(6, 7));
+        assertEquals(null, game1.chessBoard.getPieceAt(7, 7));
     }
 
     /**
@@ -158,11 +155,11 @@ class MoveTest {
      */
     @Test
     public void castlingMoveWhiteQueenside() {
-        game.chessBoard.setPieceAt(1, 7, null);
-        game.chessBoard.setPieceAt(2, 7, null);
-        game.chessBoard.setPieceAt(3, 7, null);
-        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(2, 7));
-        assertEquals(null, game.chessBoard.getPieceAt(0, 7));
+        game1.chessBoard.setPieceAt(1, 7, null);
+        game1.chessBoard.setPieceAt(2, 7, null);
+        game1.chessBoard.setPieceAt(3, 7, null);
+        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(2, 7));
+        assertEquals(null, game1.chessBoard.getPieceAt(0, 7));
     }
 
     /**
@@ -170,11 +167,11 @@ class MoveTest {
      */
     @Test
     public void castlingMoveBlackQueenside() {
-        game.chessBoard.setPieceAt(1, 0, null);
-        game.chessBoard.setPieceAt(2, 0, null);
-        game.chessBoard.setPieceAt(3, 0, null);
-        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(2, 0));
-        assertEquals(null, game.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.setPieceAt(1, 0, null);
+        game1.chessBoard.setPieceAt(2, 0, null);
+        game1.chessBoard.setPieceAt(3, 0, null);
+        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(2, 0));
+        assertEquals(null, game1.chessBoard.getPieceAt(0, 0));
     }
 
     /**
@@ -182,9 +179,9 @@ class MoveTest {
      */
     @Test
     public void castlingMoveBlackKingside() {
-        game.chessBoard.setPieceAt(5, 0, null);
-        game.chessBoard.setPieceAt(6, 0, null);
-        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(6, 0));
-        assertEquals(null, game.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.setPieceAt(5, 0, null);
+        game1.chessBoard.setPieceAt(6, 0, null);
+        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(6, 0));
+        assertEquals(null, game1.chessBoard.getPieceAt(7, 0));
     }
 }
