@@ -1,8 +1,10 @@
 package chess.game;
 
+import chess.pieces.Piece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static chess.game.Label.f3;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -126,7 +128,8 @@ public class GameTest {
     @Test
     public void testRookMoveHorizontal() {
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(0, 7));
-        System.out.println(game1.chessBoard.getPieceAt(0,5).toString());
+        Square square = new Square(f3,0,5);
+        game1.chessBoard.getPieceAt(0,7).setSquare(square);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
     }
 }
