@@ -76,31 +76,41 @@ public class Move {
      *
      * @param board The current board.
      */
-    void castlingMove(Board board) {
-        int king_x = this.startSquare.getX();
-        int king_y = this.startSquare.getY();
-        int rook_x = this.finalSquare.getX();
-        int rook_y = this.finalSquare.getY();
-
-        int diff = Math.abs(rook_x - king_x);
-
-        if (diff == 3) {
-            //kingside castling
-            king_x += 2;
-            rook_x -= 2;
-        } else {
-            // queenside castling
-            king_x -= 2;
-            rook_x += 3;
+    public void castlingMove(Board board, Square finalSquare) {
+        int final_x = finalSquare.getX();
+        int final_y = finalSquare.getY();
+        if(final_x == 2 && final_y == 7){           //queenside white
+            board.setPieceAt(2, 7, board.getPieceAt(4, 7));
+            board.getPieceAt(2, 7).setSquare(board.getSquareAt(2, 7));
+            board.getSquareAt(4, 7).setOccupiedBy(null);
+            board.setPieceAt(3, 7, board.getPieceAt(0, 7));
+            board.getPieceAt(3, 7).setSquare(board.getSquareAt(3, 7));
+            board.getSquareAt(0, 7).setOccupiedBy(null);
         }
-        board.getChessBoard()[king_x][king_y].setOccupiedBy(this.startSquare.getOccupiedBy());
-        board.getChessBoard()[rook_x][rook_y].setOccupiedBy(this.finalSquare.getOccupiedBy());
-        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
-        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
-
-        // set the square of the Rook to it's new square
-        Square rookSquare = board.getChessBoard()[rook_x][rook_y];
-        this.finalSquare.getOccupiedBy().setSquare(rookSquare);
+        else if(final_x == 6 && final_y == 7){      //kingside white
+            board.setPieceAt(6, 7, board.getPieceAt(4, 7));
+            board.getPieceAt(6, 7).setSquare(board.getSquareAt(6, 7));
+            board.getSquareAt(4, 7).setOccupiedBy(null);
+            board.setPieceAt(5, 7, board.getPieceAt(7, 7));
+            board.getPieceAt(5, 7).setSquare(board.getSquareAt(5, 7));
+            board.getSquareAt(7, 7).setOccupiedBy(null);
+        }
+        else if(final_x == 2 && final_y == 0){      //queenside black
+            board.setPieceAt(2, 0, board.getPieceAt(4, 0));
+            board.getPieceAt(2, 0).setSquare(board.getSquareAt(2, 0));
+            board.getSquareAt(4, 0).setOccupiedBy(null);
+            board.setPieceAt(3, 0, board.getPieceAt(0, 0));
+            board.getPieceAt(3, 0).setSquare(board.getSquareAt(3, 0));
+            board.getSquareAt(0, 0).setOccupiedBy(null);
+        }
+        else{                                       //kingside black
+            board.setPieceAt(6, 0, board.getPieceAt(4, 0));
+            board.getPieceAt(6, 0).setSquare(board.getSquareAt(6, 0));
+            board.getSquareAt(4, 0).setOccupiedBy(null);
+            board.setPieceAt(5, 0, board.getPieceAt(7, 0));
+            board.getPieceAt(5, 0).setSquare(board.getSquareAt(5, 0));
+            board.getSquareAt(7, 0).setOccupiedBy(null);
+        }
     }
 
     /**

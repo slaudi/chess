@@ -31,14 +31,6 @@ class MoveTest {
         assertEquals(game.chessBoard.getFinalSquareFromInput("a2-a3"), move.getFinalSquare());
     }
 
-    // TODO: doMove;
-   /*@Test
-    public void doMove() {
-        move.doMove(game.chessBoard);
-        move2.doMove(game.chessBoard);
-        assertNotEquals(game.chessBoard, game.chessBoard);
-    }*/
-
     @Test
     public void undoMove() {
         // without a captured Piece
@@ -46,15 +38,6 @@ class MoveTest {
         move.undoMove( game.chessBoard);
         assertEquals(game.chessBoard, game.chessBoard);
     }
-
-    // TODO: castlingMove
-    /*@Test
-    public void castlingMove() {
-        move.castlingMove(game.chessBoard);
-        Board board2 = game.chessBoard;
-        move2.castlingMove(game.chessBoard);
-        assertNotEquals(game.chessBoard, board2);
-    }*/
 
     @Test
     public void enPassantMove() {
@@ -68,4 +51,57 @@ class MoveTest {
     public void doPromotion() {
     }
 
+    @Test
+    public void getMovingPiece() {
+    }
+
+    @Test
+    public void doMove() {
+    }
+
+    /**
+     * tests castling white kingside
+     */
+    @Test
+    public void castlingMoveWhiteKingside() {
+        game.chessBoard.setPieceAt(5, 7, null);
+        game.chessBoard.setPieceAt(6, 7, null);
+        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(6, 7));
+        assertEquals(null, game.chessBoard.getPieceAt(7, 7));
+    }
+
+    /**
+     * tests castling white queenside
+     */
+    @Test
+    public void castlingMoveWhiteQueenside() {
+        game.chessBoard.setPieceAt(1, 7, null);
+        game.chessBoard.setPieceAt(2, 7, null);
+        game.chessBoard.setPieceAt(3, 7, null);
+        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(2, 7));
+        assertEquals(null, game.chessBoard.getPieceAt(0, 7));
+    }
+
+    /**
+     * tests castling black queenside
+     */
+    @Test
+    public void castlingMoveBlackQueenside() {
+        game.chessBoard.setPieceAt(1, 0, null);
+        game.chessBoard.setPieceAt(2, 0, null);
+        game.chessBoard.setPieceAt(3, 0, null);
+        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(2, 0));
+        assertEquals(null, game.chessBoard.getPieceAt(0, 0));
+    }
+
+    /**
+     * tests castling black kingside
+     */
+    @Test
+    public void castlingMoveBlackKingside() {
+        game.chessBoard.setPieceAt(5, 0, null);
+        game.chessBoard.setPieceAt(6, 0, null);
+        move.castlingMove(game.chessBoard, game.chessBoard.getSquareAt(6, 0));
+        assertEquals(null, game.chessBoard.getPieceAt(7, 0));
+    }
 }

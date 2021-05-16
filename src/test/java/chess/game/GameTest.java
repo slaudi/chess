@@ -374,6 +374,7 @@ public class GameTest {
     @Test
     public void testKingCaptureAlly() {
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(7, 7));
+        game1.chessBoard.getPieceAt(4, 6).setNotMoved(false);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
     }
 
@@ -463,4 +464,61 @@ public class GameTest {
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
     }
 
+    @Test
+    public void getBeatenPieces() {
+    }
+
+    @Test
+    public void canKingMove() {
+    }
+
+    /**
+     * tests castling while path isnt empty
+     */
+    @Test
+    public void canDoCastlingWhilePathBlocked() {
+        assertFalse(game1.canDoCastling(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getSquareAt(2, 7)));
+    }
+
+    /**
+     * tests castling white kingside
+     */
+    @Test
+    public void canDoCastlingWhiteKingside() {
+        game1.chessBoard.setPieceAt(5, 7, null);
+        game1.chessBoard.setPieceAt(6, 7, null);
+        assertTrue(game1.canDoCastling(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getSquareAt(6, 7)));
+    }
+
+    /**
+     * tests castling white queenside
+     */
+    @Test
+    public void canDoCastlingWhiteQueenside() {
+        game1.chessBoard.setPieceAt(1, 7, null);
+        game1.chessBoard.setPieceAt(2, 7, null);
+        game1.chessBoard.setPieceAt(3, 7, null);
+        assertTrue(game1.canDoCastling(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getSquareAt(2, 7)));
+    }
+
+    /**
+     * tests castling black queenside
+     */
+    @Test
+    public void canDoCastlingBlackQueenside() {
+        game1.chessBoard.setPieceAt(1, 0, null);
+        game1.chessBoard.setPieceAt(2, 0, null);
+        game1.chessBoard.setPieceAt(3, 0, null);
+        assertTrue(game1.canDoCastling(game1.chessBoard.getPieceAt(4, 0), game1.chessBoard.getSquareAt(2, 0)));
+    }
+
+    /**
+     * tests castling black kingside
+     */
+    @Test
+    public void canDoCastlingBlackKingside() {
+        game1.chessBoard.setPieceAt(5, 0, null);
+        game1.chessBoard.setPieceAt(6, 0, null);
+        assertTrue(game1.canDoCastling(game1.chessBoard.getPieceAt(4, 0), game1.chessBoard.getSquareAt(6, 0)));
+    }
 }
