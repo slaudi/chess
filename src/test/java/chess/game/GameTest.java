@@ -327,14 +327,4 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
     }
 
-    @Test
-    public void canMoveStay(){
-        game1.chessBoard.setPieceAt(0,4, new King(game1.chessBoard.getSquareAt(0,4), Colour.WHITE));
-        game1.chessBoard.setPieceAt(5,4, new Queen(game1.chessBoard.getSquareAt(0,4), Colour.WHITE));
-        Square start = new Square(Label.a2,0,6);
-        Square end = new Square(Label.a3,0,5);
-        Move move = new Move(start,end);
-        assertTrue(game1.canMoveStay(null,move));
-    }
-
 }
