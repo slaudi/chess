@@ -20,7 +20,7 @@ public class Cli {
      */
     public static void main(String[] args) {
         Game currentGame = new Game();
-        currentGame.chessBoard.toConsole();
+        toConsole(currentGame);
 
         while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {
             // to keep the game running
@@ -29,7 +29,7 @@ public class Cli {
                 continue;
             }
 
-            currentGame.chessBoard.toConsole();
+            toConsole(currentGame);
         }
         if (currentGame.currentPlayer.isLoser()) {                                              //checks if current Player has lost or game is draw
             System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
@@ -141,6 +141,25 @@ public class Cli {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Prints current state of game to console.
+     */
+    public static void toConsole(Game game){
+        for (int y = 0; y < 8; y++){
+            System.out.print(8-y);
+            for (int x = 0; x < 8; x++){
+                if (game.chessBoard.getBoard()[x][y].getOccupiedBy() != null){
+                    System.out.print(" " + game.chessBoard.getBoard()[x][y].getOccupiedBy().toString());
+                }
+                else{
+                    System.out.print("  ");
+                }
+            }
+            System.out.println(" ");
+        }
+        System.out.println("  a b c d e f g h");
     }
 
 }

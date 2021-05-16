@@ -19,7 +19,7 @@ public class Simple {
          */
         public static void main(String[] args) {
             Game currentGame = new Game();
-            currentGame.chessBoard.toConsole();
+            Cli.toConsole(currentGame);
 
             while(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
                 String userInput = getInput();
@@ -45,7 +45,7 @@ public class Simple {
                     System.out.println("!Move not allowed\n");
                     break;
                 }
-                currentGame.chessBoard.toConsole();
+                Cli.toConsole(currentGame);
             }
         }
 

@@ -3,7 +3,6 @@ package chess.game;
 import chess.pieces.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static chess.game.Colour.BLACK;
@@ -97,26 +96,6 @@ public class Board {
         return this.blackPieces;
     }
 
-
-
-    /**
-     * Prints current state of game to console.
-     */
-    public void toConsole(){
-        for (int y = 0; y < 8; y++){
-            System.out.print(8-y);
-            for (int x = 0; x < 8; x++){
-                if (this.chessBoard[x][y].getOccupiedBy() != null){
-                    System.out.print(" " + this.chessBoard[x][y].getOccupiedBy().toString());
-                }
-                else{
-                    System.out.print("  ");
-                }
-            }
-            System.out.println(" ");
-        }
-        System.out.println("  a b c d e f g h");
-    }
 
     /**
      * Determines the Piece standing on the selected Square.
