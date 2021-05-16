@@ -84,6 +84,6 @@ public class RookTest {
     @Test
     public void movingDirection() {
         int[][] testInt = rook.movingDirection(squareF4);
-        assertTrue(testInt instanceof int[][]);
+        assertNotNull(testInt);
     }
 }

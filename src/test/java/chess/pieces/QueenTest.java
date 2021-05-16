@@ -86,6 +86,6 @@ public class QueenTest {
     @Test
     public void movingDirection() {
         int[][] testInt = queen.movingDirection(squareE6);
-        assertTrue(testInt instanceof int[][]);
+        assertNotNull(testInt);
     }
 }
