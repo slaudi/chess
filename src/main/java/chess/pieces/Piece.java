@@ -118,12 +118,7 @@ public abstract class Piece {
             // Knight can leap, doesn't need a path
             squaresVisited = 0;
         }
-        /*
-        Square[][] move = new Square[1][squaresVisited];
-        if (squaresVisited > 0) {
-            move = new Square[1][squaresVisited - 1];
-        }
-        */
+
         ArrayList<Square> path = new ArrayList<>();
         if(squaresVisited > 1) {
             // Piece moves more than one square
@@ -132,7 +127,7 @@ public abstract class Piece {
                 int x = this.square.getX() + dir_x * i;
                 int y = this.square.getY() + dir_y * i;
                 //move[0][i] = new Square(Label.values()[x+y], x, y);
-                path.add(chessboard.getBoard()[x][y]);
+                path.add(chessboard.getChessBoard()[x][y]);
             }
         }
         return path;
@@ -163,8 +158,8 @@ public abstract class Piece {
     public boolean canPieceMove(Board currentBoard) {
         for(int y = 0; y < 8; y++) {
             for(int x = 0; x < 8; x++) {
-                if (currentBoard.getBoard()[x][y].getOccupiedBy() == null) {
-                    Square possibleFinalSquare = currentBoard.getBoard()[x][y];
+                if (currentBoard.getChessBoard()[x][y].getOccupiedBy() == null) {
+                    Square possibleFinalSquare = currentBoard.getChessBoard()[x][y];
                     if (this.isPiecesMove(possibleFinalSquare, currentBoard)
                             && isPathEmpty(possibleFinalSquare, currentBoard)) {
                         return true;

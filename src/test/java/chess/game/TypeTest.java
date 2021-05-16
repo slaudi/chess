@@ -7,12 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static chess.game.Type.PAWN;
 
 /**
- * The TypeTest class test the methods of the Type class
+ * The TypeTest class tests the methods of the Type class
  */
 public class TypeTest {
 
     /**
-     * tests output of typeValues
+     * tests output of Type values
      */
     @Test
     public void values() {
@@ -20,7 +20,7 @@ public class TypeTest {
     }
 
     /**
-     * tests output of typevalues
+     * tests output of Type values
      */
     @Test
     public void valueOf() {
