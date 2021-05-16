@@ -12,13 +12,22 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PlayerTest {
     public Game game;
-    public Piece pawn;
+    public Piece pawnW;
+    public Piece pawnB;
+    public Piece rookW;
+    public Piece rookB;
 
     @BeforeEach
     public void setUp() {
         game = new Game();
-        pawn = game.chessBoard.getChessBoard()[0][6].getOccupiedBy();
-        game.getBeatenPieces().add(pawn);
+        pawnW = game.chessBoard.getChessBoard()[0][6].getOccupiedBy();
+        rookW = game.chessBoard.getChessBoard()[0][7].getOccupiedBy();
+        pawnB = game.chessBoard.getChessBoard()[0][1].getOccupiedBy();
+        rookB = game.chessBoard.getChessBoard()[0][0].getOccupiedBy();
+        game.getBeatenPieces().add(pawnW);
+        game.getBeatenPieces().add(pawnB);
+        game.getBeatenPieces().add(rookB);
+        game.getBeatenPieces().add(rookW);
     }
 
     @Test
@@ -54,7 +63,6 @@ class PlayerTest {
     public void isLoser() {
         assertFalse(game.currentPlayer.isLoser());
     }
-
 
     @Test
     public void notWhiteAlliedPieces() {
