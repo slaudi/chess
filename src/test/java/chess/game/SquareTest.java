@@ -87,11 +87,29 @@ public class SquareTest {
     }
 
     /**
+     * Tests 'getXFromString' if it returns 9 if the command line input is not square
+     * on the board.
+     */
+    @Test
+    public void getXFromWrongString(){
+        assertEquals(9, Square.getXFromString("j9"));
+    }
+
+    /**
      * Tests 'getYFromString' if it gets the right y coordinate from the command line
      * input.
      */
     @Test
     public void getYFromString() {
         assertEquals(7, Square.getYFromString("a1"));
+    }
+
+    /**
+     * Tests 'getYFromString' if it returns 9 if the command line input is not square
+     * on the board.
+     */
+    @Test
+    public void getYFromWrongString(){
+        assertEquals(9, Square.getXFromString("j9"));
     }
 }
