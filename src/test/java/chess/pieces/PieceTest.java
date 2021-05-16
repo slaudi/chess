@@ -23,7 +23,9 @@ public class PieceTest {
     public Square squareH5;
     public Square squareE4;
 
-
+    /**
+     * Set up for the Piece class tests
+     */
     @BeforeEach
     public void setUp() {
         game = new Game();

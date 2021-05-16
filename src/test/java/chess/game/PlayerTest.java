@@ -21,36 +21,36 @@ class PlayerTest {
     }
 
     @Test
-    void setColour() {
+    public void setColour() {
         playerB.setColour(Colour.WHITE);
         assertEquals(Colour.WHITE, playerB.getColour());
     }
 
     @Test
-    void setInCheck() {
+    public void setInCheck() {
         playerB.setInCheck(true);
         assertTrue(playerB.inCheck);
     }
 
     @Test
-    void setLoser() {
+    public void setLoser() {
         playerW.setLoser(true);
         assertTrue(playerW.loser);
     }
 
     @Test
-    void getColour() {
+    public void getColour() {
         assertEquals(Colour.WHITE, playerW.getColour());
     }
 
     @Test
-    void isInCheck() {
+    public void isInCheck() {
         playerW.setInCheck(true);
         assertTrue(playerW.isInCheck());
     }
 
     @Test
-    void isLoser() {
+    public void isLoser() {
         playerB.setLoser(true);
         assertTrue(playerB.isLoser());
     }

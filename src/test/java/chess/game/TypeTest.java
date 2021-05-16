@@ -12,12 +12,12 @@ import static chess.game.Type.PAWN;
 class TypeTest {
 
     @Test
-    void values() {
+    public void values() {
         assertEquals("PAWN", PAWN.name());
     }
 
     @Test
-    void valueOf() {
+    public void valueOf() {
         assertEquals(PAWN, Type.valueOf("PAWN"));
     }
 
