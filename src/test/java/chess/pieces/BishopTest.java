@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BishopTest {
 
     public Bishop bishop;
-    public Square square;
     public Square finalSquare;
     public Game game;
     public Square squareF4;
@@ -37,18 +36,16 @@ public class BishopTest {
         squareE6 = new Square(e6, 4, 2);
     }
 
-    // TODO: getSquare
-    /*@Test
+    @Test
     public void getSquare() {
+        bishop.setSquare(squareC4);
         assertEquals(squareC4, bishop.getSquare());
-    }*/
+    }
 
     @Test
     public void setSquare() {
-        square = new Square(g5,7,3);
-        bishop.setSquare(square);
-        assertEquals(square, bishop.getSquare());
-        squareC4 = new Square(g5,7,3);
+        bishop.setSquare(squareF4);
+        assertEquals(squareF4, bishop.getSquare());
         bishop.setSquare(squareC4);
         assertEquals(squareC4, bishop.getSquare());
     }

@@ -197,4 +197,24 @@ public class Board {
         return null;
     }
 
+    /**
+     * Returns Piece at given Square
+     * @param x X-Coordinate of Square
+     * @param y Y-Coordinate of Square
+     * @return Piece at given Coordinates
+     */
+    public Piece getPieceAt( int x, int y){
+        return this.chessBoard[x][y].getOccupiedBy();
+    }
+
+    /**
+     * Sets Piece on given Square
+     * @param x X-Coordinate of Square
+     * @param y Y-Coordinate of Square
+     * @param piece Piece to set on Square
+     */
+    public void setPieceAt(int x, int y, Piece piece){
+        this.chessBoard[x][y].setOccupiedBy(piece);
+    }
+
 }

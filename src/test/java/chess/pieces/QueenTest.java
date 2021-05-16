@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static chess.game.Label.*;
-import static chess.game.Label.b2;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
