@@ -1,8 +1,8 @@
 package chess.game;
 
-import chess.pieces.Pawn;
-import chess.pieces.Piece;
 
+
+import chess.pieces.Bishop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,14 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BoardTest {
 
     public Game game;
+    public Bishop whiteBishop;
+    public Bishop blackBishop;
 
     @BeforeEach
     public void setUp() {
         game = new Game();
+        whiteBishop = (Bishop) game.chessBoard.getPieceAt(2, 7);
+        blackBishop = (Bishop) game.chessBoard.getPieceAt(2, 0);
     }
 
     @Test
     public void startingFormation() {
+        assertEquals(blackBishop, game.chessBoard.getPieceAt(2, 0));
     }
 
     @Test
@@ -71,5 +76,21 @@ public class BoardTest {
     public void getPromotionKey() {
         String input = "e7-e8Q";
         assertEquals('Q', this.game.chessBoard.getPromotionKey(input));
+    }
+
+    @Test
+    public void getBoard() {
+        assertEquals(whiteBishop, game.chessBoard.getBoard()[2][7].getOccupiedBy());
+    }
+
+    @Test
+    public void getPieceAt() {
+        assertEquals(whiteBishop, game.chessBoard.getPieceAt(2, 7));
+    }
+
+    @Test
+    public void setPieceAt() {
+        game.chessBoard.setPieceAt(2, 0, whiteBishop);
+        assertEquals(whiteBishop, game.chessBoard.getPieceAt(2, 0));
     }
 }
