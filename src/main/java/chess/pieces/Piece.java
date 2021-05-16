@@ -162,10 +162,10 @@ public abstract class Piece {
      * @return boolean Returns 'true' if the Piece can move somewhere on the board.
      */
     public boolean canPieceMove(Board currentBoard) {
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                if (currentBoard.getChessBoard()[i][j].getOccupiedBy() == null) {
-                    Square possibleFinalSquare = currentBoard.getChessBoard()[i][j];
+        for(int y = 0; y < 8; y++) {
+            for(int x = 0; x < 8; x++) {
+                if (currentBoard.getBoard()[x][y].getOccupiedBy() == null) {
+                    Square possibleFinalSquare = currentBoard.getBoard()[x][y];
                     if (this.isPiecesMove(possibleFinalSquare, currentBoard)
                             && isPathEmpty(this, possibleFinalSquare, currentBoard)) {
                         return true;

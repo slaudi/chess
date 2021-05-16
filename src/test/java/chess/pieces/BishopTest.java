@@ -138,16 +138,12 @@ public class BishopTest {
         assertEquals("B", bishop.toString());
     }
 
-    // TODO: isPiecesMove
-    /*@Test
-    public void isPiecesMove() {
-        assertTrue(bishop.isPiecesMove(squareD4, game.chessBoard));
-    }*/
 
     @Test
     public void movingDirection() {
         int[][] testInt = bishop.movingDirection(squareE6);
-        assertTrue(testInt instanceof int[][]);
-
+        assertNotNull(testInt);
     }
+
+
 }
