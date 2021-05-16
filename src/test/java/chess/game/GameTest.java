@@ -328,13 +328,13 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     }
 
     @Test
-    public void canMoveNotStay(){
+    public void canMoveStay(){
         game1.chessBoard.setPieceAt(0,4, new King(game1.chessBoard.getSquareAt(0,4), Colour.WHITE));
         game1.chessBoard.setPieceAt(5,4, new Queen(game1.chessBoard.getSquareAt(0,4), Colour.WHITE));
         Square start = new Square(Label.a2,0,6);
         Square end = new Square(Label.a3,0,5);
         Move move = new Move(start,end);
-        game1.canMoveStay(null,move);
+        assertTrue(game1.canMoveStay(null,move));
     }
 
 }

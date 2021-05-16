@@ -78,7 +78,7 @@ public class MoveTest {
     public void doMove() {
         move1.doMove(game1.chessBoard);
         move2.doMove(game2.chessBoard);
-        assertEquals(Arrays.deepToString(game1.chessBoard.getChessBoard()), Arrays.deepToString(game2.chessBoard.getChessBoard()));
+        assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game2.chessBoard.getBoard()));
     }
 
     /**

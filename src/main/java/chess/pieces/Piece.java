@@ -127,7 +127,7 @@ public abstract class Piece {
                 int x = this.square.getX() + dir_x * i;
                 int y = this.square.getY() + dir_y * i;
                 //move[0][i] = new Square(Label.values()[x+y], x, y);
-                path.add(chessboard.getChessBoard()[x][y]);
+                path.add(chessboard.getBoard()[x][y]);
             }
         }
         return path;
@@ -158,8 +158,8 @@ public abstract class Piece {
     public boolean canPieceMove(Board currentBoard) {
         for(int y = 0; y < 8; y++) {
             for(int x = 0; x < 8; x++) {
-                if (currentBoard.getChessBoard()[x][y].getOccupiedBy() == null) {
-                    Square possibleFinalSquare = currentBoard.getChessBoard()[x][y];
+                if (currentBoard.getBoard()[x][y].getOccupiedBy() == null) {
+                    Square possibleFinalSquare = currentBoard.getBoard()[x][y];
                     if (this.isPiecesMove(possibleFinalSquare, currentBoard)
                             && isPathEmpty(possibleFinalSquare, currentBoard)) {
                         return true;

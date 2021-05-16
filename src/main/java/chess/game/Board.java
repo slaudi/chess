@@ -45,6 +45,16 @@ public class Board {
     }
 
     /**
+     * Getter for Board.
+     *
+     * @return Returns board
+     */
+    public Square[][] getBoard(){
+        return this.chessBoard;
+    }
+
+
+    /**
      * Sets each Chess-Piece on its initial position when starting a new Game.
      */
     void startingFormation() {

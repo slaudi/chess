@@ -88,7 +88,7 @@ public class King extends Piece {
     public boolean canDoCastling (Square finalSquare, List<Piece> enemies, Board currentBoard, Game game) {
         List<Square> castlingPath;
         if (this.hasNotMoved()){
-            if(this.getSquare().getX() - finalSquare.getX() == 2){//queenside
+            if(this.getSquare().getX() - finalSquare.getX() == 2){  //queenside
                 castlingPath = queensideCastling(currentBoard);
                 if (castlingPath.isEmpty()) {
                     return false;
@@ -117,9 +117,7 @@ public class King extends Piece {
 
     private List<Square> queensideCastling(Board chessBoard) {
         List<Square> castlingPath = new ArrayList<>();
-        if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[0][7].getOccupiedBy() != null)
-                /*&& this.chessBoard.getPieceAt(1, 7) == null && this.chessBoard.getPieceAt(2, 7) == null
-                && this.chessBoard.getPieceAt(3, 7) == null*/ {
+        if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[0][7].getOccupiedBy() != null) {
             for (int i = 1; i < 4; i++) {
                 if (chessBoard.getPieceAt(i, 7) != null || !chessBoard.getPieceAt(0, 7).hasNotMoved()) {
                     return castlingPath; // empty path
@@ -129,9 +127,7 @@ public class King extends Piece {
             castlingPath.add(chessBoard.getSquareAt(2, 7));
             castlingPath.add(chessBoard.getSquareAt(1, 7));
 
-        } else if (this.getColour() == Colour.BLACK && chessBoard.getBoard()[0][0].getOccupiedBy() != null)
-                /*&& this.chessBoard.getPieceAt(1, 0) == null && this.chessBoard.getPieceAt(2, 0) == null
-                && this.chessBoard.getPieceAt(3, 0) == null*/ {
+        } else if (this.getColour() == Colour.BLACK && chessBoard.getBoard()[0][0].getOccupiedBy() != null){
             for (int i = 1; i < 4; i++) {
                 if (chessBoard.getPieceAt(i, 0) != null || !chessBoard.getPieceAt(0, 0).hasNotMoved()) {
                     return castlingPath; // empty path
@@ -143,6 +139,7 @@ public class King extends Piece {
         }
         return castlingPath;
     }
+
 
     private List<Square> kingsideCastling(Board chessBoard) {
         List<Square> castlingPath = new ArrayList<>();
