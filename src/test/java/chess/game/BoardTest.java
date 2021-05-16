@@ -111,7 +111,7 @@ public class BoardTest {
      * Getter of Square at given Coordinates
      */
     @Test
-    void getSquareAt() {
+    public void getSquareAt() {
         assertEquals(game.chessBoard.getBoard()[0][0], game.chessBoard.getSquareAt(0, 0));
     }
 
@@ -119,7 +119,7 @@ public class BoardTest {
      * Tests if Board is cleared
      */
     @Test
-    void clearBoard() {
+    public void clearBoard() {
         game.chessBoard.clearBoard();
         for(int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
@@ -132,7 +132,7 @@ public class BoardTest {
      * tests if white ally-list is empty
      */
     @Test
-    void clearWhiteAlliance() {
+    public void clearWhiteAlliance() {
         game.chessBoard.clearWhiteAlliance();
         assertTrue(game.chessBoard.getWhiteAlliance().isEmpty());
     }
@@ -141,7 +141,7 @@ public class BoardTest {
      * tests if black ally-list is empty
      */
     @Test
-    void clearBlackAlliance() {
+    public void clearBlackAlliance() {
         game.chessBoard.clearBlackAlliance();
         assertTrue(game.chessBoard.getBlackAlliance().isEmpty());
     }
@@ -150,7 +150,7 @@ public class BoardTest {
      * tests adding
      */
     @Test
-    void addWhiteAlliance() {
+    public void addWhiteAlliance() {
         game.chessBoard.clearWhiteAlliance();
         game.chessBoard.addWhiteAlliance(whiteBishop);
         assertEquals(whiteBishop, game.chessBoard.getWhiteAlliance().get(0));
@@ -160,7 +160,7 @@ public class BoardTest {
      * tests adding
      */
     @Test
-    void addBlackAlliance() {
+    public void addBlackAlliance() {
         game.chessBoard.clearBlackAlliance();
         game.chessBoard.addBlackAlliance(blackBishop);
         assertEquals(blackBishop, game.chessBoard.getBlackAlliance().get(0));

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * The MoveTest class test the methods of the Move class
  */
-class MoveTest {
+public class MoveTest {
 
     public Game game1;
     public Move move1;
