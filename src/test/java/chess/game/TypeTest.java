@@ -9,7 +9,7 @@ import static chess.game.Type.PAWN;
 /**
  * The TypeTest class test the methods of the Type class
  */
-class TypeTest {
+public class TypeTest {
 
     @Test
     public void values() {

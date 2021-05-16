@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * The ColourTest class test the methods of the Colour class
  */
-class ColourTest {
+public class ColourTest {
 
 
     @Test

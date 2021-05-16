@@ -19,7 +19,7 @@ public class KingTest {
     public King king;
     public Square square;
     public Square squareC3;
-    private Game game;
+    public Game game;
 
     @BeforeEach
     public void setUp() {
