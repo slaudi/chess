@@ -51,23 +51,8 @@ public class PieceTest {
     @Test
     public void isSurroundingSquare() {
         assertTrue(Piece.isSurroundingSquare(squareD4,squareD3));
-    }
-
-    /**
-     * Tests if a square is not directly next to another square.
-     */
-    @Test
-    public void notSurroundingSquare() {
+        // not surrounding square
         assertFalse(Piece.isSurroundingSquare(squareD4,squareH5));
-    }
-
-    /**
-     * Tests 'generatePath' to check if only moving one square doesn't generate a path.
-     */
-    @Test
-    public void generateNoPath() {
-        List<Square> path = bishop.generatePath(squareE4, game.chessBoard);
-        assertEquals(List.of(), path);
     }
 
     /**
@@ -78,15 +63,28 @@ public class PieceTest {
     public void generatePath() {
         List<Square> path = bishop.generatePath(game.chessBoard.getChessBoard()[6][2], game.chessBoard);
         assertEquals(List.of(game.chessBoard.getChessBoard()[4][4], game.chessBoard.getChessBoard()[5][3]), path);
+        // path is empty
+        path = bishop.generatePath(squareE4, game.chessBoard);
+        assertEquals(List.of(), path);
     }
 
     /**
-     * Tests 'isPathEmpty' if the path is not empty.
+     * Tests 'isPathEmpty' if the path is empty or not.
      */
     @Test
-    public void isPathNotEmpty() {
+    public void isPathEmpty() {
+        Square squareB4 = game.chessBoard.getSquareAt(1,4);
+        Square squareH4 = game.chessBoard.getSquareAt(7,4);
+        Piece rook = new Rook(squareB4, Colour.WHITE);
+        squareB4.setOccupiedBy(rook);
+        assertTrue(rook.isPathEmpty(squareH4, game.chessBoard));
+        // path is not empty
         Piece king = game.chessBoard.getPieceAt(5,7);
         assertFalse(king.isPathEmpty(squareE4, game.chessBoard));
+        // true if it's a Knight and not empty
+        Piece knight = new Knight(squareH4, Colour.BLACK);
+        Square squareA4 = game.chessBoard.getSquareAt(0,4);
+        assertTrue(knight.isPathEmpty(squareA4, game.chessBoard));
     }
 
 
