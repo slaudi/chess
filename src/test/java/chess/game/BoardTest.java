@@ -86,7 +86,7 @@ public class BoardTest {
      */
     @Test
     public void getChessBoard() {
-        assertEquals(null, game.chessBoard.getChessBoard()[5][5].getOccupiedBy());
+        assertNull(game.chessBoard.getChessBoard()[5][5].getOccupiedBy());
 
     }
 
@@ -124,7 +124,7 @@ public class BoardTest {
      */
     @Test
     public void getBoard() {
-        assertEquals(whiteBishop, game.chessBoard.getBoard()[2][7].getOccupiedBy());
+        assertEquals(whiteBishop, game.chessBoard.getChessBoard()[2][7].getOccupiedBy());
     }
 
     /**
@@ -149,7 +149,7 @@ public class BoardTest {
      */
     @Test
     public void getSquareAt() {
-        assertEquals(game.chessBoard.getBoard()[0][0], game.chessBoard.getSquareAt(0, 0));
+        assertEquals(game.chessBoard.getChessBoard()[0][0], game.chessBoard.getSquareAt(0, 0));
     }
 
     /**
@@ -160,7 +160,7 @@ public class BoardTest {
         game.chessBoard.clearBoard();
         for(int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                assertNull(game.chessBoard.getBoard()[x][y].getOccupiedBy());
+                assertNull(game.chessBoard.getChessBoard()[x][y].getOccupiedBy());
             }
         }
     }

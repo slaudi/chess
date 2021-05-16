@@ -18,7 +18,6 @@ public class PawnTest {
     public Pawn pawnW;
     public Pawn pawnB;
     public Square squareC4;
-    public Square squareF4;
     public Square squareH6;
     public Square squareE6;
     public Square squareC5;
@@ -36,7 +35,6 @@ public class PawnTest {
         pawnW = new Pawn(squareC4, Colour.WHITE);
         squareC6 = game.chessBoard.getSquareAt(2,2);
         pawnB = new Pawn(squareC6, Colour.BLACK);
-        squareF4 = new Square(f4, 5, 4);
         squareH6 = new Square(h6, 7, 2);
         squareE6 = new Square(e6, 4, 2);
         squareC5 = new Square(c5, 2, 3);
@@ -96,14 +94,21 @@ public class PawnTest {
     }
 
     /**
-     * tests if piece is allowed to move this way
+     * tests allowed moves for white piece
      */
     @Test
-    public void isPiecesMove() {
+    public void isPiecesMoveWhite() {
         // white pawn
         assertTrue(pawnW.isPiecesMove(squareC5, game.chessBoard));
         // two squares
         assertTrue(pawnW.isPiecesMove(game.chessBoard.getChessBoard()[2][2], game.chessBoard));
+    }
+
+    /**
+     * Tests not allowed moves for white piece
+     */
+    @Test
+    public void isNotPiecesMoveWhite(){
         //second Move
         pawnW.setNotMoved(false);
         assertFalse(pawnW.isPiecesMove(game.chessBoard.getChessBoard()[2][2], game.chessBoard));
@@ -112,19 +117,32 @@ public class PawnTest {
         assertFalse(pawnW.isPiecesMove(squareH6, game.chessBoard));
         // same square
         assertFalse(pawnW.isPiecesMove(squareC4, game.chessBoard));
+    }
 
+    /**
+     * tests allowed moves for black piece
+     */
+    @Test
+    public void isPiecesMoveBlack(){
         // black Pawn
         assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
         // two squares
         assertTrue(pawnB.isPiecesMove(game.chessBoard.getChessBoard()[2][4], game.chessBoard));
+    }
+
+    /**
+     * Test not allowed moves for black piece
+     */
+    @Test
+    public void isNotPiecesMoveBlack(){
         // second move
         pawnB.setNotMoved(false);
         assertFalse(pawnB.isPiecesMove(game.chessBoard.getChessBoard()[2][4], game.chessBoard));
         assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
         // is not pieces move
-        assertFalse(pawnW.isPiecesMove(squareH6, game.chessBoard));
+        assertFalse(pawnB.isPiecesMove(squareH6, game.chessBoard));
         // same square
-        assertFalse(pawnW.isPiecesMove(squareC6, game.chessBoard));
+        assertFalse(pawnB.isPiecesMove(squareC6, game.chessBoard));
     }
 
     /**
@@ -149,14 +167,15 @@ public class PawnTest {
     }
 
     /**
-     * tests if pawn is allowed to capture
+     * tests if white pawn is allowed to capture
      */
     @Test
-    public void canCapture() {
-        // white pawn
+    public void canCaptureWhite() {
+        Square squareF4 = new Square(f4, 5, 4);
         Square squareB5 = game.chessBoard.getSquareAt(1,3);
         Piece enemy = new Pawn(squareB5, Colour.BLACK);
         squareB5.setOccupiedBy(enemy);
+
         assertTrue(pawnW.canCapture(squareB5));
         // to far away
         assertFalse(pawnW.canCapture(squareF4));
@@ -165,13 +184,21 @@ public class PawnTest {
         enemy = new Pawn(squareC5, Colour.BLACK);
         squareC5.setOccupiedBy(enemy);
         assertFalse(pawnW.canCapture(squareC5));
+    }
 
-        // black pawn
-        enemy = new Pawn(squareB5, Colour.BLACK);
-        squareB5.setOccupiedBy(enemy);
+    /**
+     * Tests if black pawn is allowed to capture
+     */
+    @Test
+    public void canCaptureBlack(){
+        Square squareF4 = new Square(f4, 5, 4);
+        Square squareB5 = game.chessBoard.getSquareAt(1,3);
+
+        Piece enemy1 = new Pawn(squareB5, Colour.BLACK);
+        squareB5.setOccupiedBy(enemy1);
         assertTrue(pawnB.canCapture(squareB5));
         // in front of Pawn
-        squareC5.setOccupiedBy(enemy);
+        squareC5.setOccupiedBy(enemy1);
         assertFalse(pawnB.canCapture(squareC5));
         // to far away
         assertFalse(pawnB.canCapture(squareF4));

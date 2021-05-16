@@ -78,7 +78,7 @@ public class MoveTest {
     public void doMove() {
         move1.doMove(game1.chessBoard);
         move2.doMove(game2.chessBoard);
-        assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game2.chessBoard.getBoard()));
+        assertEquals(Arrays.deepToString(game1.chessBoard.getChessBoard()), Arrays.deepToString(game2.chessBoard.getChessBoard()));
     }
 
     /**
@@ -90,8 +90,8 @@ public class MoveTest {
         move1.doMove(game1.chessBoard);
         move1.undoMove(game1.chessBoard);
         Board board = new Board();
-        String chessBoard = Arrays.deepToString(board.getBoard());
-        assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
+        String chessBoard = Arrays.deepToString(board.getChessBoard());
+        assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getChessBoard()));
     }
 
     /**
@@ -172,7 +172,7 @@ public class MoveTest {
         game1.chessBoard.setPieceAt(5, 7, null);
         game1.chessBoard.setPieceAt(6, 7, null);
         move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(6, 7));
-        assertEquals(null, game1.chessBoard.getPieceAt(7, 7));
+        assertNull(game1.chessBoard.getPieceAt(7, 7));
     }
 
     /**
@@ -184,7 +184,7 @@ public class MoveTest {
         game1.chessBoard.setPieceAt(2, 7, null);
         game1.chessBoard.setPieceAt(3, 7, null);
         move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(2, 7));
-        assertEquals(null, game1.chessBoard.getPieceAt(0, 7));
+        assertNull(game1.chessBoard.getPieceAt(0, 7));
     }
 
     /**
@@ -196,7 +196,7 @@ public class MoveTest {
         game1.chessBoard.setPieceAt(2, 0, null);
         game1.chessBoard.setPieceAt(3, 0, null);
         move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(2, 0));
-        assertEquals(null, game1.chessBoard.getPieceAt(0, 0));
+        assertNull(game1.chessBoard.getPieceAt(0, 0));
     }
 
     /**
@@ -207,6 +207,6 @@ public class MoveTest {
         game1.chessBoard.setPieceAt(5, 0, null);
         game1.chessBoard.setPieceAt(6, 0, null);
         move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(6, 0));
-        assertEquals(null, game1.chessBoard.getPieceAt(7, 0));
+        assertNull(game1.chessBoard.getPieceAt(7, 0));
     }
 }

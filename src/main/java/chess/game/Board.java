@@ -85,14 +85,6 @@ public class Board {
     }
 
     /**
-     * Getter for Board
-     * @return Returns board
-     */
-    public Square[][] getBoard(){
-        return this.chessBoard;
-    }
-
-    /**
      * Getter for the white alliance.
      * @return ArrayList All white pieces.
      */

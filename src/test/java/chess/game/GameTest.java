@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * The GameTest class test the methods of the Game class
  */
-public class GameTest {
+public class GameTest {//NOPMD Game class controls the game, needs to be tested a lot
 
     public Game game1;
     public Game game2;
@@ -42,13 +42,6 @@ public class GameTest {
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getMovingPieceFromInput("e1-e5"), game1.chessBoard.getFinalSquareFromInput("e1-e5")));
     }
 
-    /**
-     * tests drawImplementation
-     */
-    @Test
-    public void isADraw() {
-        assertFalse(game1.isADraw());
-    }
 
     /**
      * tests if isInCheck works
@@ -58,13 +51,6 @@ public class GameTest {
         assertFalse(game1.isInCheck());
     }
 
-    /**
-     * tests if current player is Checkmate
-     */
-    @Test
-    public void isCheckMate() {
-        assertFalse(game1.isCheckMate(game1.chessBoard.getFinalSquareFromInput("e2-e3")));
-    }
 
     /**
      * tests if changing players at end of move works
@@ -79,23 +65,12 @@ public class GameTest {
      * tests if Pawn is allowed to make single step
      */
     @Test
-    public void testPawnSingleStep() {
+    public void testPawn() {
+        // one step
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[0][5]));
-    }
-
-    /**
-     * tests if Pawn is allowed to make double step
-     */
-    @Test
-    public void testPawnDoubleStep() {
+        // double step
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[0][4]));
-    }
-
-    /**
-     * tests if Pawn is allowed to make triple step
-     */
-    @Test
-    public void testPawnTripleStep() {
+        // triple step
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[0][3]));
     }
 
@@ -106,22 +81,10 @@ public class GameTest {
     public void testPawnCapture() {
         game1.chessBoard.setPieceAt(1, 5, game1.chessBoard.getPieceAt(0, 1));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[1][5]));
-    }
-
-    /**
-     * tests if Pawn is allowed to capture in front of him
-     */
-    @Test
-    public void testPawnCaptureInFront() {
+        // in front of pawn
         game1.chessBoard.setPieceAt(1, 5, game1.chessBoard.getPieceAt(0, 1));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 6), game1.chessBoard.getChessBoard()[1][5]));
-    }
-
-    /**
-     * tests if Pawn is allowed to capture ally
-     */
-    @Test
-    public void testPawnCaptureAlly() {
+        // capture ally
         game1.chessBoard.setPieceAt(1, 5, game1.chessBoard.getPieceAt(0, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[1][5]));
     }
@@ -130,34 +93,17 @@ public class GameTest {
      * tests if Rook is allowed to leap
      */
     @Test
-    public void testRookLeap() {
+    public void testRook() {
+        // leap
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][4]));
-    }
-
-    /**
-     * tests if Rook is allowed to move vertically
-     */
-    @Test
-    public void testRookMoveVertical() {
+        // vertically
         game1.chessBoard.setPieceAt(0, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][4]));
-    }
-
-    /**
-     * tests if Rook is allowed to move horizontally
-     */
-    @Test
-    public void testRookMoveHorizontal() {
+        // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(0, 7));
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
-    }
-
-    /**
-     * tests if Rook is allowed to move diagonally
-     */
-    @Test
-    public void testRookMoveDiagonal() {
+        // diagonally
         game1.chessBoard.setPieceAt(1, 6, null);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[2][5]));
     }
@@ -169,13 +115,7 @@ public class GameTest {
     public void testRookCapture() {
         game1.chessBoard.setPieceAt(0, 6, game1.chessBoard.getPieceAt(0, 0));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][6]));
-    }
-
-    /**
-     * tests if Rook is allowed to capture ally
-     */
-    @Test
-    public void testRookCaptureAlly() {
+        // try to capture ally
         game1.chessBoard.setPieceAt(0, 6, game1.chessBoard.getPieceAt(7, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][6]));
     }
@@ -184,33 +124,16 @@ public class GameTest {
      * tests if Knight is allowed to leap
      */
     @Test
-    public void testKnightLeap() {
+    public void testKnight() {
+        // leap
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[0][5]));
-    }
-
-    /**
-     * tests if Knight is allowed to move vertically
-     */
-    @Test
-    public void testKnightMoveVertical() {
+        // vertically
         game1.chessBoard.setPieceAt(1, 6, null);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[1][4]));
-    }
-
-    /**
-     * tests if Knight is allowed to move horizontally
-     */
-    @Test
-    public void testKnightMoveHorizontal() {
+        // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(1, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
-    }
-
-    /**
-     * tests if Knight is allowed to move diagonally
-     */
-    @Test
-    public void testKnightMoveDiagonal() {
+        // diagonally
         game1.chessBoard.setPieceAt(2, 6, null);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[3][5]));
     }
@@ -222,13 +145,7 @@ public class GameTest {
     public void testKnightCapture() {
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(0, 0));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[0][5]));
-    }
-
-    /**
-     * tests if Knight is allowed to capture ally
-     */
-    @Test
-    public void testKnightCaptureAlly() {
+        // try to capture ally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(7, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[0][5]));
     }
@@ -237,33 +154,16 @@ public class GameTest {
      * tests if Bishop is allowed to leap
      */
     @Test
-    public void testBishopLeap() {
+    public void testBishop() {
+        // leap
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[0][5]));
-    }
-
-    /**
-     * tests if Bishop is allowed to move vertically
-     */
-    @Test
-    public void testBishopMoveVertical() {
+        // vertically
         game1.chessBoard.setPieceAt(2, 6, null);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[2][4]));
-    }
-
-    /**
-     * tests if Bishop is allowed to move horizontally
-     */
-    @Test
-    public void testBishopMoveHorizontal() {
+        // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(2, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
-    }
-
-    /**
-     * tests if Bishop is allowed to move diagonally
-     */
-    @Test
-    public void testBishopMoveDiagonal() {
+        //diagonally
         game1.chessBoard.setPieceAt(1, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[0][5]));
     }
@@ -275,13 +175,7 @@ public class GameTest {
     public void testBishopCapture() {
         game1.chessBoard.setPieceAt(1, 6, game1.chessBoard.getPieceAt(0, 0));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[1][6]));
-    }
-
-    /**
-     * tests if Bishop is allowed to capture ally
-     */
-    @Test
-    public void testBishopCaptureAlly() {
+        // try to capture ally
         game1.chessBoard.setPieceAt(1, 6, game1.chessBoard.getPieceAt(7, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[1][6]));
     }
@@ -290,34 +184,17 @@ public class GameTest {
      * tests if Queen is allowed to leap
      */
     @Test
-    public void testQueenLeap() {
+    public void testQueen() {
+        // leap
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][3]));
-    }
-
-    /**
-     * tests if Queen is allowed to move vertically
-     */
-    @Test
-    public void testQueenMoveVertical() {
+        // vertically
         game1.chessBoard.setPieceAt(3, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][4]));
-    }
-
-    /**
-     * tests if Queen is allowed to move horizontally
-     */
-    @Test
-    public void testQueenMoveHorizontal() {
+        // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(3, 7));
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
-    }
-
-    /**
-     * tests if Queen is allowed to move diagonally
-     */
-    @Test
-    public void testQueenMoveDiagonal() {
+        // diagonally
         game1.chessBoard.setPieceAt(2, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[0][4]));
     }
@@ -329,13 +206,7 @@ public class GameTest {
     public void testQueenCapture() {
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(0, 0));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][6]));
-    }
-
-    /**
-     * tests if Queen is allowed to capture ally
-     */
-    @Test
-    public void testQueenCaptureAlly() {
+        // try to capture ally
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(7, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][6]));
     }
@@ -344,34 +215,17 @@ public class GameTest {
      * tests if King is allowed to leap
      */
     @Test
-    public void testKingLeap() {
+    public void testKing() {
+        // leap
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[3][5]));
-    }
-
-    /**
-     * tests if King is allowed to move vertically
-     */
-    @Test
-    public void testKingMoveVertical() {
+        // vertically
         game1.chessBoard.setPieceAt(4, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
-    }
-
-    /**
-     * tests if King is allowed to move horizontally
-     */
-    @Test
-    public void testKingMoveHorizontal() {
+        // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(4, 7));
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[1][5]));
-    }
-
-    /**
-     * tests if King is allowed to move diagonally
-     */
-    @Test
-    public void testKingMoveDiagonal() {
+        // diagonally
         game1.chessBoard.setPieceAt(3, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[3][6]));
     }
@@ -383,13 +237,7 @@ public class GameTest {
     public void testKingCapture() {
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(0, 0));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
-    }
-
-    /**
-     * tests if King is allowed to capture ally
-     */
-    @Test
-    public void testKingCaptureAlly() {
+        // try to capture ally
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(7, 7));
         game1.chessBoard.getPieceAt(4, 6).setNotMoved(false);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
@@ -403,13 +251,8 @@ public class GameTest {
         game1.chessBoard.setPieceAt(0, 3, game1.chessBoard.getPieceAt(4, 7));
         game1.chessBoard.getPieceAt(0, 3).setSquare(game1.chessBoard.getSquareAt(0, 3));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 3), game1.chessBoard.getChessBoard()[0][2]));//true because checkChess is in another method
-    }
 
-    /**
-     * tests if King is allowed to move on endangered square by capturing
-     */
-    @Test
-    public void testKingCaptureIntoDanger() {
+        // moving into danger while capturing
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(0, 0));
         game1.chessBoard.getPieceAt(4, 6).setSquare(game1.chessBoard.getSquareAt(4, 6));
         game1.chessBoard.setPieceAt(0, 0,null);
@@ -417,6 +260,19 @@ public class GameTest {
         game1.chessBoard.getPieceAt(4, 5).setSquare(game1.chessBoard.getSquareAt(4, 5));
         game1.chessBoard.setPieceAt(7, 0,null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6])); //true because checkChess is in another method
+    }
+
+    /**
+     * tests if king is allowed to move
+     */
+    @Test
+    public void testKingMovement() {
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
+        game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
+        assertFalse(game1.canKingMove());
     }
 
     /**
@@ -440,32 +296,14 @@ public class GameTest {
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(4, 1));
         assertFalse(game1.isADraw());
-    }
 
-    /**
-     * tests if current game is draw while actually it is check mate
-     */
-    @Test
-    public void testDrawWhileCheckMate() {
+        // while checkmate
         game1.chessBoard.clearBoard();
         game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
         game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
         assertFalse(game1.isADraw());
-    }
-
-    /**
-     * tests if king is allowed to move
-     */
-    @Test
-    public void testKingMovement() {
-        game1.chessBoard.clearBoard();
-        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
-        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
-        game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
-        game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
-        assertFalse(game1.canKingMove());
     }
 
     /**
@@ -485,19 +323,4 @@ public class GameTest {
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
     }
 
-    /**
-     * tests getter for beaten pieces
-     */
-    @Test
-    public void getBeatenPieces() {
-        assertTrue(game1.beatenPieces.isEmpty());
-    }
-
-    /**
-     * tests if king is able to move
-     */
-    @Test
-    public void canKingMove() {
-        assertFalse(game1.canKingMove());
-    }
 }

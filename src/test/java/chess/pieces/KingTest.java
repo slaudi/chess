@@ -72,7 +72,7 @@ public class KingTest {
     }
 
     /**
-     * tests if hasnt moved works
+     * tests if hasn't moved works
      */
     @Test
     public void hasNotMoved() {
@@ -80,7 +80,7 @@ public class KingTest {
     }
 
     /**
-     * tests setter for hasnt moved
+     * tests setter for hasn't moved
      */
     @Test
     public void setHasMoved() {
