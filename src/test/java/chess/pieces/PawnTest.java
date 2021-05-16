@@ -76,14 +76,31 @@ public class PawnTest {
     }
 
     @Test
+    public void isPiecesTwoMove() {
+        assertTrue(pawn.isPiecesMove(game.chessBoard.getChessBoard()[2][2], game.chessBoard));
+    }
+
+    @Test
+    public void isPiecesSecondMove() {
+        pawn.setNotMoved(false);
+        assertTrue(pawn.isPiecesMove(squareC5, game.chessBoard));
+    }
+
+    @Test
     public void isHasMoved() {
         pawn.setNotMoved(false);
         assertFalse(pawn.hasNotMoved());
     }
 
     @Test
-    public void testToString() {
+    public void testToStringWhite() {
         assertEquals("P", pawn.toString());
+    }
+
+    @Test
+    public void testToStringBlack() {
+        Piece pawn2 = game.chessBoard.getPieceAt(0,1);
+        assertEquals("p", pawn2.toString());
     }
 
     @Test
@@ -92,12 +109,56 @@ public class PawnTest {
     }
 
     @Test
-    public void isEnPassant() {
+    public void isAllowedEnPassant(){
+        Square squareA7 = game.chessBoard.getSquareAt(0,1);
+        Square squareA5 = game.chessBoard.getSquareAt(0,3);
+        Piece enemy = squareA7.getOccupiedBy();
+        enemy.setSquare(squareA5);
+        squareA5.setOccupiedBy(enemy);
+        Move lastEnemyMove = new Move(squareA5,squareA7);
+
+        Square squareB5 = game.chessBoard.getSquareAt(1,3);
+        Pawn pawn = new Pawn(squareB5, Colour.WHITE);
+        squareB5.setOccupiedBy(pawn);
+        Square moveA6 = game.chessBoard.getSquareAt(0,2);
+
+        assertTrue(pawn.isEnPassant(moveA6, lastEnemyMove));
+    }
+
+
+    @Test
+    public void isProcessEnPassant(){
+        Square squareA7 = game.chessBoard.getSquareAt(0,1);
+        Square squareA5 = game.chessBoard.getSquareAt(0,3);
+        Move lastAllyMove = new Move(squareC4,squareC5);
+        Move lastEnemyMove = new Move(squareA7,squareA5);
+        moveHistory.add(lastAllyMove);
+        moveHistory.add(lastEnemyMove);
+
+        lastEnemyMove.doMove(game.chessBoard);
+
+        Square squareB5 = game.chessBoard.getSquareAt(1,3);
+        Pawn pawn = new Pawn(squareB5, Colour.WHITE);
+        squareB5.setOccupiedBy(pawn);
+        Square moveA6 = game.chessBoard.getSquareAt(0,2);
+
+        assertTrue(pawn.isEnPassant(moveA6, moveHistory));
+    }
+
+    @Test
+    public void isNotProcessEnPassant() {
         assertFalse(pawn.isEnPassant(squareC5, moveHistory));
     }
 
     @Test
-    public void promotionPossible() {
+    public void promotionPossibleWhite() {
         assertTrue(pawn.promotionPossible(squareC8));
+    }
+
+    @Test
+    public void promotionPossibleBlack() {
+        Piece pawn2 = game.chessBoard.getPieceAt(0,1);
+        Square squareA1 = game.chessBoard.getSquareAt(0,7);
+        assertTrue(((Pawn)pawn2).promotionPossible(squareA1));
     }
 }

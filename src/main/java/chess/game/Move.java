@@ -40,7 +40,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    void doMove (Board board){
+    public void doMove (Board board){
             this.movingPiece.setSquare(this.finalSquare);
             board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
             board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
