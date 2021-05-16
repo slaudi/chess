@@ -5,6 +5,7 @@ import chess.game.Label;
 import chess.game.Square;
 import chess.pieces.Piece;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -120,17 +121,16 @@ public class Cli {
      * @return boolean Returns 'true' if the syntax of the input is correct.
      */
     static boolean isValidMove(String consoleInput){
+        ArrayList<String> keys = new ArrayList<>();
+        keys.add("Q");
+        keys.add("B");
+        keys.add("N");
+        keys.add("R");
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
-                char[] keys = {'Q','B','N','R'};
-                for (char key : keys) {
-                    if (key != consoleInput.charAt(consoleInput.length()-1)) {
-                        if (key == keys[keys.length - 1]) {
-                            // key reached R and the input still doesn't contain a char from keys
-                            return false;
-                        }
-                        break;
-                    }
+                if (!keys.contains(consoleInput.substring(5, 6))) {
+                    // key reached R and the input still doesn't contain a char from keys
+                    return false;
                 }
             }
             if (consoleInput.charAt(2) == '-') {
