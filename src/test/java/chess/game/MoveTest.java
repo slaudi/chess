@@ -130,7 +130,7 @@ class MoveTest {
         move1.doPromotion('B',game1.chessBoard);
         Piece bishop = new Bishop(end2, Colour.WHITE);
 
-        assertEquals(bishop, end1.getOccupiedBy());
+        assertEquals(bishop.getType(), end1.getOccupiedBy().getType());
     }
 
 

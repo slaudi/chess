@@ -385,7 +385,7 @@ public class GameTest {
     public void testKingMoveIntoDanger() {
         game1.chessBoard.setPieceAt(0, 3, game1.chessBoard.getPieceAt(4, 7));
         game1.chessBoard.getPieceAt(0, 3).setSquare(game1.chessBoard.getSquareAt(0, 3));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 3), game1.chessBoard.getChessBoard()[0][2]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 3), game1.chessBoard.getChessBoard()[0][2]));//true because checkChess is in another method
     }
 
     /**
@@ -395,9 +395,11 @@ public class GameTest {
     public void testKingCaptureIntoDanger() {
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(0, 0));
         game1.chessBoard.getPieceAt(4, 6).setSquare(game1.chessBoard.getSquareAt(4, 6));
+        game1.chessBoard.setPieceAt(0, 0,null);
         game1.chessBoard.setPieceAt(4, 5, game1.chessBoard.getPieceAt(7, 0));
         game1.chessBoard.getPieceAt(4, 5).setSquare(game1.chessBoard.getSquareAt(4, 5));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
+        game1.chessBoard.setPieceAt(7, 0,null);
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6])); //true because checkChess is in another method
     }
 
     /**
@@ -413,12 +415,14 @@ public class GameTest {
         game1.chessBoard.setPieceAt(7, 1, new Pawn(game1.chessBoard.getSquareAt(7, 1), Colour.WHITE));
         game1.chessBoard.setPieceAt(1, 7, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
         game1.chessBoard.setPieceAt(4, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
+        game1.chessBoard.setPieceAt(7, 4, new Pawn(game1.chessBoard.getSquareAt(7, 4), Colour.WHITE));
         game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
         game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(7, 1));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(7, 4));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(4, 1));
-        assertTrue(game1.isADraw());
+        assertFalse(game1.isADraw());
     }
 
     /**
