@@ -1,8 +1,12 @@
 package chess.game;
 
+import chess.pieces.King;
+import chess.pieces.Pawn;
 import chess.pieces.Piece;
+import chess.pieces.Rook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import chess.cli.Cli;
 
 import static chess.game.Label.f3;
 import static org.junit.jupiter.api.Assertions.*;
@@ -393,6 +397,46 @@ public class GameTest {
         game1.chessBoard.setPieceAt(4, 5, game1.chessBoard.getPieceAt(7, 0));
         game1.chessBoard.getPieceAt(4, 5).setSquare(game1.chessBoard.getSquareAt(4, 5));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
+    }
+
+    /**
+     * tests if current game is draw
+     */
+    @Test
+    public void testDraw() {
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(7, 1, new Pawn(game1.chessBoard.getSquareAt(7, 1), Colour.WHITE));
+        game1.chessBoard.setPieceAt(1, 7, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
+        game1.chessBoard.setPieceAt(4, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
+        assertTrue(game1.isADraw());
+    }
+
+    /**
+     * tests if current game is draw while actually it is check mate
+     */
+    @Test
+    public void testDrawWhileCheckMate() {
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
+        game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
+        assertFalse(game1.isADraw());
+    }
+
+    /**
+     * tests if king is allowed to move
+     */
+    @Test
+    public void testKingMovement() {
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
+        game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
+        assertFalse(game1.canKingMove());
     }
 
 }

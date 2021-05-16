@@ -227,4 +227,15 @@ public class Board {
         return this.chessBoard[x][y];
     }
 
+    /**
+     * clears Board from Pieces
+     */
+    public void clearBoard(){
+        for (int y = 0; y < 8; y++){
+            for (int x = 0; x < 8; x++){
+                this.chessBoard[x][y].setOccupiedBy(null);
+            }
+        }
+    }
+
 }
