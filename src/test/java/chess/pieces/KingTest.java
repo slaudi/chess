@@ -68,6 +68,17 @@ public class KingTest {
     }
 
     @Test
+    public void isSameSquare(){
+        assertFalse(king.isPiecesMove(square, game.chessBoard));
+    }
+
+    @Test
+    public void isNotPiecesMove(){
+        Square square = game.chessBoard.getSquareAt(0,1);
+        assertFalse(king.isPiecesMove(square, game.chessBoard));
+    }
+
+    @Test
     public void isHasMoved() {
         king.setNotMoved(false);
         assertFalse(king.hasNotMoved());
@@ -77,4 +88,11 @@ public class KingTest {
     public void testToString() {
         assertEquals("K", king.toString());
     }
+
+    @Test
+    public void movingDirection() {
+        int[][] testInt = king.movingDirection(squareC3);
+        assertNotNull(testInt);
+    }
+
 }
