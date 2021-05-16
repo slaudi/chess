@@ -93,4 +93,12 @@ public class BoardTest {
         game.chessBoard.setPieceAt(2, 0, whiteBishop);
         assertEquals(whiteBishop, game.chessBoard.getPieceAt(2, 0));
     }
+
+    @Test
+    void getSquareAt() {
+    }
+
+    @Test
+    void clearBoard() {
+    }
 }

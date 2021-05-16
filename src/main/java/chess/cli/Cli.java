@@ -49,7 +49,7 @@ public class Cli {
         return scanner.nextLine();
     }
 
-    private static boolean canPieceMove(Game currentGame) {
+    public static boolean canPieceMove(Game currentGame) {
         if (currentGame.currentPlayer.isInCheck()) {
             System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
         }

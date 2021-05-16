@@ -169,7 +169,7 @@ public class Game {
      *
      * @return boolean Returns 'true' if the King is able to make a safe move.
      */
-    private boolean canKingMove() {
+    public boolean canKingMove() {
         Square kingSquare = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
