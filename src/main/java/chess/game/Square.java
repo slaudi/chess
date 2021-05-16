@@ -53,11 +53,11 @@ public class Square {
     /**
      * A function determining the x-coordinate of a selected square from the console input.
      *
-     * @param in The console input as a String.
+     * @param input The console input as a String.
      * @return int The x-coordinate of the selected square.
      */
-    public static int getXFromString(String in){
-        char i = in.charAt(0);
+    public static int getXFromString(String input){
+        char i = input.charAt(0);
         int result;
         if (i == 'a') {
             result = 0;
@@ -84,11 +84,11 @@ public class Square {
     /**
      * A function determining the y-coordinate of a selected square from the console input.
      *
-     * @param in The console input as a String.
+     * @param input The console input as a String.
      * @return int The y-coordinate of the selected square.
      */
-    public static int getYFromString(String in) {
-        char i = in.charAt(1);
+    public static int getYFromString(String input) {
+        char i = input.charAt(1);
         int result;
         if (i == '8') {
             result = 0;

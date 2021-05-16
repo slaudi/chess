@@ -1,8 +1,10 @@
 package chess.game;
 
+import chess.pieces.Piece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static chess.game.Label.f3;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

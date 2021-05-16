@@ -16,12 +16,12 @@ public enum Label {
     /**
      * Looks up if the selected Squares of an console input is included in Enum.
      *
-     * @param in The console input as a String.
+     * @param input The console input as a String.
      * @return boolean Returns 'true' if the selected Squares are is inside Enum.
      */
-    public static boolean contains(String in){
+    public static boolean contains(String input){
         for (Label x: Label.values()){
-            if (x.name().equals(in)){
+            if (x.name().equals(input)){
                 return true;
             }
         }

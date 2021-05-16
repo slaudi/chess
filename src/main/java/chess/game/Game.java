@@ -128,7 +128,7 @@ public class Game {
         }
         this.moveHistory.add(currentMove);
         selectedPiece.setSquare(finalSquare);
-        selectedPiece.setNotMoved(false);
+        selectedPiece.setNotMoved(false); // TODO: vorher schon, wegen isInCheck-Test?
         changePlayer(finalSquare);
         return true;
     }
