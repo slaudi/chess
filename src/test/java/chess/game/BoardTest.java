@@ -29,9 +29,6 @@ public class BoardTest {
         assertEquals(blackBishop, game.chessBoard.getPieceAt(2, 0));
     }
 
-    @Test
-    public void toConsole() {
-    }
 
     @Test
     public void getMovingPieceFromInput() {
@@ -64,11 +61,6 @@ public class BoardTest {
     }
 
     @Test
-    public void getChessBoard() {
-
-    }
-
-    @Test
     public void getWhiteAlliance() {
         assertEquals(this.game.chessBoard.getWhiteAlliance(), this.game.chessBoard.getWhiteAlliance());
     }
@@ -82,11 +74,8 @@ public class BoardTest {
     public void getPromotionKey() {
         String input = "e7-e8Q";
         assertEquals('Q', this.game.chessBoard.getPromotionKey(input));
-    }
-
-    @Test
-    public void getNoPromotionKey() {
-        String input = "e7-e8";
+        // no promotion key added
+        input = "e7-e8";
         assertEquals(' ', this.game.chessBoard.getPromotionKey(input));
     }
 

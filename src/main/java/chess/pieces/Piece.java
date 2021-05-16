@@ -185,10 +185,9 @@ public abstract class Piece {
             dir = ((Rook) this).movingDirection(finalSquare);
         } else if (this instanceof Pawn) {
             dir = ((Pawn) this).movingDirection(finalSquare);
-        } else if (this instanceof King) {
-            dir = ((King)this).movingDirection(finalSquare);
         } else {
             // Knight doesn't need a path, can leap
+            // King doesn't need a path
             dir[0][0] = 0;
             dir[0][1] = 0;
         }

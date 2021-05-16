@@ -71,7 +71,7 @@ public class Player {
      *
      * @return ArrayList Contains all active allied Pieces
      */
-    List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
+    public List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> allies;
         List<Piece> piecesToRemove = new ArrayList<>();
         if(this.getColour() == Colour.WHITE) {
@@ -99,7 +99,7 @@ public class Player {
      *
      * @return ArrayList Contains all active enemy Pieces.
      */
-    List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
+    public List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> enemies;
         List<Piece> piecesToRemove = new ArrayList<>();
         if(this.getColour() == Colour.WHITE) {
