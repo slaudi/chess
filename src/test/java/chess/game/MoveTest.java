@@ -35,14 +35,14 @@ public class MoveTest {
     @BeforeEach
     public void setUp() {
         game1 = new Game();
-        start1 = game1.chessBoard.getChessBoard()[0][6];
-        end1 = game1.chessBoard.getChessBoard()[0][5];
+        start1 = game1.chessBoard.getBoard()[0][6];
+        end1 = game1.chessBoard.getBoard()[0][5];
         move1 = new Move(start1, end1);
-        piece = game1.chessBoard.getChessBoard()[0][6].getOccupiedBy();
+        piece = game1.chessBoard.getBoard()[0][6].getOccupiedBy();
 
         game2 = new Game();
-        start2 = game1.chessBoard.getChessBoard()[0][6];
-        end2 = game1.chessBoard.getChessBoard()[0][5];
+        start2 = game1.chessBoard.getBoard()[0][6];
+        end2 = game1.chessBoard.getBoard()[0][5];
         move2 = new Move(start1, end1);
 
     }
@@ -90,8 +90,8 @@ public class MoveTest {
         move1.doMove(game1.chessBoard);
         move1.undoMove(game1.chessBoard);
         Board board = new Board();
-        String chessBoard = Arrays.deepToString(board.getChessBoard());
-        assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getChessBoard()));
+        String chessBoard = Arrays.deepToString(board.getBoard());
+        assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
     }
 
     /**
@@ -99,14 +99,14 @@ public class MoveTest {
      */
     @Test
     public void enPassantMove() {
-        Square squareW = game1.chessBoard.getChessBoard()[0][3];
-        Square squareW2 = game1.chessBoard.getChessBoard()[1][2];
+        Square squareW = game1.chessBoard.getBoard()[0][3];
+        Square squareW2 = game1.chessBoard.getBoard()[1][2];
         Piece pawnW = new Pawn(squareW,Colour.WHITE);
         squareW.setOccupiedBy(pawnW);
         Move move = new Move(squareW, squareW2);
 
-        Square squareB = game1.chessBoard.getChessBoard()[1][1];
-        Square squareB2 = game1.chessBoard.getChessBoard()[1][3];
+        Square squareB = game1.chessBoard.getBoard()[1][1];
+        Square squareB2 = game1.chessBoard.getBoard()[1][3];
         Piece pawnB = new Pawn(squareB2, Colour.BLACK);
         squareB2.setOccupiedBy(pawnB);
         Move lastEnemyMove = new Move(squareB,squareB2);
@@ -123,14 +123,14 @@ public class MoveTest {
      */
     @Test
     public void undoEnPassant() {
-        Square squareW = game1.chessBoard.getChessBoard()[0][3];
-        Square squareW2 = game1.chessBoard.getChessBoard()[1][2];
+        Square squareW = game1.chessBoard.getBoard()[0][3];
+        Square squareW2 = game1.chessBoard.getBoard()[1][2];
         Piece pawnW = new Pawn(squareW,Colour.WHITE);
         squareW.setOccupiedBy(pawnW);
         Move move = new Move(squareW, squareW2);
 
-        Square squareB = game1.chessBoard.getChessBoard()[1][1];
-        Square squareB2 = game1.chessBoard.getChessBoard()[1][3];
+        Square squareB = game1.chessBoard.getBoard()[1][1];
+        Square squareB2 = game1.chessBoard.getBoard()[1][3];
         Piece pawnB = new Pawn(squareB2, Colour.BLACK);
         squareB2.setOccupiedBy(pawnB);
         Move lastEnemyMove = new Move(squareB,squareB2);

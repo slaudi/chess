@@ -86,7 +86,7 @@ public abstract class Piece {
             for (Square visitedSquare : path) {
                 int visitedSquare_x = visitedSquare.getX();
                 int visitedSquare_y = visitedSquare.getY();
-                if (chessBoard.getChessBoard()[visitedSquare_x][visitedSquare_y].getOccupiedBy() != null) {
+                if (chessBoard.getBoard()[visitedSquare_x][visitedSquare_y].getOccupiedBy() != null) {
                     return false;
                 }
             }

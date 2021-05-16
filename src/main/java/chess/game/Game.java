@@ -168,7 +168,7 @@ public class Game {
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
                 // looping through board to check if Square is next to King and is not occupied by ally
-                Square tempSquare = this.chessBoard.getChessBoard()[i][j];
+                Square tempSquare = this.chessBoard.getBoard()[i][j];
                 if (Piece.isSurroundingSquare(kingSquare, tempSquare)) {
                     if (tempSquare.getOccupiedBy() != null) {
                         if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour()) {

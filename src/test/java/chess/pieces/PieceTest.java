@@ -61,8 +61,8 @@ public class PieceTest {
      */
     @Test
     public void generatePath() {
-        List<Square> path = bishop.generatePath(game.chessBoard.getChessBoard()[6][2], game.chessBoard);
-        assertEquals(List.of(game.chessBoard.getChessBoard()[4][4], game.chessBoard.getChessBoard()[5][3]), path);
+        List<Square> path = bishop.generatePath(game.chessBoard.getBoard()[6][2], game.chessBoard);
+        assertEquals(List.of(game.chessBoard.getBoard()[4][4], game.chessBoard.getBoard()[5][3]), path);
         // path is empty
         path = bishop.generatePath(squareE4, game.chessBoard);
         assertEquals(List.of(), path);

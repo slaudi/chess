@@ -101,7 +101,7 @@ public class PawnTest {
         // white pawn
         assertTrue(pawnW.isPiecesMove(squareC5, game.chessBoard));
         // two squares
-        assertTrue(pawnW.isPiecesMove(game.chessBoard.getChessBoard()[2][2], game.chessBoard));
+        assertTrue(pawnW.isPiecesMove(game.chessBoard.getBoard()[2][2], game.chessBoard));
     }
 
     /**
@@ -111,7 +111,7 @@ public class PawnTest {
     public void isNotPiecesMoveWhite(){
         //second Move
         pawnW.setNotMoved(false);
-        assertFalse(pawnW.isPiecesMove(game.chessBoard.getChessBoard()[2][2], game.chessBoard));
+        assertFalse(pawnW.isPiecesMove(game.chessBoard.getBoard()[2][2], game.chessBoard));
         assertTrue(pawnW.isPiecesMove(squareC5, game.chessBoard));
         // is not pieces move
         assertFalse(pawnW.isPiecesMove(squareH6, game.chessBoard));
@@ -127,7 +127,7 @@ public class PawnTest {
         // black Pawn
         assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
         // two squares
-        assertTrue(pawnB.isPiecesMove(game.chessBoard.getChessBoard()[2][4], game.chessBoard));
+        assertTrue(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][4], game.chessBoard));
     }
 
     /**
@@ -137,7 +137,7 @@ public class PawnTest {
     public void isNotPiecesMoveBlack(){
         // second move
         pawnB.setNotMoved(false);
-        assertFalse(pawnB.isPiecesMove(game.chessBoard.getChessBoard()[2][4], game.chessBoard));
+        assertFalse(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][4], game.chessBoard));
         assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
         // is not pieces move
         assertFalse(pawnB.isPiecesMove(squareH6, game.chessBoard));

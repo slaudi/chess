@@ -42,8 +42,8 @@ public class Move {
      */
     public void doMove (Board board){
             this.movingPiece.setSquare(this.finalSquare);
-            board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
-            board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
+            board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
+            board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(null);
     }
 
     /**
@@ -53,9 +53,9 @@ public class Move {
      * @param board The current board.
      */
     void undoMove (Board board){
-        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
+        board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
         this.movingPiece.setSquare(this.startSquare);
-        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
+        board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
     }
 
     /**
@@ -66,9 +66,9 @@ public class Move {
      * @param board         The current board.
      */
     void undoMove (Piece targetPiece, Board board){
-        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
+        board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
         this.movingPiece.setSquare(this.startSquare);
-        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(targetPiece);
+        board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(targetPiece);
     }
 
     /**
@@ -126,9 +126,9 @@ public class Move {
         int selectedPawn_x = this.startSquare.getX();
         int selectedPawn_y = this.startSquare.getY();
 
-        board.getChessBoard()[selectedPawn_x][selectedPawn_y].setOccupiedBy(null);
-        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
-        board.getChessBoard()[end_x][end_y].setOccupiedBy(null);
+        board.getBoard()[selectedPawn_x][selectedPawn_y].setOccupiedBy(null);
+        board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(this.movingPiece);
+        board.getBoard()[end_x][end_y].setOccupiedBy(null);
     }
 
     /**
@@ -139,9 +139,9 @@ public class Move {
     void undoEnPassant(Piece enemy, Move lastEnemyMove, Board board) {
         Square finalEnemySquare = lastEnemyMove.finalSquare; // the square the enemy stood on before being captured
 
-        board.getChessBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
-        board.getChessBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
-        board.getChessBoard()[finalEnemySquare.getX()][finalEnemySquare.getY()].setOccupiedBy(enemy);
+        board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
+        board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
+        board.getBoard()[finalEnemySquare.getX()][finalEnemySquare.getY()].setOccupiedBy(enemy);
     }
 
     /**
@@ -158,13 +158,13 @@ public class Move {
         int promo_x = this.finalSquare.getX();
         int promo_y = this.finalSquare.getY();
         if(key == 'Q' || key == ' ') {
-            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Queen(this.finalSquare, this.movingPiece.getColour()));
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Queen(this.finalSquare, this.movingPiece.getColour()));
         } else if (key == 'R') {
-            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Rook(this.finalSquare, this.movingPiece.getColour()));
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Rook(this.finalSquare, this.movingPiece.getColour()));
         } else if (key == 'N') {
-            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Knight(this.finalSquare, this.movingPiece.getColour()));
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Knight(this.finalSquare, this.movingPiece.getColour()));
         } else if (key == 'B'){
-            board.getChessBoard()[promo_x][promo_y].setOccupiedBy(new Bishop(this.finalSquare, this.movingPiece.getColour()));
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(new Bishop(this.finalSquare, this.movingPiece.getColour()));
         }
     }
 

@@ -42,7 +42,7 @@ public class BoardTest {
     @Test
     public void getMovingPieceFromInput() {
         String input = "b7-b6";
-        assertEquals(this.game.chessBoard.getChessBoard()[1][1].getOccupiedBy(), this.game.chessBoard.getMovingPieceFromInput(input));
+        assertEquals(this.game.chessBoard.getBoard()[1][1].getOccupiedBy(), this.game.chessBoard.getMovingPieceFromInput(input));
     }
 
     /**
@@ -51,7 +51,7 @@ public class BoardTest {
     @Test
     public void getStartSquareFromInput() {
         String input = "a8-a7";
-        assertEquals(this.game.chessBoard.getChessBoard()[0][0], this.game.chessBoard.getStartSquareFromInput(input));
+        assertEquals(this.game.chessBoard.getBoard()[0][0], this.game.chessBoard.getStartSquareFromInput(input));
     }
 
     /**
@@ -60,7 +60,7 @@ public class BoardTest {
     @Test
     public void getFinalSquareFromInput() {
         String input = "a7-a8";
-        assertEquals(this.game.chessBoard.getChessBoard()[0][0], this.game.chessBoard.getFinalSquareFromInput(input));
+        assertEquals(this.game.chessBoard.getBoard()[0][0], this.game.chessBoard.getFinalSquareFromInput(input));
     }
 
     /**
@@ -68,7 +68,7 @@ public class BoardTest {
      */
     @Test
     public void getSquareOfKing() {
-        Square king = this.game.chessBoard.getChessBoard()[4][7];
+        Square king = this.game.chessBoard.getBoard()[4][7];
         assertEquals(king, this.game.chessBoard.getSquareOfKing(Colour.WHITE));
     }
 
@@ -86,7 +86,7 @@ public class BoardTest {
      */
     @Test
     public void getChessBoard() {
-        assertNull(game.chessBoard.getChessBoard()[5][5].getOccupiedBy());
+        assertNull(game.chessBoard.getBoard()[5][5].getOccupiedBy());
 
     }
 

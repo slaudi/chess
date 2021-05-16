@@ -128,7 +128,7 @@ public class Cli {
         keys.add("R");
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
-                if (!keys.contains(consoleInput.substring(5, 6))) {
+                if (!keys.contains(consoleInput.substring(5, 6))) {//NOPMD a collapse of the statement would cause a false 'true' return of the method
                     // key reached R and the input still doesn't contain a char from keys
                     return false;
                 }

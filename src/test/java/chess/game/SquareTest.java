@@ -30,7 +30,7 @@ public class SquareTest {
      */
     @Test
     public void printEmptySquare() {
-        assertEquals(" ", game.chessBoard.getChessBoard()[0][4].toString(),"Feld sollte leer sein");
+        assertEquals(" ", game.chessBoard.getBoard()[0][4].toString(),"Feld sollte leer sein");
     }
 
     /**
@@ -38,7 +38,7 @@ public class SquareTest {
      */
     @Test
     public void printSquareWithPiece(){
-        assertEquals("R", game.chessBoard.getChessBoard()[0][7].toString());
+        assertEquals("R", game.chessBoard.getBoard()[0][7].toString());
     }
 
 
@@ -47,7 +47,7 @@ public class SquareTest {
      */
     @Test
     public void getX() {
-        assertEquals(0, game.chessBoard.getChessBoard()[0][7].getX());
+        assertEquals(0, game.chessBoard.getBoard()[0][7].getX());
     }
 
     /**
@@ -55,7 +55,7 @@ public class SquareTest {
      */
     @Test
     public void getY() {
-        assertEquals(7, game.chessBoard.getChessBoard()[0][7].getY());
+        assertEquals(7, game.chessBoard.getBoard()[0][7].getY());
     }
 
     /**
@@ -63,7 +63,7 @@ public class SquareTest {
      */
     @Test
     public void getOccupiedBy() {
-        assertNull(game.chessBoard.getChessBoard()[0][4].getOccupiedBy());
+        assertNull(game.chessBoard.getBoard()[0][4].getOccupiedBy());
     }
 
     /**

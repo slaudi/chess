@@ -32,19 +32,6 @@ public class Board {
     }
 
     /**
-     * Getter of a deep copy of the current board.
-     *
-     * @return Square[][] A copy of the current board.
-     */
-    public Square[][] getChessBoard() {
-        Square[][] deepCopy = new Square[this.chessBoard.length][];
-        for (int i = 0; i < this.chessBoard.length; i++) {
-            deepCopy[i] = Arrays.copyOf(this.chessBoard[i], this.chessBoard[i].length);
-        }
-        return deepCopy;
-    }
-
-    /**
      * Getter for Board.
      *
      * @return Returns board

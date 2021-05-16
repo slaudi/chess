@@ -23,10 +23,10 @@ public class PlayerTest {
     @BeforeEach
     public void setUp() {
         game = new Game();
-        pawnW = game.chessBoard.getChessBoard()[0][6].getOccupiedBy();
-        rookW = game.chessBoard.getChessBoard()[0][7].getOccupiedBy();
-        pawnB = game.chessBoard.getChessBoard()[0][1].getOccupiedBy();
-        rookB = game.chessBoard.getChessBoard()[0][0].getOccupiedBy();
+        pawnW = game.chessBoard.getBoard()[0][6].getOccupiedBy();
+        rookW = game.chessBoard.getBoard()[0][7].getOccupiedBy();
+        pawnB = game.chessBoard.getBoard()[0][1].getOccupiedBy();
+        rookB = game.chessBoard.getBoard()[0][0].getOccupiedBy();
         game.beatenPieces.add(pawnW);
         game.beatenPieces.add(pawnB);
         game.beatenPieces.add(rookB);

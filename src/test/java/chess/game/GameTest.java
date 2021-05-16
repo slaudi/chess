@@ -67,11 +67,11 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testPawn() {
         // one step
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[0][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[0][5]));
         // double step
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[0][4]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[0][4]));
         // triple step
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[0][3]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[0][3]));
     }
 
     /**
@@ -80,13 +80,13 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testPawnCapture() {
         game1.chessBoard.setPieceAt(1, 5, game1.chessBoard.getPieceAt(0, 1));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[1][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[1][5]));
         // in front of pawn
         game1.chessBoard.setPieceAt(1, 5, game1.chessBoard.getPieceAt(0, 1));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 6), game1.chessBoard.getChessBoard()[1][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 6), game1.chessBoard.getBoard()[1][5]));
         // capture ally
         game1.chessBoard.setPieceAt(1, 5, game1.chessBoard.getPieceAt(0, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getChessBoard()[1][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[1][5]));
     }
 
     /**
@@ -95,18 +95,18 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testRook() {
         // leap
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][4]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[0][4]));
         // vertically
         game1.chessBoard.setPieceAt(0, 6, null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][4]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[0][4]));
         // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(0, 7));
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getBoard()[5][5]));
         // diagonally
         game1 = new Game();
         game1.chessBoard.setPieceAt(1, 6, null);
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[2][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[2][5]));
     }
 
     /**
@@ -115,10 +115,10 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testRookCapture() {
         game1.chessBoard.setPieceAt(0, 6, game1.chessBoard.getPieceAt(0, 0));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][6]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[0][6]));
         // try to capture ally
         game1.chessBoard.setPieceAt(0, 6, game1.chessBoard.getPieceAt(7, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[0][6]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[0][6]));
     }
 
     /**
@@ -127,16 +127,16 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testKnight() {
         // leap
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[0][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getBoard()[0][5]));
         // vertically
         game1.chessBoard.setPieceAt(1, 6, null);
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[1][4]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getBoard()[1][4]));
         // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(1, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getBoard()[5][5]));
         // diagonally
         game1.chessBoard.setPieceAt(2, 6, null);
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[3][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getBoard()[3][5]));
     }
 
     /**
@@ -145,10 +145,10 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testKnightCapture() {
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(0, 0));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[0][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getBoard()[0][5]));
         // try to capture ally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(7, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getChessBoard()[0][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(1, 7), game1.chessBoard.getBoard()[0][5]));
     }
 
     /**
@@ -157,17 +157,17 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testBishop() {
         // leap
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[0][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getBoard()[0][5]));
         // vertically
         game1.chessBoard.setPieceAt(2, 6, null);
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[2][4]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getBoard()[2][4]));
         // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(2, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getBoard()[5][5]));
         //diagonally
         game1 = new Game();
         game1.chessBoard.setPieceAt(1, 6, null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[0][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getBoard()[0][5]));
     }
 
     /**
@@ -176,10 +176,10 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testBishopCapture() {
         game1.chessBoard.setPieceAt(1, 6, game1.chessBoard.getPieceAt(0, 0));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[1][6]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getBoard()[1][6]));
         // try to capture ally
         game1.chessBoard.setPieceAt(1, 6, game1.chessBoard.getPieceAt(7, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[1][6]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getBoard()[1][6]));
     }
 
     /**
@@ -188,17 +188,17 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testQueen() {
         // leap
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][3]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getBoard()[3][3]));
         // vertically
         game1.chessBoard.setPieceAt(3, 6, null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][4]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getBoard()[3][4]));
         // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(3, 7));
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getBoard()[5][5]));
         // diagonally
         game1.chessBoard.setPieceAt(2, 6, null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[0][4]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getBoard()[0][4]));
     }
 
     /**
@@ -207,10 +207,10 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testQueenCapture() {
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(0, 0));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][6]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getBoard()[3][6]));
         // try to capture ally
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(7, 7));
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getChessBoard()[3][6]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(3, 7), game1.chessBoard.getBoard()[3][6]));
     }
 
     /**
@@ -219,18 +219,18 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testKing() {
         // leap
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[3][5]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getBoard()[3][5]));
         // vertically
         game1.chessBoard.setPieceAt(4, 6, null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getBoard()[4][6]));
         // horizontally
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(4, 7));
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[1][5]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getBoard()[1][5]));
         // diagonally
         game1 = new Game();
         game1.chessBoard.setPieceAt(3, 6, null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[3][6]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getBoard()[3][6]));
     }
 
     /**
@@ -239,11 +239,11 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void testKingCapture() {
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(0, 0));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getBoard()[4][6]));
         // try to capture ally
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(7, 7));
         game1.chessBoard.getPieceAt(4, 6).setNotMoved(false);
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6]));
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getBoard()[4][6]));
     }
 
     /**
@@ -253,7 +253,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     public void testKingMoveIntoDanger() {
         game1.chessBoard.setPieceAt(0, 3, game1.chessBoard.getPieceAt(4, 7));
         game1.chessBoard.getPieceAt(0, 3).setSquare(game1.chessBoard.getSquareAt(0, 3));
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 3), game1.chessBoard.getChessBoard()[0][2]));//true because checkChess is in another method
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 3), game1.chessBoard.getBoard()[0][2]));//true because checkChess is in another method
 
         game1 = new Game();
         // moving into danger while capturing
@@ -263,7 +263,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.setPieceAt(4, 5, game1.chessBoard.getPieceAt(7, 0));
         game1.chessBoard.getPieceAt(4, 5).setSquare(game1.chessBoard.getSquareAt(4, 5));
         game1.chessBoard.setPieceAt(7, 0,null);
-        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[4][6])); //true because checkChess is in another method
+        assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getBoard()[4][6])); //true because checkChess is in another method
     }
 
     /**
