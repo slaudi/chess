@@ -2,13 +2,9 @@ package chess.game;
 
 import chess.pieces.King;
 import chess.pieces.Pawn;
-import chess.pieces.Piece;
 import chess.pieces.Rook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import chess.cli.Cli;
-
-import static chess.game.Label.f3;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -33,7 +29,7 @@ public class GameTest {
      */
     @Test
     public void processMove() {
-        game1.processMove(this.game1.chessBoard.getStartSquareFromInput("e2-e3"), this.game1.chessBoard.getFinalSquareFromInput("e2-e3"), 'Q');
+        game1.processMove(this.game1.chessBoard.getStartSquareFromInput("e2-e4"), this.game1.chessBoard.getFinalSquareFromInput("e2-e3"), 'Q');
         assertNotEquals(game1, game2);
 
     }
