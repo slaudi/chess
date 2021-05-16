@@ -14,7 +14,7 @@ import java.util.Stack;
 public class Game {
     final Player playerWhite;
     final Player playerBlack;
-    private final List<Piece> beatenPieces;
+    public final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
     public Board chessBoard;
     public Player currentPlayer;
@@ -31,10 +31,6 @@ public class Game {
         this.moveHistory = new Stack<>();
     }
 
-    public List<Piece> getBeatenPieces() {
-        return this.beatenPieces;
-    }
-
     /**
      * Evaluates the semantically correctness of the console input, determining if the move is
      * allowed for the selected Piece and in the current state of the Game.
@@ -43,7 +39,7 @@ public class Game {
      * @param finalSquare   The Square which the Player wants his Piece to move to.
      * @return boolean Returns 'true' if the move is possible.
      */
-    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all special cases
+    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all cases
         if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
             return false;
         }
@@ -72,7 +68,8 @@ public class Game {
                     return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
                 }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
-            return canDoCastling(selectedPiece, finalSquare);
+            List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+            return ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard, this);
         }
         return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
 
@@ -92,8 +89,8 @@ public class Game {
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
-
-        if (targetPiece == null && selectedPiece.getType() == Type.KING && canDoCastling(startSquare.getOccupiedBy(), finalSquare)) {
+        List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+        if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard, this)) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
             currentMove.castlingMove(this.chessBoard, finalSquare);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
@@ -125,7 +122,7 @@ public class Game {
         }
         this.moveHistory.add(currentMove);
         selectedPiece.setSquare(finalSquare);
-        selectedPiece.setNotMoved(false); // TODO: vorher schon, wegen isInCheck-Test?
+        selectedPiece.setNotMoved(false);
         changePlayer(finalSquare);
         return true;
     }
@@ -299,59 +296,6 @@ public class Game {
         return false;
     }
 
-    /**
-     * Evaluates if the castling move is possible by checking the selected King and Rook.
-     *
-     * @param selectedPiece The King of the Player, has been selected first.
-     * @param finalSquare   The selected Square which can be kingside or queenside.
-     * @return boolean Returns 'true' if castling is possible.
-     */
-    public boolean canDoCastling(Piece selectedPiece, Square finalSquare) {
-        ArrayList<Square> castlingPath = new ArrayList<>();
-        if (selectedPiece.hasNotMoved()){
-            if(selectedPiece.getSquare().getX() - finalSquare.getX() == 2){     //queenside
-                if(selectedPiece.getColour() == Colour.WHITE && this.chessBoard.getPieceAt(0, 7).hasNotMoved()
-                    && this.chessBoard.getPieceAt(1, 7) == null && this.chessBoard.getPieceAt(2, 7) == null
-                    && this.chessBoard.getPieceAt(3, 7) == null){
-                    castlingPath.add(this.chessBoard.getSquareAt(4, 7));
-                    castlingPath.add(this.chessBoard.getSquareAt(3, 7));
-                    castlingPath.add(this.chessBoard.getSquareAt(2, 7));
-                }else if (selectedPiece.getColour() == Colour.BLACK && this.chessBoard.getPieceAt(0, 0).hasNotMoved()
-                        && this.chessBoard.getPieceAt(1, 0) == null && this.chessBoard.getPieceAt(2, 0) == null
-                        && this.chessBoard.getPieceAt(3, 0) == null){
-                    castlingPath.add(this.chessBoard.getSquareAt(4, 0));
-                    castlingPath.add(this.chessBoard.getSquareAt(3, 0));
-                    castlingPath.add(this.chessBoard.getSquareAt(2, 0));
-                }
-                else return false;
-            }else if (selectedPiece.getSquare().getX() - finalSquare.getX() == -2){     //kingside
-                if(selectedPiece.getColour() == Colour.WHITE && this.chessBoard.getPieceAt(7, 7).hasNotMoved()
-                        && this.chessBoard.getPieceAt(5, 7) == null && this.chessBoard.getPieceAt(6, 7) == null){
-                    castlingPath.add(this.chessBoard.getSquareAt(4, 7));
-                    castlingPath.add(this.chessBoard.getSquareAt(5, 7));
-                    castlingPath.add(this.chessBoard.getSquareAt(6, 7));
-                }else if (selectedPiece.getColour() == Colour.BLACK && this.chessBoard.getPieceAt(7, 0).hasNotMoved()
-                        && this.chessBoard.getPieceAt(5, 0) == null && this.chessBoard.getPieceAt(6, 0) == null){
-                    castlingPath.add(this.chessBoard.getSquareAt(4, 0));
-                    castlingPath.add(this.chessBoard.getSquareAt(5, 0));
-                    castlingPath.add(this.chessBoard.getSquareAt(6, 0));
-                }
-                else return false;
-            }
-            else return false;
-        }
-        else return false;
-        List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-        // check if the Kings current Square and/or any Squares the King visits are in check/under attack
-        for (Square field : castlingPath){
-            for (Piece enemyPiece : enemies) {
-                if(isMoveAllowed(enemyPiece, field)){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     void changePlayer(Square finalSquare) {
         // change currentPlayer to next Colour

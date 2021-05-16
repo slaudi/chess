@@ -27,10 +27,10 @@ public class PlayerTest {
         rookW = game.chessBoard.getChessBoard()[0][7].getOccupiedBy();
         pawnB = game.chessBoard.getChessBoard()[0][1].getOccupiedBy();
         rookB = game.chessBoard.getChessBoard()[0][0].getOccupiedBy();
-        game.getBeatenPieces().add(pawnW);
-        game.getBeatenPieces().add(pawnB);
-        game.getBeatenPieces().add(rookB);
-        game.getBeatenPieces().add(rookW);
+        game.beatenPieces.add(pawnW);
+        game.beatenPieces.add(pawnB);
+        game.beatenPieces.add(rookB);
+        game.beatenPieces.add(rookW);
     }
 
     /**
@@ -90,8 +90,8 @@ public class PlayerTest {
      */
     @Test
     public void notWhiteAlliedPieces() {
-        assertNotEquals(game.playerWhite.getAlliedPieces(game.getBeatenPieces(), game.chessBoard),
-                game.playerBlack.getAlliedPieces(game.getBeatenPieces(), game.chessBoard));
+        assertNotEquals(game.playerWhite.getAlliedPieces(game.beatenPieces, game.chessBoard),
+                game.playerBlack.getAlliedPieces(game.beatenPieces, game.chessBoard));
     }
 
     /**
@@ -99,8 +99,8 @@ public class PlayerTest {
      */
     @Test
     public void notBlackAlliedPieces(){
-        assertNotEquals(game.playerBlack.getAlliedPieces(game.getBeatenPieces(), game.chessBoard),
-                game.playerWhite.getAlliedPieces(game.getBeatenPieces(), game.chessBoard));
+        assertNotEquals(game.playerBlack.getAlliedPieces(game.beatenPieces, game.chessBoard),
+                game.playerWhite.getAlliedPieces(game.beatenPieces, game.chessBoard));
     }
 
     /**
@@ -108,8 +108,8 @@ public class PlayerTest {
      */
     @Test
     public void notWhiteEnemyPieces() {
-        assertNotEquals(game.playerWhite.getEnemyPieces(game.getBeatenPieces(), game.chessBoard),
-                game.playerBlack.getEnemyPieces(game.getBeatenPieces(), game.chessBoard));
+        assertNotEquals(game.playerWhite.getEnemyPieces(game.beatenPieces, game.chessBoard),
+                game.playerBlack.getEnemyPieces(game.beatenPieces, game.chessBoard));
     }
 
     /**
@@ -117,8 +117,8 @@ public class PlayerTest {
      */
     @Test
     public void notBlackEnemyPieces(){
-        assertNotEquals(game.playerBlack.getEnemyPieces(game.getBeatenPieces(), game.chessBoard),
-                game.playerWhite.getEnemyPieces(game.getBeatenPieces(), game.chessBoard));
+        assertNotEquals(game.playerBlack.getEnemyPieces(game.beatenPieces, game.chessBoard),
+                game.playerWhite.getEnemyPieces(game.beatenPieces, game.chessBoard));
     }
 
 

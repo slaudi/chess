@@ -7,6 +7,7 @@ import chess.game.Type;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +21,8 @@ public class KingTest {
     public Square square;
     public Square squareC3;
     public Game game;
+    public Game game1;
+    List<Piece> enemies;
 
     /**
      * setUp for each KingTest
@@ -30,6 +33,8 @@ public class KingTest {
         square = new Square(c4, 2, 4);
         king = new King(square, Colour.WHITE);
         squareC3 = new Square(c3,2, 5);
+        game1 = new Game();
+        enemies = game1.currentPlayer.getEnemyPieces(game1.beatenPieces, game1.chessBoard);
     }
 
     /**
@@ -126,12 +131,58 @@ public class KingTest {
     }
 
     /**
-     * tests if movingDirection is true
+     * tests castling while path isn't empty
      */
     @Test
-    public void movingDirection() {
-        int[][] testInt = king.movingDirection(squareC3);
-        assertNotNull(testInt);
+    public void canDoCastlingWhilePathBlocked() {
+        Piece king = game1.chessBoard.getPieceAt(4,7);
+        assertFalse(((King)king).canDoCastling(game.chessBoard.getSquareAt(2, 7), enemies, game1.chessBoard, game1));
+    }
+
+    /**
+     * tests castling white kingside
+     */
+    @Test
+    public void canDoCastlingWhiteKingside() {
+        game1.chessBoard.setPieceAt(5, 7, null);
+        game1.chessBoard.setPieceAt(6, 7, null);
+        Piece king = game1.chessBoard.getPieceAt(4,7);
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 7), enemies, game1.chessBoard, game1));
+    }
+
+    /**
+     * tests castling white queenside
+     */
+    @Test
+    public void canDoCastlingWhiteQueenside() {
+        game1.chessBoard.setPieceAt(1, 7, null);
+        game1.chessBoard.setPieceAt(2, 7, null);
+        game1.chessBoard.setPieceAt(3, 7, null);
+        Piece king = game1.chessBoard.getPieceAt(4,7);
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 7), enemies, game1.chessBoard, game1));
+    }
+
+    /**
+     * tests castling black queenside
+     */
+    @Test
+    public void canDoCastlingBlackQueenside() {
+        game1.chessBoard.setPieceAt(1, 0, null);
+        game1.chessBoard.setPieceAt(2, 0, null);
+        game1.chessBoard.setPieceAt(3, 0, null);
+        Piece king = game1.chessBoard.getPieceAt(4,0);
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
+    }
+
+    /**
+     * tests castling black kingside
+     */
+    @Test
+    public void canDoCastlingBlackKingside() {
+        game1.chessBoard.setPieceAt(5, 0, null);
+        game1.chessBoard.setPieceAt(6, 0, null);
+        Piece king = game1.chessBoard.getPieceAt(4,0);
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 0), enemies, game1.chessBoard, game1));
     }
 
 }

@@ -35,13 +35,6 @@ public class BoardTest {
         assertEquals(blackBishop, game.chessBoard.getPieceAt(2, 0));
     }
 
-    /**
-     * tests if consoleOutput works
-     */
-    @Test
-    public void toConsole() {
-
-    }
 
     /**
      * Gets Moving piece from inputString
@@ -114,20 +107,14 @@ public class BoardTest {
     }
 
     /**
-     * tests getter for promotionkey from string
+     * tests getter for promotion key from string
      */
     @Test
     public void getPromotionKey() {
         String input = "e7-e8Q";
         assertEquals('Q', this.game.chessBoard.getPromotionKey(input));
-    }
-
-    /**
-     * tests getter for promotionkey if there is no key
-     */
-    @Test
-    public void getNoPromotionKey() {
-        String input = "e7-e8";
+        // no promotion key added
+        input = "e7-e8";
         assertEquals(' ', this.game.chessBoard.getPromotionKey(input));
     }
 

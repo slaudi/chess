@@ -1,15 +1,15 @@
 package chess.pieces;
 
-import chess.game.Board;
-import chess.game.Colour;
-import chess.game.Square;
-import chess.game.Type;
+import chess.game.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The King class is a Subclass of the Piece class, implements the interface MovingDirection
  * and represents a Piece of the Type King.
  */
-public class King extends Piece implements MovingDirection {
+public class King extends Piece {
 
     final Type type = Type.KING;
 
@@ -79,23 +79,83 @@ public class King extends Piece implements MovingDirection {
         return diff_x < 2 && diff_y < 2;
     }
 
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        int dir_x;
-        int dir_y = 0;
-        int diff = finalSquare.getX() - this.square.getX();
-
-        if (diff < 0) {
-            // queenside castling
-            dir_x = -1;
+    /**
+     * Evaluates if the castling move is possible by checking the selected King and Rook.
+     *
+     * @param finalSquare   The selected Square which can be kingside or queenside.
+     * @return boolean Returns 'true' if castling is possible.
+     */
+    public boolean canDoCastling (Square finalSquare, List<Piece> enemies, Board currentBoard, Game game) {
+        List<Square> castlingPath;
+        if (this.hasNotMoved()){
+            if(this.getSquare().getX() - finalSquare.getX() == 2){//queenside
+                castlingPath = queensideCastling(currentBoard);
+                if (castlingPath.isEmpty()) {
+                    return false;
+                }
+            } else if (this.getSquare().getX() - finalSquare.getX() == -2){     //kingside
+                castlingPath = kingsideCastling(currentBoard);
+                if (castlingPath.isEmpty()){
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } else {
-            // kingside castling
-            dir_x = 1;
+            return false;
         }
-        int[][] dir = new int[1][2];
-        dir[0][0] = dir_x;
-        dir[0][1] = dir_y;
-        return dir;
+        // check if the Kings current Square and/or any Squares the King visits are in check/under attack
+        for (Square field : castlingPath){
+            for (Piece enemyPiece : enemies) {
+                if(game.isMoveAllowed(enemyPiece, field)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private List<Square> queensideCastling(Board chessBoard) {
+        List<Square> castlingPath = new ArrayList<>();
+        if (this.getColour() == Colour.WHITE && chessBoard.getPieceAt(0, 7).hasNotMoved()
+                /*&& this.chessBoard.getPieceAt(1, 7) == null && this.chessBoard.getPieceAt(2, 7) == null
+                && this.chessBoard.getPieceAt(3, 7) == null*/) {
+            for (int i = 1; i < 4; i++) {
+                if (chessBoard.getPieceAt(i, 7) != null) {
+                    return castlingPath; // empty path
+                }
+            }
+            castlingPath.add(chessBoard.getSquareAt(3, 7));
+            castlingPath.add(chessBoard.getSquareAt(2, 7));
+            castlingPath.add(chessBoard.getSquareAt(1, 7));
+
+        } else if (this.getColour() == Colour.BLACK && chessBoard.getPieceAt(0, 0).hasNotMoved()
+                /*&& this.chessBoard.getPieceAt(1, 0) == null && this.chessBoard.getPieceAt(2, 0) == null
+                && this.chessBoard.getPieceAt(3, 0) == null*/) {
+            for (int i = 1; i < 4; i++) {
+                if (chessBoard.getPieceAt(i, 0) != null) {
+                    return castlingPath; // empty path
+                }
+            }
+            castlingPath.add(chessBoard.getSquareAt(3, 0));
+            castlingPath.add(chessBoard.getSquareAt(2, 0));
+            castlingPath.add(chessBoard.getSquareAt(1, 0));
+        }
+        return castlingPath;
+    }
+
+    private List<Square> kingsideCastling(Board chessBoard) {
+        List<Square> castlingPath = new ArrayList<>();
+        if (this.getColour() == Colour.WHITE && chessBoard.getPieceAt(7, 7).hasNotMoved()
+                && chessBoard.getPieceAt(5, 7) == null && chessBoard.getPieceAt(6, 7) == null) {
+            castlingPath.add(chessBoard.getSquareAt(5, 7));
+            castlingPath.add(chessBoard.getSquareAt(6, 7));
+        } else if (this.getColour() == Colour.BLACK && chessBoard.getPieceAt(7, 0).hasNotMoved()
+                && chessBoard.getPieceAt(5, 0) == null && chessBoard.getPieceAt(6, 0) == null) {
+            castlingPath.add(chessBoard.getSquareAt(5, 0));
+            castlingPath.add(chessBoard.getSquareAt(6, 0));
+        }
+        return castlingPath;
     }
 
 }
