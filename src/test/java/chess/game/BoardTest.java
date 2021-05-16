@@ -58,6 +58,12 @@ public class BoardTest {
     }
 
     @Test
+    public void noSquareOfKing() {
+        clearBoard();
+        assertNull(this.game.chessBoard.getSquareOfKing(Colour.WHITE));
+    }
+
+    @Test
     public void getChessBoard() {
 
     }
@@ -77,6 +83,13 @@ public class BoardTest {
         String input = "e7-e8Q";
         assertEquals('Q', this.game.chessBoard.getPromotionKey(input));
     }
+
+    @Test
+    public void getNoPromotionKey() {
+        String input = "e7-e8";
+        assertEquals(' ', this.game.chessBoard.getPromotionKey(input));
+    }
+
 
     @Test
     public void getBoard() {
@@ -110,7 +123,7 @@ public class BoardTest {
         game.chessBoard.clearBoard();
         for(int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                assertEquals(null, game.chessBoard.getBoard()[x][y].getOccupiedBy());
+                assertNull(game.chessBoard.getBoard()[x][y].getOccupiedBy());
             }
         }
     }

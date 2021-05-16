@@ -17,18 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoveTest {
 
     public Game game1;
-    public Game game2;
     public Move move1;
-    public Move move2;
+
     public Square start1;
     public Square end1;
+
+    public Game game2;
     public Square start2;
     public Square end2;
-
-    public Game game1_;
-    public Square start1_;
-    public Square end1_;
-    public Move move1_;
+    public Move move2;
     
     public Piece piece;
 
@@ -40,15 +37,11 @@ class MoveTest {
         move1 = new Move(start1, end1);
         piece = game1.chessBoard.getChessBoard()[0][6].getOccupiedBy();
         
-        game1_ = new Game();
-        start1_ = game1.chessBoard.getChessBoard()[0][6];
-        end1_ = game1.chessBoard.getChessBoard()[0][5];
-        move1_ = new Move(start1, end1);
-
         game2 = new Game();
-        start2 = game2.chessBoard.getChessBoard()[1][6];
-        end2 = game2.chessBoard.getChessBoard()[1][5];
-        move2 = new Move(start2, end2);
+        start2 = game1.chessBoard.getChessBoard()[0][6];
+        end2 = game1.chessBoard.getChessBoard()[0][5];
+        move2 = new Move(start1, end1);
+
     }
 
     @Test
@@ -69,8 +62,8 @@ class MoveTest {
     @Test
     public void doMove() {
         move1.doMove(game1.chessBoard);
-        move1_.doMove(game1_.chessBoard);
-        assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game1_.chessBoard.getBoard()));
+        move2.doMove(game2.chessBoard);
+        assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game2.chessBoard.getBoard()));
     }
 
     @Test
@@ -81,6 +74,11 @@ class MoveTest {
         Board board = new Board();
         String chessBoard = Arrays.deepToString(board.getBoard());
         assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
+    }
+
+    @Test
+    public void undoAttack(){
+
     }
 
     // TODO: castlingMove
@@ -110,6 +108,7 @@ class MoveTest {
         assertNull(squareW.getOccupiedBy());
         assertEquals(pawnW, squareW2.getOccupiedBy());
         assertNull(squareB2.getOccupiedBy());
+
     }
 
     @Test
@@ -144,7 +143,8 @@ class MoveTest {
     public void promotionToBishop(){
         move1.doPromotion('B',game1.chessBoard);
         Piece bishop = new Bishop(end2, Colour.WHITE);
-        assertEquals(bishop.getType(), end1.getOccupiedBy().getType());
+
+        assertEquals(bishop, end1.getOccupiedBy());
     }
 
 }
