@@ -68,19 +68,18 @@ public abstract class Piece {
      * A function determining if the direct path from one square to another is empty
      * except for the start and final Square.
      *
-     * @param piece         The Piece the player wants to move.
      * @param finalSquare   The Square where the Piece should go to.
      * @return boolean Returns 'true' if the path is empty.
      */
-    public boolean isPathEmpty (Piece piece, Square finalSquare, Board chessBoard){
-        if (isSurroundingSquare(piece.getSquare(), finalSquare)) {
+    public boolean isPathEmpty (Square finalSquare, Board chessBoard){
+        if (isSurroundingSquare(this.getSquare(), finalSquare)) {
             return true;
         }
-        List<Square> path = piece.generatePath(finalSquare, chessBoard);
+        List<Square> path = this.generatePath(finalSquare, chessBoard);
         if (path.isEmpty()) {
             return true;
         }
-        if (piece.getType() == Type.KNIGHT) {
+        if (this.getType() == Type.KNIGHT) {
             // Knights can leap
             return true;
         } else {
@@ -167,7 +166,7 @@ public abstract class Piece {
                 if (currentBoard.getBoard()[x][y].getOccupiedBy() == null) {
                     Square possibleFinalSquare = currentBoard.getBoard()[x][y];
                     if (this.isPiecesMove(possibleFinalSquare, currentBoard)
-                            && isPathEmpty(this, possibleFinalSquare, currentBoard)) {
+                            && isPathEmpty(possibleFinalSquare, currentBoard)) {
                         return true;
                     }
                 }
@@ -176,7 +175,7 @@ public abstract class Piece {
         return false;
     }
 
-    private int[][] piecesDirection(Square finalSquare) {
+    int[][] piecesDirection(Square finalSquare) {
         int[][] dir = new int[1][2];
         if (this instanceof Queen) {
             dir = ((Queen)this).movingDirection(finalSquare);
