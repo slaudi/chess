@@ -12,12 +12,12 @@ class ColourTest {
 
 
     @Test
-    void values() {
+    public void values() {
         assertEquals("WHITE", WHITE.name());
     }
 
     @Test
-    void valueOf() {
+    public void valueOf() {
         assertEquals(WHITE, Colour.valueOf("WHITE"));
     }
 }

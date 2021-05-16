@@ -60,7 +60,7 @@ public class Game {
                     // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
                     return ((Pawn) selectedPiece).canCapture(finalSquare);
                 } else {
-                    return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(selectedPiece, finalSquare, this.chessBoard);
+                    return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
                 }
             } else if (targetPiece.getColour() == selectedPiece.getColour()) {
                 return false;
@@ -76,7 +76,7 @@ public class Game {
                     return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
                 }
         }
-        return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(selectedPiece, finalSquare, this.chessBoard);
+        return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
 
     }
 
@@ -219,7 +219,7 @@ public class Game {
                 || enemyPiece.getType() == Type.ROOK
                 || enemyPiece.getType() == Type.QUEEN) {
             return enemyPiece.isPiecesMove(kingSquare, this.chessBoard)
-                    && enemyPiece.isPathEmpty(enemyPiece, this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
+                    && enemyPiece.isPathEmpty(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
         } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
             return enemyPiece.isPiecesMove(kingSquare, this.chessBoard);
         } else {
@@ -312,7 +312,7 @@ public class Game {
     private boolean canDoCastling(Piece selectedPiece, Piece targetPiece) {
         // selectedPiece is King, targetPiece is Rook
         if (selectedPiece.hasNotMoved() && targetPiece.hasNotMoved() // King and Rook didn't move yet
-                && selectedPiece.isPathEmpty(selectedPiece, targetPiece.getSquare(), this.chessBoard)) {   // no pieces between King and Rook
+                && selectedPiece.isPathEmpty(targetPiece.getSquare(), this.chessBoard)) {   // no pieces between King and Rook
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
             int diff = Math.abs(targetPiece.getSquare().getX() - selectedPiece.getSquare().getX());
             int king_x;
@@ -323,7 +323,7 @@ public class Game {
                 for (int i = 0; i < diff; i++) {
                     king_x = selectedPiece.getSquare().getX() + i;
                     Square tempSquare = new Square(Label.values()[king_x+king_y], king_x, king_y);
-                    if(enemyPiece.isPiecesMove(tempSquare, this.chessBoard) && enemyPiece.isPathEmpty(enemyPiece, tempSquare, this.chessBoard)){
+                    if(enemyPiece.isPiecesMove(tempSquare, this.chessBoard) && enemyPiece.isPathEmpty(tempSquare, this.chessBoard)){
                         return false;
                     }
                 }

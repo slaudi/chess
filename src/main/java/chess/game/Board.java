@@ -203,7 +203,7 @@ public class Board {
      * @param y Y-Coordinate of Square
      * @return Piece at given Coordinates
      */
-    Piece getPieceAt( int x, int y){
+    public Piece getPieceAt( int x, int y){
         return this.chessBoard[x][y].getOccupiedBy();
     }
 
@@ -213,7 +213,7 @@ public class Board {
      * @param y Y-Coordinate of Square
      * @param piece Piece to set on Square
      */
-    void setPieceAt(int x, int y, Piece piece){
+    public void setPieceAt(int x, int y, Piece piece){
         this.chessBoard[x][y].setOccupiedBy(piece);
     }
 

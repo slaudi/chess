@@ -77,7 +77,7 @@ public class Pawn extends Piece implements MovingDirection {
         if (Math.abs(diff_x) == Math.abs(diff_y) || finalSquare.getOccupiedBy() != null) {
             return false;
         }
-        if (notMoved && isPathEmpty(this, finalSquare, chessBoard)) {
+        if (notMoved && isPathEmpty(finalSquare, chessBoard)) {
             // Pawn can move one or two Squares
             if (this.colour == Colour.WHITE) {
                 return (diff_y == -1 || diff_y == -2) && diff_x == 0;
