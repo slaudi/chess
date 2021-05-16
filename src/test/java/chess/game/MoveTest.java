@@ -1,9 +1,6 @@
 package chess.game;
 
-import chess.pieces.Bishop;
-import chess.pieces.Pawn;
-import chess.pieces.Piece;
-import chess.pieces.Queen;
+import chess.pieces.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -147,20 +144,25 @@ public class MoveTest {
      */
     @Test
     public void promotionWithoutKey() {
+        // no key:Queen
         move1.doPromotion(' ',game1.chessBoard);
         Piece queen = new Queen(end2, Colour.WHITE);
         assertEquals(queen.getType(), end1.getOccupiedBy().getType());
-    }
 
-    /**
-     * tests if promotion to bishop works
-     */
-    @Test
-    public void promotionToBishop(){
+        //bishop
         move1.doPromotion('B',game1.chessBoard);
         Piece bishop = new Bishop(end2, Colour.WHITE);
-
         assertEquals(bishop.getType(), end1.getOccupiedBy().getType());
+
+        // rook
+        move1.doPromotion('R',game1.chessBoard);
+        Piece rook = new Rook(end2, Colour.BLACK);
+        assertEquals(rook.getType(), end1.getOccupiedBy().getType());
+
+        // Knight
+        move1.doPromotion('N',game1.chessBoard);
+        Piece knight = new Knight(end2, Colour.WHITE);
+        assertEquals(knight.getType(), end1.getOccupiedBy().getType());
     }
 
 
