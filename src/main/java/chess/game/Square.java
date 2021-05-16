@@ -9,7 +9,7 @@ import chess.pieces.Piece;
 public class Square {
     private final int x;
     private final int y;
-    private Piece occupiedBy = null;
+    Piece occupiedBy = null;
     Label label;
 
     /**

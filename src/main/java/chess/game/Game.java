@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 
 public class Game {
-    private final Player playerWhite;
+    final Player playerWhite;
     final Player playerBlack;
     private final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
