@@ -92,7 +92,7 @@ public class Board {
      * @return ArrayList All white pieces.
      */
     List<Piece> getWhiteAlliance() {
-        return new ArrayList<>(whitePieces);
+        return this.whitePieces;
     }
 
     /**
@@ -100,7 +100,7 @@ public class Board {
      * @return ArrayList All black pieces.
      */
     List<Piece> getBlackAlliance() {
-        return new ArrayList<>(blackPieces);
+        return this.blackPieces;
     }
 
 
@@ -236,6 +236,36 @@ public class Board {
                 this.chessBoard[x][y].setOccupiedBy(null);
             }
         }
+    }
+
+    /**
+     * clears White Ally-List
+     */
+    public void clearWhiteAlliance(){
+        this.whitePieces.clear();
+    }
+
+    /**
+     * clears Black Ally-List
+     */
+    public void clearBlackAlliance(){
+        this.blackPieces.clear();
+    }
+
+    /**
+     * adds given Piece to List
+     * @param piece Piece to add to List
+     */
+    public void addWhiteAlliance(Piece piece){
+        this.whitePieces.add(piece);
+    }
+
+    /**
+     * adds given Piece to List
+     * @param piece Piece to add to List
+     */
+    public void addBlackAlliance(Piece piece){
+        this.blackPieces.add(piece);
     }
 
 }

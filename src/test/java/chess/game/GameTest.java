@@ -405,11 +405,18 @@ public class GameTest {
     @Test
     public void testDraw() {
         game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
         game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
         game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
         game1.chessBoard.setPieceAt(7, 1, new Pawn(game1.chessBoard.getSquareAt(7, 1), Colour.WHITE));
         game1.chessBoard.setPieceAt(1, 7, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
         game1.chessBoard.setPieceAt(4, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(7, 1));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(4, 1));
         assertTrue(game1.isADraw());
     }
 
@@ -437,6 +444,23 @@ public class GameTest {
         game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
         assertFalse(game1.canKingMove());
+    }
+
+    /**
+     * tests promotion
+     */
+    @Test
+    public void testPromotion(){
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(3, 1, new Pawn(game1.chessBoard.getSquareAt(3, 1), Colour.WHITE));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(3, 1));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
     }
 
 }
