@@ -29,6 +29,9 @@ public class MoveTest {
     
     public Piece piece;
 
+    /**
+     * setUp for MoveTesting
+     */
     @BeforeEach
     public void setUp() {
         game1 = new Game();
@@ -44,21 +47,33 @@ public class MoveTest {
 
     }
 
+    /**
+     * tests getter for startsquare from move
+     */
     @Test
     public void getStartSquare() {
         assertEquals(start1, move1.getStartSquare());
     }
 
+    /**
+     * tests getter for finalsquare from move
+     */
     @Test
     public void getFinalSquare() {
         assertEquals(end1, move1.getFinalSquare());
     }
 
+    /**
+     * tests getter fro movingpiece
+     */
     @Test
     public void getMovingPiece() {
         assertEquals(piece, move1.getMovingPiece());
     }
 
+    /**
+     * tests implementation for doing a move
+     */
     @Test
     public void doMove() {
         move1.doMove(game1.chessBoard);
@@ -66,6 +81,9 @@ public class MoveTest {
         assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game2.chessBoard.getBoard()));
     }
 
+    /**
+     * tests implementation for undoing a move
+     */
     @Test
     public void undoMove() {
         // without a captured Piece
@@ -76,6 +94,9 @@ public class MoveTest {
         assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
     }
 
+    /**
+     * tests implementation for enPassant
+     */
     @Test
     public void enPassantMove() {
         Square squareW = game1.chessBoard.getChessBoard()[0][3];
@@ -97,6 +118,9 @@ public class MoveTest {
 
     }
 
+    /**
+     * tests implementation for undoing enPassant
+     */
     @Test
     public void undoEnPassant() {
         Square squareW = game1.chessBoard.getChessBoard()[0][3];
@@ -118,6 +142,9 @@ public class MoveTest {
         assertNull(squareW2.getOccupiedBy());
     }
 
+    /**
+     * tests if promotion works without key
+     */
     @Test
     public void promotionWithoutKey() {
         move1.doPromotion(' ',game1.chessBoard);
@@ -125,6 +152,9 @@ public class MoveTest {
         assertEquals(queen.getType(), end1.getOccupiedBy().getType());
     }
 
+    /**
+     * tests if promotion to bishop works
+     */
     @Test
     public void promotionToBishop(){
         move1.doPromotion('B',game1.chessBoard);

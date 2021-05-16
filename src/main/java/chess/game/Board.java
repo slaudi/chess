@@ -83,6 +83,11 @@ public class Board {
             this.blackPieces.add(this.chessBoard[i][1].getOccupiedBy());
         }
     }
+
+    /**
+     * Getter for Board
+     * @return Returns board
+     */
     public Square[][] getBoard(){
         return this.chessBoard;
     }

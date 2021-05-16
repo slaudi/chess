@@ -19,12 +19,18 @@ public class GameTest {
     public Game game1;
     public Game game2;
 
+    /**
+     * setUp for each test
+     */
     @BeforeEach
     public void setUp() {
         game1 = new Game();
         game2 = new Game();
     }
 
+    /**
+     * tests processing of moves
+     */
     @Test
     public void processMove() {
         game1.processMove(this.game1.chessBoard.getStartSquareFromInput("e2-e3"), this.game1.chessBoard.getFinalSquareFromInput("e2-e3"), 'Q');
@@ -32,26 +38,41 @@ public class GameTest {
 
     }
 
+    /**
+     * tests if certain move is allowed
+     */
     @Test
     public void isMoveAllowed() {
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getMovingPieceFromInput("e1-e5"), game1.chessBoard.getFinalSquareFromInput("e1-e5")));
     }
 
+    /**
+     * tests drawImplementation
+     */
     @Test
     public void isADraw() {
         assertFalse(game1.isADraw());
     }
 
+    /**
+     * tests if isInCheck works
+     */
     @Test
     public void isInCheck() {
         assertFalse(game1.isInCheck());
     }
 
+    /**
+     * tests if current player is Checkmate
+     */
     @Test
     public void isCheckMate() {
         assertFalse(game1.isCheckMate(game1.chessBoard.getFinalSquareFromInput("e2-e3")));
     }
 
+    /**
+     * tests if changing players at end of move works
+     */
     @Test
     public void changePlayer() {
         game1.changePlayer(game1.chessBoard.getFinalSquareFromInput("e2-e3"));
@@ -468,12 +489,20 @@ public class GameTest {
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
     }
 
+    /**
+     * tests getter for beaten pieces
+     */
     @Test
     public void getBeatenPieces() {
+        assertTrue(game1.getBeatenPieces().isEmpty());
     }
 
+    /**
+     * tests if king is able to move
+     */
     @Test
     public void canKingMove() {
+        assertFalse(game1.canKingMove());
     }
 
     /**

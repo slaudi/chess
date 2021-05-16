@@ -11,11 +11,17 @@ import static chess.game.Type.PAWN;
  */
 public class TypeTest {
 
+    /**
+     * tests output of typeValues
+     */
     @Test
     public void values() {
         assertEquals("PAWN", PAWN.name());
     }
 
+    /**
+     * tests output of typevalues
+     */
     @Test
     public void valueOf() {
         assertEquals(PAWN, Type.valueOf("PAWN"));
