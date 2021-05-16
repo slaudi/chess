@@ -26,6 +26,9 @@ public class PawnTest {
     public Square squareC6;
     public Stack<Move> moveHistory;
 
+    /**
+     * setUp for each pawn test
+     */
     @BeforeEach
     public void setUp() {
         game = new Game();
@@ -41,11 +44,17 @@ public class PawnTest {
         moveHistory = new Stack<>();
     }
 
+    /**
+     * tests getter for square
+     */
     @Test
     public void getSquare() {
         assertEquals(squareC4, pawnW.getSquare());
     }
 
+    /**
+     * tests setter for square
+     */
     @Test
     public void setSquare() {
         squareC4 = new Square(g5,7,3);
@@ -53,27 +62,42 @@ public class PawnTest {
         assertEquals(squareC4, pawnW.getSquare());
     }
 
+    /**
+     * tests getter for colour
+     */
     @Test
     public void getColour() {
         assertEquals(Colour.WHITE, pawnW.getColour());
     }
 
+    /**
+     * tests getter for type
+     */
     @Test
     public void getType() {
         assertEquals(Type.PAWN, pawnW.getType());
     }
 
+    /**
+     * tests getter for has moved
+     */
     @Test
     public void getHasMoved() {
         assertTrue(pawnW.hasNotMoved());
     }
 
+    /**
+     * tests setter for has moved
+     */
     @Test
     public void setHasMoved() {
         pawnW.setNotMoved(false);
         assertFalse(pawnW.hasNotMoved());
     }
 
+    /**
+     * tests if piece is allowed to move this way
+     */
     @Test
     public void isPiecesMove() {
         // white pawn
@@ -103,12 +127,18 @@ public class PawnTest {
         assertFalse(pawnW.isPiecesMove(squareC6, game.chessBoard));
     }
 
+    /**
+     * tests if has moved works
+     */
     @Test
     public void isHasMoved() {
         pawnW.setNotMoved(false);
         assertFalse(pawnW.hasNotMoved());
     }
 
+    /**
+     * tests if toStringOutput works
+     */
     @Test
     public void testToString() {
         // white pawn
@@ -118,6 +148,9 @@ public class PawnTest {
         assertEquals("p", pawn2.toString());
     }
 
+    /**
+     * tests if pawn is allowed to capture
+     */
     @Test
     public void canCapture() {
         // white pawn
@@ -144,6 +177,9 @@ public class PawnTest {
         assertFalse(pawnB.canCapture(squareF4));
     }
 
+    /**
+     * tests if enPassant is allowed for selected pawn
+     */
     @Test
     public void isAllowedEnPassant(){
         Square squareA7 = game.chessBoard.getSquareAt(0,1);
@@ -162,6 +198,9 @@ public class PawnTest {
     }
 
 
+    /**
+     * tests processing of enPassant
+     */
     @Test
     public void isProcessEnPassant(){
         Square squareA7 = game.chessBoard.getSquareAt(0,1);
@@ -184,6 +223,9 @@ public class PawnTest {
         assertFalse(pawn.isEnPassant(squareC5, moveHistory));
     }
 
+    /**
+     * tests if promotionPossibleQuery works
+     */
     @Test
     public void promotionPossible() {
         // white pawn
