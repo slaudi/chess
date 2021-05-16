@@ -1,6 +1,5 @@
 package chess.game;
 
-import chess.pieces.Piece;
 import chess.pieces.Rook;
 
 import org.junit.jupiter.api.BeforeEach;
