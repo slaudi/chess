@@ -57,7 +57,7 @@ public class Cli {
         System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
         String userInput = getInput();
         if (userInput.equals("beaten")) {
-            System.out.println(currentGame.getBeatenPieces());
+            System.out.println(currentGame.beatenPieces);
             return false;
         }
         if (userInput.equals("giveUp")) {
