@@ -307,7 +307,7 @@ public class Game {
         }
     }
 
-    private boolean canMoveStay(Piece targetPiece, Move currentMove) {
+    boolean canMoveStay(Piece targetPiece, Move currentMove) {
         if (isInCheck()) {
             // King is in check, undo move
             if (targetPiece != null) {

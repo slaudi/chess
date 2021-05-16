@@ -1,8 +1,6 @@
 package chess.game;
 
-import chess.pieces.King;
-import chess.pieces.Pawn;
-import chess.pieces.Rook;
+import chess.pieces.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,7 +56,9 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @Test
     public void changePlayer() {
         game1.changePlayer(game1.chessBoard.getFinalSquareFromInput("e2-e3"));
-        assertEquals(game1.currentPlayer, game1.playerBlack);
+        assertEquals(game1.playerBlack, game1.currentPlayer);
+        game1.changePlayer(game1.chessBoard.getFinalSquareFromInput("a7-a5"));
+        assertEquals(game1.playerWhite, game1.currentPlayer);
     }
 
     /**
@@ -104,6 +104,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
         // diagonally
+        game1 = new Game();
         game1.chessBoard.setPieceAt(1, 6, null);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getChessBoard()[2][5]));
     }
@@ -164,6 +165,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.setPieceAt(0, 5, game1.chessBoard.getPieceAt(2, 7));
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[5][5]));
         //diagonally
+        game1 = new Game();
         game1.chessBoard.setPieceAt(1, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(2, 7), game1.chessBoard.getChessBoard()[0][5]));
     }
@@ -226,6 +228,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.getPieceAt(0, 5).setSquare(game1.chessBoard.getSquareAt(0, 5));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 5), game1.chessBoard.getChessBoard()[1][5]));
         // diagonally
+        game1 = new Game();
         game1.chessBoard.setPieceAt(3, 6, null);
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(4, 7), game1.chessBoard.getChessBoard()[3][6]));
     }
@@ -252,6 +255,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.getPieceAt(0, 3).setSquare(game1.chessBoard.getSquareAt(0, 3));
         assertTrue(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 3), game1.chessBoard.getChessBoard()[0][2]));//true because checkChess is in another method
 
+        game1 = new Game();
         // moving into danger while capturing
         game1.chessBoard.setPieceAt(4, 6, game1.chessBoard.getPieceAt(0, 0));
         game1.chessBoard.getPieceAt(4, 6).setSquare(game1.chessBoard.getSquareAt(4, 6));
@@ -321,6 +325,16 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(3, 1));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
+    }
+
+    @Test
+    public void canMoveNotStay(){
+        game1.chessBoard.setPieceAt(0,4, new King(game1.chessBoard.getSquareAt(0,4), Colour.WHITE));
+        game1.chessBoard.setPieceAt(5,4, new Queen(game1.chessBoard.getSquareAt(0,4), Colour.WHITE));
+        Square start = new Square(Label.a2,0,6);
+        Square end = new Square(Label.a3,0,5);
+        Move move = new Move(start,end);
+        game1.canMoveStay(null,move);
     }
 
 }
