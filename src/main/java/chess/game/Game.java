@@ -65,7 +65,7 @@ public class Game {
                 int diff_enemy = start.getY() - end.getY();
                 if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
                     // is en passant possible
-                    return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove);
+                    return (((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard));
                 }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
@@ -213,8 +213,10 @@ public class Game {
         if (enemyPiece.getType() == Type.BISHOP
                 || enemyPiece.getType() == Type.ROOK
                 || enemyPiece.getType() == Type.QUEEN) {
-            return enemyPiece.isPiecesMove(kingSquare, this.chessBoard)
-                    && enemyPiece.isPathEmpty(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
+            if(enemyPiece.isPiecesMove(kingSquare, this.chessBoard)){
+                return enemyPiece.isPathEmpty(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
+            }
+            return false;
         } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
             return enemyPiece.isPiecesMove(kingSquare, this.chessBoard);
         } else {

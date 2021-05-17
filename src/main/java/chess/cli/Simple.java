@@ -39,12 +39,14 @@ public class Simple {
 
                     if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
                         System.out.println("!Move not allowed\n");
-                        break;
+                        continue;
                     }
-                    System.out.println("!" + userInput + "\n");
+                    else{
+                        System.out.println("!" + userInput + "\n");
+                    }
                 } else {
                     System.out.println("!Move not allowed\n");
-                    break;
+                    continue;
                 }
                 Cli.toConsole(currentGame);
             }

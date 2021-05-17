@@ -88,12 +88,12 @@ public class King extends Piece {
     public boolean canDoCastling (Square finalSquare, List<Piece> enemies, Board currentBoard, Game game) {
         List<Square> castlingPath;
         if (this.hasNotMoved()){
-            if(this.getSquare().getX() - finalSquare.getX() == 2){  //queenside
+            if(this.getSquare().getX() - finalSquare.getX() == 2 && this.getSquare().getY() - finalSquare.getY() == 0){  //queenside
                 castlingPath = queensideCastling(currentBoard);
                 if (castlingPath.isEmpty()) {
                     return false;
                 }
-            } else if (this.getSquare().getX() - finalSquare.getX() == -2){     //kingside
+            } else if (this.getSquare().getX() - finalSquare.getX() == -2 && this.getSquare().getY() - finalSquare.getY() == 0){     //kingside
                 castlingPath = kingsideCastling(currentBoard);
                 if (castlingPath.isEmpty()){
                     return false;

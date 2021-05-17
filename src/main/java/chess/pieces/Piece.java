@@ -102,11 +102,23 @@ public abstract class Piece {
      * @return ArrayList<Square> A list of the visited Squares except for the first and last one.
      */
     public List<Square> generatePath(Square finalSquare, Board chessboard) {
-        int[][] dir = piecesDirection(finalSquare);
-        int dir_x = dir[0][0];
-        int dir_y = dir[0][1];
+        //int[][] dir = piecesDirection(finalSquare);
+        //int dir_x = dir[0][0];
+        //int dir_y = dir[0][1];
+        int dir_x;
+        int dir_y;
         int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
         int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
+        if (diff_x == 0){
+            dir_x = 0;
+        } else{
+            dir_x = (finalSquare.getX() - this.square.getX()) / diff_x;     //if positive: Move goes right
+        }
+        if (diff_y == 0){
+            dir_y = 0;
+        } else {
+            dir_y = (finalSquare.getY() - this.square.getY()) / diff_y;     //if positive: Move goes down
+        }
         int squaresVisited;
         if (diff_x == diff_y || diff_y == 0) {
             // Piece moves diagonally or horizontally
