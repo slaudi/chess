@@ -111,7 +111,7 @@ public class Game {
                 // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
                 beatenPieces.add(targetPiece);
             }
-            if (!canMoveStay(targetPiece, currentMove)) {
+            if (!canMoveStay(targetPiece, currentMove) || isInCheck()) {
                 // move puts own King in check, undo move
                 return false;
             }
@@ -124,6 +124,7 @@ public class Game {
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setNotMoved(false);
         changePlayer(finalSquare);
+        isInCheck();
         return true;
     }
 

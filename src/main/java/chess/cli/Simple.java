@@ -36,11 +36,12 @@ public class Simple {
 
                 if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
                     //validates user-input semantically
-                    System.out.println("!" + userInput + "\n");
-                    if (!currentGame.processMove(startSquare, finalSquare, key)) {
+
+                    if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
                         System.out.println("!Move not allowed\n");
                         break;
                     }
+                    System.out.println("!" + userInput + "\n");
                 } else {
                     System.out.println("!Move not allowed\n");
                     break;
