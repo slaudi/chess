@@ -41,7 +41,9 @@ public class Simple {
                         System.out.println("!Move not allowed\n");
                         continue;
                     }
-                    System.out.println("!" + userInput + "\n");
+                    else{
+                        System.out.println("!" + userInput + "\n");
+                    }
                 } else {
                     System.out.println("!Move not allowed\n");
                     continue;

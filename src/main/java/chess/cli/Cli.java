@@ -80,12 +80,13 @@ public class Cli {
 
         if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
             // validates user-input semantically
-            System.out.println("!" + userInput);
+
             if (currentGame.processMove(startSquare, finalSquare, key)) {
+                System.out.println("!" + userInput);
                 return true;
             } else {
                 // if move puts King in check
-                System.out.println("!Move not allowed   \n" + currentGame.currentPlayer.getColour() + " would be in check!\n");
+                System.out.println("!Move not allowed\n" + currentGame.currentPlayer.getColour() + " would be in check!\n");
                 return false;
             }
         } else {
