@@ -40,7 +40,6 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getMovingPieceFromInput("e1-e5"), game1.chessBoard.getFinalSquareFromInput("e1-e5")));
     }
 
-
     /**
      * tests if isInCheck works
      */

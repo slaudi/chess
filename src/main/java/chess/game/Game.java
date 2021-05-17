@@ -12,12 +12,12 @@ import java.util.Stack;
  */
 
 public class Game {
-    final Player playerWhite;
-    final Player playerBlack;
+    public final Player playerWhite;
+    public final Player playerBlack;
+    public Player currentPlayer;
+    public Board chessBoard;
     public final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
-    public Board chessBoard;
-    public Player currentPlayer;
 
     /**
      * Constructor for creating a new Game.
@@ -129,101 +129,6 @@ public class Game {
     }
 
     /**
-     * Evaluates if the current state of game is a draw: when the King is not yet in check but every Square
-     * the King can move to is under attack and no ally can move either.
-     *
-     * @return boolean Returns 'true' if the game is a draw.
-     */
-    public boolean isADraw() {
-        if (canKingMove()) {
-            // King can move
-            return false;
-        }
-        if (!isInCheck()) {
-            // King is not in check but can't move
-            List<Piece> allies = this.currentPlayer.getAlliedPieces(this.beatenPieces, this.chessBoard);
-            if (allies.isEmpty()) {
-                // if no ally exists -> it's a draw
-                return true;
-            } else {
-                // if ally exists
-                for (Piece ally : allies) {
-                    if (ally.canPieceMove(this.chessBoard)) {
-                        // check if they can move somewhere -> it's not a draw
-                        return false;
-                    }
-                }
-            }
-        }
-        // King is in check, but that's not a draw (might be checkmate though)
-        return false;
-    }
-
-    /**
-     * Evaluates if the King is able to move somewhere not putting themself in check.
-     *
-     * @return boolean Returns 'true' if the King is able to make a safe move.
-     */
-    public boolean canKingMove() {
-        Square kingSquare = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
-        for (int i = 0; i < 8 ; i++) {
-            for (int j = 0; j < 8; j++) {
-                // looping through board to check if Square is next to King and is not occupied by ally
-                Square tempSquare = this.chessBoard.getBoard()[i][j];
-                if (Piece.isSurroundingSquare(kingSquare, tempSquare)) {
-                    if (tempSquare.getOccupiedBy() != null) {
-                        if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour()) {
-                            // if a Square is next to the King is it safe to move there
-                            return isSafeSquare(tempSquare);
-                        }
-                    } else {
-                        return isSafeSquare(tempSquare);
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * A function evaluating if the King is safe from check on a certain Square.
-     *
-     * @param finalSquare The Square the King should move to.
-     * @return boolean Returns 'true' if the King is able to move safely.
-     */
-    private boolean isSafeSquare(Square finalSquare) {
-        List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-        for (Piece enemyPiece : enemies) {
-            if (canKillKing(enemyPiece, finalSquare)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * A function to evaluate if an enemy Piece can kill the King in the current state of the game.
-     *
-     * @param enemyPiece   The enemy piece eventually attacking the King.
-     * @param kingSquare   The Square the King is standing or might stand on.
-     * @return boolean  Returns 'true' if an enemy can attack the King where it's now standing or
-     *                  where the King wants to move to.
-     */
-    private boolean canKillKing(Piece enemyPiece, Square kingSquare) {
-        if (enemyPiece.getType() == Type.BISHOP
-                || enemyPiece.getType() == Type.ROOK
-                || enemyPiece.getType() == Type.QUEEN) {
-            return enemyPiece.isPiecesMove(kingSquare, this.chessBoard)
-                    && enemyPiece.isPathEmpty(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
-        } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
-            return enemyPiece.isPiecesMove(kingSquare, this.chessBoard);
-        } else {
-            assert enemyPiece instanceof Pawn;
-            return ((Pawn) enemyPiece).canCapture(kingSquare);
-            }
-    }
-
-    /**
      * A function evaluating if the current Players King is in check, if true it sets
      * the variable in the Player class to true.
      *
@@ -272,12 +177,107 @@ public class Game {
     }
 
     /**
+     * Evaluates if the current state of game is a draw: when the King is not yet in check but every Square
+     * the King can move to is under attack and no ally can move either.
+     *
+     * @return boolean Returns 'true' if the game is a draw.
+     */
+    public boolean isADraw() {
+        if (canKingMove()) {
+            // King can move
+            return false;
+        }
+        if (!isInCheck()) {
+            // King is not in check but can't move
+            List<Piece> allies = this.currentPlayer.getAlliedPieces(this.beatenPieces, this.chessBoard);
+            if (allies.isEmpty()) {
+                // if no ally exists -> it's a draw
+                return true;
+            } else {
+                // if ally exists
+                for (Piece ally : allies) {
+                    if (ally.canPieceMove(this.chessBoard)) {
+                        // check if they can move somewhere -> it's not a draw
+                        return false;
+                    }
+                }
+            }
+        }
+        // King is in check, but that's not a draw (might be checkmate though)
+        return false;
+    }
+
+    /**
+     * Evaluates if the King is able to move somewhere not putting themself in check.
+     *
+     * @return boolean Returns 'true' if the King is able to make a safe move.
+     */
+    boolean canKingMove() {
+        Square kingSquare = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
+        for (int i = 0; i < 8 ; i++) {
+            for (int j = 0; j < 8; j++) {
+                // looping through board to check if Square is next to King and is not occupied by ally
+                Square tempSquare = this.chessBoard.getBoard()[i][j];
+                if (Piece.isSurroundingSquare(kingSquare, tempSquare)) {
+                    if (tempSquare.getOccupiedBy() != null) {
+                        if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour()) {
+                            // if a Square is next to the King is it safe to move there
+                            return isSafeSquare(tempSquare);
+                        }
+                    } else {
+                        return isSafeSquare(tempSquare);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * A function evaluating if the King is safe from check on a certain Square.
+     *
+     * @param finalSquare The Square the King should move to.
+     * @return boolean Returns 'true' if the King is able to move safely.
+     */
+    boolean isSafeSquare(Square finalSquare) {
+        List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+        for (Piece enemyPiece : enemies) {
+            if (canKillKing(enemyPiece, finalSquare)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * A function to evaluate if an enemy Piece can kill the King in the current state of the game.
+     *
+     * @param enemyPiece   The enemy piece eventually attacking the King.
+     * @param kingSquare   The Square the King is standing or might stand on.
+     * @return boolean  Returns 'true' if an enemy can attack the King where it's now standing or
+     *                  where the King wants to move to.
+     */
+    boolean canKillKing(Piece enemyPiece, Square kingSquare) {
+        if (enemyPiece.getType() == Type.BISHOP
+                || enemyPiece.getType() == Type.ROOK
+                || enemyPiece.getType() == Type.QUEEN) {
+            return enemyPiece.isPiecesMove(kingSquare, this.chessBoard)
+                    && enemyPiece.isPathEmpty(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
+        } else if (enemyPiece.getType() == Type.KNIGHT || enemyPiece.getType() == Type.KING) {
+            return enemyPiece.isPiecesMove(kingSquare, this.chessBoard);
+        } else {
+            assert enemyPiece instanceof Pawn;
+            return ((Pawn) enemyPiece).canCapture(kingSquare);
+            }
+    }
+
+    /**
      * A function evaluating if one of the players Pieces is able to block the attack of an enemy.
      *
      * @param enemyPiece The Piece attacking the King.
      * @return boolean Returns 'true' if Player is able to avoid check by using another Piece.
      */
-    private boolean canDefendKing(Piece enemyPiece) {
+    boolean canDefendKing(Piece enemyPiece) {
         List<Piece> allies = this.currentPlayer.getAlliedPieces(this.beatenPieces, this.chessBoard);
         for (Piece alliedPiece : allies) {
             if (isMoveAllowed(alliedPiece, enemyPiece.getSquare())) {
@@ -296,7 +296,6 @@ public class Game {
         }
         return false;
     }
-
 
     void changePlayer(Square finalSquare) {
         // change currentPlayer to next Colour
