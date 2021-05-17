@@ -17,10 +17,10 @@ public class Main {
      */
     public static void main(String[] args) {
         boolean cli = Arrays.asList(args).contains("--no-gui");
-        boolean simple = Arrays.asList(args).contains("--no-gui --simple");
-        if (cli) {
+        boolean simple = Arrays.asList(args).contains("--simple");
+        if (cli && !simple) {
             Cli.main(args);
-        } else if (simple) {
+        } else if (cli && simple) {
             Simple.main(args);
         } else {
             Gui.main(args);

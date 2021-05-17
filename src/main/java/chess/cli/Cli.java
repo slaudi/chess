@@ -32,7 +32,9 @@ public class Cli {
             toConsole(currentGame);
         }
         if (currentGame.currentPlayer.isLoser()) {                                              //checks if current Player has lost or game is draw
-            System.out.println(currentGame.currentPlayer.getColour() + " is Loser!");
+            System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
+            currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite ? currentGame.playerBlack : currentGame.playerWhite;
+            System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
         } else if (currentGame.isADraw()) {
             System.out.println("The game ended in a draw!");
         }
@@ -62,7 +64,7 @@ public class Cli {
             return false;
         }
         if (userInput.equals("giveUp")) {
-            System.out.println(currentGame.currentPlayer.getColour() + "gave up!");
+            System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
             currentGame.currentPlayer.setLoser(true);
             return false;
         }
