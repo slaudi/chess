@@ -262,4 +262,16 @@ public class PawnTest {
         Square squareA1 = game.chessBoard.getSquareAt(0,7);
         assertTrue(((Pawn)pawn2).promotionPossible(squareA1));
     }
+
+    /**
+     * tests the generation of moving direction
+     */
+    @Test
+    public void movingDirection() {
+        int[][] dir1 = game.chessBoard.getPieceAt(0, 6).piecesDirection(game.chessBoard.getSquareAt(0, 5));
+        int[][] dir2 = game.chessBoard.getPieceAt(1, 6).piecesDirection(game.chessBoard.getSquareAt(1, 5));
+        int y1 = dir1[0][1];
+        int y2 = dir2[0][1];
+        assertEquals(y1, y2);
+    }
 }
