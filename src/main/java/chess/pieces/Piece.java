@@ -102,34 +102,10 @@ public abstract class Piece {
      * @return ArrayList<Square> A list of the visited Squares except for the first and last one.
      */
     public List<Square> generatePath(Square finalSquare, Board chessboard) {
-        //int[][] dir = piecesDirection(finalSquare);
-        //int dir_x = dir[0][0];
-        //int dir_y = dir[0][1];
-        int dir_x;
-        int dir_y;
-        int diff_x = Math.abs(finalSquare.getX() - this.square.getX());
-        int diff_y = Math.abs(finalSquare.getY() - this.square.getY());
-        if (diff_x == 0){
-            dir_x = 0;
-        } else{
-            dir_x = (finalSquare.getX() - this.square.getX()) / diff_x;     //if positive: Move goes right
-        }
-        if (diff_y == 0){
-            dir_y = 0;
-        } else {
-            dir_y = (finalSquare.getY() - this.square.getY()) / diff_y;     //if positive: Move goes down
-        }
-        int squaresVisited;
-        if (diff_x == diff_y || diff_y == 0) {
-            // Piece moves diagonally or horizontally
-            squaresVisited = diff_x;
-        } else if (diff_x == 0) {
-            // Piece moves vertically
-            squaresVisited = diff_y;
-        } else {
-            // Knight can leap, doesn't need a path
-            squaresVisited = 0;
-        }
+        int[] dir = piecesDirection(finalSquare);
+        int dir_x = dir[0];
+        int dir_y= dir[1];
+        int squaresVisited = dir[2];
 
         ArrayList<Square> path = new ArrayList<>();
         if(squaresVisited > 1) {
@@ -138,7 +114,6 @@ public abstract class Piece {
                 // stores squares except start and final square
                 int x = this.square.getX() + dir_x * i;
                 int y = this.square.getY() + dir_y * i;
-                //move[0][i] = new Square(Label.values()[x+y], x, y);
                 path.add(chessboard.getBoard()[x][y]);
             }
         }
@@ -182,22 +157,38 @@ public abstract class Piece {
         return false;
     }
 
-    int[][] piecesDirection(Square finalSquare) {
-        int[][] dir = new int[1][2];
-        if (this instanceof Queen) {
-            dir = ((Queen)this).movingDirection(finalSquare);
-        } else if (this instanceof Bishop) {
-            dir = ((Bishop)this).movingDirection(finalSquare);
-        } else if (this instanceof Rook) {
-            dir = ((Rook) this).movingDirection(finalSquare);
-        } else if (this instanceof Pawn) {
-            dir = ((Pawn) this).movingDirection(finalSquare);
-        } else {
-            // Knight doesn't need a path, can leap
-            // King doesn't need a path
-            dir[0][0] = 0;
-            dir[0][1] = 0;
+
+    int[] piecesDirection(Square finalSquare) {
+        int[] dir = new int[3];
+        int dir_x = 0;
+        int dir_y = 0;
+        int squaresVisited = 0;
+
+        if (!(this instanceof Knight) && !(this instanceof King)) {
+            int diff_x = finalSquare.getX() - this.square.getX();
+            int abs_diff_x = Math.abs(diff_x);
+            int diff_y = finalSquare.getY() - this.square.getY();
+            int abs_diff_y = Math.abs(diff_y);
+
+            if (abs_diff_x != 0) {
+                dir_x = diff_x / abs_diff_x;     //positive: Move goes right, negative: Move goes left
+            }
+            if (abs_diff_y != 0) {
+                dir_y = diff_y / abs_diff_y;     //positive: Move goes down, negative: Move goes up
+            }
+
+            if (abs_diff_x == abs_diff_y || abs_diff_y == 0) {
+                // Piece moves diagonally or horizontally
+                squaresVisited = abs_diff_x;
+            } else if (abs_diff_x == 0) {
+                // Piece moves vertically
+                squaresVisited = abs_diff_y;
+            }
         }
+
+        dir[0] = dir_x;
+        dir[1] = dir_y;
+        dir[2] = squaresVisited;
         return dir;
     }
 
