@@ -187,14 +187,4 @@ public class BishopTest {
     }
 
 
-    /**
-     * tests moving direction
-     */
-    @Test
-    public void movingDirection() {
-        int[][] testInt = bishop.movingDirection(squareE6);
-        assertNotNull(testInt);
-    }
-
-
 }

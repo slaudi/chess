@@ -111,12 +111,4 @@ public class RookTest {
         assertEquals("R", rook.toString());
     }
 
-    /**
-     * tests if computation of moving direction works
-     */
-    @Test
-    public void movingDirection() {
-        int[][] testInt = rook.movingDirection(squareF4);
-        assertNotNull(testInt);
-    }
 }

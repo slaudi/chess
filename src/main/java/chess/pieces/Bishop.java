@@ -9,7 +9,7 @@ import chess.game.Type;
  * The Bishop class is a Subclass of the Piece class, implements the interface MovingDirection
  * and represents a Piece of the Type Bishop.
  */
-public class Bishop extends Piece implements MovingDirection {
+public class Bishop extends Piece {
 
     final Type type = Type.BISHOP;
 
@@ -78,40 +78,6 @@ public class Bishop extends Piece implements MovingDirection {
             return false;
         }
         return diff_x == diff_y;
-    }
-
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        int dir_x;
-        int dir_y;
-
-        if(finalSquare.getX() - this.square.getX() < 0) {
-            // Bishop moves to the left
-            if(finalSquare.getY() - this.square.getY() < 0) {
-                //Bishop moves left up
-                dir_x = -1;
-                dir_y = -1;
-            } else {
-                // Bishop moves left down
-                dir_x = -1;
-                dir_y = 1;
-            }
-        } else {
-            // Bishop moves to the right
-            if(finalSquare.getY() - this.square.getY() < 0) {
-                // Bishop moves right up
-                dir_x = 1;
-                dir_y = -1;
-            } else {
-                // Bishop moves right down
-                dir_x = 1;
-                dir_y = 1;
-            }
-        }
-        int[][] dir = new int[1][2];
-        dir[0][0] = dir_x;
-        dir[0][1] = dir_y;
-        return dir;
     }
 
 }
