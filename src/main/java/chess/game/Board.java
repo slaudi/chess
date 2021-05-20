@@ -37,10 +37,20 @@ public class Board {
         setAlliance();                      //generates piece-groups of same colour
     }
 
+    /**
+     * Getter for the variable 'height'.
+     *
+     * @return int The height of the board.
+     */
     public int getHeight() {
         return this.height;
     }
 
+    /**
+     * Getter for the variable 'width'.
+     *
+     * @return int The width of the board.
+     */
     public int getWidth() {
         return this.width;
     }

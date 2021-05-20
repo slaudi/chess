@@ -148,11 +148,13 @@ public class Cli {
 
     /**
      * Prints current state of game to console.
+     *
+     * @param game The current game.
      */
     public static void toConsole(Game game){
-        for (int y = 0; y < 8; y++){
+        for (int y = 0; y < game.chessBoard.getHeight(); y++){
             System.out.print(8-y);
-            for (int x = 0; x < 8; x++){
+            for (int x = 0; x < game.chessBoard.getWidth(); x++){
                 if (game.chessBoard.getBoard()[x][y].getOccupiedBy() != null){
                     System.out.print(" " + game.chessBoard.getBoard()[x][y].getOccupiedBy().toString());
                 }
