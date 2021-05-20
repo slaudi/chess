@@ -99,7 +99,7 @@ public abstract class Piece {
      * moves more than one Square.
      *
      * @param finalSquare The final Square of the move.
-     * @return ArrayList<Square> A list of the visited Squares except for the first and last one.
+     * @return List<Square> A list of the visited Squares except for the first and last one.
      */
     public List<Square> generatePath(Square finalSquare, Board chessboard) {
         int[] dir = piecesDirection(finalSquare);
@@ -127,12 +127,12 @@ public abstract class Piece {
      * @return boolean Returns 'true' if the selected Square is only one Square away from the Piece.
      */
     public static boolean isSurroundingSquare(Square piecesSquare, Square squareOfInterest){
-        int diffX = piecesSquare.getX() - squareOfInterest.getX();
-        int diffY = piecesSquare.getY() - squareOfInterest.getY();
-        if (diffX == 0 && diffY == 0) {
+        int diff_x = piecesSquare.getX() - squareOfInterest.getX();
+        int diff_y = piecesSquare.getY() - squareOfInterest.getY();
+        if (diff_x == 0 && diff_y == 0) {
             return false;
         }
-        return Math.abs(diffX) < 2 && Math.abs(diffY) < 2;
+        return Math.abs(diff_x) < 2 && Math.abs(diff_y) < 2;
     }
 
     /**
@@ -143,8 +143,8 @@ public abstract class Piece {
      * @return boolean Returns 'true' if the Piece can move somewhere on the board.
      */
     public boolean canPieceMove(Board currentBoard) {
-        for(int y = 0; y < 8; y++) {
-            for(int x = 0; x < 8; x++) {
+        for(int y = 0; y < currentBoard.getHeight(); y++) {
+            for(int x = 0; x < currentBoard.getWidth(); x++) {
                 if (currentBoard.getBoard()[x][y].getOccupiedBy() == null) {
                     Square possibleFinalSquare = currentBoard.getBoard()[x][y];
                     if (this.isPiecesMove(possibleFinalSquare, currentBoard)
