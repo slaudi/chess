@@ -113,43 +113,4 @@ public class QueenTest {
         assertEquals("Q", queen.toString());
     }
 
-    /**
-     * tests computation of moving direction
-     */
-    @Test
-    public void movingDirection() {
-        int[][] testInt = queen.movingDirection(squareE6);
-        assertNotNull(testInt);
-
-        Square squareH4 = new Square(a4,7,4);
-        testInt = queen.movingDirection(squareH4);
-
-        //horizontally right
-        int[][] test = new int[1][2];
-        test[0][0] = 1;
-        test[0][1] = 0;
-
-        //horizontally left
-        Square squareA4 = new Square(a4,0,4);
-        testInt = queen.movingDirection(squareA4);
-        //horizontally left
-        test = new int[1][2];
-        test[0][0] = -1;
-        test[0][1] = 0;
-        assertArrayEquals(test, testInt);
-
-        //vertically up
-        Square squareC6 = new Square(c6,2,2);
-        testInt = queen.movingDirection(squareC6);
-        test[0][0] = 0;
-        test[0][1] = -1;
-        assertArrayEquals(test, testInt);
-
-        //diagonally left down
-        Square squareA2 = new Square(a2,0,6);
-        testInt = queen.movingDirection(squareA2);
-        test[0][0] = -1;
-        test[0][1] = 1;
-        assertArrayEquals(test, testInt);
-    }
 }

@@ -31,14 +31,14 @@ public class PawnTest {
     @BeforeEach
     public void setUp() {
         game = new Game();
-        squareC4 = new Square(c4, 2, 4);
+        squareC4 = game.chessBoard.getSquareAt(2, 4);
         pawnW = new Pawn(squareC4, Colour.WHITE);
         squareC6 = game.chessBoard.getSquareAt(2,2);
         pawnB = new Pawn(squareC6, Colour.BLACK);
-        squareH6 = new Square(h6, 7, 2);
-        squareE6 = new Square(e6, 4, 2);
-        squareC5 = new Square(c5, 2, 3);
-        squareC8 = new Square(c8, 2, 0);
+        squareH6 = game.chessBoard.getSquareAt(7, 2);
+        squareE6 = game.chessBoard.getSquareAt(4, 2);
+        squareC5 = game.chessBoard.getSquareAt(2, 3);
+        squareC8 = game.chessBoard.getSquareAt(2, 0);
         moveHistory = new Stack<>();
     }
 
@@ -98,25 +98,13 @@ public class PawnTest {
      */
     @Test
     public void isPiecesMoveWhite() {
-        // white pawn
+        // one square first move
         assertTrue(pawnW.isPiecesMove(squareC5, game.chessBoard));
-        // two squares
-        assertTrue(pawnW.isPiecesMove(game.chessBoard.getBoard()[2][2], game.chessBoard));
-    }
-
-    /**
-     * Tests not allowed moves for white piece
-     */
-    @Test
-    public void isNotPiecesMoveWhite(){
-        //second Move
+        // two squares first move
+        assertTrue(pawnW.isPiecesMove(squareC6, game.chessBoard));
+        // second move
         pawnW.setNotMoved(false);
-        assertFalse(pawnW.isPiecesMove(game.chessBoard.getBoard()[2][2], game.chessBoard));
-        assertTrue(pawnW.isPiecesMove(squareC5, game.chessBoard));
-        // is not pieces move
-        assertFalse(pawnW.isPiecesMove(squareH6, game.chessBoard));
-        // same square
-        assertFalse(pawnW.isPiecesMove(squareC4, game.chessBoard));
+        assertTrue(pawnW.isPiecesMove(squareC5, game.chessBoard)); //one square
     }
 
     /**
@@ -124,10 +112,50 @@ public class PawnTest {
      */
     @Test
     public void isPiecesMoveBlack(){
-        // black Pawn
+        // one square first move
         assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
-        // two squares
-        assertTrue(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][4], game.chessBoard));
+        // two squares first move
+        assertTrue(pawnB.isPiecesMove(squareC4, game.chessBoard));
+        // second move one square
+        pawnB.setNotMoved(false);
+        assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
+    }
+
+    /**
+     * Test not allowed moves for both black and white pawns.
+     */
+    @Test
+    public void isNotPiecesMove(){
+        // path not empty
+        pawnW = new Pawn(squareC5, Colour.WHITE);
+        squareC5.setOccupiedBy(pawnW);
+        assertFalse(pawnB.isPiecesMove(game.chessBoard.getSquareAt(2,4), game.chessBoard));
+        squareC5.setOccupiedBy(null);
+        // final square not empty
+        pawnW = new Pawn(squareC4, Colour.WHITE);
+        squareC4.setOccupiedBy(pawnW);
+        assertFalse(pawnB.isPiecesMove(squareC4, game.chessBoard));
+        // same square
+        assertFalse(pawnW.isPiecesMove(squareC4, game.chessBoard));
+    }
+
+    /**
+     * Tests not allowed moves for white piece
+     */
+    @Test
+    public void isNotPiecesMoveWhite(){
+        game.chessBoard.clearBoard();
+        pawnW = new Pawn(squareC4, Colour.WHITE);
+        squareC4.setOccupiedBy(pawnW);
+        // diff_x != 0
+        assertFalse(pawnW.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
+        // wrong direction
+        assertFalse(pawnW.isPiecesMove(game.chessBoard.getBoard()[2][5], game.chessBoard));
+        //second move two squares
+        pawnW.setNotMoved(false);
+        assertFalse(pawnW.isPiecesMove(squareC4, game.chessBoard));
+        // second move diff_x != 0
+        assertFalse(pawnW.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
     }
 
     /**
@@ -135,14 +163,18 @@ public class PawnTest {
      */
     @Test
     public void isNotPiecesMoveBlack(){
-        // second move
+        game.chessBoard.clearBoard();
+        pawnB = new Pawn(squareC6, Colour.BLACK);
+        squareC6.setOccupiedBy(pawnB);
+        // wrong direction
+        assertFalse(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][1], game.chessBoard));
+        // diff_x != 0
+        assertFalse(pawnB.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
+        // second move two squares
         pawnB.setNotMoved(false);
         assertFalse(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][4], game.chessBoard));
-        assertTrue(pawnB.isPiecesMove(squareC5, game.chessBoard));
-        // is not pieces move
-        assertFalse(pawnB.isPiecesMove(squareH6, game.chessBoard));
-        // same square
-        assertFalse(pawnB.isPiecesMove(squareC6, game.chessBoard));
+        // second move diff_x != 0
+        assertFalse(pawnB.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
     }
 
     /**
@@ -209,19 +241,49 @@ public class PawnTest {
      */
     @Test
     public void isAllowedEnPassant(){
+        // possible, white pawn
         Square squareA7 = game.chessBoard.getSquareAt(0,1);
         Square squareA5 = game.chessBoard.getSquareAt(0,3);
-        Piece enemy = squareA7.getOccupiedBy();
-        enemy.setSquare(squareA5);
-        squareA5.setOccupiedBy(enemy);
-        Move lastEnemyMove = new Move(squareA5,squareA7);
-
+        Piece enemyB = squareA7.getOccupiedBy();
+        enemyB.setSquare(squareA5);
+        squareA7.setOccupiedBy(null);
+        squareA5.setOccupiedBy(enemyB);
+        Move lastEnemyMoveB = new Move(squareA7,squareA5);
         Square squareB5 = game.chessBoard.getSquareAt(1,3);
         Pawn pawn = new Pawn(squareB5, Colour.WHITE);
         squareB5.setOccupiedBy(pawn);
         Square moveA6 = game.chessBoard.getSquareAt(0,2);
+        assertTrue(pawn.isEnPassant(moveA6, lastEnemyMoveB));
+        // not possible, one step too far
+        assertFalse(pawn.isEnPassant(squareA7,lastEnemyMoveB));
+        // not possible, one x-step too far
+        Square squareD6 = game.chessBoard.getSquareAt(3,2);
+        assertFalse(pawn.isEnPassant(squareD6,lastEnemyMoveB));
 
-        assertTrue(pawn.isEnPassant(moveA6, lastEnemyMove));
+        // possible, black pawn
+        Square squareC2 = game.chessBoard.getSquareAt(2,6);
+        Piece enemyW = squareC2.getOccupiedBy();
+        Move lastEnemyMoveW = new Move(squareC2,squareC4);
+        squareC4.setOccupiedBy(enemyW);
+        squareC2.setOccupiedBy(null);
+        Square squareB4 = game.chessBoard.getSquareAt(1,4);
+        squareB4.setOccupiedBy(pawnB);
+        pawnB.setSquare(squareB4);
+        Square squareC3 = game.chessBoard.getSquareAt(2,5);
+        assertTrue(pawnB.isEnPassant(squareC3, lastEnemyMoveW));
+        // not possible, one y-step too far
+        assertFalse(pawnB.isEnPassant(squareC2, lastEnemyMoveW));
+        // not possible, one x-step too far
+        Square squareD3 = game.chessBoard.getSquareAt(3,5);
+        assertFalse(pawnB.isEnPassant(squareD3,lastEnemyMoveW));
+
+        // not possible, no pawn
+        Piece rook = game.chessBoard.getSquareAt(0,0).getOccupiedBy();
+        squareC2.setOccupiedBy(rook);
+        lastEnemyMoveW = new Move(squareC2,squareC4);
+        squareC4.setOccupiedBy(rook);
+        squareC2.setOccupiedBy(null);
+        assertFalse(pawnB.isEnPassant(squareC2, lastEnemyMoveW));
     }
 
 
@@ -230,24 +292,29 @@ public class PawnTest {
      */
     @Test
     public void isProcessEnPassant(){
+        // possible, white pawn
         Square squareA7 = game.chessBoard.getSquareAt(0,1);
         Square squareA5 = game.chessBoard.getSquareAt(0,3);
         Move lastAllyMove = new Move(squareC4,squareC5);
         Move lastEnemyMove = new Move(squareA7,squareA5);
         moveHistory.add(lastAllyMove);
         moveHistory.add(lastEnemyMove);
-
         lastEnemyMove.doMove(game.chessBoard);
-
         Square squareB5 = game.chessBoard.getSquareAt(1,3);
-        Pawn pawn = new Pawn(squareB5, Colour.WHITE);
-        squareB5.setOccupiedBy(pawn);
+        pawnW.setSquare(squareB5);
+        squareB5.setOccupiedBy(pawnW);
         Square moveA6 = game.chessBoard.getSquareAt(0,2);
+        assertTrue(pawnW.isEnPassant(moveA6, moveHistory));
 
-        assertTrue(pawn.isEnPassant(moveA6, moveHistory));
-
-        // is not en passant
-        assertFalse(pawn.isEnPassant(squareC5, moveHistory));
+        // possible, black pawn
+        Square squareB4 = game.chessBoard.getSquareAt(1,4);
+        Square squareB6 = game.chessBoard.getSquareAt(1,2);
+        Piece enemy = game.chessBoard.getPieceAt(1,6);
+        squareB4.setOccupiedBy(enemy);
+        Move enemyMove = new Move(squareB4, squareB6);
+        enemyMove.doMove(game.chessBoard);
+        moveHistory.add(enemyMove);
+        assertTrue(pawnB.isEnPassant(squareB5, moveHistory));
     }
 
     /**
@@ -258,20 +325,11 @@ public class PawnTest {
         // white pawn
         assertTrue(pawnW.promotionPossible(squareC8));
         //black Pawn
-        Piece pawn2 = game.chessBoard.getPieceAt(0,1);
-        Square squareA1 = game.chessBoard.getSquareAt(0,7);
-        assertTrue(((Pawn)pawn2).promotionPossible(squareA1));
+        Square squareA1 = new Square(a1,0,7);
+        assertTrue(pawnB.promotionPossible(squareA1));
+        // not possible
+        assertFalse(pawnB.promotionPossible(squareC8));
     }
 
-    /**
-     * tests the generation of moving direction
-     */
-    @Test
-    public void movingDirection() {
-        int[][] dir1 = game.chessBoard.getPieceAt(0, 6).piecesDirection(game.chessBoard.getSquareAt(0, 5));
-        int[][] dir2 = game.chessBoard.getPieceAt(1, 6).piecesDirection(game.chessBoard.getSquareAt(1, 5));
-        int y1 = dir1[0][1];
-        int y2 = dir2[0][1];
-        assertEquals(y1, y2);
-    }
+
 }

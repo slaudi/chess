@@ -8,7 +8,7 @@ import java.util.Stack;
  * The Pawn class is a Subclass of the Piece class, implements the interface MovingDirection
  * and represents a Piece of the Type Pawn.
  */
-public class Pawn extends Piece implements MovingDirection {
+public class Pawn extends Piece {
 
     final Type type = Type.PAWN;
 
@@ -191,19 +191,4 @@ public class Pawn extends Piece implements MovingDirection {
         }
     }
 
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        int dir_x = 0;
-        int dir_y;
-
-        if (this.colour == Colour.WHITE) {
-            dir_y = -1;
-        } else {
-            dir_y = 1;
-        }
-        int[][] dir = new int[1][2];
-        dir[0][0] = dir_x;
-        dir[0][1] = dir_y;
-        return dir;
-    }
 }

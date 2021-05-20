@@ -105,17 +105,10 @@ public class King extends Piece {
             return false;
         }
         // check if the Kings current Square and/or any Squares the King visits are in check/under attack
-        for (Square field : castlingPath){
-            for (Piece enemyPiece : enemies) {
-                if(game.isMoveAllowed(enemyPiece, field)){
-                    return false;
-                }
-            }
-        }
-        return true;
+        return !underAttack(castlingPath, enemies, game);
     }
 
-    private List<Square> queensideCastling(Board chessBoard) {
+    private List<Square> queensideCastling(Board chessBoard) {//NOPMD
         List<Square> castlingPath = new ArrayList<>();
         if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[0][7].getOccupiedBy() != null) {
             for (int i = 1; i < 4; i++) {
@@ -141,7 +134,7 @@ public class King extends Piece {
     }
 
 
-    private List<Square> kingsideCastling(Board chessBoard) {
+    private List<Square> kingsideCastling(Board chessBoard) {//NOPMD
         List<Square> castlingPath = new ArrayList<>();
         if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[7][7].getOccupiedBy() != null
                 && chessBoard.getPieceAt(5, 7) == null && chessBoard.getPieceAt(6, 7) == null) {
@@ -159,4 +152,16 @@ public class King extends Piece {
         }
         return castlingPath;
     }
+
+    private boolean underAttack(List<Square> castlingPath, List<Piece> enemies, Game game){
+        for (Square field : castlingPath){
+            for (Piece enemyPiece : enemies) {
+                if(game.isMoveAllowed(enemyPiece, field)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

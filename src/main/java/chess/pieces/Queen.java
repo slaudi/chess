@@ -9,7 +9,7 @@ import chess.game.Type;
  * The Queen class is a Subclass of the Piece class, implements the interface MovingDirection
  * and represents a Piece of the Type Queen.
  */
-public class Queen extends Piece implements MovingDirection {
+public class Queen extends Piece {
 
     final Type type = Type.QUEEN;
 
@@ -78,44 +78,6 @@ public class Queen extends Piece implements MovingDirection {
             return false;
         }
         return diff_x == diff_y || diff_y == 0 || diff_x == 0;
-    }
-
-    @Override
-    public int[][] movingDirection(Square finalSquare) {
-        int dir_x = 0;
-        int dir_y = 0;
-
-        if (this.square.getX() == finalSquare.getX()) {
-            // Queen moves vertically
-            if (finalSquare.getY() - this.square.getY() < 0) {
-                dir_y = -1; // Queen moves up
-            } else {
-                dir_y = 1; // Queen moves down
-            }
-        } else if (this.square.getY() == finalSquare.getY()) {
-            // Queen moves horizontally
-            if (finalSquare.getX() - this.square.getX() < 0) {
-                dir_x = -1; // Queen moves to the left
-            } else {
-                dir_x = 1; // Queen moves to the right
-            }
-        } else {
-            // Queen moves diagonally
-            if (finalSquare.getX() - this.square.getX() < 0) {
-                dir_x = -1; // Queen moves to the left
-            } else {
-                dir_x = 1; // Queen moves to the right
-            }
-            if (finalSquare.getY() - this.square.getY() < 0) {
-                dir_y = -1; // Queen moves up
-            } else {
-                dir_y = 1; // Queen moves down
-            }
-        }
-        int[][] dir = new int[1][2];
-        dir[0][0] = dir_x;
-        dir[0][1] = dir_y;
-        return dir;
     }
 
 }
