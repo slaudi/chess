@@ -29,7 +29,7 @@ public class PieceTest {
     @BeforeEach
     public void setUp() {
         game = new Game();
-        board = new Board();
+        board = new Board(8,8);
         squareD3 = new Square(d3,3,5);
         squareD4 = new Square(d4,3,4);
         squareH5 = new Square(h5,7,3);

@@ -86,7 +86,7 @@ public class MoveTest {
         // without a captured Piece
         move1.doMove(game1.chessBoard);
         move1.undoMove(game1.chessBoard);
-        Board board = new Board();
+        Board board = new Board(8,8);
         String chessBoard = Arrays.deepToString(board.getBoard());
         assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
     }

@@ -28,6 +28,24 @@ public class BoardTest {
     }
 
     /**
+     * Tests the Getter method getHeight()
+     */
+    @Test
+    public void getHeight(){
+        Board board = new Board(8,8);
+        assertEquals(8, board.getHeight());
+    }
+
+    /**
+     * Tests the Getter method getWidth()
+     */
+    @Test
+    public void getWidth(){
+        Board board = new Board(8,8);
+        assertEquals(8, board.getWidth());
+    }
+
+    /**
      * sets Initial Pieces on Board
      */
     @Test

@@ -26,7 +26,7 @@ public class Game {
         this.playerWhite = new Player(Colour.WHITE);
         this.playerBlack = new Player(Colour.BLACK);
         this.currentPlayer = playerWhite;   // White always begins
-        this.chessBoard = new Board();
+        this.chessBoard = new Board(8,8);
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new Stack<>();
     }

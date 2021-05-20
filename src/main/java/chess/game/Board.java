@@ -13,21 +13,33 @@ import static chess.game.Colour.WHITE;
  */
 public class Board {
     public final Square[][] chessBoard; // Board can access class Square
+    private final int height;
+    private final int width;
     private final List<Piece> whitePieces = new ArrayList<>(16);
     private final List<Piece> blackPieces = new ArrayList<>(16);
 
     /**
      * Constructor for creating a new chess board when starting a new Game.
      */
-    public Board() {
-        this.chessBoard = new Square[8][8];
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                this.chessBoard[x][y] = new Square(Label.values()[8*x+y], x, y);
+    public Board(int height, int width) {
+        this.height = height;
+        this.width = width;
+        this.chessBoard = new Square[height][width];
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                this.chessBoard[x][y] = new Square(Label.values()[this.width*x+y], x, y);
             }
         }
         startingFormation();                //sets Pieces on Board to start game
         setAlliance();                      //generates piece-groups of same colour
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getWidth() {
+        return this.width;
     }
 
     /**
@@ -53,7 +65,7 @@ public class Board {
         this.chessBoard[5][0].setOccupiedBy(new Bishop(this.chessBoard[5][0], BLACK));
         this.chessBoard[6][0].setOccupiedBy(new Knight(this.chessBoard[6][0], BLACK));
         this.chessBoard[7][0].setOccupiedBy(new Rook(this.chessBoard[7][0], BLACK));
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < this.width; i++) {
             this.chessBoard[i][1].setOccupiedBy(new Pawn(this.chessBoard[i][1], BLACK));
         }
 
@@ -66,13 +78,13 @@ public class Board {
         this.chessBoard[5][7].setOccupiedBy(new Bishop(this.chessBoard[5][7], WHITE));
         this.chessBoard[6][7].setOccupiedBy(new Knight(this.chessBoard[6][7], WHITE));
         this.chessBoard[7][7].setOccupiedBy(new Rook(this.chessBoard[7][7], WHITE));
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < this.width; i++) {
             this.chessBoard[i][6].setOccupiedBy(new Pawn(this.chessBoard[i][6], WHITE));
         }
     }
 
     private void setAlliance() {
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < this.width; i++) {
             this.whitePieces.add(this.chessBoard[i][7].getOccupiedBy());
             this.whitePieces.add(this.chessBoard[i][6].getOccupiedBy());
             this.blackPieces.add(this.chessBoard[i][0].getOccupiedBy());
@@ -159,8 +171,8 @@ public class Board {
      * @return Square The Square the King currently stands on
      */
     protected Square getSquareOfKing(Colour colour){
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
+        for(int i = 0; i < this.height; i++) {
+            for(int j = 0; j < this.width; j++) {
                 if(this.chessBoard[i][j].getOccupiedBy() != null && this.chessBoard[i][j].getOccupiedBy().getType() == Type.KING
                             && this.chessBoard[i][j].getOccupiedBy().getColour() == colour) {
                         return this.chessBoard[i][j];
@@ -204,8 +216,8 @@ public class Board {
      * clears Board from Pieces
      */
     public void clearBoard(){
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
+        for (int y = 0; y < this.height; y++){
+            for (int x = 0; x < this.width; x++){
                 this.chessBoard[x][y].setOccupiedBy(null);
             }
         }
