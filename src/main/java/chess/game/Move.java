@@ -79,38 +79,44 @@ public class Move {
     public void castlingMove(Board board, Square finalSquare) {
         int final_x = finalSquare.getX();
         int final_y = finalSquare.getY();
+        Piece rook;
         if(final_x == 2 && final_y == 7){           //queenside white
-            board.setPieceAt(2, 7, board.getPieceAt(4, 7));
-            board.getPieceAt(2, 7).setSquare(board.getSquareAt(2, 7));
+            rook = board.getPieceAt(0, 7);
+            board.setPieceAt(2, 7, this.movingPiece);
+            this.movingPiece.setSquare(board.getSquareAt(2, 7));
             board.getSquareAt(4, 7).setOccupiedBy(null);
-            board.setPieceAt(3, 7, board.getPieceAt(0, 7));
-            board.getPieceAt(3, 7).setSquare(board.getSquareAt(3, 7));
+            board.setPieceAt(3, 7, rook);
+            rook.setSquare(board.getSquareAt(3, 7));
             board.getSquareAt(0, 7).setOccupiedBy(null);
         }
         else if(final_x == 6 && final_y == 7){      //kingside white
-            board.setPieceAt(6, 7, board.getPieceAt(4, 7));
-            board.getPieceAt(6, 7).setSquare(board.getSquareAt(6, 7));
+            rook = board.getPieceAt(7, 7);
+            board.setPieceAt(6, 7, this.movingPiece);
+            this.movingPiece.setSquare(board.getSquareAt(6, 7));
             board.getSquareAt(4, 7).setOccupiedBy(null);
-            board.setPieceAt(5, 7, board.getPieceAt(7, 7));
-            board.getPieceAt(5, 7).setSquare(board.getSquareAt(5, 7));
+            board.setPieceAt(5, 7, rook);
+            rook.setSquare(board.getSquareAt(5, 7));
             board.getSquareAt(7, 7).setOccupiedBy(null);
         }
         else if(final_x == 2 && final_y == 0){      //queenside black
-            board.setPieceAt(2, 0, board.getPieceAt(4, 0));
-            board.getPieceAt(2, 0).setSquare(board.getSquareAt(2, 0));
+            rook = board.getPieceAt(0, 0);
+            board.setPieceAt(2, 0, this.movingPiece);
+            this.movingPiece.setSquare(board.getSquareAt(2, 0));
             board.getSquareAt(4, 0).setOccupiedBy(null);
-            board.setPieceAt(3, 0, board.getPieceAt(0, 0));
-            board.getPieceAt(3, 0).setSquare(board.getSquareAt(3, 0));
+            board.setPieceAt(3, 0, rook);
+            rook.setSquare(board.getSquareAt(3, 0));
             board.getSquareAt(0, 0).setOccupiedBy(null);
         }
         else{                                       //kingside black
-            board.setPieceAt(6, 0, board.getPieceAt(4, 0));
-            board.getPieceAt(6, 0).setSquare(board.getSquareAt(6, 0));
+            rook = board.getPieceAt(7, 0);
+            board.setPieceAt(6, 0, this.movingPiece);
+            this.movingPiece.setSquare(board.getSquareAt(6, 0));
             board.getSquareAt(4, 0).setOccupiedBy(null);
-            board.setPieceAt(5, 0, board.getPieceAt(7, 0));
-            board.getPieceAt(5, 0).setSquare(board.getSquareAt(5, 0));
+            board.setPieceAt(5, 0, rook);
+            rook.setSquare(board.getSquareAt(5, 0));
             board.getSquareAt(7, 0).setOccupiedBy(null);
         }
+        rook.setFirstMove(false);
     }
 
     /**
