@@ -20,6 +20,9 @@ public class Board {
 
     /**
      * Constructor for creating a new chess board when starting a new Game.
+     *
+     * @param height The height of the board.
+     * @param width  The width of the board.
      */
     public Board(int height, int width) {
         this.height = height;
