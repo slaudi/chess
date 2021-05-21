@@ -30,13 +30,14 @@ public class BishopTest {
     @BeforeEach
     public void setUp() {
         game = new Game();
-        bishop = new Bishop(game.chessBoard.getFinalSquareFromInput("a1-c4"), Colour.WHITE);
-        squareA1 = new Square(a1,0,7);
-        squareD4 = new Square(d4,3,4);
-        squareC4 = new Square(c4,2,4);
-        squareF4 = new Square(f4, 5, 4);
-        squareH6 = new Square(h6, 7, 2);
-        squareE6 = new Square(e6, 4, 2);
+        squareA1 = game.chessBoard.getSquareAt(0,7);
+        squareD4 = game.chessBoard.getSquareAt(3,4);
+        squareC4 = game.chessBoard.getSquareAt(2,4);
+        squareF4 = game.chessBoard.getSquareAt(5,4);
+        squareH6 = game.chessBoard.getSquareAt(7,2);
+        squareE6 = game.chessBoard.getSquareAt(4,2);
+        bishop = new Bishop(squareC4, Colour.WHITE);
+
     }
 
     /**
@@ -163,14 +164,21 @@ public class BishopTest {
     public void notAllowedLeaping() {
         game = new Game();
         bishop.getSquare().setOccupiedBy(null);
-        bishop = (Bishop) game.chessBoard.getBoard()[5][0].getOccupiedBy();
+        bishop = (Bishop)game.chessBoard.getBoard()[5][0].getOccupiedBy();
         finalSquare = new Square(a3,0,5);
         assertFalse(game.isMoveAllowed(bishop,finalSquare));
     }
 
+    /**
+     * Tests if piece moves at all
+     */
+    @Test
+    public void sameSquare(){
+        assertFalse(bishop.isPiecesMove(squareC4, game.chessBoard));
+    }
 
     /**
-     * tests if hasnt moved is true
+     * tests if hasn#t moved is true
      */
     @Test
     public void hasNotMoved() {

@@ -1,6 +1,5 @@
 package chess.game;
 
-import chess.cli.Cli;
 import chess.pieces.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

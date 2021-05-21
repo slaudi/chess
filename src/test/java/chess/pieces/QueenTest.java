@@ -94,6 +94,8 @@ public class QueenTest {
     @Test
     public void isPiecesMove() {
         assertTrue(queen.isPiecesMove(squareE6, game.chessBoard));
+        // same square
+        assertFalse(queen.isPiecesMove(squareC4, game.chessBoard));
     }
 
     /**
