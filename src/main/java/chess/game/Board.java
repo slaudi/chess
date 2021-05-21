@@ -12,7 +12,7 @@ import static chess.game.Colour.WHITE;
  * Board class representing the chess board of the current game.
  */
 public class Board {
-    public final Square[][] chessBoard; // Board can access class Square
+    final Square[][] chessBoard; // Board can access class Square
     private final int height;
     private final int width;
     private final List<Piece> whitePieces = new ArrayList<>(16);

@@ -10,12 +10,26 @@ import java.util.Stack;
 /**
  * The Game class which defines and controls the current game.
  */
-
 public class Game {
+    /**
+     * The player associated with the Colour object White in the current game.
+     */
     public final Player playerWhite;
+    /**
+     * The player associated with the Colour object Black in the current game.
+     */
     public final Player playerBlack;
+    /**
+     * The current player making a move.
+     */
     public Player currentPlayer;
+    /**
+     * The current board on which this move is done.
+     */
     public Board chessBoard;
+    /**
+     * The list where all beaten pieces are stored.
+     */
     public final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
 

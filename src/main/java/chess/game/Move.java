@@ -116,7 +116,7 @@ public class Move {
             rook.setSquare(board.getSquareAt(5, 0));
             board.getSquareAt(7, 0).setOccupiedBy(null);
         }
-        rook.setFirstMove(false);
+        rook.setNotMoved(false);
     }
 
     /**
