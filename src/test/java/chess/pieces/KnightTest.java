@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * The KnightTest class test the methods of the Knight class
  */
 public class KnightTest {
-    public Game game;
-    public Knight knight;
-    public Square squareC4;
-    public Square squareF4;
-    public Square squareH6;
-    public Square squareE6;
-    public Square squareB2;
+    Game game;
+    Knight knight;
+    Square squareC4;
+    Square squareF4;
+    Square squareH6;
+    Square squareE6;
+    Square squareB2;
 
     /**
      * setUp for each Knight test
@@ -94,6 +94,8 @@ public class KnightTest {
     @Test
     public void isPiecesMove() {
         assertTrue(knight.isPiecesMove(squareB2, game.chessBoard));
+        assertTrue(knight.isPiecesMove(game.chessBoard.getSquareAt(4,3), game.chessBoard));
+        assertFalse(knight.isPiecesMove(squareF4, game.chessBoard));
     }
 
     /**

@@ -82,9 +82,6 @@ public class SquareTest {
      */
     @Test
     public void getXFromString() {
-        assertEquals(3, Square.getXFromString("d3"));
-        assertEquals(5, Square.getXFromString("f3"));
-        assertEquals(6, Square.getXFromString("g3"));
         assertEquals(7, Square.getXFromString("h4"));
     }
 
@@ -103,7 +100,6 @@ public class SquareTest {
      */
     @Test
     public void getYFromString() {
-        assertEquals(2, Square.getYFromString("a6"));
         assertEquals(7, Square.getYFromString("a1"));
     }
 
@@ -113,6 +109,6 @@ public class SquareTest {
      */
     @Test
     public void getYFromWrongString(){
-        assertEquals(9, Square.getXFromString("j9"));
+        assertEquals(9, Square.getYFromString("j9"));
     }
 }

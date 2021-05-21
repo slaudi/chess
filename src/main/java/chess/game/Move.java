@@ -76,11 +76,9 @@ public class Move {
      *
      * @param board The current board.
      */
-    public void castlingMove(Board board, Square finalSquare) {
-        int final_x = finalSquare.getX();
-        int final_y = finalSquare.getY();
+    public void castlingMove(Board board) {
         Piece rook;
-        if(final_x == 2 && final_y == 7){           //queenside white
+        if(this.finalSquare.getX() == 2 && this.finalSquare.getY() == 7){           //queenside white
             rook = board.getPieceAt(0, 7);
             board.setPieceAt(2, 7, this.movingPiece);
             this.movingPiece.setSquare(board.getSquareAt(2, 7));
@@ -89,7 +87,7 @@ public class Move {
             rook.setSquare(board.getSquareAt(3, 7));
             board.getSquareAt(0, 7).setOccupiedBy(null);
         }
-        else if(final_x == 6 && final_y == 7){      //kingside white
+        else if(this.finalSquare.getX() == 6 && this.getFinalSquare().getY() == 7){      //kingside white
             rook = board.getPieceAt(7, 7);
             board.setPieceAt(6, 7, this.movingPiece);
             this.movingPiece.setSquare(board.getSquareAt(6, 7));
@@ -98,7 +96,7 @@ public class Move {
             rook.setSquare(board.getSquareAt(5, 7));
             board.getSquareAt(7, 7).setOccupiedBy(null);
         }
-        else if(final_x == 2 && final_y == 0){      //queenside black
+        else if(this.finalSquare.getX() == 2 && this.finalSquare.getY() == 0){      //queenside black
             rook = board.getPieceAt(0, 0);
             board.setPieceAt(2, 0, this.movingPiece);
             this.movingPiece.setSquare(board.getSquareAt(2, 0));

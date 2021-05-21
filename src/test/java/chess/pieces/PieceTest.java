@@ -15,13 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class PieceTest {
 
-    public Game game;
-    public Board board;
-    public Piece bishop;
-    public Square squareD3;
-    public Square squareD4;
-    public Square squareH5;
-    public Square squareE4;
+    Game game;
+    Piece bishop;
+    Square squareD3;
+    Square squareD4;
+    Square squareH5;
+    Square squareE4;
 
     /**
      * Set up for the Piece class tests
@@ -29,7 +28,6 @@ public class PieceTest {
     @BeforeEach
     public void setUp() {
         game = new Game();
-        board = new Board(8,8);
         squareD3 = new Square(d3,3,5);
         squareD4 = new Square(d4,3,4);
         squareH5 = new Square(h5,7,3);
@@ -43,6 +41,8 @@ public class PieceTest {
     @Test
     public void canPieceMove() {
         assertTrue(bishop.canPieceMove(game.chessBoard));
+        Piece rook = game.chessBoard.getPieceAt(7,7);
+        assertFalse(rook.canPieceMove(game.chessBoard));
     }
 
     /**

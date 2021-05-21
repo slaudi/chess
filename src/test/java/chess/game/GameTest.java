@@ -1,17 +1,23 @@
 package chess.game;
 
+import chess.cli.Cli;
 import chess.pieces.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The GameTest class test the methods of the Game class
  */
-public class GameTest {//NOPMD Game class controls the game, needs to be tested a lot
+public class GameTest {//NOPMD Game class controls the game, needs to be tested more
 
-    public Game game1;
-    public Game game2;
+    Game game1;
+    Board board1;
+    Game game2;
+    Board board2;
 
     /**
      * setUp for each test
@@ -19,7 +25,9 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     @BeforeEach
     public void setUp() {
         game1 = new Game();
+        board1 = game1.chessBoard;
         game2 = new Game();
+        board2 = game2.chessBoard;
     }
 
     /**
@@ -27,9 +35,8 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void processMove() {
-        game1.processMove(this.game1.chessBoard.getStartSquareFromInput("e2-e4"), this.game1.chessBoard.getFinalSquareFromInput("e2-e3"), 'Q');
-        assertNotEquals(game1, game2);
-
+        game1.processMove(board1.getStartSquareFromInput("e2-e4"), board1.getFinalSquareFromInput("e2-e3"), 'Q');
+        assertNotEquals(Arrays.deepToString(board1.getBoard()), Arrays.deepToString(board2.getBoard()));
     }
 
     /**
@@ -37,7 +44,15 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void isMoveAllowed() {
-        assertFalse(game1.isMoveAllowed(game1.chessBoard.getMovingPieceFromInput("e1-e5"), game1.chessBoard.getFinalSquareFromInput("e1-e5")));
+        assertFalse(game1.isMoveAllowed(board1.getMovingPieceFromInput("e1-e5"), board1.getFinalSquareFromInput("e1-e5")));
+        // selected Piece is null
+        assertFalse(game1.isMoveAllowed(board1.getSquareAt(0,3).getOccupiedBy(), board1.getSquareAt(0,4)));
+        // King and castling TODO: gibt false zurück, funktioniert defendKing richtig?
+        /*board1.setPieceAt(5, 0, null);
+        board1.setPieceAt(6, 0, null);
+        Piece king = board1.getPieceAt(4,0);
+        Cli.toConsole(game1);
+        assertTrue(game1.isMoveAllowed(king, board1.getSquareAt(6,0)));*/
     }
 
     /**

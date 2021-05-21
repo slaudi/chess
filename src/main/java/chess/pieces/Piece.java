@@ -78,10 +78,6 @@ public abstract class Piece {
         List<Square> path = this.generatePath(finalSquare, chessBoard);
         if (path.isEmpty()) {
             return true;
-        }
-        if (this.getType() == Type.KNIGHT) {
-            // Knights can leap
-            return true;
         } else {
             for (Square visitedSquare : path) {
                 int visitedSquare_x = visitedSquare.getX();
@@ -107,7 +103,7 @@ public abstract class Piece {
         int dir_y= dir[1];
         int squaresVisited = dir[2];
 
-        ArrayList<Square> path = new ArrayList<>();
+        List<Square> path = new ArrayList<>();
         if(squaresVisited > 1) {
             // Piece moves more than one square
             for (int i = 1; i < squaresVisited; i++) {
@@ -165,6 +161,8 @@ public abstract class Piece {
         int squaresVisited = 0;
 
         if (!(this instanceof Knight) && !(this instanceof King)) {
+            // Knight can leap, doesn't need a path
+            // Kings castling path is covered in King class
             int diff_x = finalSquare.getX() - this.square.getX();
             int abs_diff_x = Math.abs(diff_x);
             int diff_y = finalSquare.getY() - this.square.getY();

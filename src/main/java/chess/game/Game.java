@@ -33,6 +33,7 @@ public class Game {
     public final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
 
+
     /**
      * Constructor for creating a new Game.
      */
@@ -106,7 +107,7 @@ public class Game {
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard, this)) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
-            currentMove.castlingMove(this.chessBoard, finalSquare);
+            currentMove.castlingMove(this.chessBoard);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
             Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it

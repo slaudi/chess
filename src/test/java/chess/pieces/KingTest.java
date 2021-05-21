@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class KingTest {
 
-    public King king;
-    public Square square;
-    public Square squareC3;
-    public Game game;
-    public Game game1;
+    King king;
+    Square square;
+    Square squareC3;
+    Game game;
+    Game game1;
     List<Piece> enemies;
 
     /**
@@ -94,21 +94,9 @@ public class KingTest {
     @Test
     public void isPiecesMove() {
         assertTrue(king.isPiecesMove(squareC3, game.chessBoard));
-    }
-
-    /**
-     * tests is two squares are the same
-     */
-    @Test
-    public void isSameSquare(){
+        // to same square
         assertFalse(king.isPiecesMove(square, game.chessBoard));
-    }
-
-    /**
-     * tests if piece is really not allowed to move
-     */
-    @Test
-    public void isNotPiecesMove(){
+        // too far away
         Square square = game.chessBoard.getSquareAt(0,1);
         assertFalse(king.isPiecesMove(square, game.chessBoard));
     }

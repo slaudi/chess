@@ -1,5 +1,6 @@
 package chess.game;
 
+import chess.cli.Cli;
 import chess.pieces.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,18 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class MoveTest {
 
-    public Game game1;
-    public Move move1;
+    Game game1;
+    Move move1;
+    Square start1;
+    Square end1;
 
-    public Square start1;
-    public Square end1;
-
-    public Game game2;
-    public Square start2;
-    public Square end2;
-    public Move move2;
+    Game game2;
+    Square start2;
+    Square end2;
+    Move move2;
     
-    public Piece piece;
+    Piece piece;
+    Piece kingB;
+    Piece kingW;
+
 
     /**
      * setUp for MoveTesting
@@ -38,14 +41,16 @@ public class MoveTest {
         piece = game1.chessBoard.getBoard()[0][6].getOccupiedBy();
 
         game2 = new Game();
-        start2 = game1.chessBoard.getBoard()[0][6];
-        end2 = game1.chessBoard.getBoard()[0][5];
-        move2 = new Move(start1, end1);
+        start2 = game1.chessBoard.getBoard()[0][1];
+        end2 = game1.chessBoard.getBoard()[0][2];
+        move2 = new Move(start2, end2);
 
+        kingB = game1.chessBoard.getPieceAt(4,0);
+        kingW = game1.chessBoard.getPieceAt(4,7);
     }
 
     /**
-     * tests getter for startsquare from move
+     * tests getter for start square from move
      */
     @Test
     public void getStartSquare() {
@@ -53,7 +58,7 @@ public class MoveTest {
     }
 
     /**
-     * tests getter for finalsquare from move
+     * tests getter for final square from move
      */
     @Test
     public void getFinalSquare() {
@@ -61,7 +66,7 @@ public class MoveTest {
     }
 
     /**
-     * tests getter fro movingpiece
+     * tests getter for List movingPiece
      */
     @Test
     public void getMovingPiece() {
@@ -74,20 +79,34 @@ public class MoveTest {
     @Test
     public void doMove() {
         move1.doMove(game1.chessBoard);
-        move2.doMove(game2.chessBoard);
+        move1.doMove(game2.chessBoard);
         assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game2.chessBoard.getBoard()));
     }
 
     /**
-     * tests implementation for undoing a move
+     * tests implementation for undoing a move without a capture
      */
     @Test
     public void undoMove() {
-        // without a captured Piece
         move1.doMove(game1.chessBoard);
         move1.undoMove(game1.chessBoard);
         Board board = new Board(8,8);
         String chessBoard = Arrays.deepToString(board.getBoard());
+        assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
+    }
+
+    /**
+     * tests implementation for undoing a move after a capture
+     */
+    @Test
+    public void undoMovePiece() {
+        Piece rook = game1.chessBoard.getPieceAt(0,0);
+        game1.chessBoard.setPieceAt(end1.getX(), end1.getY(), rook);
+        move1.doMove(game1.chessBoard);
+        move1.undoMove(rook, game1.chessBoard);
+        Board test = new Board(8,8);
+        test.setPieceAt(end1.getX(), end1.getY(), rook);
+        String chessBoard = Arrays.deepToString(test.getBoard());
         assertEquals(chessBoard, Arrays.deepToString(game1.chessBoard.getBoard()));
     }
 
@@ -143,7 +162,7 @@ public class MoveTest {
      * tests if promotion works without key
      */
     @Test
-    public void promotionWithoutKey() {
+    public void promotionMove() {
         // no key:Queen
         move1.doPromotion(' ',game1.chessBoard);
         Piece queen = new Queen(end2, Colour.WHITE);
@@ -160,9 +179,14 @@ public class MoveTest {
         assertEquals(rook.getType(), end1.getOccupiedBy().getType());
 
         // Knight
-        move1.doPromotion('N',game1.chessBoard);
+        move2.doPromotion('N',game1.chessBoard);
         Piece knight = new Knight(end2, Colour.WHITE);
-        assertEquals(knight.getType(), end1.getOccupiedBy().getType());
+        assertEquals(knight.getType(), end2.getOccupiedBy().getType());
+
+        // not the right key
+        move1.doPromotion('J', game1.chessBoard);
+        knight = new Knight(end1, Colour.WHITE);
+        assertNotEquals(knight.getType(), end1.getOccupiedBy().getType());
     }
 
 
@@ -173,8 +197,12 @@ public class MoveTest {
     public void castlingMoveWhiteKingside() {
         game1.chessBoard.setPieceAt(5, 7, null);
         game1.chessBoard.setPieceAt(6, 7, null);
-        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(6, 7));
+        Move castling = new Move(kingW.getSquare(), game1.chessBoard.getSquareAt(6,7));
+        castling.castlingMove(game1.chessBoard);
         assertNull(game1.chessBoard.getPieceAt(7, 7));
+        assertNull(game1.chessBoard.getPieceAt(4,7));
+        assertEquals(Type.ROOK, game1.chessBoard.getPieceAt(5, 7).getType());
+        assertEquals(Type.KING, game1.chessBoard.getPieceAt(6,7).getType());
     }
 
     /**
@@ -185,8 +213,12 @@ public class MoveTest {
         game1.chessBoard.setPieceAt(1, 7, null);
         game1.chessBoard.setPieceAt(2, 7, null);
         game1.chessBoard.setPieceAt(3, 7, null);
-        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(2, 7));
+        Move castling = new Move(kingW.getSquare(), game1.chessBoard.getSquareAt(2,7));
+        castling.castlingMove(game1.chessBoard);
         assertNull(game1.chessBoard.getPieceAt(0, 7));
+        assertNull(game1.chessBoard.getPieceAt(4,7));
+        assertEquals(Type.ROOK, game1.chessBoard.getPieceAt(3, 7).getType());
+        assertEquals(Type.KING, game1.chessBoard.getPieceAt(2,7).getType());
     }
 
     /**
@@ -197,8 +229,12 @@ public class MoveTest {
         game1.chessBoard.setPieceAt(1, 0, null);
         game1.chessBoard.setPieceAt(2, 0, null);
         game1.chessBoard.setPieceAt(3, 0, null);
-        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(2, 0));
+        Move castling = new Move(game1.chessBoard.getSquareAt(4,0), game1.chessBoard.getSquareAt(2,0));
+        castling.castlingMove(game1.chessBoard);
         assertNull(game1.chessBoard.getPieceAt(0, 0));
+        assertNull(game1.chessBoard.getPieceAt(4,0));
+        assertEquals(Type.ROOK, game1.chessBoard.getPieceAt(3, 0).getType());
+        assertEquals(Type.KING, game1.chessBoard.getPieceAt(2,0).getType());
     }
 
     /**
@@ -208,7 +244,11 @@ public class MoveTest {
     public void castlingMoveBlackKingside() {
         game1.chessBoard.setPieceAt(5, 0, null);
         game1.chessBoard.setPieceAt(6, 0, null);
-        move1.castlingMove(game1.chessBoard, game1.chessBoard.getSquareAt(6, 0));
+        Move castling = new Move(kingB.getSquare(),game1.chessBoard.getSquareAt(6,0));
+        castling.castlingMove(game1.chessBoard);
         assertNull(game1.chessBoard.getPieceAt(7, 0));
+        assertNull(game1.chessBoard.getPieceAt(4,0));
+        assertEquals(Type.ROOK, game1.chessBoard.getPieceAt(5, 0).getType());
+        assertEquals(Type.KING, game1.chessBoard.getPieceAt(6,0).getType());
     }
 }
