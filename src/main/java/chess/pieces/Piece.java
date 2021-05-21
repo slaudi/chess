@@ -99,7 +99,7 @@ public abstract class Piece {
      * moves more than one Square.
      *
      * @param finalSquare The final Square of the move.
-     * @return List<Square> A list of the visited Squares except for the first and last one.
+     * @return List A list of the visited Squares except for the first and last one.
      */
     public List<Square> generatePath(Square finalSquare, Board chessboard) {
         int[] dir = piecesDirection(finalSquare);
