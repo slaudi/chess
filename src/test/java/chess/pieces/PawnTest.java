@@ -240,8 +240,8 @@ public class PawnTest {
      * tests if enPassant is allowed for selected pawn
      */
     @Test
-    public void isAllowedEnPassant(){
-        // possible, white pawn
+    public void isAllowedEnPassantWhite(){
+        // possible
         Square squareA7 = game.chessBoard.getSquareAt(0,1);
         Square squareA5 = game.chessBoard.getSquareAt(0,3);
         Piece enemyB = squareA7.getOccupiedBy();
@@ -259,8 +259,14 @@ public class PawnTest {
         // not possible, one x-step too far
         Square squareD6 = game.chessBoard.getSquareAt(3,2);
         assertFalse(pawn.isEnPassant(squareD6,lastEnemyMoveB));
+    }
 
-        // possible, black pawn
+    /**
+     * tests if enPassant is allowed for selected pawn
+     */
+    @Test
+    public void isAllowedEnPassantBlack() {
+        // possible
         Square squareC2 = game.chessBoard.getSquareAt(2,6);
         Piece enemyW = squareC2.getOccupiedBy();
         Move lastEnemyMoveW = new Move(squareC2,squareC4);
