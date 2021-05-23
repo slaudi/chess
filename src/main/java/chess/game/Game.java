@@ -56,6 +56,8 @@ public class Game {
      */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all cases
         if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
+            // TODO: was wenn isMoveAllowed eines Gegner-Pieces geprüft wird? Dann ist selectedPiece Colour != currentPlayer Colour true und der Move ist nicht erlaubt, obwohl es
+            // TODO: ein legaler Move wäre!
             return false;
         }
         Piece targetPiece = finalSquare.getOccupiedBy();
