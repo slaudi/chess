@@ -176,16 +176,17 @@ public class KingTest {
     /**
      * Tests if canDoCastling fails at the right times
      */
+    @Test
     public void cannotCastle(){
         // black queenside, rook already move
         game1.chessBoard.setPieceAt(1, 0, null);
         game1.chessBoard.setPieceAt(2, 0, null);
         game1.chessBoard.setPieceAt(3, 0, null);
         Piece king = game1.chessBoard.getPieceAt(4,0);
-        game1.chessBoard.getSquareAt(2, 0).getOccupiedBy().setNotMoved(false);
+        game1.chessBoard.getSquareAt(0, 0).getOccupiedBy().setNotMoved(false);
         assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
         // black queenside, path not empty
-        game1.chessBoard.getSquareAt(2, 0).getOccupiedBy().setNotMoved(true);
+        game1.chessBoard.getSquareAt(0, 0).getOccupiedBy().setNotMoved(true);
         game1.chessBoard.setPieceAt(3, 0, game1.chessBoard.getPieceAt(0,7));
         assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
         // Y is not null
