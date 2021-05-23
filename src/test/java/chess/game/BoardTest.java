@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BoardTest {
 
-    public Game game;
-    public Bishop whiteBishop;
-    public Bishop blackBishop;
+    Game game;
+    Bishop whiteBishop;
+    Bishop blackBishop;
 
     /**
      * SetUp for each test

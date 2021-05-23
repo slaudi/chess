@@ -14,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.*;
  * The PawnTest class test the methods of the Pawn class
  */
 public class PawnTest {
-    public Game game;
-    public Pawn pawnW;
-    public Pawn pawnB;
-    public Square squareC4;
-    public Square squareH6;
-    public Square squareE6;
-    public Square squareC5;
-    public Square squareC8;
-    public Square squareC6;
-    public Stack<Move> moveHistory;
+    Game game;
+    Pawn pawnW;
+    Pawn pawnB;
+    Square squareC4;
+    Square squareH6;
+    Square squareE6;
+    Square squareC5;
+    Square squareC8;
+    Square squareC6;
+    Stack<Move> moveHistory;
 
     /**
      * setUp for each pawn test

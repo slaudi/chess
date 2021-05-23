@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * The PlayerTest class test the methods of the Player class
  */
 public class PlayerTest {
-    public Game game;
-    public Piece pawnW;
-    public Piece pawnB;
-    public Piece rookW;
-    public Piece rookB;
+    Game game;
+    Piece pawnW;
+    Piece pawnB;
+    Piece rookW;
+    Piece rookB;
 
     /**
      * setUp for each PlayerTest

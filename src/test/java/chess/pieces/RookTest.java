@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * The RookTest class test the methods of the Rook class
  */
 public class RookTest {
-    public Game game;
-    public Rook rook;
-    public Square squareC4;
-    public Square squareF4;
-    public Square squareH6;
-    public Square squareE6;
+    Game game;
+    Rook rook;
+    Square squareC4;
+    Square squareF4;
+    Square squareH6;
+    Square squareE6;
 
     /**
      * setUp for each RookTest

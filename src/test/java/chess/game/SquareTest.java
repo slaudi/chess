@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class SquareTest {
 
-    public Game game;
-    public Square square;
-    public Rook rook;
+    Game game;
+    Square square;
+    Rook rook;
 
     /**
      * Set up for testing the Square class

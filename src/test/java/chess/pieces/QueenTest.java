@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * The QueenTest class test the methods of the Queen class
  */
 public class QueenTest {
-    public Game game;
-    public Queen queen;
-    public Square squareC4;
-    public Square squareF4;
-    public Square squareH6;
-    public Square squareE6;
-    public Square squareB2;
+    Game game;
+    Queen queen;
+    Square squareC4;
+    Square squareF4;
+    Square squareH6;
+    Square squareE6;
+    Square squareB2;
 
     /**
      * setUp for each QueenTest
