@@ -78,10 +78,11 @@ public class Pawn extends Piece {
             return false;
         }
         if (this.notMoved && isPathEmpty(finalSquare, chessBoard)) {
-            // Pawn can move one or two Squares
+            // Pawn can move one or two Squares up
             if (this.colour == Colour.WHITE) {
                 return (diff_y == -1 || diff_y == -2) && diff_x == 0;
             } else {
+                // Pawn can move one or two Squares down
                 return (diff_y == 1 || diff_y == 2) && diff_x == 0;
             }
         } else if (!this.notMoved){
@@ -132,8 +133,7 @@ public class Pawn extends Piece {
         int diff_x = finalSquare.getX() - this.square.getX();
         int diff_y = finalSquare.getY() - this.square.getY();
 
-        if (end.getOccupiedBy().getType() == Type.PAWN
-                && end.getOccupiedBy().getColour() != this.colour) {
+        if (end.getOccupiedBy().getType() == Type.PAWN) {
             if(this.colour == Colour.WHITE) {
                 return Math.abs(diff_x) == 1 && diff_y == -1;
             }
