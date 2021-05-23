@@ -30,7 +30,7 @@ public class Board {
         this.chessBoard = new Square[height][width];
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
-                this.chessBoard[x][y] = new Square(Label.values()[this.width*x+y], x, y);
+                this.chessBoard[x][y] = new Square(Label.values()[this.width*y+x], x, y);
             }
         }
         startingFormation();                //sets Pieces on Board to start game
@@ -221,7 +221,7 @@ public class Board {
      * @param y Y-Coordinate of Square
      * @return Square at given Coordinates
      */
-    public Square getSquareAt( int x, int y){
+    public Square getSquareAt(int x, int y){
         return this.chessBoard[x][y];
     }
 
