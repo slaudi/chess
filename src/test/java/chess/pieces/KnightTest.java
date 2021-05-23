@@ -95,7 +95,8 @@ public class KnightTest {
     public void isPiecesMove() {
         assertTrue(knight.isPiecesMove(squareB2, game.chessBoard));
         assertTrue(knight.isPiecesMove(game.chessBoard.getSquareAt(4,3), game.chessBoard));
-        assertFalse(knight.isPiecesMove(squareF4, game.chessBoard));
+        assertFalse(knight.isPiecesMove(game.chessBoard.getSquareAt(4,4), game.chessBoard));
+        assertFalse(knight.isPiecesMove(game.chessBoard.getSquareAt(1,7), game.chessBoard));
         // same square
         assertFalse(knight.isPiecesMove(squareC4, game.chessBoard));
     }

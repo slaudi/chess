@@ -137,6 +137,8 @@ public class PawnTest {
         assertFalse(pawnB.isPiecesMove(squareC4, game.chessBoard));
         // same square
         assertFalse(pawnW.isPiecesMove(squareC4, game.chessBoard));
+        // x != 0
+        assertFalse(pawnW.isPiecesMove(game.chessBoard.getSquareAt(1,2), game.chessBoard));
     }
 
     /**
@@ -147,15 +149,13 @@ public class PawnTest {
         game.chessBoard.clearBoard();
         pawnW = new Pawn(squareC4, Colour.WHITE);
         squareC4.setOccupiedBy(pawnW);
-        // diff_x != 0
-        assertFalse(pawnW.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
         // wrong direction
         assertFalse(pawnW.isPiecesMove(game.chessBoard.getBoard()[2][5], game.chessBoard));
-        //second move two squares
+        // first move too far
+        assertFalse(pawnW.isPiecesMove(squareC8, game.chessBoard));
+        //second move too far
         pawnW.setNotMoved(false);
-        assertFalse(pawnW.isPiecesMove(squareC4, game.chessBoard));
-        // second move diff_x != 0
-        assertFalse(pawnW.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
+        assertFalse(pawnW.isPiecesMove(squareC6, game.chessBoard));
     }
 
     /**
@@ -168,13 +168,9 @@ public class PawnTest {
         squareC6.setOccupiedBy(pawnB);
         // wrong direction
         assertFalse(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][1], game.chessBoard));
-        // diff_x != 0
-        assertFalse(pawnB.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
         // second move two squares
         pawnB.setNotMoved(false);
         assertFalse(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][4], game.chessBoard));
-        // second move diff_x != 0
-        assertFalse(pawnB.isPiecesMove(game.chessBoard.getSquareAt(7,3), game.chessBoard));
     }
 
     /**
@@ -232,7 +228,7 @@ public class PawnTest {
         // in front of Pawn
         squareC5.setOccupiedBy(enemy1);
         assertFalse(pawnB.canCapture(squareC5));
-        // to far away
+        // too far away
         assertFalse(pawnB.canCapture(squareF4));
     }
 
@@ -252,9 +248,9 @@ public class PawnTest {
         Square squareB5 = game.chessBoard.getSquareAt(1,3);
         Pawn pawn = new Pawn(squareB5, Colour.WHITE);
         squareB5.setOccupiedBy(pawn);
-        Square moveA6 = game.chessBoard.getSquareAt(0,2);
-        assertTrue(pawn.isEnPassant(moveA6, lastEnemyMoveB));
-        // not possible, one step too far
+        Square squareA6 = game.chessBoard.getSquareAt(0,2);
+        assertTrue(pawn.isEnPassant(squareA6, lastEnemyMoveB));
+        // not possible, one y-step too far
         assertFalse(pawn.isEnPassant(squareA7,lastEnemyMoveB));
         // not possible, one x-step too far
         Square squareD6 = game.chessBoard.getSquareAt(3,2);
