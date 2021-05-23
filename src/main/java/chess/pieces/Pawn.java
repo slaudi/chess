@@ -162,7 +162,6 @@ public class Pawn extends Piece {
             int diff_enemy = start.getY() - end.getY();
 
             if (Math.abs(diff_enemy) == 2 && end.getOccupiedBy().getType() == Type.PAWN
-                    && end.getOccupiedBy().getColour() != this.colour
                     && end.getY() == this.square.getY()) {
                 if(this.colour == Colour.WHITE) {
                     return Math.abs(diff_x) == 1 && diff_y == -1;
