@@ -74,25 +74,25 @@ public class Pawn extends Piece {
     public boolean isPiecesMove(Square finalSquare, Board chessBoard) {
         int diff_x = finalSquare.getX() - this.square.getX();
         int diff_y = finalSquare.getY() - this.square.getY();
-        if (Math.abs(diff_x) == Math.abs(diff_y) || finalSquare.getOccupiedBy() != null) {
+        if (Math.abs(diff_x) == Math.abs(diff_y) || finalSquare.getOccupiedBy() != null || diff_x != 0) {
             return false;
         }
         if (this.notMoved && isPathEmpty(finalSquare, chessBoard)) {
             // Pawn can move one or two Squares up
             if (this.colour == Colour.WHITE) {
-                return (diff_y == -1 || diff_y == -2) && diff_x == 0;
+                return (diff_y == -1 || diff_y == -2);
             } else {
                 // Pawn can move one or two Squares down
-                return (diff_y == 1 || diff_y == 2) && diff_x == 0;
+                return (diff_y == 1 || diff_y == 2);
             }
         } else if (!this.notMoved){
             // Pawn already moved
             if (this.colour == Colour.WHITE) {
                 // Pawn can only move up
-                return diff_y == -1 && diff_x == 0;
+                return diff_y == -1;
             } else {
                 // Pawn can only move down
-                return diff_y == 1 && diff_x == 0;
+                return diff_y == 1;
             }
         }
         return false;
@@ -161,7 +161,8 @@ public class Pawn extends Piece {
             int diff_y = finalSquare.getY() - this.square.getY();
             int diff_enemy = start.getY() - end.getY();
 
-            if (Math.abs(diff_enemy) == 2 && end.getOccupiedBy().getType() == Type.PAWN
+            if (Math.abs(diff_enemy) == 2
+                    && end.getOccupiedBy().getType() == Type.PAWN
                     && end.getY() == this.square.getY()) {
                 if(this.colour == Colour.WHITE) {
                     return Math.abs(diff_x) == 1 && diff_y == -1;
