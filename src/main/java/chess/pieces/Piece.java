@@ -73,6 +73,7 @@ public abstract class Piece {
      */
     public boolean isPathEmpty (Square finalSquare, Board chessBoard){
         if (isSurroundingSquare(this.getSquare(), finalSquare)) {
+            // always true for Kings moves (castling path is covered in King class)
             return true;
         }
         List<Square> path = this.generatePath(finalSquare, chessBoard);
@@ -160,9 +161,8 @@ public abstract class Piece {
         int dir_y = 0;
         int squaresVisited = 0;
 
-        if (!(this instanceof Knight) && !(this instanceof King)) {
+        if (!(this instanceof Knight)) {
             // Knight can leap, doesn't need a path
-            // Kings castling path is covered in King class
             int diff_x = finalSquare.getX() - this.square.getX();
             int abs_diff_x = Math.abs(diff_x);
             int diff_y = finalSquare.getY() - this.square.getY();
