@@ -159,7 +159,12 @@ public class King extends Piece {
     private boolean underAttack(List<Square> castlingPath, List<Piece> enemies, Game game){
         for (Square field : castlingPath){
             for (Piece enemyPiece : enemies) {
-                if(game.isMoveAllowed(enemyPiece, field)){
+                if(enemyPiece.getType() == Type.PAWN) {
+                    if (((Pawn)enemyPiece).canCapture(field)) {
+                        return true;
+                    }
+                } else if(enemyPiece.isPiecesMove(field, game.chessBoard)
+                        && enemyPiece.isPathEmpty(field, game.chessBoard)){
                     return true;
                 }
             }
