@@ -1,5 +1,6 @@
 package chess.gui;
 
+import chess.game.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,14 +18,14 @@ public class Gui extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Hello Chess!");
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
         btn.setOnAction(event -> System.out.println("Hello World!"));
+        Game game = new Game();
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        ChessBoardView testChessView = new ChessBoardView(game);
+        primaryStage.setScene(new Scene(testChessView));
         primaryStage.show();
     }
 

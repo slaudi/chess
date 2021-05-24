@@ -11,6 +11,7 @@ public class Square {
     private final int y;
     Piece occupiedBy = null;
     Label label;
+    Colour colour;
 
     /**
      * Constructor for creating a single square when starting a new Game.
@@ -22,6 +23,18 @@ public class Square {
         this.x = x;
         this.y = y;
         this.label = label;
+        if (y % 2 == 0){
+            if (x % 2 == 0){
+                this.colour = Colour.WHITE;
+            }
+            else this.colour = Colour.BLACK;
+        }
+        else {
+            if (x % 2 == 0){
+                this.colour = Colour.BLACK;
+            }
+            else this.colour = Colour.WHITE;
+        }
     }
 
     @Override
@@ -48,6 +61,9 @@ public class Square {
 
     public void setOccupiedBy(Piece occupiedBy) {
         this.occupiedBy = occupiedBy;
+    }
+    public Colour getColour(){
+        return this.colour;
     }
 
     /**
