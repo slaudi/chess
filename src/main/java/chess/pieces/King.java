@@ -147,11 +147,13 @@ public class King extends Piece {
             }
         } else if (this.getColour() == Colour.BLACK && chessBoard.getBoard()[7][0].getOccupiedBy() != null
                 && chessBoard.getPieceAt(5, 0) == null && chessBoard.getPieceAt(6, 0) == null) {
-            if (chessBoard.getPieceAt(7, 0).hasNotMoved()) {
-                castlingPath.add(chessBoard.getSquareAt(4,0));
-                castlingPath.add(chessBoard.getSquareAt(5,0));
-                castlingPath.add(chessBoard.getSquareAt(6,0));
+            if (!chessBoard.getPieceAt(7, 0).hasNotMoved()) {
+                // piece already moved
+                return castlingPath;
             }
+            castlingPath.add(chessBoard.getSquareAt(4,0));
+            castlingPath.add(chessBoard.getSquareAt(5,0));
+            castlingPath.add(chessBoard.getSquareAt(6,0));
         }
         return castlingPath;
     }

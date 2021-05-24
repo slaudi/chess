@@ -27,13 +27,17 @@ public class Square {
             if (x % 2 == 0){
                 this.colour = Colour.WHITE;
             }
-            else this.colour = Colour.BLACK;
+            else {
+                this.colour = Colour.BLACK;
+            }
         }
         else {
             if (x % 2 == 0){
                 this.colour = Colour.BLACK;
             }
-            else this.colour = Colour.WHITE;
+            else {
+                this.colour = Colour.WHITE;
+            }
         }
     }
 
