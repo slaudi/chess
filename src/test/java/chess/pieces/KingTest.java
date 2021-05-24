@@ -23,7 +23,8 @@ public class KingTest {
     Square squareC3;
     Game game;
     Game game1;
-    List<Piece> enemies;
+    List<Piece> blackEnemies;
+    List<Piece> whiteEnemies;
 
     /**
      * setUp for each KingTest
@@ -35,7 +36,8 @@ public class KingTest {
         king = new King(square, Colour.WHITE);
         squareC3 = new Square(c3,2, 5);
         game1 = new Game();
-        enemies = game1.currentPlayer.getEnemyPieces(game1.beatenPieces, game1.chessBoard);
+        blackEnemies = game1.playerBlack.getEnemyPieces(game1.beatenPieces,game1.chessBoard);
+        whiteEnemies = game1.playerWhite.getEnemyPieces(game1.beatenPieces,game1.chessBoard);
     }
 
     /**
@@ -125,53 +127,42 @@ public class KingTest {
     @Test
     public void canDoCastlingWhilePathBlocked() {
         Piece king = game1.chessBoard.getPieceAt(4,7);
-        assertFalse(((King)king).canDoCastling(game.chessBoard.getSquareAt(2, 7), enemies, game1.chessBoard, game1));
+        assertFalse(((King)king).canDoCastling(game.chessBoard.getSquareAt(2, 7), blackEnemies, game1.chessBoard));
     }
 
     /**
      * tests castling white kingside
      */
     @Test
-    public void canDoCastlingWhiteKingside() {
+    public void canDoCastlingWhite() {
+        Piece king = game1.chessBoard.getPieceAt(4,7);
+        // kingside
         game1.chessBoard.setPieceAt(5, 7, null);
         game1.chessBoard.setPieceAt(6, 7, null);
-        Piece king = game1.chessBoard.getPieceAt(4,7);
-        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 7), enemies, game1.chessBoard, game1));
-    }
-
-    /**
-     * tests castling white queenside
-     */
-    @Test
-    public void canDoCastlingWhiteQueenside() {
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 7), whiteEnemies, game1.chessBoard));
+        // queenside
         game1.chessBoard.setPieceAt(1, 7, null);
         game1.chessBoard.setPieceAt(2, 7, null);
         game1.chessBoard.setPieceAt(3, 7, null);
-        Piece king = game1.chessBoard.getPieceAt(4,7);
-        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 7), enemies, game1.chessBoard, game1));
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 7), whiteEnemies, game1.chessBoard));
     }
 
     /**
      * tests castling black queenside
      */
     @Test
-    public void canDoCastlingBlackQueenside() {
+    public void canDoCastlingBlack() {
+        List <Piece> enemies = game1.playerBlack.getEnemyPieces(game1.beatenPieces, game1.chessBoard);
+        Piece king = game1.chessBoard.getPieceAt(4,0);
+        // queenside
         game1.chessBoard.setPieceAt(1, 0, null);
         game1.chessBoard.setPieceAt(2, 0, null);
         game1.chessBoard.setPieceAt(3, 0, null);
-        Piece king = game1.chessBoard.getPieceAt(4,0);
-        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
-    }
-
-    /**
-     * tests castling black kingside
-     */
-    @Test
-    public void canDoCastlingBlackKingside() {
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard));
+        // kingside
         game1.chessBoard.setPieceAt(5, 0, null);
         game1.chessBoard.setPieceAt(6, 0, null);
-        Piece king = game1.chessBoard.getPieceAt(4,0);
-        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 0), enemies, game1.chessBoard, game1));
+        assertTrue(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 0), enemies, game1.chessBoard));
     }
 
     /**
@@ -179,18 +170,11 @@ public class KingTest {
      */
     @Test
     public void cannotCastle(){
-        // black queenside, rook already move
-        game1.chessBoard.setPieceAt(1, 0, null);
-        game1.chessBoard.setPieceAt(2, 0, null);
-        game1.chessBoard.setPieceAt(3, 0, null);
-        Piece king = game1.chessBoard.getPieceAt(4,0);
-        game1.chessBoard.getSquareAt(0, 0).getOccupiedBy().setNotMoved(false);
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
         // Y is not null
-        assertFalse(((King) king).canDoCastling(game1.chessBoard.getSquareAt(2, 1), enemies, game1.chessBoard, game1));
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 1),blackEnemies, game1.chessBoard));
         // king already moved
         king.setNotMoved(false);
-        assertFalse(((King) king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0),blackEnemies, game1.chessBoard));
         // castling path under attack
         game1.chessBoard.clearBoard();
         king = new King(game1.chessBoard.getSquareAt(4,7),Colour.WHITE);
@@ -201,29 +185,65 @@ public class KingTest {
         game1.chessBoard.setPieceAt(5,3,enemyRook);
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.addBlackAlliance(enemyRook);
-        enemies = game1.currentPlayer.getEnemyPieces(game1.beatenPieces, game1.chessBoard);
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6,7),enemies,game1.chessBoard,game1));
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6,7),whiteEnemies,game1.chessBoard));
+        // castling path under attack by pawn
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.setPieceAt(4,7,king);
+        game1.chessBoard.setPieceAt(7,7,rook);
+        Piece enemyPawn = new Pawn(game1.chessBoard.getSquareAt(6,6),Colour.BLACK);
+        game1.chessBoard.setPieceAt(6,6,enemyPawn);
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.addBlackAlliance(enemyPawn);
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6,7),whiteEnemies,game1.chessBoard));
     }
 
     /**
-     *
+     * Tests if certain moves by black King are rightfully not castle moves.
      */
     @Test
-    public void cannotCastleQueenside(){
+    public void cannotCastleBlack(){
         Piece king = game1.chessBoard.getPieceAt(4,0);
         // queenside, path not empty
         game1.chessBoard.setPieceAt(3, 0, game1.chessBoard.getPieceAt(0,7));
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0), enemies, game1.chessBoard, game1));
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0),blackEnemies, game1.chessBoard));
+        // kingside, path not empty
+        game1.chessBoard.setPieceAt(5, 0, game1.chessBoard.getPieceAt(0,7));
+        assertFalse(((King) king).canDoCastling(game1.chessBoard.getSquareAt(6,0),blackEnemies,game1.chessBoard));
+        // queenside, rook already move
+        game1.chessBoard.setPieceAt(1, 0, null);
+        game1.chessBoard.setPieceAt(2, 0, null);
+        game1.chessBoard.setPieceAt(3, 0, null);
+        game1.chessBoard.getSquareAt(0, 0).getOccupiedBy().setNotMoved(false);
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0),blackEnemies, game1.chessBoard));
+        // kingside, rook already moved
+        game1.chessBoard.setPieceAt(5, 0, null);
+        game1.chessBoard.setPieceAt(6, 0, null);
+        game1.chessBoard.getSquareAt(7, 0).getOccupiedBy().setNotMoved(false);
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 0),blackEnemies, game1.chessBoard));
     }
 
     /**
-     *
+     * Tests if certain moves by black King are rightfully not castle moves.
      */
     @Test
-    public void cannotCastleKingside(){
-        Piece king = game1.chessBoard.getPieceAt(4,0);
+    public void cannotCastleWhite(){
+        Piece king = game1.chessBoard.getPieceAt(4,7);
+        // queenside, path not empty
+        game1.chessBoard.setPieceAt(3, 7, game1.chessBoard.getPieceAt(2,0));
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 7),blackEnemies, game1.chessBoard));
         // kingside, path not empty
-        game1.chessBoard.setPieceAt(5, 0, game1.chessBoard.getPieceAt(0,7));
-        assertFalse(((King) king).canDoCastling(game1.chessBoard.getSquareAt(6,0),enemies,game1.chessBoard,game1));
+        game1.chessBoard.setPieceAt(5, 7, game1.chessBoard.getPieceAt(2,0));
+        assertFalse(((King) king).canDoCastling(game1.chessBoard.getSquareAt(6,7),blackEnemies,game1.chessBoard));
+        // queenside, rook already move
+        game1.chessBoard.setPieceAt(1, 7, null);
+        game1.chessBoard.setPieceAt(2, 7, null);
+        game1.chessBoard.setPieceAt(3, 7, null);
+        game1.chessBoard.getSquareAt(0, 7).getOccupiedBy().setNotMoved(false);
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 7),blackEnemies, game1.chessBoard));
+        // kingside, rook already moved
+        game1.chessBoard.setPieceAt(5, 7, null);
+        game1.chessBoard.setPieceAt(6, 7, null);
+        game1.chessBoard.getSquareAt(7, 7).getOccupiedBy().setNotMoved(false);
+        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6, 7),blackEnemies, game1.chessBoard));
     }
 }

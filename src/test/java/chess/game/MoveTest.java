@@ -18,12 +18,6 @@ public class MoveTest {
     Move move1;
     Square start1;
     Square end1;
-
-    Game game2;
-    Square start2;
-    Square end2;
-    Move move2;
-    
     Piece piece;
     Piece kingB;
     Piece kingW;
@@ -39,12 +33,6 @@ public class MoveTest {
         end1 = game1.chessBoard.getBoard()[0][5];
         move1 = new Move(start1, end1);
         piece = game1.chessBoard.getBoard()[0][6].getOccupiedBy();
-
-        game2 = new Game();
-        start2 = game1.chessBoard.getBoard()[0][1];
-        end2 = game1.chessBoard.getBoard()[0][2];
-        move2 = new Move(start2, end2);
-
         kingB = game1.chessBoard.getPieceAt(4,0);
         kingW = game1.chessBoard.getPieceAt(4,7);
     }
@@ -78,6 +66,7 @@ public class MoveTest {
      */
     @Test
     public void doMove() {
+        Game game2 = new Game();
         move1.doMove(game1.chessBoard);
         move1.doMove(game2.chessBoard);
         assertEquals(Arrays.deepToString(game1.chessBoard.getBoard()), Arrays.deepToString(game2.chessBoard.getBoard()));
@@ -163,6 +152,9 @@ public class MoveTest {
      */
     @Test
     public void promotionMove() {
+        Square start2 = game1.chessBoard.getBoard()[0][1];
+        Square end2 = game1.chessBoard.getBoard()[0][2];
+        Move move2 = new Move(start2, end2);
         // no key:Queen
         move1.doPromotion(' ',game1.chessBoard);
         Piece queen = new Queen(end2, Colour.WHITE);

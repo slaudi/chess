@@ -26,11 +26,19 @@ public class SquareTest {
     }
 
     /**
+     * Tests if the Square has the right colour.
+     */
+    @Test
+    public void getColour(){
+        assertEquals(Colour.WHITE, game.chessBoard.getSquareAt(0,0).getColour());
+    }
+
+    /**
      * Tests 'toString' if an empty Square is printed empty.
      */
     @Test
     public void printEmptySquare() {
-        assertEquals(" ", game.chessBoard.getBoard()[0][4].toString(),"Feld sollte leer sein");
+        assertEquals(" ", game.chessBoard.getBoard()[0][4].toString());
     }
 
     /**
@@ -83,14 +91,13 @@ public class SquareTest {
     @Test
     public void getXFromString() {
         assertEquals(7, Square.getXFromString("h4"));
-    }
-
-    /**
-     * Tests 'getXFromString' if it returns 9 if the command line input is not square
-     * on the board.
-     */
-    @Test
-    public void getXFromWrongString(){
+        assertEquals(6, Square.getXFromString("g5"));
+        assertEquals(5, Square.getXFromString("f3"));
+        assertEquals(4, Square.getXFromString("e3"));
+        assertEquals(3, Square.getXFromString("d2"));
+        assertEquals(2, Square.getXFromString("c1"));
+        assertEquals(1, Square.getXFromString("b8"));
+        assertEquals(0, Square.getXFromString("a4"));
         assertEquals(9, Square.getXFromString("j9"));
     }
 
@@ -101,14 +108,13 @@ public class SquareTest {
     @Test
     public void getYFromString() {
         assertEquals(7, Square.getYFromString("a1"));
-    }
-
-    /**
-     * Tests 'getYFromString' if it returns 9 if the command line input is not square
-     * on the board.
-     */
-    @Test
-    public void getYFromWrongString(){
+        assertEquals(6, Square.getYFromString("e2"));
+        assertEquals(5, Square.getYFromString("f3"));
+        assertEquals(4, Square.getYFromString("h4"));
+        assertEquals(3, Square.getYFromString("b5"));
+        assertEquals(2, Square.getYFromString("f6"));
+        assertEquals(1, Square.getYFromString("c7"));
+        assertEquals(0, Square.getYFromString("d8"));
         assertEquals(9, Square.getYFromString("j9"));
     }
 }
