@@ -327,11 +327,12 @@ public class Game {
 
         if (isCheckMate()) {
             // check if next player is checkmate after the last move
-        this.squareStart = null;
-        this.squareFinal = null;
-        if (isCheckMate(finalSquare)) {
-            // check if this player is checkmate after the move
-            this.currentPlayer.setLoser(true);
+            this.squareStart = null;
+            this.squareFinal = null;
+            if (isCheckMate()) {
+                // check if this player is checkmate after the move
+                this.currentPlayer.setLoser(true);
+            }
         }
     }
 
