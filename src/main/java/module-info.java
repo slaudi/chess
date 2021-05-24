@@ -4,6 +4,8 @@
 module chess {
     requires javafx.controls;
     requires transitive javafx.graphics;
-    
+
+    opens chess.pieces;
+
     exports chess.gui;
 }

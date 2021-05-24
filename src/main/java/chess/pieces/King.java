@@ -85,7 +85,7 @@ public class King extends Piece {
      * @param finalSquare   The selected Square which can be kingside or queenside.
      * @return boolean Returns 'true' if castling is possible.
      */
-    public boolean canDoCastling (Square finalSquare, List<Piece> enemies, Board currentBoard, Game game) {
+    public boolean canDoCastling (Square finalSquare, List<Piece> enemies, Board currentBoard) {
         List<Square> castlingPath;
         if (this.hasNotMoved()){
             if(this.getSquare().getX() - finalSquare.getX() == 2 && this.getSquare().getY() - finalSquare.getY() == 0){  //queenside
@@ -107,10 +107,10 @@ public class King extends Piece {
             return false;
         }
         // check if the Kings current Square and/or any Squares the King visits are in check/under attack
-        return !underAttack(castlingPath, enemies, game);
+        return !underAttack(castlingPath, enemies, currentBoard);
     }
 
-    private List<Square> queensideCastling(Board chessBoard) {//NOPMD
+    private List<Square> queensideCastling(Board chessBoard) {
         List<Square> castlingPath = new ArrayList<>();
         if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[0][7].getOccupiedBy() != null) {
             for (int i = 1; i < 4; i++) {
@@ -136,7 +136,7 @@ public class King extends Piece {
     }
 
 
-    private List<Square> kingsideCastling(Board chessBoard) {//NOPMD
+    private List<Square> kingsideCastling(Board chessBoard) {
         List<Square> castlingPath = new ArrayList<>();
         if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[7][7].getOccupiedBy() != null
                 && chessBoard.getPieceAt(5, 7) == null && chessBoard.getPieceAt(6, 7) == null) {
@@ -148,25 +148,24 @@ public class King extends Piece {
         } else if (this.getColour() == Colour.BLACK && chessBoard.getBoard()[7][0].getOccupiedBy() != null
                 && chessBoard.getPieceAt(5, 0) == null && chessBoard.getPieceAt(6, 0) == null) {
             if (!chessBoard.getPieceAt(7, 0).hasNotMoved()) {
-                // piece already moved
                 return castlingPath;
             }
-            castlingPath.add(chessBoard.getSquareAt(4,0));
-            castlingPath.add(chessBoard.getSquareAt(5,0));
-            castlingPath.add(chessBoard.getSquareAt(6,0));
+            castlingPath.add(chessBoard.getSquareAt(4, 0));
+            castlingPath.add(chessBoard.getSquareAt(5, 0));
+            castlingPath.add(chessBoard.getSquareAt(6, 0));
         }
         return castlingPath;
     }
 
-    private boolean underAttack(List<Square> castlingPath, List<Piece> enemies, Game game){
+    private boolean underAttack(List<Square> castlingPath, List<Piece> enemies, Board currentBoard){
         for (Square field : castlingPath){
             for (Piece enemyPiece : enemies) {
                 if(enemyPiece.getType() == Type.PAWN) {
-                    if (((Pawn)enemyPiece).canCapture(field)) {
+                    if (pawnPathCapture(enemyPiece, field)) {
                         return true;
                     }
-                } else if(enemyPiece.isPiecesMove(field, game.chessBoard)
-                        && enemyPiece.isPathEmpty(field, game.chessBoard)){
+                } else if(enemyPiece.isPiecesMove(field, currentBoard)
+                        && enemyPiece.isPathEmpty(field, currentBoard)){
                     return true;
                 }
             }
@@ -174,4 +173,14 @@ public class King extends Piece {
         return false;
     }
 
+    private boolean pawnPathCapture(Piece pawn, Square attackSquare) {
+        int diff_x = attackSquare.getX() - pawn.getSquare().getX();
+        int diff_y = attackSquare.getY() - pawn.getSquare().getY();
+
+        if (pawn.colour == Colour.WHITE) {
+            return Math.abs(diff_x) == 1 && diff_y == -1;
+        } else {
+            return Math.abs(diff_x) == 1 && diff_y == 1;
+        }
+    }
 }

@@ -56,8 +56,6 @@ public class Game {
      */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all cases
         if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
-            // TODO: was wenn isMoveAllowed eines Gegner-Pieces geprüft wird? Dann ist selectedPiece Colour != currentPlayer Colour true und der Move ist nicht erlaubt, obwohl es
-            // TODO: ein legaler Move wäre!
             return false;
         }
         Piece targetPiece = finalSquare.getOccupiedBy();
@@ -86,7 +84,7 @@ public class Game {
                 }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-            return ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard, this);
+            return ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard);
         }
         return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
 
@@ -107,7 +105,7 @@ public class Game {
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-        if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard, this)) {
+        if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard)) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
             currentMove.castlingMove(this.chessBoard);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
