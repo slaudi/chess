@@ -19,9 +19,6 @@ public class Gui extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Hello Chess!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(event -> System.out.println("Hello World!"));
         Game game = new Game();
 
         ChessBoardView testChessView = new ChessBoardView(game);

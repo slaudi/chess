@@ -1,6 +1,7 @@
 package chess.gui;
 
 import chess.game.*;
+import chess.pieces.Piece;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,9 +20,9 @@ public class ChessBoardView extends BorderPane{
 
 
         HBox heading = new HBox(new Label("CHESS"));
-        HBox bottom = new HBox(new Label("Beaten Pieces"));
+        HBox bottom = generateBeatenPieces(game);
         VBox right = new VBox(new Label("RIGHT"), new Button("Options"));
-        GridPane center = generateButtonGrid(game.chessBoard);
+        GridPane center = generateButtonGrid(game);
 
         heading.setAlignment(Pos.CENTER);
         bottom.setAlignment(Pos.CENTER);
@@ -33,12 +34,146 @@ public class ChessBoardView extends BorderPane{
         setBottom(bottom);
     }
 
-    public GridPane generateButtonGrid(Board board){
+    public HBox generateBeatenPieces(Game game){
+        HBox box = new HBox();
+        box.getChildren().add(new Label("Beaten Pieces:"));
+        if(!game.beatenPieces.isEmpty()){
+            for (Piece piece: game.beatenPieces){
+                box.getChildren().add(chooseImage(piece.getType(),piece.getColour()));
+            }
+        }
+        return box;
+    }
+
+    public ImageView chooseImage(Type type, Colour colour){
+        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png"));
+        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png"));
+        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png"));
+        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png"));
+        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png"));
+        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png"));
+        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png"));
+        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png"));
+        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png"));
+        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png"));
+        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png"));
+        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png"));
+
+        int imageHeight = 50;
+        int imageWidth = 50;
+
+        ImageView blackPawnOnWhiteView = new ImageView();
+        blackPawnOnWhiteView.setFitHeight(imageHeight);
+        blackPawnOnWhiteView.setFitWidth(imageWidth);
+        blackPawnOnWhiteView.setImage(BlackPawnOnWhite);
+
+        ImageView whitePawnOnWhiteView = new ImageView();
+        whitePawnOnWhiteView.setFitHeight(imageHeight);
+        whitePawnOnWhiteView.setFitWidth(imageWidth);
+        whitePawnOnWhiteView.setImage(WhitePawnOnWhite);
+
+        ImageView blackRookOnWhiteView = new ImageView();
+        blackRookOnWhiteView.setFitHeight(imageHeight);
+        blackRookOnWhiteView.setFitWidth(imageWidth);
+        blackRookOnWhiteView.setImage(BlackRookOnWhite);
+
+        ImageView whiteRookOnWhiteView = new ImageView();
+        whiteRookOnWhiteView.setFitHeight(imageHeight);
+        whiteRookOnWhiteView.setFitWidth(imageWidth);
+        whiteRookOnWhiteView.setImage(WhiteRookOnWhite);
+
+        ImageView blackKnightOnWhiteView = new ImageView();
+        blackKnightOnWhiteView.setFitHeight(imageHeight);
+        blackKnightOnWhiteView.setFitWidth(imageWidth);
+        blackKnightOnWhiteView.setImage(BlackKnightOnWhite);
+
+        ImageView whiteKnightOnWhiteView = new ImageView();
+        whiteKnightOnWhiteView.setFitHeight(imageHeight);
+        whiteKnightOnWhiteView.setFitWidth(imageWidth);
+        whiteKnightOnWhiteView.setImage(WhiteKnightOnWhite);
+
+        ImageView blackBishopOnWhiteView = new ImageView();
+        blackBishopOnWhiteView.setFitHeight(imageHeight);
+        blackBishopOnWhiteView.setFitWidth(imageWidth);
+        blackBishopOnWhiteView.setImage(BlackBishopOnWhite);
+
+        ImageView whiteBishopOnWhiteView = new ImageView();
+        whiteBishopOnWhiteView.setFitHeight(imageHeight);
+        whiteBishopOnWhiteView.setFitWidth(imageWidth);
+        whiteBishopOnWhiteView.setImage(WhiteBishopOnWhite);
+
+        ImageView blackQueenOnWhiteView = new ImageView();
+        blackQueenOnWhiteView.setFitHeight(imageHeight);
+        blackQueenOnWhiteView.setFitWidth(imageWidth);
+        blackQueenOnWhiteView.setImage(BlackQueenOnWhite);
+
+        ImageView whiteQueenOnWhiteView = new ImageView();
+        whiteQueenOnWhiteView.setFitHeight(imageHeight);
+        whiteQueenOnWhiteView.setFitWidth(imageWidth);
+        whiteQueenOnWhiteView.setImage(WhiteQueenOnWhite);
+
+        ImageView blackKingOnWhiteView = new ImageView();
+        blackKingOnWhiteView.setFitHeight(imageHeight);
+        blackKingOnWhiteView.setFitWidth(imageWidth);
+        blackKingOnWhiteView.setImage(BlackKingOnWhite);
+
+        ImageView whiteKingOnWhiteView = new ImageView();
+        whiteKingOnWhiteView.setFitHeight(imageHeight);
+        whiteKingOnWhiteView.setFitWidth(imageWidth);
+        whiteKingOnWhiteView.setImage(WhiteKingOnWhite);
+
+        if (colour == Colour.WHITE){
+            if (type == Type.PAWN){
+                return whitePawnOnWhiteView;
+            }
+            else if (type == Type.ROOK){
+                return whiteRookOnWhiteView;
+            }
+            else if (type == Type.KNIGHT){
+                return whiteKnightOnWhiteView;
+            }
+            else if (type == Type.BISHOP){
+                return whiteBishopOnWhiteView;
+            }
+            else if (type == Type.QUEEN){
+                return whiteQueenOnWhiteView;
+            }
+            else if (type == Type.KING){
+                return whiteKingOnWhiteView;
+            }
+        }
+        else {
+            if (type == Type.PAWN){
+                return blackPawnOnWhiteView;
+            }
+            else if (type == Type.ROOK){
+                return blackRookOnWhiteView;
+            }
+            else if (type == Type.KNIGHT){
+                return blackKnightOnWhiteView;
+            }
+            else if (type == Type.BISHOP){
+                return blackBishopOnWhiteView;
+            }
+            else if (type == Type.QUEEN){
+                return blackQueenOnWhiteView;
+            }
+            else if (type == Type.KING){
+                return blackKingOnWhiteView;
+            }
+        }
+        return null;
+    }
+
+    public GridPane generateButtonGrid(Game game){
         GridPane grid = new GridPane();
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
                 Button btn = new Button();
-                btn.setGraphic(chooseImage(board.getSquareAt(x, y)));
+                btn.setGraphic(chooseImage(game.chessBoard.getSquareAt(x, y)));
+                int finalX = x;
+                int finalY = y;
+                btn.setOnAction(event -> game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY)));
                 grid.add(btn, x, y);
             }
             grid.add(new Label("TODO"), 8 , y);

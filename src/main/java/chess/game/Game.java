@@ -32,6 +32,8 @@ public class Game {
      */
     public final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
+    public Square squareStart;                  // Helper-Attributs for Moving in GUI
+    public Square squareFinal;
 
 
     /**
@@ -44,6 +46,8 @@ public class Game {
         this.chessBoard = new Board(8,8);
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new Stack<>();
+        this.squareStart = null;
+        this.squareFinal = null;
     }
 
     /**
@@ -323,6 +327,10 @@ public class Game {
 
         if (isCheckMate()) {
             // check if next player is checkmate after the last move
+        this.squareStart = null;
+        this.squareFinal = null;
+        if (isCheckMate(finalSquare)) {
+            // check if this player is checkmate after the move
             this.currentPlayer.setLoser(true);
         }
     }
@@ -341,6 +349,29 @@ public class Game {
         }
         // move doesn't put King in check
         return true;
+    }
+
+    public void setSquareStart(Square square){
+        this.squareStart = square;
+    }
+
+    public void setSquareFinal(Square square){
+        this.squareFinal = square;
+    }
+
+    public Square getSquareStart(){
+        return this.squareStart;
+    }
+
+    public Square getSquareFinal(){
+        return this.squareFinal;
+    }
+
+    public void setBothMovingSquares(Square square){
+        if(this.getSquareStart() == null){
+            this.setSquareStart(square);
+        }
+        else this.setSquareFinal(square);
     }
 }
 
