@@ -144,7 +144,7 @@ public class Game {
         this.moveHistory.add(currentMove);
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setNotMoved(false);
-        changePlayer(finalSquare);
+        changePlayer();
         isInCheck();
         return true;
     }
@@ -175,26 +175,29 @@ public class Game {
      *
      * @return boolean Returns 'true' if the current Player is checkmate.
      */
-    boolean isCheckMate(Square finalSquare) {
+    boolean isCheckMate() {
+        Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         if (this.currentPlayer.isInCheck()) {
-            if (canKingMove() && isSafeSquare(finalSquare)) {
+            if (canKingMove()) {
                 return false;
             }
-            // can ally defend the King if the King can't move
+            // can ally defend the King against enemies if the King can't move
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
             for (Piece enemyPiece : enemies) {
-                if (isMoveAllowed(enemyPiece, finalSquare)) {
-                    // if they can defend the King it's not checkmate
-                    return !canDefendKing(enemyPiece);
+                if (enemyPiece.getType() == Type.PAWN && ((Pawn)enemyPiece).canCapture(squareKing)
+                        || enemyPiece.isPiecesMove(squareKing, this.chessBoard) && enemyPiece.isPathEmpty(squareKing, this.chessBoard)) {
+                    if (canDefendKing(enemyPiece)) {
+                        // ally can defend against this enemy -> check next enemy
+                        continue;
+                    }
+                    // cannot move and ally can't defend -> checkmate
+                    this.currentPlayer.setLoser(true);
+                    return true;
                 }
             }
-            // cannot move and ally can't defend -> checkmate
-            this.currentPlayer.setLoser(true);
-            return true;
-        } else {
-            // King is not in check
-            return false;
         }
+        // King is not in check
+        return false;
     }
 
     /**
@@ -320,9 +323,12 @@ public class Game {
         return false;
     }
 
-    void changePlayer(Square finalSquare) {
+    void changePlayer() {
         // change currentPlayer to next Colour
         this.currentPlayer = this.currentPlayer == this.playerWhite ? this.playerBlack : this.playerWhite;
+
+        if (isCheckMate()) {
+            // check if next player is checkmate after the last move
         this.squareStart = null;
         this.squareFinal = null;
         if (isCheckMate(finalSquare)) {

@@ -80,10 +80,10 @@ public class Pawn extends Piece {
         if (this.notMoved && isPathEmpty(finalSquare, chessBoard)) {
             // Pawn can move one or two Squares up
             if (this.colour == Colour.WHITE) {
-                return (diff_y == -1 || diff_y == -2);
+                return diff_y == -1 || diff_y == -2;
             } else {
                 // Pawn can move one or two Squares down
-                return (diff_y == 1 || diff_y == 2);
+                return diff_y == 1 || diff_y == 2;
             }
         } else if (!this.notMoved){
             // Pawn already moved

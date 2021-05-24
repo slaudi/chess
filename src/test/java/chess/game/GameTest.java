@@ -68,9 +68,9 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void changePlayer() {
-        game1.changePlayer(game1.chessBoard.getFinalSquareFromInput("e2-e3"));
+        game1.changePlayer();
         assertEquals(game1.playerBlack, game1.currentPlayer);
-        game1.changePlayer(game1.chessBoard.getFinalSquareFromInput("a7-a5"));
+        game1.changePlayer();
         assertEquals(game1.playerWhite, game1.currentPlayer);
     }
 
