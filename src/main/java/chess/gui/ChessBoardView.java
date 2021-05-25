@@ -1,18 +1,20 @@
 package chess.gui;
 
 import chess.game.*;
+import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
+import java.util.Optional;
 
 
 public class ChessBoardView extends BorderPane{
@@ -41,32 +43,54 @@ public class ChessBoardView extends BorderPane{
         return label;
     }
 
-    public boolean processingMovement(Game currentGame) {
+    public int processingMovement(Game currentGame) {
         if(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
             if (currentGame.squareStart != null && currentGame.squareFinal != null) {
                 Piece selectedPiece = currentGame.squareStart.getOccupiedBy();
                 Square startSquare = currentGame.squareStart;
                 Square finalSquare = currentGame.squareFinal;
                 if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
-                    if (!currentGame.processMove(startSquare, finalSquare) && currentGame.currentPlayer.isInCheck()) {
+                    char key = 'Q';
+                    if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Promotion-Option");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Your Pawn should change to:");
+
+                        ButtonType buttonTypeOne = new ButtonType("Rook");
+                        ButtonType buttonTypeTwo = new ButtonType("Knight");
+                        ButtonType buttonTypeThree = new ButtonType("Bishop");
+                        ButtonType buttonTypeFour = new ButtonType("Queen");
+
+                        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour);
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == buttonTypeOne){
+                            key = 'R';
+                        } else if (result.get() == buttonTypeTwo) {
+                            key = 'N';
+                        } else if (result.get() == buttonTypeThree) {
+                            key = 'B';
+                        } else {
+                            key = 'Q';
+                        }
+                    }
+                    if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
                         currentGame.squareStart = null;
                         currentGame.squareFinal = null;
-                        return false;
+                        return 1;
                     }
                 } else {
                     currentGame.squareStart = null;
                     currentGame.squareFinal = null;
-                    return false;
+                    return 2;
                 }
                 currentGame.squareStart = null;
                 currentGame.squareFinal = null;
-                return true;
+                return 0;
             }
         }
-        else{
-            //TODO what if loser or draw is true
-        }
-        return false;
+        return 3;
     }
 
     public HBox generateBeatenPieces(Game game){
@@ -213,16 +237,31 @@ public class ChessBoardView extends BorderPane{
                     public void handle(ActionEvent event) {
                         game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
                         if(game.squareStart != null && game.squareFinal != null){
-                            if(processingMovement(game)){
+                            int result = processingMovement(game);
+                            if(result == 0){
                                 setCenter(generateButtonGrid(game));
                                 setBottom(generateBeatenPieces(game));
                                 setTop(new HBox(generatePlayersMoveLabel(game)));
                             }
-                            else {
+                            else if (result == 1){
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Movement-Error");
                                 alert.setHeaderText(null);
-                                alert.setContentText("Move not allowed!");
+                                alert.setContentText("Move not allowed: Would be Check");
+                                alert.showAndWait();
+                            }
+                            else if (result == 2){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Movement-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Move not allowed: Not possible");
+                                alert.showAndWait();
+                            }
+                            else if (result == 3){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("CheckMate or Draw");
                                 alert.showAndWait();
                             }
                         }
