@@ -90,7 +90,13 @@ public class ChessBoardView extends BorderPane{
                 return 0;
             }
         }
-        return 3;
+        if(currentGame.currentPlayer.isLoser()){
+            return 3;
+        }
+        if(currentGame.isADraw()){
+            return 4;
+        }
+        return 5;
     }
 
     public HBox generateBeatenPieces(Game game){
@@ -259,9 +265,23 @@ public class ChessBoardView extends BorderPane{
                             }
                             else if (result == 3){
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("CheckMate");
+                                alert.showAndWait();
+                            }
+                            else if (result == 4){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Draw");
+                                alert.showAndWait();
+                            }
+                            else if (result == 5){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Game-Error");
                                 alert.setHeaderText(null);
-                                alert.setContentText("CheckMate or Draw");
+                                alert.setContentText("Something unexpected happened!?");
                                 alert.showAndWait();
                             }
                         }
