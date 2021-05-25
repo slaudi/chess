@@ -374,5 +374,49 @@ public class Game {
         }
         else this.setSquareFinal(square);
     }
+
+    public boolean processMove(Square startSquare, Square finalSquare) {//NOPMD to process a move all if-clauses are needed here      //Move-Proccessing for GUI
+        Move currentMove = new Move(startSquare, finalSquare);
+        Piece selectedPiece = startSquare.getOccupiedBy();
+        Piece targetPiece = finalSquare.getOccupiedBy();
+        List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+        if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard)) {
+            // move is castling, afterwards never in check -> is covered in canDoCastling()
+            currentMove.castlingMove(this.chessBoard);
+        } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
+            // move is an en passant capture
+            Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
+            currentMove.enPassantMove(lastEnemyMove, this.chessBoard);
+            Piece enemy = lastEnemyMove.getMovingPiece();
+            this.beatenPieces.add(enemy);
+            if (isInCheck()) {
+                // King is in check, undo en passant
+                currentMove.undoEnPassant(enemy, lastEnemyMove, this.chessBoard);
+                this.beatenPieces.remove(enemy);
+                return false;
+            }
+        } else {
+            currentMove.doMove(this.chessBoard);
+            if (targetPiece != null) {
+                // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
+                beatenPieces.add(targetPiece);
+            }
+            if (!canMoveStay(targetPiece, currentMove) || isInCheck()) {
+                // move puts own King in check, undo move
+                return false;
+            }
+            if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
+                // move allows promotion
+                //TODO Promotion without key. Instead PopUp.
+                currentMove.doPromotion(this.chessBoard);
+            }
+        }
+        this.moveHistory.add(currentMove);
+        selectedPiece.setSquare(finalSquare);
+        selectedPiece.setNotMoved(false);
+        changePlayer();
+        isInCheck();
+        return true;
+    }
 }
 

@@ -2,6 +2,8 @@ package chess.gui;
 
 import chess.game.*;
 import chess.pieces.Piece;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +21,7 @@ public class ChessBoardView extends BorderPane{
 
 
 
-        HBox heading = new HBox(new Label("CHESS"));
+        HBox heading = new HBox(generatePlayersMoveLabel(game));
         HBox bottom = generateBeatenPieces(game);
         VBox right = new VBox(new Label("RIGHT"), new Button("Options"));
         GridPane center = generateButtonGrid(game);
@@ -32,6 +34,38 @@ public class ChessBoardView extends BorderPane{
         setRight(right);
         setTop(heading);
         setBottom(bottom);
+    }
+    public Label generatePlayersMoveLabel(Game game){
+        Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
+        return label;
+    }
+
+    public boolean processingMovement(Game currentGame) {
+        if(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
+            if (currentGame.squareStart != null && currentGame.squareFinal != null) {
+                Piece selectedPiece = currentGame.squareStart.getOccupiedBy();
+                Square startSquare = currentGame.squareStart;
+                Square finalSquare = currentGame.squareFinal;
+                if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
+                    if (!currentGame.processMove(startSquare, finalSquare) && currentGame.currentPlayer.isInCheck()) {
+                        currentGame.squareStart = null;
+                        currentGame.squareFinal = null;
+                        return false;
+                    }
+                } else {
+                    currentGame.squareStart = null;
+                    currentGame.squareFinal = null;
+                    return false;
+                }
+                currentGame.squareStart = null;
+                currentGame.squareFinal = null;
+                return true;
+            }
+        }
+        else{
+            //TODO what if loser or draw is true
+        }
+        return false;
     }
 
     public HBox generateBeatenPieces(Game game){
@@ -173,7 +207,23 @@ public class ChessBoardView extends BorderPane{
                 btn.setGraphic(chooseImage(game.chessBoard.getSquareAt(x, y)));
                 int finalX = x;
                 int finalY = y;
-                btn.setOnAction(event -> game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY)));
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+
+                        if(game.squareStart != null && game.squareFinal != null){
+                            if(processingMovement(game)){
+                                setCenter(generateButtonGrid(game));
+                                setBottom(generateBeatenPieces(game));
+                                setTop(new HBox(generatePlayersMoveLabel(game)));
+                            }
+                            //if(processingMovement(game)){
+                            //    generateButtonGrid(game);
+                            //}
+                        }
+                    }
+                });
                 grid.add(btn, x, y);
             }
             grid.add(new Label("TODO"), 8 , y);

@@ -183,4 +183,34 @@ public class Move {
 
     }
 
+    //Promotion in GUI without key
+
+    void doPromotion(Board board) {
+        char key = 'Q';
+        this.movingPiece.getSquare().setOccupiedBy(null);
+        Piece piece = null;
+        int promo_x = this.finalSquare.getX();
+        int promo_y = this.finalSquare.getY();
+        if(key == 'Q' || key == ' ') {
+            piece = new Queen(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
+        } else if (key == 'R') {
+            piece = new Rook(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
+        } else if (key == 'N') {
+            piece = new Knight(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
+        } else if (key == 'B'){
+            piece = new Bishop(this.finalSquare, this.movingPiece.getColour());
+            board.getBoard()[promo_x][promo_y].setOccupiedBy(piece);
+        }
+        Colour colour = movingPiece.getColour();
+        if (colour == Colour.WHITE) {
+            board.addWhiteAlliance(piece);
+        } else {
+            board.addBlackAlliance(piece);
+        }
+
+    }
+
 }

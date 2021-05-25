@@ -1,6 +1,9 @@
 package chess.gui;
 
+import chess.cli.Cli;
 import chess.game.Game;
+import chess.game.Square;
+import chess.pieces.Piece;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,13 +20,17 @@ public class Gui extends Application {
      * @param primaryStage The initial root stage of the application.
      */
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InterruptedException {
         primaryStage.setTitle("Hello Chess!");
-        Game game = new Game();
-
-        ChessBoardView testChessView = new ChessBoardView(game);
-        primaryStage.setScene(new Scene(testChessView));
+        Game currentGame = new Game();
+        ChessBoardView chessBoardView = new ChessBoardView(currentGame);
+        Scene chessScene = new Scene(chessBoardView);
+        primaryStage.setScene(chessScene);
         primaryStage.show();
+        /**
+        java.lang.Thread.sleep(6000);
+
+         */
     }
 
     /**
