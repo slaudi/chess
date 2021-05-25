@@ -5,6 +5,7 @@ import chess.pieces.Piece;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -211,16 +212,19 @@ public class ChessBoardView extends BorderPane{
                     @Override
                     public void handle(ActionEvent event) {
                         game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-
                         if(game.squareStart != null && game.squareFinal != null){
                             if(processingMovement(game)){
                                 setCenter(generateButtonGrid(game));
                                 setBottom(generateBeatenPieces(game));
                                 setTop(new HBox(generatePlayersMoveLabel(game)));
                             }
-                            //if(processingMovement(game)){
-                            //    generateButtonGrid(game);
-                            //}
+                            else {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Movement-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Move not allowed!");
+                                alert.showAndWait();
+                            }
                         }
                     }
                 });

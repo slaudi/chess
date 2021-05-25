@@ -27,10 +27,6 @@ public class Gui extends Application {
         Scene chessScene = new Scene(chessBoardView);
         primaryStage.setScene(chessScene);
         primaryStage.show();
-        /**
-        java.lang.Thread.sleep(6000);
-
-         */
     }
 
     /**
