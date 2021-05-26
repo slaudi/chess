@@ -48,10 +48,10 @@ public class ChessBoardView extends BorderPane{
 
     public int processingMovement(Game currentGame) {
         if(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
-            if (currentGame.squareStart != null && currentGame.squareFinal != null) {
-                Piece selectedPiece = currentGame.squareStart.getOccupiedBy();
-                Square startSquare = currentGame.squareStart;
-                Square finalSquare = currentGame.squareFinal;
+            if (currentGame.getSquareStart() != null && currentGame.getSquareFinal() != null) {
+                Piece selectedPiece = currentGame.getSquareStart().getOccupiedBy();
+                Square startSquare = currentGame.getSquareStart();
+                Square finalSquare = currentGame.getSquareFinal();
                 if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
                     char key = 'Q';
                     if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
@@ -79,17 +79,17 @@ public class ChessBoardView extends BorderPane{
                         }
                     }
                     if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
-                        currentGame.squareStart = null;
-                        currentGame.squareFinal = null;
+                        currentGame.setSquareStart(null);
+                        currentGame.setSquareFinal(null);
                         return 1;
                     }
                 } else {
-                    currentGame.squareStart = null;
-                    currentGame.squareFinal = null;
+                    currentGame.setSquareStart(null);
+                    currentGame.setSquareFinal(null);
                     return 2;
                 }
-                currentGame.squareStart = null;
-                currentGame.squareFinal = null;
+                currentGame.setSquareStart(null);
+                currentGame.setSquareFinal(null);
                 return 0;
             }
         }
@@ -245,7 +245,7 @@ public class ChessBoardView extends BorderPane{
                     @Override
                     public void handle(ActionEvent event) {
                         game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                        if(game.squareStart != null && game.squareFinal != null){
+                        if(game.getSquareStart() != null && game.getSquareFinal() != null){
                             int result = processingMovement(game);
                             if(result == 0){
                                 setCenter(generateButtonGrid(game));
@@ -288,8 +288,8 @@ public class ChessBoardView extends BorderPane{
                                 alert.showAndWait();
                             }
                         }
-                        if(game.squareStart != null && game.squareFinal == null){
-                            setCenter(generateHighlightedButtonGrid(game, game.squareStart.getOccupiedBy()));
+                        if(game.getSquareStart() != null && game.getSquareFinal() == null){
+                            setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
                         }
                     }
                 });
@@ -333,7 +333,7 @@ public class ChessBoardView extends BorderPane{
                     @Override
                     public void handle(ActionEvent event) {
                         game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                        if(game.squareStart != null && game.squareFinal != null){
+                        if(game.getSquareStart() != null && game.getSquareFinal() != null){
                             int result = processingMovement(game);
                             if(result == 0){
                                 setCenter(generateButtonGrid(game));
@@ -376,8 +376,8 @@ public class ChessBoardView extends BorderPane{
                                 alert.showAndWait();
                             }
                         }
-                        if(game.squareStart != null && game.squareFinal == null){
-                            setCenter(generateHighlightedButtonGrid(game, game.squareStart.getOccupiedBy()));
+                        if(game.getSquareStart() != null && game.getSquareFinal() == null){
+                            setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
                         }
                     }
                 });
