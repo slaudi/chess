@@ -32,8 +32,8 @@ public class Game {
      */
     public final List<Piece> beatenPieces;
     private final Stack<Move> moveHistory;
-    public Square squareStart;                  // Helper-Attributs for Moving in GUI
-    public Square squareFinal;
+    Square squareStart;                  // Helper-Attributs for Moving in GUI
+    Square squareFinal;
 
 
     /**
@@ -43,9 +43,11 @@ public class Game {
         this.playerWhite = new Player(Colour.WHITE);
         this.playerBlack = new Player(Colour.BLACK);
         this.currentPlayer = playerWhite;   // White always begins
+
         this.chessBoard = new Board(8,8);
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new Stack<>();
+
         this.squareStart = null;
         this.squareFinal = null;
     }
@@ -109,9 +111,10 @@ public class Game {
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+
         if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard)) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
-            currentMove.castlingMove(this.chessBoard);
+            currentMove.castlingMove(this.chessBoard); // TODO: Kopie des Bretts, darauf Züge, dann ohne sie zurück nehmen zu müssen altes Brett noch da?
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
             Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
@@ -130,7 +133,7 @@ public class Game {
                 // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
                 beatenPieces.add(targetPiece);
             }
-            if (!canMoveStay(targetPiece, currentMove) || isInCheck()) {
+            if (!canMoveStay(targetPiece, currentMove) || isInCheck()/*TODO: warum nochmal?*/) {
                 // move puts own King in check, undo move
                 return false;
             }
@@ -143,7 +146,7 @@ public class Game {
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setNotMoved(false);
         changePlayer();
-        isInCheck();
+        isInCheck(); //TODO: warum nochmal?
         return true;
     }
 
@@ -371,8 +374,9 @@ public class Game {
     public void setBothMovingSquares(Square square){
         if(this.getSquareStart() == null){
             this.setSquareStart(square);
+        } else {
+            this.setSquareFinal(square);
         }
-        else this.setSquareFinal(square);
     }
 
     public boolean processMove(Square startSquare, Square finalSquare) {//NOPMD to process a move all if-clauses are needed here      //Move-Proccessing for GUI
