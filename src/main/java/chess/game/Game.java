@@ -80,14 +80,14 @@ public class Game {
             }
         // final square is empty
         } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
-                Move lastEnemyMove = this.moveHistory.peek();
-                Square start = lastEnemyMove.getStartSquare();
-                Square end = lastEnemyMove.getFinalSquare();
-                int diff_enemy = start.getY() - end.getY();
-                if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
-                    // is en passant possible
-                    return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
-                }
+            Move lastEnemyMove = this.moveHistory.peek();
+            Square start = lastEnemyMove.getStartSquare();
+            Square end = lastEnemyMove.getFinalSquare();
+            int diff_enemy = start.getY() - end.getY();
+            if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
+                // is en passant possible
+                return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
+            }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
             return ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard);
@@ -114,7 +114,7 @@ public class Game {
 
         if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard)) {
             // move is castling, afterwards never in check -> is covered in canDoCastling()
-            currentMove.castlingMove(this.chessBoard); // TODO: Kopie des Bretts, darauf Züge, dann ohne sie zurück nehmen zu müssen altes Brett noch da?
+            currentMove.castlingMove(this.chessBoard);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
             Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
@@ -133,7 +133,7 @@ public class Game {
                 // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
                 beatenPieces.add(targetPiece);
             }
-            if (!canMoveStay(targetPiece, currentMove) || isInCheck()/*TODO: warum nochmal?*/) {
+            if (!canMoveStay(targetPiece, currentMove)) {
                 // move puts own King in check, undo move
                 return false;
             }
@@ -146,7 +146,6 @@ public class Game {
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setNotMoved(false);
         changePlayer();
-        isInCheck(); //TODO: warum nochmal?
         return true;
     }
 
@@ -295,7 +294,7 @@ public class Game {
         } else {
             assert enemyPiece instanceof Pawn;
             return ((Pawn) enemyPiece).canCapture(kingSquare);
-            }
+        }
     }
 
     /**
@@ -374,7 +373,8 @@ public class Game {
     public void setBothMovingSquares(Square square){
         if(this.getSquareStart() == null){
             this.setSquareStart(square);
-        } else {
+        }
+        else {
             this.setSquareFinal(square);
         }
     }

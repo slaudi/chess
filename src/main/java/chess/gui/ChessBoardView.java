@@ -3,8 +3,6 @@ package chess.gui;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -114,18 +113,18 @@ public class ChessBoardView extends BorderPane{
     }
 
     public ImageView chooseImage(Type type, Colour colour){
-        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png"));
-        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png"));
-        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png"));
-        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png"));
-        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png"));
-        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png"));
-        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png"));
-        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png"));
-        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png"));
-        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png"));
-        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png"));
-        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png"));
+        Image BlackPawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png")));
+        Image WhitePawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png")));
+        Image BlackRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png")));
+        Image WhiteRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png")));
+        Image BlackKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png")));
+        Image WhiteKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png")));
+        Image BlackBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png")));
+        Image WhiteBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png")));
+        Image BlackQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png")));
+        Image WhiteQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png")));
+        Image BlackKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png")));
+        Image WhiteKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png")));
 
         int imageHeight = 50;
         int imageWidth = 50;
@@ -241,56 +240,53 @@ public class ChessBoardView extends BorderPane{
                 btn.setGraphic(chooseImage(game.chessBoard.getSquareAt(x, y)));
                 int finalX = x;
                 int finalY = y;
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                        if(game.getSquareStart() != null && game.getSquareFinal() != null){
-                            int result = processingMovement(game);
-                            if(result == 0){
-                                setCenter(generateButtonGrid(game));
-                                setBottom(generateBeatenPieces(game));
-                                setTop(generatePlayersMoveLabelBox(game));
-                            }
-                            else if (result == 1){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Movement-Error");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Move not allowed: Would be Check");
-                                alert.showAndWait();
-                            }
-                            else if (result == 2){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Movement-Error");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Move not allowed: Not possible");
-                                alert.showAndWait();
-                            }
-                            else if (result == 3){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Game-Information");
-                                alert.setHeaderText(null);
-                                alert.setContentText("CheckMate");
-                                alert.showAndWait();
-                            }
-                            else if (result == 4){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Game-Information");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Draw");
-                                alert.showAndWait();
-                            }
-                            else if (result == 5){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Game-Error");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Something unexpected happened!?");
-                                alert.showAndWait();
-                            }
+                btn.setOnAction(event -> {
+                    game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+                    if(game.getSquareStart() != null && game.getSquareFinal() != null){
+                        int result = processingMovement(game);
+                        if(result == 0){
+                            setCenter(generateButtonGrid(game));
+                            setBottom(generateBeatenPieces(game));
+                            setTop(generatePlayersMoveLabelBox(game));
                         }
-                        if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                            setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
+                        else if (result == 1){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Movement-Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Move not allowed: Would be Check");
+                            alert.showAndWait();
                         }
+                        else if (result == 2){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Movement-Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Move not allowed: Not possible");
+                            alert.showAndWait();
+                        }
+                        else if (result == 3){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Game-Information");
+                            alert.setHeaderText(null);
+                            alert.setContentText("CheckMate");
+                            alert.showAndWait();
+                        }
+                        else if (result == 4){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Game-Information");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Draw");
+                            alert.showAndWait();
+                        }
+                        else if (result == 5){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Game-Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Something unexpected happened!?");
+                            alert.showAndWait();
+                        }
+                    }
+                    if(game.getSquareStart() != null && game.getSquareFinal() == null){
+                        setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
                     }
                 });
                 grid.add(btn, x, y);
@@ -329,56 +325,53 @@ public class ChessBoardView extends BorderPane{
                 }
                 int finalX = x;
                 int finalY = y;
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                        if(game.getSquareStart() != null && game.getSquareFinal() != null){
-                            int result = processingMovement(game);
-                            if(result == 0){
-                                setCenter(generateButtonGrid(game));
-                                setBottom(generateBeatenPieces(game));
-                                setTop(generatePlayersMoveLabelBox(game));
-                            }
-                            else if (result == 1){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Movement-Error");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Move not allowed: Would be Check");
-                                alert.showAndWait();
-                            }
-                            else if (result == 2){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Movement-Error");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Move not allowed: Not possible");
-                                alert.showAndWait();
-                            }
-                            else if (result == 3){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Game-Information");
-                                alert.setHeaderText(null);
-                                alert.setContentText("CheckMate");
-                                alert.showAndWait();
-                            }
-                            else if (result == 4){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Game-Information");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Draw");
-                                alert.showAndWait();
-                            }
-                            else if (result == 5){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Game-Error");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Something unexpected happened!?");
-                                alert.showAndWait();
-                            }
+                btn.setOnAction(event -> {
+                    game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+                    if(game.getSquareStart() != null && game.getSquareFinal() != null){
+                        int result = processingMovement(game);
+                        if(result == 0){
+                            setCenter(generateButtonGrid(game));
+                            setBottom(generateBeatenPieces(game));
+                            setTop(generatePlayersMoveLabelBox(game));
                         }
-                        if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                            setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
+                        else if (result == 1){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Movement-Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Move not allowed: Would be Check");
+                            alert.showAndWait();
                         }
+                        else if (result == 2){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Movement-Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Move not allowed: Not possible");
+                            alert.showAndWait();
+                        }
+                        else if (result == 3){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Game-Information");
+                            alert.setHeaderText(null);
+                            alert.setContentText("CheckMate");
+                            alert.showAndWait();
+                        }
+                        else if (result == 4){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Game-Information");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Draw");
+                            alert.showAndWait();
+                        }
+                        else if (result == 5){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Game-Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Something unexpected happened!?");
+                            alert.showAndWait();
+                        }
+                    }
+                    if(game.getSquareStart() != null && game.getSquareFinal() == null){
+                        setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
                     }
                 });
                 grid.add(btn, x, y);
@@ -397,32 +390,32 @@ public class ChessBoardView extends BorderPane{
     }
 
     public ImageView chooseImage(Square square){
-        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png"));
-        Image BlackPawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlack.png"));
-        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png"));
-        Image WhitePawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlack.png"));
-        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png"));
-        Image BlackRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnBlack.png"));
-        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png"));
-        Image WhiteRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlack.png"));
-        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png"));
-        Image BlackKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlack.png"));
-        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png"));
-        Image WhiteKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlack.png"));
-        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png"));
-        Image BlackBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlack.png"));
-        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png"));
-        Image WhiteBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlack.png"));
-        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png"));
-        Image BlackQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlack.png"));
-        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png"));
-        Image WhiteQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlack.png"));
-        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png"));
-        Image BlackKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnBlack.png"));
-        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png"));
-        Image WhiteKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlack.png"));
-        Image EmptyWhite = new Image(ChessBoardView.class.getResourceAsStream("emptyWhite.png"));
-        Image EmptyBlack = new Image(ChessBoardView.class.getResourceAsStream("emptyBlack.png"));
+        Image BlackPawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png")));
+        Image BlackPawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlack.png")));
+        Image WhitePawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png")));
+        Image WhitePawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlack.png")));
+        Image BlackRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png")));
+        Image BlackRookOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnBlack.png")));
+        Image WhiteRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png")));
+        Image WhiteRookOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlack.png")));
+        Image BlackKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png")));
+        Image BlackKnightOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlack.png")));
+        Image WhiteKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png")));
+        Image WhiteKnightOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlack.png")));
+        Image BlackBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png")));
+        Image BlackBishopOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlack.png")));
+        Image WhiteBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png")));
+        Image WhiteBishopOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlack.png")));
+        Image BlackQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png")));
+        Image BlackQueenOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlack.png")));
+        Image WhiteQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png")));
+        Image WhiteQueenOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlack.png")));
+        Image BlackKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png")));
+        Image BlackKingOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnBlack.png")));
+        Image WhiteKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png")));
+        Image WhiteKingOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlack.png")));
+        Image EmptyWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyWhite.png")));
+        Image EmptyBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyBlack.png")));
 
         int imageHeight = 60;
         int imageWidth = 60;
@@ -650,32 +643,32 @@ public class ChessBoardView extends BorderPane{
         return null;
     }
     public ImageView chooseHighlightedImage(Square square){
-        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhiteX.png"));
-        Image BlackPawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlackX.png"));
-        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhiteX.png"));
-        Image WhitePawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlackX.png"));
-        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhiteX.png"));
-        Image BlackRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnBlackX.png"));
-        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhiteX.png"));
-        Image WhiteRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlackX.png"));
-        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhiteX.png"));
-        Image BlackKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlackX.png"));
-        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhiteX.png"));
-        Image WhiteKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlackX.png"));
-        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhiteX.png"));
-        Image BlackBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlackX.png"));
-        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhiteX.png"));
-        Image WhiteBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlackX.png"));
-        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhiteX.png"));
-        Image BlackQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlackX.png"));
-        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhiteX.png"));
-        Image WhiteQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlackX.png"));
-        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhiteX.png"));
-        Image BlackKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnBlackX.png"));
-        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhiteX.png"));
-        Image WhiteKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlackX.png"));
-        Image EmptyWhite = new Image(ChessBoardView.class.getResourceAsStream("emptyWhiteX.png"));
-        Image EmptyBlack = new Image(ChessBoardView.class.getResourceAsStream("emptyBlackX.png"));
+        Image BlackPawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhiteX.png")));
+        Image BlackPawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlackX.png")));
+        Image WhitePawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhiteX.png")));
+        Image WhitePawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlackX.png")));
+        Image BlackRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnWhiteX.png")));
+        Image BlackRookOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnBlackX.png")));
+        Image WhiteRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhiteX.png")));
+        Image WhiteRookOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlackX.png")));
+        Image BlackKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhiteX.png")));
+        Image BlackKnightOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlackX.png")));
+        Image WhiteKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhiteX.png")));
+        Image WhiteKnightOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlackX.png")));
+        Image BlackBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhiteX.png")));
+        Image BlackBishopOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlackX.png")));
+        Image WhiteBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhiteX.png")));
+        Image WhiteBishopOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlackX.png")));
+        Image BlackQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhiteX.png")));
+        Image BlackQueenOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlackX.png")));
+        Image WhiteQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhiteX.png")));
+        Image WhiteQueenOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlackX.png")));
+        Image BlackKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnWhiteX.png")));
+        Image BlackKingOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnBlackX.png")));
+        Image WhiteKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhiteX.png")));
+        Image WhiteKingOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlackX.png")));
+        Image EmptyWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyWhiteX.png")));
+        Image EmptyBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyBlackX.png")));
 
         int imageHeight = 60;
         int imageWidth = 60;

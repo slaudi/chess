@@ -26,8 +26,7 @@ public class EvaluatePieces implements Evaluation{
                 }
             }
         }
-
-        return 0;
+        return sum;
     }
 
     /**

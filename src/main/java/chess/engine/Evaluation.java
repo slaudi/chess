@@ -8,11 +8,11 @@ import chess.game.Colour;
  */
 public interface Evaluation {
 
-    int best_Score = Integer.MAX_VALUE;
+    int bestScore = Integer.MAX_VALUE;
 
-    int worst_Score = Integer.MIN_VALUE;
+    int worstScore = Integer.MIN_VALUE;
 
-    int balanced_Score = 0;
+    int balancedScore = 0;
 
     /**
      * Evaluates the current board based on the Pieces on it from the point of view
