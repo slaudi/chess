@@ -82,14 +82,14 @@ public class Game {
         if (targetPiece != null) {
             // the final Square is occupied by another piece
             if (targetPiece.getColour() != selectedPiece.getColour()) {
-                // you can't attack your own Pieces
                 if (selectedPiece.getType() == Type.PAWN) {
                     // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
                     return ((Pawn) selectedPiece).canCapture(finalSquare);
                 } else {
                     return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
                 }
-            } else if (targetPiece.getColour() == selectedPiece.getColour()) {
+            } else {
+                // target piece is ally
                 return false;
             }
         // final square is empty
@@ -100,7 +100,7 @@ public class Game {
                 int diff_enemy = start.getY() - end.getY();
                 if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
                     // is en passant possible
-                    return ((Pawn) selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
+                    return ((Pawn)selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
                 }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
