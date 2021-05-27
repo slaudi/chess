@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -37,11 +38,124 @@ public class ChessBoardView extends BorderPane{
         setBottom(bottom);
     }
 
+    Image BlackPawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png")));
+    Image BlackPawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlack.png")));
+    Image WhitePawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png")));
+    Image WhitePawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlack.png")));
+    Image BlackRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png")));
+    Image BlackRookOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnBlack.png")));
+    Image WhiteRookOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png")));
+    Image WhiteRookOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlack.png")));
+    Image BlackKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png")));
+    Image BlackKnightOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlack.png")));
+    Image WhiteKnightOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png")));
+    Image WhiteKnightOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlack.png")));
+    Image BlackBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png")));
+    Image BlackBishopOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlack.png")));
+    Image WhiteBishopOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png")));
+    Image WhiteBishopOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlack.png")));
+    Image BlackQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png")));
+    Image BlackQueenOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlack.png")));
+    Image WhiteQueenOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png")));
+    Image WhiteQueenOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlack.png")));
+    Image BlackKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png")));
+    Image BlackKingOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnBlack.png")));
+    Image WhiteKingOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png")));
+    Image WhiteKingOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlack.png")));
+    Image EmptyWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyWhite.png")));
+    Image EmptyBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyBlack.png")));
+
+    Image BlackPawnOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhiteX.png")));
+    Image BlackPawnOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlackX.png")));
+    Image WhitePawnOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhiteX.png")));
+    Image WhitePawnOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlackX.png")));
+    Image BlackRookOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnWhiteX.png")));
+    Image BlackRookOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackRookOnBlackX.png")));
+    Image WhiteRookOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhiteX.png")));
+    Image WhiteRookOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlackX.png")));
+    Image BlackKnightOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhiteX.png")));
+    Image BlackKnightOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlackX.png")));
+    Image WhiteKnightOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhiteX.png")));
+    Image WhiteKnightOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlackX.png")));
+    Image BlackBishopOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhiteX.png")));
+    Image BlackBishopOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlackX.png")));
+    Image WhiteBishopOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhiteX.png")));
+    Image WhiteBishopOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlackX.png")));
+    Image BlackQueenOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhiteX.png")));
+    Image BlackQueenOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlackX.png")));
+    Image WhiteQueenOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhiteX.png")));
+    Image WhiteQueenOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlackX.png")));
+    Image BlackKingOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnWhiteX.png")));
+    Image BlackKingOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackKingOnBlackX.png")));
+    Image WhiteKingOnWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhiteX.png")));
+    Image WhiteKingOnBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlackX.png")));
+    Image EmptyWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyWhiteX.png")));
+    Image EmptyBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyBlackX.png")));
+
+
+
     public VBox generateRightMarginColumn(Game game){
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                String isBoardRotationStatus;
+                String hightlightPossibleMoveStatus;
+                String allowedChangeSelectedPieceStatus;
+                String hintInCheckStatus;
+                if(game.isRotatingBoard){
+                    isBoardRotationStatus = "ON";
+                }
+                else isBoardRotationStatus = "OFF";
+                if(game.highlightPossibleMoves){
+                    hightlightPossibleMoveStatus = "ON";
+                }
+                else hightlightPossibleMoveStatus = "OFF";
+                if(game.allowedToChangeSelectedPiece){
+                    allowedChangeSelectedPieceStatus = "ON";
+                }
+                else allowedChangeSelectedPieceStatus = "OFF";
+                if(game.hintInCheck){
+                    hintInCheckStatus = "ON";
+                }
+                else hintInCheckStatus = "OFF";
+
+                Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
+                alerti.setTitle("Game-Settings");
+                alerti.setHeaderText(" ChessBoard-Rotation is " + isBoardRotationStatus + "\n Highlighting of possible Moves is " + hightlightPossibleMoveStatus + "\n Allowed to change selected Piece is " + allowedChangeSelectedPieceStatus + "\n Check-Notifications are " + hintInCheckStatus);
+                alerti.setContentText("Choose Option you want to Change:");
+
+                ButtonType buttonTypeOne = new ButtonType("Rotation");
+                ButtonType buttonTypeTwo = new ButtonType("MoveHighlighting");
+                ButtonType buttonTypeThree = new ButtonType("Change Selected Piece");
+                ButtonType buttonTypeFour = new ButtonType("CheckHints");
+                ButtonType buttonTypeFive = new ButtonType("Start New Game");
+                ButtonType buttonTypeSix = new ButtonType("Cancel");
+
+                alerti.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeFive, buttonTypeSix);
+
+                Optional<ButtonType> result = alerti.showAndWait();
+                if (result.get() == buttonTypeOne){
+                    game.isRotatingBoard = !game.isRotatingBoard;
+                } else if (result.get() == buttonTypeTwo) {
+                    game.highlightPossibleMoves = !game.highlightPossibleMoves;
+                } else if (result.get() == buttonTypeThree) {
+                    game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
+                } else if (result.get() == buttonTypeFour) {
+                    game.hintInCheck = !game.hintInCheck;
+                } else if (result.get() == buttonTypeFive) {
+                    Alert alerto = new Alert(Alert.AlertType.CONFIRMATION);
+                    alerto.setTitle("New Game?");
+                    alerto.setHeaderText(null);
+                    alerto.setContentText("Do you really want to start a new Game?");
+
+                    Optional<ButtonType> resulto = alerto.showAndWait();
+                    if (resulto.get() == ButtonType.OK){
+                        Game game = new Game();
+                    }  //user chose CANCEL or closed the dialog
+
+                }  //user chose CANCEL or closed the dialog
+
 
             }
         });
@@ -83,11 +197,7 @@ public class ChessBoardView extends BorderPane{
             alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonTypeOne){
-                game.enemyIsHuman = true;
-            } else {
-                game.enemyIsHuman = false;
-            }
+            game.enemyIsHuman = result.get() == buttonTypeOne;
             if(!game.enemyIsHuman) {
                 Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
                 alert2.setTitle("Welcome to a new Game of Chess");
@@ -106,9 +216,18 @@ public class ChessBoardView extends BorderPane{
                     game.userColour = Colour.BLACK;
                 }
             }
+            game.freshGame = false;
         }
         Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
-        return new HBox(label);
+        String currentPlayerIsInCheck = "       ";
+        if (game.hintInCheck){
+            if(game.currentPlayer.isInCheck()){
+                currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
+            }
+        }
+        Label checkLabel = new Label(currentPlayerIsInCheck);
+        currentPlayerIsInCheck = "       ";
+        return new HBox(label, checkLabel);
     }
 
     public int processingMovement(Game currentGame) {
@@ -184,126 +303,6 @@ public class ChessBoardView extends BorderPane{
         return box;
     }
 
-    public ImageView chooseImage(Type type, Colour colour){
-        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png"));
-        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png"));
-        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png"));
-        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png"));
-        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png"));
-        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png"));
-        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png"));
-        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png"));
-        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png"));
-        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png"));
-        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png"));
-        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png"));
-
-        int imageHeight = 50;
-        int imageWidth = 50;
-
-        ImageView blackPawnOnWhiteView = new ImageView();
-        blackPawnOnWhiteView.setFitHeight(imageHeight);
-        blackPawnOnWhiteView.setFitWidth(imageWidth);
-        blackPawnOnWhiteView.setImage(BlackPawnOnWhite);
-
-        ImageView whitePawnOnWhiteView = new ImageView();
-        whitePawnOnWhiteView.setFitHeight(imageHeight);
-        whitePawnOnWhiteView.setFitWidth(imageWidth);
-        whitePawnOnWhiteView.setImage(WhitePawnOnWhite);
-
-        ImageView blackRookOnWhiteView = new ImageView();
-        blackRookOnWhiteView.setFitHeight(imageHeight);
-        blackRookOnWhiteView.setFitWidth(imageWidth);
-        blackRookOnWhiteView.setImage(BlackRookOnWhite);
-
-        ImageView whiteRookOnWhiteView = new ImageView();
-        whiteRookOnWhiteView.setFitHeight(imageHeight);
-        whiteRookOnWhiteView.setFitWidth(imageWidth);
-        whiteRookOnWhiteView.setImage(WhiteRookOnWhite);
-
-        ImageView blackKnightOnWhiteView = new ImageView();
-        blackKnightOnWhiteView.setFitHeight(imageHeight);
-        blackKnightOnWhiteView.setFitWidth(imageWidth);
-        blackKnightOnWhiteView.setImage(BlackKnightOnWhite);
-
-        ImageView whiteKnightOnWhiteView = new ImageView();
-        whiteKnightOnWhiteView.setFitHeight(imageHeight);
-        whiteKnightOnWhiteView.setFitWidth(imageWidth);
-        whiteKnightOnWhiteView.setImage(WhiteKnightOnWhite);
-
-        ImageView blackBishopOnWhiteView = new ImageView();
-        blackBishopOnWhiteView.setFitHeight(imageHeight);
-        blackBishopOnWhiteView.setFitWidth(imageWidth);
-        blackBishopOnWhiteView.setImage(BlackBishopOnWhite);
-
-        ImageView whiteBishopOnWhiteView = new ImageView();
-        whiteBishopOnWhiteView.setFitHeight(imageHeight);
-        whiteBishopOnWhiteView.setFitWidth(imageWidth);
-        whiteBishopOnWhiteView.setImage(WhiteBishopOnWhite);
-
-        ImageView blackQueenOnWhiteView = new ImageView();
-        blackQueenOnWhiteView.setFitHeight(imageHeight);
-        blackQueenOnWhiteView.setFitWidth(imageWidth);
-        blackQueenOnWhiteView.setImage(BlackQueenOnWhite);
-
-        ImageView whiteQueenOnWhiteView = new ImageView();
-        whiteQueenOnWhiteView.setFitHeight(imageHeight);
-        whiteQueenOnWhiteView.setFitWidth(imageWidth);
-        whiteQueenOnWhiteView.setImage(WhiteQueenOnWhite);
-
-        ImageView blackKingOnWhiteView = new ImageView();
-        blackKingOnWhiteView.setFitHeight(imageHeight);
-        blackKingOnWhiteView.setFitWidth(imageWidth);
-        blackKingOnWhiteView.setImage(BlackKingOnWhite);
-
-        ImageView whiteKingOnWhiteView = new ImageView();
-        whiteKingOnWhiteView.setFitHeight(imageHeight);
-        whiteKingOnWhiteView.setFitWidth(imageWidth);
-        whiteKingOnWhiteView.setImage(WhiteKingOnWhite);
-
-        if (colour == Colour.WHITE){
-            if (type == Type.PAWN){
-                return whitePawnOnWhiteView;
-            }
-            else if (type == Type.ROOK){
-                return whiteRookOnWhiteView;
-            }
-            else if (type == Type.KNIGHT){
-                return whiteKnightOnWhiteView;
-            }
-            else if (type == Type.BISHOP){
-                return whiteBishopOnWhiteView;
-            }
-            else if (type == Type.QUEEN){
-                return whiteQueenOnWhiteView;
-            }
-            else if (type == Type.KING){
-                return whiteKingOnWhiteView;
-            }
-        }
-        else {
-            if (type == Type.PAWN){
-                return blackPawnOnWhiteView;
-            }
-            else if (type == Type.ROOK){
-                return blackRookOnWhiteView;
-            }
-            else if (type == Type.KNIGHT){
-                return blackKnightOnWhiteView;
-            }
-            else if (type == Type.BISHOP){
-                return blackBishopOnWhiteView;
-            }
-            else if (type == Type.QUEEN){
-                return blackQueenOnWhiteView;
-            }
-            else if (type == Type.KING){
-                return blackKingOnWhiteView;
-            }
-        }
-        return null;
-    }
-
     public GridPane generateButtonGrid(Game game){
         GridPane grid = new GridPane();
         for (int y = 0; y < 8; y++){
@@ -319,7 +318,7 @@ public class ChessBoardView extends BorderPane{
                         if(game.getSquareStart() != null && game.getSquareFinal() != null){
                             int result = processingMovement(game);
                             if(result == 0){
-                                setCenter(generateButtonGrid(game));
+                                setCenter(chooseButtonGridGeneration(game));
                                 setBottom(generateBeatenPieces(game));
                                 setTop(generatePlayersMoveLabelBox(game));
                             }
@@ -360,7 +359,7 @@ public class ChessBoardView extends BorderPane{
                             }
                         }
                         if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                            setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
+                            setCenter(chooseButtonGridGeneration(game));
                         }
                     }
                 });
@@ -379,15 +378,31 @@ public class ChessBoardView extends BorderPane{
         return grid;
     }
 
-    public GridPane generateHighlightedButtonGrid(Game game, Piece selectedPiece){
+    public GridPane generateHighlightedButtonGrid(Game game){
         GridPane grid = new GridPane();
         ArrayList<Square> allowedSquares = new ArrayList<>();
         for (int j = 0; j < 8; j++){
             for (int i = 0; i < 8; i++){
-                if (game.isMoveAllowed(selectedPiece, game.chessBoard.getSquareAt(i, j))){
-                    allowedSquares.add(game.chessBoard.getSquareAt(i, j));
+                if (game.isMoveAllowed(game.getSquareStart().getOccupiedBy(), game.chessBoard.getSquareAt(i, j))){
+                    if(game.getSquareStart().getOccupiedBy().getType() != Type.KING){
+                        allowedSquares.add(game.chessBoard.getSquareAt(i, j));
+                    }
+                    else {
+                        if(game.isSafeSquare(game.chessBoard.getSquareAt(i, j))){
+                            allowedSquares.add(game.chessBoard.getSquareAt(i, j));
+                        }
+                    }
                 }
             }
+        }
+        if(allowedSquares.isEmpty()){
+            game.setSquareStart(null);
+            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
+            alertu.setTitle("No Moves possible");
+            alertu.setHeaderText(null);
+            alertu.setContentText("This Piece cannot move. Try another!");
+
+            alertu.showAndWait();
         }
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
@@ -407,7 +422,7 @@ public class ChessBoardView extends BorderPane{
                         if(game.getSquareStart() != null && game.getSquareFinal() != null){
                             int result = processingMovement(game);
                             if(result == 0){
-                                setCenter(generateButtonGrid(game));
+                                setCenter(chooseButtonGridGeneration(game));
                                 setBottom(generateBeatenPieces(game));
                                 setTop(generatePlayersMoveLabelBox(game));
                             }
@@ -448,7 +463,7 @@ public class ChessBoardView extends BorderPane{
                             }
                         }
                         if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                            setCenter(generateHighlightedButtonGrid(game, game.getSquareStart().getOccupiedBy()));
+                            setCenter(chooseButtonGridGeneration(game));
                         }
                     }
                 });
@@ -467,33 +482,447 @@ public class ChessBoardView extends BorderPane{
         return grid;
     }
 
+    public GridPane generateButtonGridBlackDown(Game game){
+        GridPane grid = new GridPane();
+        for (int y = 0; y < 8; y++){
+            for (int x = 0; x < 8; x++){
+                Button btn = new Button();
+                btn.setGraphic(chooseImage(game.chessBoard.getSquareAt(x, y)));
+                int finalX = x;
+                int finalY = y;
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+                        if(game.getSquareStart() != null && game.getSquareFinal() != null){
+                            int result = processingMovement(game);
+                            if(result == 0){
+                                setCenter(chooseButtonGridGeneration(game));
+                                setBottom(generateBeatenPieces(game));
+                                setTop(generatePlayersMoveLabelBox(game));
+                            }
+                            else if (result == 1){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Movement-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Move not allowed: Would be Check");
+                                alert.showAndWait();
+                            }
+                            else if (result == 2){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Movement-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Move not allowed: Not possible");
+                                alert.showAndWait();
+                            }
+                            else if (result == 3){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("CheckMate");
+                                alert.showAndWait();
+                            }
+                            else if (result == 4){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Draw");
+                                alert.showAndWait();
+                            }
+                            else if (result == 5){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Something unexpected happened!?");
+                                alert.showAndWait();
+                            }
+                        }
+                        if(game.getSquareStart() != null && game.getSquareFinal() == null){
+                            setCenter(chooseButtonGridGeneration(game));
+                        }
+                    }
+                });
+                grid.add(btn, 7 - x, 7 - y);
+            }
+            grid.add(new Label("TODO"), 8 , y);
+        }
+        grid.add(new Label("H"), 0, 8);
+        grid.add(new Label("G"), 1, 8);
+        grid.add(new Label("F"), 2, 8);
+        grid.add(new Label("E"), 3, 8);
+        grid.add(new Label("D"), 4, 8);
+        grid.add(new Label("C"), 5, 8);
+        grid.add(new Label("B"), 6, 8);
+        grid.add(new Label("A"), 7, 8);
+        return grid;
+    }
+
+    public GridPane generateHighlightedButtonGridBlackDown(Game game){
+        GridPane grid = new GridPane();
+        ArrayList<Square> allowedSquares = new ArrayList<>();
+        for (int j = 0; j < 8; j++){
+            for (int i = 0; i < 8; i++){
+                if (game.isMoveAllowed(game.getSquareStart().getOccupiedBy(), game.chessBoard.getSquareAt(i, j))){
+                    if(game.getSquareStart().getOccupiedBy().getType() != Type.KING){
+                        allowedSquares.add(game.chessBoard.getSquareAt(i, j));
+                    }
+                    else {
+                        if(game.isSafeSquare(game.chessBoard.getSquareAt(i, j))){
+                            allowedSquares.add(game.chessBoard.getSquareAt(i, j));
+                        }
+                    }
+                }
+            }
+        }
+        if(allowedSquares.isEmpty()){
+            game.setSquareStart(null);
+            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
+            alertu.setTitle("No Moves possible");
+            alertu.setHeaderText(null);
+            alertu.setContentText("This Piece cannot move. Try another!");
+
+            alertu.showAndWait();
+        }
+        for (int y = 0; y < 8; y++){
+            for (int x = 0; x < 8; x++){
+                Button btn = new Button();
+                if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))){
+                    btn.setGraphic(chooseHighlightedImage(game.chessBoard.getSquareAt(x, y)));
+                }
+                else {
+                    btn.setGraphic(chooseImage(game.chessBoard.getSquareAt(x, y)));
+                }
+                int finalX = x;
+                int finalY = y;
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+                        if(game.getSquareStart() != null && game.getSquareFinal() != null){
+                            int result = processingMovement(game);
+                            if(result == 0){
+                                setCenter(chooseButtonGridGeneration(game));
+                                setBottom(generateBeatenPieces(game));
+                                setTop(generatePlayersMoveLabelBox(game));
+                            }
+                            else if (result == 1){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Movement-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Move not allowed: Would be Check");
+                                alert.showAndWait();
+                            }
+                            else if (result == 2){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Movement-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Move not allowed: Not possible");
+                                alert.showAndWait();
+                            }
+                            else if (result == 3){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("CheckMate");
+                                alert.showAndWait();
+                            }
+                            else if (result == 4){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Draw");
+                                alert.showAndWait();
+                            }
+                            else if (result == 5){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Game-Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Something unexpected happened!?");
+                                alert.showAndWait();
+                            }
+                        }
+                        if(game.getSquareStart() != null && game.getSquareFinal() == null){
+                            setCenter(chooseButtonGridGeneration(game));
+                        }
+                    }
+                });
+                grid.add(btn, 7 - x, 7 - y);
+            }
+            grid.add(new Label("TODO"), 8 , y);
+        }
+        grid.add(new Label("H"), 0, 8);
+        grid.add(new Label("G"), 1, 8);
+        grid.add(new Label("F"), 2, 8);
+        grid.add(new Label("E"), 3, 8);
+        grid.add(new Label("D"), 4, 8);
+        grid.add(new Label("C"), 5, 8);
+        grid.add(new Label("B"), 6, 8);
+        grid.add(new Label("A"), 7, 8);
+        return grid;
+    }
+
+    public GridPane chooseButtonGridGeneration(Game game){
+        if(game.enemyIsHuman) {
+            if (game.isRotatingBoard) {
+                if(game.currentPlayer.getColour() == Colour.WHITE){
+                    if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+                        if(game.getSquareStart().getOccupiedBy() != null){
+                            if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
+                                return generateHighlightedButtonGrid(game);
+                            }
+                            else {
+                                //allert Piece is not your Colour
+                                game.setSquareStart(null);
+                                Alert alertia = new Alert(Alert.AlertType.INFORMATION);
+                                alertia.setTitle("Piece Problem");
+                                alertia.setHeaderText(null);
+                                alertia.setContentText("Selected Piece is not your Colour!");
+
+                                alertia.showAndWait();
+                            }
+                        }
+                        else {
+                            //allert no Piece
+                            game.setSquareStart(null);
+                            Alert alertis = new Alert(Alert.AlertType.INFORMATION);
+                            alertis.setTitle("Piece Problem");
+                            alertis.setHeaderText(null);
+                            alertis.setContentText("There is no Piece to Move!");
+
+                            alertis.showAndWait();
+                        }
+                    }
+                    return generateButtonGrid(game);
+                }
+                else {
+                    if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+                        if (game.getSquareStart().getOccupiedBy() != null) {
+                            if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
+                                return generateHighlightedButtonGridBlackDown(game);
+                            } else {
+                                //allert Piece is not your Colour
+                                game.setSquareStart(null);
+                                Alert alertia = new Alert(Alert.AlertType.INFORMATION);
+                                alertia.setTitle("Piece Problem");
+                                alertia.setHeaderText(null);
+                                alertia.setContentText("Selected Piece is not your Colour!");
+
+                                alertia.showAndWait();
+                            }
+                        } else {
+                            //allert no Piece
+                            game.setSquareStart(null);
+                            Alert alertis = new Alert(Alert.AlertType.INFORMATION);
+                            alertis.setTitle("Piece Problem");
+                            alertis.setHeaderText(null);
+                            alertis.setContentText("There is no Piece to Move!");
+
+                            alertis.showAndWait();
+                        }
+                    }
+                    return generateButtonGridBlackDown(game);
+                }
+            } else {
+                if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+                    if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+                        if (game.getSquareStart().getOccupiedBy() != null) {
+                            if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
+                                return generateHighlightedButtonGridBlackDown(game);
+                            } else {
+                                //allert Piece is not your Colour
+                                game.setSquareStart(null);
+                                Alert alertia = new Alert(Alert.AlertType.INFORMATION);
+                                alertia.setTitle("Piece Problem");
+                                alertia.setHeaderText(null);
+                                alertia.setContentText("Selected Piece is not your Colour!");
+
+                                alertia.showAndWait();
+                            }
+                        } else {
+                            //allert no Piece
+                            game.setSquareStart(null);
+                            Alert alertis = new Alert(Alert.AlertType.INFORMATION);
+                            alertis.setTitle("Piece Problem");
+                            alertis.setHeaderText(null);
+                            alertis.setContentText("There is no Piece to Move!");
+
+                            alertis.showAndWait();
+                        }
+                    }
+                }
+                return generateButtonGridBlackDown(game);
+            }
+        }
+        else {
+            if(game.userColour == Colour.WHITE){
+                if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+                    if(game.getSquareStart().getOccupiedBy() != null){
+                        if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
+                            return generateHighlightedButtonGrid(game);
+                        }
+                        else {
+                            //allert Piece is not your Colour
+                            game.setSquareStart(null);
+                            Alert alertia = new Alert(Alert.AlertType.INFORMATION);
+                            alertia.setTitle("Piece Problem");
+                            alertia.setHeaderText(null);
+                            alertia.setContentText("Selected Piece is not your Colour!");
+
+                            alertia.showAndWait();
+                        }
+                    }
+                    else {
+                        //allert no Piece
+                        game.setSquareStart(null);
+                        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
+                        alertis.setTitle("Piece Problem");
+                        alertis.setHeaderText(null);
+                        alertis.setContentText("There is no Piece to Move!");
+
+                        alertis.showAndWait();
+                    }
+                }
+                return generateButtonGrid(game);
+            }
+            else {
+                if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+                    if(game.getSquareStart().getOccupiedBy() != null){
+                        if(game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK){
+                            return generateHighlightedButtonGridBlackDown(game);
+                        }
+                        else {
+                            //allert Piece is not your Colour
+                            game.setSquareStart(null);
+                            Alert alertia = new Alert(Alert.AlertType.INFORMATION);
+                            alertia.setTitle("Piece Problem");
+                            alertia.setHeaderText(null);
+                            alertia.setContentText("Selected Piece is not your Colour!");
+
+                            alertia.showAndWait();
+                        }
+                    }
+                    else {
+                        //allert no Piece
+                        game.setSquareStart(null);
+                        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
+                        alertis.setTitle("Piece Problem");
+                        alertis.setHeaderText(null);
+                        alertis.setContentText("There is no Piece to Move!");
+
+                        alertis.showAndWait();
+                    }
+                }
+                return generateButtonGridBlackDown(game);
+            }
+        }
+    }
+
+    public ImageView chooseImage(Type type, Colour colour){
+
+        ImageView blackPawnOnWhiteViewMini = new ImageView();
+        blackPawnOnWhiteViewMini.setFitHeight(40);
+        blackPawnOnWhiteViewMini.setFitWidth(40);
+        blackPawnOnWhiteViewMini.setImage(BlackPawnOnWhite);
+
+        ImageView whitePawnOnWhiteViewMini = new ImageView();
+        whitePawnOnWhiteViewMini.setFitHeight(40);
+        whitePawnOnWhiteViewMini.setFitWidth(40);
+        whitePawnOnWhiteViewMini.setImage(WhitePawnOnWhite);
+
+        ImageView blackRookOnWhiteViewMini = new ImageView();
+        blackRookOnWhiteViewMini.setFitHeight(40);
+        blackRookOnWhiteViewMini.setFitWidth(40);
+        blackRookOnWhiteViewMini.setImage(BlackRookOnWhite);
+
+        ImageView whiteRookOnWhiteViewMini = new ImageView();
+        whiteRookOnWhiteViewMini.setFitHeight(40);
+        whiteRookOnWhiteViewMini.setFitWidth(40);
+        whiteRookOnWhiteViewMini.setImage(WhiteRookOnWhite);
+
+        ImageView blackKnightOnWhiteViewMini = new ImageView();
+        blackKnightOnWhiteViewMini.setFitHeight(40);
+        blackKnightOnWhiteViewMini.setFitWidth(40);
+        blackKnightOnWhiteViewMini.setImage(BlackKnightOnWhite);
+
+        ImageView whiteKnightOnWhiteViewMini = new ImageView();
+        whiteKnightOnWhiteViewMini.setFitHeight(40);
+        whiteKnightOnWhiteViewMini.setFitWidth(40);
+        whiteKnightOnWhiteViewMini.setImage(WhiteKnightOnWhite);
+
+        ImageView blackBishopOnWhiteViewMini = new ImageView();
+        blackBishopOnWhiteViewMini.setFitHeight(40);
+        blackBishopOnWhiteViewMini.setFitWidth(40);
+        blackBishopOnWhiteViewMini.setImage(BlackBishopOnWhite);
+
+        ImageView whiteBishopOnWhiteViewMini = new ImageView();
+        whiteBishopOnWhiteViewMini.setFitHeight(40);
+        whiteBishopOnWhiteViewMini.setFitWidth(40);
+        whiteBishopOnWhiteViewMini.setImage(WhiteBishopOnWhite);
+
+        ImageView blackQueenOnWhiteViewMini = new ImageView();
+        blackQueenOnWhiteViewMini.setFitHeight(40);
+        blackQueenOnWhiteViewMini.setFitWidth(40);
+        blackQueenOnWhiteViewMini.setImage(BlackQueenOnWhite);
+
+        ImageView whiteQueenOnWhiteViewMini = new ImageView();
+        whiteQueenOnWhiteViewMini.setFitHeight(40);
+        whiteQueenOnWhiteViewMini.setFitWidth(40);
+        whiteQueenOnWhiteViewMini.setImage(WhiteQueenOnWhite);
+
+        ImageView blackKingOnWhiteViewMini = new ImageView();
+        blackKingOnWhiteViewMini.setFitHeight(40);
+        blackKingOnWhiteViewMini.setFitWidth(40);
+        blackKingOnWhiteViewMini.setImage(BlackKingOnWhite);
+
+        ImageView whiteKingOnWhiteViewMini = new ImageView();
+        whiteKingOnWhiteViewMini.setFitHeight(40);
+        whiteKingOnWhiteViewMini.setFitWidth(40);
+        whiteKingOnWhiteViewMini.setImage(WhiteKingOnWhite);
+
+        if (colour == Colour.WHITE){
+            if (type == Type.PAWN){
+                return whitePawnOnWhiteViewMini;
+            }
+            else if (type == Type.ROOK){
+                return whiteRookOnWhiteViewMini;
+            }
+            else if (type == Type.KNIGHT){
+                return whiteKnightOnWhiteViewMini;
+            }
+            else if (type == Type.BISHOP){
+                return whiteBishopOnWhiteViewMini;
+            }
+            else if (type == Type.QUEEN){
+                return whiteQueenOnWhiteViewMini;
+            }
+            else if (type == Type.KING){
+                return whiteKingOnWhiteViewMini;
+            }
+        }
+        else {
+            if (type == Type.PAWN){
+                return blackPawnOnWhiteViewMini;
+            }
+            else if (type == Type.ROOK){
+                return blackRookOnWhiteViewMini;
+            }
+            else if (type == Type.KNIGHT){
+                return blackKnightOnWhiteViewMini;
+            }
+            else if (type == Type.BISHOP){
+                return blackBishopOnWhiteViewMini;
+            }
+            else if (type == Type.QUEEN){
+                return blackQueenOnWhiteViewMini;
+            }
+            else if (type == Type.KING){
+                return blackKingOnWhiteViewMini;
+            }
+        }
+        return null;
+    }
+
     public ImageView chooseImage(Square square){
-        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png"));
-        Image BlackPawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlack.png"));
-        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhite.png"));
-        Image WhitePawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlack.png"));
-        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhite.png"));
-        Image BlackRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnBlack.png"));
-        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhite.png"));
-        Image WhiteRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlack.png"));
-        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhite.png"));
-        Image BlackKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlack.png"));
-        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhite.png"));
-        Image WhiteKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlack.png"));
-        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhite.png"));
-        Image BlackBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlack.png"));
-        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhite.png"));
-        Image WhiteBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlack.png"));
-        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhite.png"));
-        Image BlackQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlack.png"));
-        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhite.png"));
-        Image WhiteQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlack.png"));
-        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhite.png"));
-        Image BlackKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnBlack.png"));
-        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhite.png"));
-        Image WhiteKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlack.png"));
-        Image EmptyWhite = new Image(ChessBoardView.class.getResourceAsStream("emptyWhite.png"));
-        Image EmptyBlack = new Image(ChessBoardView.class.getResourceAsStream("emptyBlack.png"));
 
         int imageHeight = 60;
         int imageWidth = 60;
@@ -721,260 +1150,230 @@ public class ChessBoardView extends BorderPane{
         return null;
     }
     public ImageView chooseHighlightedImage(Square square){
-        Image BlackPawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhiteX.png"));
-        Image BlackPawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlackX.png"));
-        Image WhitePawnOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnWhiteX.png"));
-        Image WhitePawnOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhitePawnOnBlackX.png"));
-        Image BlackRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnWhiteX.png"));
-        Image BlackRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackRookOnBlackX.png"));
-        Image WhiteRookOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnWhiteX.png"));
-        Image WhiteRookOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteRookOnBlackX.png"));
-        Image BlackKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnWhiteX.png"));
-        Image BlackKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKnightOnBlackX.png"));
-        Image WhiteKnightOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnWhiteX.png"));
-        Image WhiteKnightOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKnightOnBlackX.png"));
-        Image BlackBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnWhiteX.png"));
-        Image BlackBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackBishopOnBlackX.png"));
-        Image WhiteBishopOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnWhiteX.png"));
-        Image WhiteBishopOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteBishopOnBlackX.png"));
-        Image BlackQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnWhiteX.png"));
-        Image BlackQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackQueenOnBlackX.png"));
-        Image WhiteQueenOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnWhiteX.png"));
-        Image WhiteQueenOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteQueenOnBlackX.png"));
-        Image BlackKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnWhiteX.png"));
-        Image BlackKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("BlackKingOnBlackX.png"));
-        Image WhiteKingOnWhite = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnWhiteX.png"));
-        Image WhiteKingOnBlack = new Image(ChessBoardView.class.getResourceAsStream("WhiteKingOnBlackX.png"));
-        Image EmptyWhite = new Image(ChessBoardView.class.getResourceAsStream("emptyWhiteX.png"));
-        Image EmptyBlack = new Image(ChessBoardView.class.getResourceAsStream("emptyBlackX.png"));
 
         int imageHeight = 60;
         int imageWidth = 60;
 
-        ImageView blackPawnOnWhiteView = new ImageView();
-        blackPawnOnWhiteView.setFitHeight(imageHeight);
-        blackPawnOnWhiteView.setFitWidth(imageWidth);
-        blackPawnOnWhiteView.setImage(BlackPawnOnWhite);
+        ImageView blackPawnOnWhiteViewX = new ImageView();
+        blackPawnOnWhiteViewX.setFitHeight(imageHeight);
+        blackPawnOnWhiteViewX.setFitWidth(imageWidth);
+        blackPawnOnWhiteViewX.setImage(BlackPawnOnWhiteX);
 
-        ImageView blackPawnOnBlackView = new ImageView();
-        blackPawnOnBlackView.setFitHeight(imageHeight);
-        blackPawnOnBlackView.setFitWidth(imageWidth);
-        blackPawnOnBlackView.setImage(BlackPawnOnBlack);
+        ImageView blackPawnOnBlackViewX = new ImageView();
+        blackPawnOnBlackViewX.setFitHeight(imageHeight);
+        blackPawnOnBlackViewX.setFitWidth(imageWidth);
+        blackPawnOnBlackViewX.setImage(BlackPawnOnBlackX);
 
-        ImageView whitePawnOnWhiteView = new ImageView();
-        whitePawnOnWhiteView.setFitHeight(imageHeight);
-        whitePawnOnWhiteView.setFitWidth(imageWidth);
-        whitePawnOnWhiteView.setImage(WhitePawnOnWhite);
+        ImageView whitePawnOnWhiteViewX = new ImageView();
+        whitePawnOnWhiteViewX.setFitHeight(imageHeight);
+        whitePawnOnWhiteViewX.setFitWidth(imageWidth);
+        whitePawnOnWhiteViewX.setImage(WhitePawnOnWhiteX);
 
-        ImageView whitePawnOnBlackView = new ImageView();
-        whitePawnOnBlackView.setFitHeight(imageHeight);
-        whitePawnOnBlackView.setFitWidth(imageWidth);
-        whitePawnOnBlackView.setImage(WhitePawnOnBlack);
+        ImageView whitePawnOnBlackViewX = new ImageView();
+        whitePawnOnBlackViewX.setFitHeight(imageHeight);
+        whitePawnOnBlackViewX.setFitWidth(imageWidth);
+        whitePawnOnBlackViewX.setImage(WhitePawnOnBlackX);
 
-        ImageView blackRookOnWhiteView = new ImageView();
-        blackRookOnWhiteView.setFitHeight(imageHeight);
-        blackRookOnWhiteView.setFitWidth(imageWidth);
-        blackRookOnWhiteView.setImage(BlackRookOnWhite);
+        ImageView blackRookOnWhiteViewX = new ImageView();
+        blackRookOnWhiteViewX.setFitHeight(imageHeight);
+        blackRookOnWhiteViewX.setFitWidth(imageWidth);
+        blackRookOnWhiteViewX.setImage(BlackRookOnWhiteX);
 
-        ImageView blackRookOnBlackView = new ImageView();
-        blackRookOnBlackView.setFitHeight(imageHeight);
-        blackRookOnBlackView.setFitWidth(imageWidth);
-        blackRookOnBlackView.setImage(BlackRookOnBlack);
+        ImageView blackRookOnBlackViewX = new ImageView();
+        blackRookOnBlackViewX.setFitHeight(imageHeight);
+        blackRookOnBlackViewX.setFitWidth(imageWidth);
+        blackRookOnBlackViewX.setImage(BlackRookOnBlackX);
 
-        ImageView whiteRookOnWhiteView = new ImageView();
-        whiteRookOnWhiteView.setFitHeight(imageHeight);
-        whiteRookOnWhiteView.setFitWidth(imageWidth);
-        whiteRookOnWhiteView.setImage(WhiteRookOnWhite);
+        ImageView whiteRookOnWhiteViewX = new ImageView();
+        whiteRookOnWhiteViewX.setFitHeight(imageHeight);
+        whiteRookOnWhiteViewX.setFitWidth(imageWidth);
+        whiteRookOnWhiteViewX.setImage(WhiteRookOnWhiteX);
 
-        ImageView whiteRookOnBlackView = new ImageView();
-        whiteRookOnBlackView.setFitHeight(imageHeight);
-        whiteRookOnBlackView.setFitWidth(imageWidth);
-        whiteRookOnBlackView.setImage(WhiteRookOnBlack);
+        ImageView whiteRookOnBlackViewX = new ImageView();
+        whiteRookOnBlackViewX.setFitHeight(imageHeight);
+        whiteRookOnBlackViewX.setFitWidth(imageWidth);
+        whiteRookOnBlackViewX.setImage(WhiteRookOnBlackX);
 
-        ImageView blackKnightOnWhiteView = new ImageView();
-        blackKnightOnWhiteView.setFitHeight(imageHeight);
-        blackKnightOnWhiteView.setFitWidth(imageWidth);
-        blackKnightOnWhiteView.setImage(BlackKnightOnWhite);
+        ImageView blackKnightOnWhiteViewX = new ImageView();
+        blackKnightOnWhiteViewX.setFitHeight(imageHeight);
+        blackKnightOnWhiteViewX.setFitWidth(imageWidth);
+        blackKnightOnWhiteViewX.setImage(BlackKnightOnWhiteX);
 
-        ImageView blackKnightOnBlackView = new ImageView();
-        blackKnightOnBlackView.setFitHeight(imageHeight);
-        blackKnightOnBlackView.setFitWidth(imageWidth);
-        blackKnightOnBlackView.setImage(BlackKnightOnBlack);
+        ImageView blackKnightOnBlackViewX = new ImageView();
+        blackKnightOnBlackViewX.setFitHeight(imageHeight);
+        blackKnightOnBlackViewX.setFitWidth(imageWidth);
+        blackKnightOnBlackViewX.setImage(BlackKnightOnBlackX);
 
-        ImageView whiteKnightOnWhiteView = new ImageView();
-        whiteKnightOnWhiteView.setFitHeight(imageHeight);
-        whiteKnightOnWhiteView.setFitWidth(imageWidth);
-        whiteKnightOnWhiteView.setImage(WhiteKnightOnWhite);
+        ImageView whiteKnightOnWhiteViewX = new ImageView();
+        whiteKnightOnWhiteViewX.setFitHeight(imageHeight);
+        whiteKnightOnWhiteViewX.setFitWidth(imageWidth);
+        whiteKnightOnWhiteViewX.setImage(WhiteKnightOnWhiteX);
 
-        ImageView whiteKnightOnBlackView = new ImageView();
-        whiteKnightOnBlackView.setFitHeight(imageHeight);
-        whiteKnightOnBlackView.setFitWidth(imageWidth);
-        whiteKnightOnBlackView.setImage(WhiteKnightOnBlack);
+        ImageView whiteKnightOnBlackViewX = new ImageView();
+        whiteKnightOnBlackViewX.setFitHeight(imageHeight);
+        whiteKnightOnBlackViewX.setFitWidth(imageWidth);
+        whiteKnightOnBlackViewX.setImage(WhiteKnightOnBlackX);
 
-        ImageView blackBishopOnWhiteView = new ImageView();
-        blackBishopOnWhiteView.setFitHeight(imageHeight);
-        blackBishopOnWhiteView.setFitWidth(imageWidth);
-        blackBishopOnWhiteView.setImage(BlackBishopOnWhite);
+        ImageView blackBishopOnWhiteViewX = new ImageView();
+        blackBishopOnWhiteViewX.setFitHeight(imageHeight);
+        blackBishopOnWhiteViewX.setFitWidth(imageWidth);
+        blackBishopOnWhiteViewX.setImage(BlackBishopOnWhiteX);
 
-        ImageView blackBishopOnBlackView = new ImageView();
-        blackBishopOnBlackView.setFitHeight(imageHeight);
-        blackBishopOnBlackView.setFitWidth(imageWidth);
-        blackBishopOnBlackView.setImage(BlackBishopOnBlack);
+        ImageView blackBishopOnBlackViewX = new ImageView();
+        blackBishopOnBlackViewX.setFitHeight(imageHeight);
+        blackBishopOnBlackViewX.setFitWidth(imageWidth);
+        blackBishopOnBlackViewX.setImage(BlackBishopOnBlackX);
 
-        ImageView whiteBishopOnWhiteView = new ImageView();
-        whiteBishopOnWhiteView.setFitHeight(imageHeight);
-        whiteBishopOnWhiteView.setFitWidth(imageWidth);
-        whiteBishopOnWhiteView.setImage(WhiteBishopOnWhite);
+        ImageView whiteBishopOnWhiteViewX = new ImageView();
+        whiteBishopOnWhiteViewX.setFitHeight(imageHeight);
+        whiteBishopOnWhiteViewX.setFitWidth(imageWidth);
+        whiteBishopOnWhiteViewX.setImage(WhiteBishopOnWhiteX);
 
-        ImageView whiteBishopOnBlackView = new ImageView();
-        whiteBishopOnBlackView.setFitHeight(imageHeight);
-        whiteBishopOnBlackView.setFitWidth(imageWidth);
-        whiteBishopOnBlackView.setImage(WhiteBishopOnBlack);
+        ImageView whiteBishopOnBlackViewX = new ImageView();
+        whiteBishopOnBlackViewX.setFitHeight(imageHeight);
+        whiteBishopOnBlackViewX.setFitWidth(imageWidth);
+        whiteBishopOnBlackViewX.setImage(WhiteBishopOnBlackX);
 
-        ImageView blackQueenOnWhiteView = new ImageView();
-        blackQueenOnWhiteView.setFitHeight(imageHeight);
-        blackQueenOnWhiteView.setFitWidth(imageWidth);
-        blackQueenOnWhiteView.setImage(BlackQueenOnWhite);
+        ImageView blackQueenOnWhiteViewX = new ImageView();
+        blackQueenOnWhiteViewX.setFitHeight(imageHeight);
+        blackQueenOnWhiteViewX.setFitWidth(imageWidth);
+        blackQueenOnWhiteViewX.setImage(BlackQueenOnWhiteX);
 
-        ImageView blackQueenOnBlackView = new ImageView();
-        blackQueenOnBlackView.setFitHeight(imageHeight);
-        blackQueenOnBlackView.setFitWidth(imageWidth);
-        blackQueenOnBlackView.setImage(BlackQueenOnBlack);
+        ImageView blackQueenOnBlackViewX = new ImageView();
+        blackQueenOnBlackViewX.setFitHeight(imageHeight);
+        blackQueenOnBlackViewX.setFitWidth(imageWidth);
+        blackQueenOnBlackViewX.setImage(BlackQueenOnBlackX);
 
-        ImageView whiteQueenOnWhiteView = new ImageView();
-        whiteQueenOnWhiteView.setFitHeight(imageHeight);
-        whiteQueenOnWhiteView.setFitWidth(imageWidth);
-        whiteQueenOnWhiteView.setImage(WhiteQueenOnWhite);
+        ImageView whiteQueenOnWhiteViewX = new ImageView();
+        whiteQueenOnWhiteViewX.setFitHeight(imageHeight);
+        whiteQueenOnWhiteViewX.setFitWidth(imageWidth);
+        whiteQueenOnWhiteViewX.setImage(WhiteQueenOnWhiteX);
 
-        ImageView whiteQueenOnBlackView = new ImageView();
-        whiteQueenOnBlackView.setFitHeight(imageHeight);
-        whiteQueenOnBlackView.setFitWidth(imageWidth);
-        whiteQueenOnBlackView.setImage(WhiteQueenOnBlack);
+        ImageView whiteQueenOnBlackViewX = new ImageView();
+        whiteQueenOnBlackViewX.setFitHeight(imageHeight);
+        whiteQueenOnBlackViewX.setFitWidth(imageWidth);
+        whiteQueenOnBlackViewX.setImage(WhiteQueenOnBlackX);
 
-        ImageView blackKingOnWhiteView = new ImageView();
-        blackKingOnWhiteView.setFitHeight(imageHeight);
-        blackKingOnWhiteView.setFitWidth(imageWidth);
-        blackKingOnWhiteView.setImage(BlackKingOnWhite);
+        ImageView blackKingOnWhiteViewX = new ImageView();
+        blackKingOnWhiteViewX.setFitHeight(imageHeight);
+        blackKingOnWhiteViewX.setFitWidth(imageWidth);
+        blackKingOnWhiteViewX.setImage(BlackKingOnWhiteX);
 
-        ImageView blackKingOnBlackView = new ImageView();
-        blackKingOnBlackView.setFitHeight(imageHeight);
-        blackKingOnBlackView.setFitWidth(imageWidth);
-        blackKingOnBlackView.setImage(BlackKingOnBlack);
+        ImageView blackKingOnBlackViewX = new ImageView();
+        blackKingOnBlackViewX.setFitHeight(imageHeight);
+        blackKingOnBlackViewX.setFitWidth(imageWidth);
+        blackKingOnBlackViewX.setImage(BlackKingOnBlackX);
 
-        ImageView whiteKingOnWhiteView = new ImageView();
-        whiteKingOnWhiteView.setFitHeight(imageHeight);
-        whiteKingOnWhiteView.setFitWidth(imageWidth);
-        whiteKingOnWhiteView.setImage(WhiteKingOnWhite);
+        ImageView whiteKingOnWhiteViewX = new ImageView();
+        whiteKingOnWhiteViewX.setFitHeight(imageHeight);
+        whiteKingOnWhiteViewX.setFitWidth(imageWidth);
+        whiteKingOnWhiteViewX.setImage(WhiteKingOnWhiteX);
 
-        ImageView whiteKingOnBlackView = new ImageView();
-        whiteKingOnBlackView.setFitHeight(imageHeight);
-        whiteKingOnBlackView.setFitWidth(imageWidth);
-        whiteKingOnBlackView.setImage(WhiteKingOnBlack);
+        ImageView whiteKingOnBlackViewX = new ImageView();
+        whiteKingOnBlackViewX.setFitHeight(imageHeight);
+        whiteKingOnBlackViewX.setFitWidth(imageWidth);
+        whiteKingOnBlackViewX.setImage(WhiteKingOnBlackX);
 
-        ImageView emptyWhiteView = new ImageView();
-        emptyWhiteView.setFitHeight(imageHeight);
-        emptyWhiteView.setFitWidth(imageWidth);
-        emptyWhiteView.setImage(EmptyWhite);
+        ImageView emptyWhiteViewX = new ImageView();
+        emptyWhiteViewX.setFitHeight(imageHeight);
+        emptyWhiteViewX.setFitWidth(imageWidth);
+        emptyWhiteViewX.setImage(EmptyWhiteX);
 
-        ImageView emptyBlackView = new ImageView();
-        emptyBlackView.setFitHeight(imageHeight);
-        emptyBlackView.setFitWidth(imageWidth);
-        emptyBlackView.setImage(EmptyBlack);
+        ImageView emptyBlackViewX = new ImageView();
+        emptyBlackViewX.setFitHeight(imageHeight);
+        emptyBlackViewX.setFitWidth(imageWidth);
+        emptyBlackViewX.setImage(EmptyBlackX);
 
         if (square.getColour() == Colour.WHITE){
             if(square.getOccupiedBy() == null){
-                return emptyWhiteView;
+                return emptyWhiteViewX;
             }
             if(square.getOccupiedBy().getColour() == Colour.WHITE){
                 if (square.getOccupiedBy().getType() == Type.PAWN){
-                    return whitePawnOnWhiteView;
+                    return whitePawnOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.ROOK){
-                    return whiteRookOnWhiteView;
+                    return whiteRookOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KNIGHT){
-                    return whiteKnightOnWhiteView;
+                    return whiteKnightOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.BISHOP){
-                    return whiteBishopOnWhiteView;
+                    return whiteBishopOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.QUEEN){
-                    return whiteQueenOnWhiteView;
+                    return whiteQueenOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KING){
-                    return whiteKingOnWhiteView;
+                    return whiteKingOnWhiteViewX;
                 }
             }
             else {
                 if (square.getOccupiedBy().getType() == Type.PAWN){
-                    return blackPawnOnWhiteView;
+                    return blackPawnOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.ROOK){
-                    return blackRookOnWhiteView;
+                    return blackRookOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KNIGHT){
-                    return blackKnightOnWhiteView;
+                    return blackKnightOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.BISHOP){
-                    return blackBishopOnWhiteView;
+                    return blackBishopOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.QUEEN){
-                    return blackQueenOnWhiteView;
+                    return blackQueenOnWhiteViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KING){
-                    return blackKingOnWhiteView;
+                    return blackKingOnWhiteViewX;
                 }
             }
         }
         else {
             if(square.getOccupiedBy() == null){
-                return emptyBlackView;
+                return emptyBlackViewX;
             }
             if(square.getOccupiedBy().getColour() == Colour.WHITE){
                 if (square.getOccupiedBy().getType() == Type.PAWN){
-                    return whitePawnOnBlackView;
+                    return whitePawnOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.ROOK){
-                    return whiteRookOnBlackView;
+                    return whiteRookOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KNIGHT){
-                    return whiteKnightOnBlackView;
+                    return whiteKnightOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.BISHOP){
-                    return whiteBishopOnBlackView;
+                    return whiteBishopOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.QUEEN){
-                    return whiteQueenOnBlackView;
+                    return whiteQueenOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KING){
-                    return whiteKingOnBlackView;
+                    return whiteKingOnBlackViewX;
                 }
             }
             else {
                 if (square.getOccupiedBy().getType() == Type.PAWN){
-                    return blackPawnOnBlackView;
+                    return blackPawnOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.ROOK){
-                    return blackRookOnBlackView;
+                    return blackRookOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KNIGHT){
-                    return blackKnightOnBlackView;
+                    return blackKnightOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.BISHOP){
-                    return blackBishopOnBlackView;
+                    return blackBishopOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.QUEEN){
-                    return blackQueenOnBlackView;
+                    return blackQueenOnBlackViewX;
                 }
                 else if (square.getOccupiedBy().getType() == Type.KING){
-                    return blackKingOnBlackView;
+                    return blackKingOnBlackViewX;
                 }
             }
         }
         return null;
-    }
-    public GridPane chooseButtonGridGeneration(Game game){
-
-
     }
 }

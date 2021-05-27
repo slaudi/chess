@@ -37,7 +37,7 @@ public class Game {
     public Colour userColour;
     public boolean isRotatingBoard;
     public boolean highlightPossibleMoves;
-    public boolean allowedToChangeSelectedPiece;
+    public boolean allowedToChangeSelectedPiece; //in processingmove
     public boolean hintInCheck;
     public boolean freshGame;
 
@@ -278,7 +278,7 @@ public class Game {
      * @param finalSquare The Square the King should move to.
      * @return boolean Returns 'true' if the King is able to move safely.
      */
-    boolean isSafeSquare(Square finalSquare) {
+    public boolean isSafeSquare(Square finalSquare) {
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
             if (isMoveAllowed(enemyPiece, finalSquare)) {                                                                 //changed canKillKing to isMoveAllowed
