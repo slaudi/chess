@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.List;
 
 import static chess.game.Label.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +24,7 @@ public class PawnTest {
     Square squareC5;
     Square squareC8;
     Square squareC6;
-    ArrayList<Move> moveHistory;
+    List<Move> moveHistory;
 
     /**
      * setUp for each pawn test
