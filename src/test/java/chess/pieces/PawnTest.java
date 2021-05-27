@@ -5,6 +5,7 @@ import chess.game.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import static chess.game.Label.*;
@@ -23,7 +24,7 @@ public class PawnTest {
     Square squareC5;
     Square squareC8;
     Square squareC6;
-    Stack<Move> moveHistory;
+    ArrayList<Move> moveHistory;
 
     /**
      * setUp for each pawn test
@@ -39,7 +40,7 @@ public class PawnTest {
         squareE6 = game.chessBoard.getSquareAt(4, 2);
         squareC5 = game.chessBoard.getSquareAt(2, 3);
         squareC8 = game.chessBoard.getSquareAt(2, 0);
-        moveHistory = new Stack<>();
+        moveHistory = new ArrayList<>();
     }
 
     /**
