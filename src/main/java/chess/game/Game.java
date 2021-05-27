@@ -30,7 +30,7 @@ public class Game {
      * The list where all beaten pieces are stored.
      */
     public final List<Piece> beatenPieces;
-    public final ArrayList<Move> moveHistory;
+    public final List<Move> moveHistory;
     Square squareStart;                  // Helper-Attributs for Moving in GUI
     Square squareFinal;
     public boolean enemyIsHuman;
@@ -103,11 +103,12 @@ public class Game {
                     return ((Pawn)selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
                 }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
+            // is castling possible
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
             return ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard);
         }
+        // all other moves
         return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
-
     }
 
     /**
@@ -131,7 +132,7 @@ public class Game {
             currentMove.castlingMove(this.chessBoard);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
-            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1); // get last Move (of the enemy), but don't remove it
+            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1); // get last Move (of the enemy)
             currentMove.enPassantMove(lastEnemyMove, this.chessBoard);
             Piece enemy = lastEnemyMove.getMovingPiece();
             this.beatenPieces.add(enemy);
@@ -144,7 +145,7 @@ public class Game {
         } else {
             currentMove.doMove(this.chessBoard);
             if (targetPiece != null) {
-                // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
+                // add a beaten piece to the ArrayList before isInCheck() (don't test it, it's already beaten)
                 beatenPieces.add(targetPiece);
             }
             if (!canMoveStay(targetPiece, currentMove)) {
@@ -390,6 +391,24 @@ public class Game {
         } else {
             this.setSquareFinal(square);
         }
+    }
+
+    public List<Square> computePossibleSquares() {
+        List<Square> possibleSquares = new ArrayList<>();
+        for (int y = 0; y < this.chessBoard.getHeight(); y++) {
+            for (int x = 0; x < this.chessBoard.getWidth(); x++) {
+                if (isMoveAllowed(getSquareStart().getOccupiedBy(), this.chessBoard.getSquareAt(x,y))){
+                    if(getSquareStart().getOccupiedBy().getType() != Type.KING){
+                        possibleSquares.add(this.chessBoard.getSquareAt(x,y));
+                    } else {
+                        if(isSafeSquare(this.chessBoard.getSquareAt(x,y))){
+                            possibleSquares.add(this.chessBoard.getSquareAt(x,y));
+                        }
+                    }
+                }
+            }
+        }
+        return possibleSquares;
     }
 }
 

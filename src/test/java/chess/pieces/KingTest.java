@@ -1,6 +1,5 @@
 package chess.pieces;
 
-import chess.cli.Cli;
 import chess.game.Colour;
 import chess.game.Game;
 import chess.game.Square;

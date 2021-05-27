@@ -2,7 +2,7 @@ package chess.pieces;
 
 import chess.game.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Pawn class is a Subclass of the Piece class, implements the interface MovingDirection
@@ -147,7 +147,7 @@ public class Pawn extends Piece {
      * @param history       A Stack which stores all previous moves.
      * @return boolean Returns 'true' if en passant is possible.
      */
-    public boolean isEnPassant(Square finalSquare, ArrayList<Move> history) {
+    public boolean isEnPassant(Square finalSquare, List<Move> history) {
         if (history.size() > 1) {
             Move lastEnemyMove = history.get(history.size() - 1);
             Square start = lastEnemyMove.getStartSquare();
