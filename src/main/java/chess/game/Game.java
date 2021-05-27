@@ -31,7 +31,7 @@ public class Game {
      * The list where all beaten pieces are stored.
      */
     public final List<Piece> beatenPieces;
-    private final Stack<Move> moveHistory;
+    private final ArrayList<Move> moveHistory;
     Square squareStart;                  // Helper-Attributs for Moving in GUI
     Square squareFinal;
 
@@ -46,7 +46,7 @@ public class Game {
 
         this.chessBoard = new Board(8,8);
         this.beatenPieces = new ArrayList<>();
-        this.moveHistory = new Stack<>();
+        this.moveHistory = new ArrayList<>();
 
         this.squareStart = null;
         this.squareFinal = null;
@@ -80,7 +80,7 @@ public class Game {
             }
         // final square is empty
         } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
-                Move lastEnemyMove = this.moveHistory.peek();
+                Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
                 Square start = lastEnemyMove.getStartSquare();
                 Square end = lastEnemyMove.getFinalSquare();
                 int diff_enemy = start.getY() - end.getY();
@@ -117,7 +117,7 @@ public class Game {
             currentMove.castlingMove(this.chessBoard); // TODO: Kopie des Bretts, darauf Züge, dann ohne sie zurück nehmen zu müssen altes Brett noch da?
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
-            Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
+            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1); // get last Move (of the enemy), but don't remove it
             currentMove.enPassantMove(lastEnemyMove, this.chessBoard);
             Piece enemy = lastEnemyMove.getMovingPiece();
             this.beatenPieces.add(enemy);
@@ -389,7 +389,7 @@ public class Game {
             currentMove.castlingMove(this.chessBoard);
         } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
             // move is an en passant capture
-            Move lastEnemyMove = this.moveHistory.peek(); // get last Move (of the enemy), but don't remove it
+            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1); // get last Move (of the enemy), but don't remove it
             currentMove.enPassantMove(lastEnemyMove, this.chessBoard);
             Piece enemy = lastEnemyMove.getMovingPiece();
             this.beatenPieces.add(enemy);

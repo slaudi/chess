@@ -37,8 +37,9 @@ public class ChessBoardView extends BorderPane{
     }
 
     public VBox generateRightMarginColumn(){
-        Button btn = new Button("Options");
-        return new VBox(btn);
+        Button btnOptions = new Button("Options");
+        Button btnMoveHistory = new Button("Move-History");
+        return new VBox(btnOptions, btnMoveHistory);
     }
 
     public HBox generatePlayersMoveLabelBox(Game game){
