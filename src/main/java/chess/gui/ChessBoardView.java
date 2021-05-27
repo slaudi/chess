@@ -1,7 +1,6 @@
 package chess.gui;
 
 import chess.game.*;
-import chess.game.Game;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import javafx.geometry.Pos;
@@ -14,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -101,20 +101,24 @@ public class ChessBoardView extends BorderPane{
             String hintInCheckStatus;
             if(game.isRotatingBoard){
                 isBoardRotationStatus = "ON";
+            } else {
+                isBoardRotationStatus = "OFF";
             }
-            else isBoardRotationStatus = "OFF";
             if(game.highlightPossibleMoves){
                 highlightPossibleMoveStatus = "ON";
+            } else {
+                highlightPossibleMoveStatus = "OFF";
             }
-            else highlightPossibleMoveStatus = "OFF";
             if(game.allowedToChangeSelectedPiece){
                 allowedChangeSelectedPieceStatus = "ON";
+            } else {
+                allowedChangeSelectedPieceStatus = "OFF";
             }
-            else allowedChangeSelectedPieceStatus = "OFF";
             if(game.hintInCheck){
                 hintInCheckStatus = "ON";
+            } else {
+                hintInCheckStatus = "OFF";
             }
-            else hintInCheckStatus = "OFF";
 
             Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
             alerti.setTitle("Game-Settings");
@@ -156,7 +160,7 @@ public class ChessBoardView extends BorderPane{
         });
         Button btnMoveHistory = new Button("Move-History");
         btnMoveHistory.setOnAction(event -> {
-            ArrayList<Move> history = game.moveHistory;
+            List<Move> history = game.moveHistory;
             StringBuilder historyAsString = new StringBuilder();
             if(!history.isEmpty()){
                 for (Move move : history) {
@@ -369,21 +373,8 @@ public class ChessBoardView extends BorderPane{
 
     public GridPane generateHighlightedButtonGrid(Game game){
         GridPane grid = new GridPane();
-        ArrayList<Square> allowedSquares = new ArrayList<>();
-        for (int j = 0; j < 8; j++){
-            for (int i = 0; i < 8; i++){
-                if (game.isMoveAllowed(game.getSquareStart().getOccupiedBy(), game.chessBoard.getSquareAt(i, j))){
-                    if(game.getSquareStart().getOccupiedBy().getType() != Type.KING){
-                        allowedSquares.add(game.chessBoard.getSquareAt(i, j));
-                    }
-                    else {
-                        if(game.isSafeSquare(game.chessBoard.getSquareAt(i, j))){
-                            allowedSquares.add(game.chessBoard.getSquareAt(i, j));
-                        }
-                    }
-                }
-            }
-        }
+        List<Square> allowedSquares = game.computePossibleSquares();
+
         if(allowedSquares.isEmpty()){
             game.setSquareStart(null);
             Alert alertu = new Alert(Alert.AlertType.INFORMATION);
@@ -542,21 +533,8 @@ public class ChessBoardView extends BorderPane{
 
     public GridPane generateHighlightedButtonGridBlackDown(Game game){
         GridPane grid = new GridPane();
-        ArrayList<Square> allowedSquares = new ArrayList<>();
-        for (int j = 0; j < 8; j++){
-            for (int i = 0; i < 8; i++){
-                if (game.isMoveAllowed(game.getSquareStart().getOccupiedBy(), game.chessBoard.getSquareAt(i, j))){
-                    if(game.getSquareStart().getOccupiedBy().getType() != Type.KING){
-                        allowedSquares.add(game.chessBoard.getSquareAt(i, j));
-                    }
-                    else {
-                        if(game.isSafeSquare(game.chessBoard.getSquareAt(i, j))){
-                            allowedSquares.add(game.chessBoard.getSquareAt(i, j));
-                        }
-                    }
-                }
-            }
-        }
+        List<Square> allowedSquares = game.computePossibleSquares();
+
         if(allowedSquares.isEmpty()){
             game.setSquareStart(null);
             Alert alertu = new Alert(Alert.AlertType.INFORMATION);
