@@ -3,7 +3,6 @@ package chess.pieces;
 import chess.game.*;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * The Pawn class is a Subclass of the Piece class, implements the interface MovingDirection
@@ -135,12 +134,7 @@ public class Pawn extends Piece {
         int diff_y = finalSquare.getY() - this.square.getY();
 
         if (end.getOccupiedBy().getType() == Type.PAWN) {
-            if(this.colour == Colour.WHITE) {
-                return Math.abs(diff_x) == 1 && diff_y == -1;
-            }
-            else {
-                return Math.abs(diff_x) == 1 && diff_y == 1;
-            }
+            return enPassantHelper(end, diff_x, diff_y);
         }
         return false;
     }
@@ -165,15 +159,26 @@ public class Pawn extends Piece {
             if (Math.abs(diff_enemy) == 2
                     && end.getOccupiedBy().getType() == Type.PAWN
                     && end.getY() == this.square.getY()) {
-                if(this.colour == Colour.WHITE) {
-                    return Math.abs(diff_x) == 1 && diff_y == -1;
-                }
-                else {
-                    return Math.abs(diff_x) == 1 && diff_y == 1;
-                }
+                return enPassantHelper(end, diff_x, diff_y);
             }
         }
         return false;
+    }
+
+    private boolean enPassantHelper(Square enemy, int diff_x, int diff_y) {
+        if(this.colour == Colour.WHITE) {
+            if (enemy.getX() < this.square.getX()) {
+                return diff_x == -1 && diff_y == -1;
+            } else {
+                return diff_x == 1 && diff_y == -1;
+            }
+        } else {
+            if (enemy.getX() < this.square.getX()) {
+                return diff_x == -1 && diff_y == 1;
+            } else {
+                return diff_x == 1 && diff_y == 1;
+            }
+        }
     }
 
     /**
@@ -184,7 +189,7 @@ public class Pawn extends Piece {
      * @return boolean Returns 'true' if the move puts the Pawn on the last Square
      * on the board so that a promotion is possible.
      */
-    public boolean promotionPossible(Square finalSquare) {
+    public boolean promotionPossible (Square finalSquare) {
         if (this.colour == Colour.WHITE) {
             return finalSquare.getY() == 0;
         } else {
