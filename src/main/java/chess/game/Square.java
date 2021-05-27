@@ -38,6 +38,10 @@ public class Square {
         }
     }
 
+    public Label getLabel(){
+        return this.label;
+    }
+
     @Override
     public String toString(){
         if(this.occupiedBy == null){

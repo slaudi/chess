@@ -4,7 +4,6 @@ import chess.pieces.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 
 /**
@@ -31,9 +30,17 @@ public class Game {
      * The list where all beaten pieces are stored.
      */
     public final List<Piece> beatenPieces;
-    private final ArrayList<Move> moveHistory;
+    public final ArrayList<Move> moveHistory;
     Square squareStart;                  // Helper-Attributs for Moving in GUI
     Square squareFinal;
+    public boolean enemyIsHuman;
+    public Colour userColour;
+    public boolean isRotatingBoard;
+    public boolean highlightPossibleMoves;
+    public boolean allowedToChangeSelectedPiece;
+    public boolean hintInCheck;
+    public boolean freshGame;
+
 
 
     /**
@@ -50,6 +57,13 @@ public class Game {
 
         this.squareStart = null;
         this.squareFinal = null;
+        this.enemyIsHuman = true;
+        this.userColour = Colour.WHITE;
+        this.isRotatingBoard = true;
+        this.highlightPossibleMoves = true;
+        this.allowedToChangeSelectedPiece = false;
+        this.hintInCheck = true;
+        this.freshGame = true;
     }
 
     /**
@@ -133,7 +147,7 @@ public class Game {
                 // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
                 beatenPieces.add(targetPiece);
             }
-            if (!canMoveStay(targetPiece, currentMove) || isInCheck()/*TODO: warum nochmal?*/) {
+            if (!canMoveStay(targetPiece, currentMove) || isInCheck()/*TODO: warum nochmal? Needs to stay: contains a setter, which otherwise would not be setted */) {
                 // move puts own King in check, undo move
                 return false;
             }
@@ -146,7 +160,7 @@ public class Game {
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setNotMoved(false);
         changePlayer();
-        isInCheck(); //TODO: warum nochmal?
+        isInCheck(); //TODO: warum nochmal? Needs to stay: contains a setter, which otherwise would not be setted
         return true;
     }
 
@@ -156,7 +170,7 @@ public class Game {
      *
      * @return boolean Returns 'true' if the King of the current Player is in check.
      */
-    boolean isInCheck(){
+    public boolean isInCheck(){
         Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
@@ -176,7 +190,7 @@ public class Game {
      *
      * @return boolean Returns 'true' if the current Player is checkmate.
      */
-    boolean isCheckMate() {
+    public boolean isCheckMate() {
         Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         if (this.currentPlayer.isInCheck()) {
             if (canKingMove()) {
@@ -267,7 +281,7 @@ public class Game {
     boolean isSafeSquare(Square finalSquare) {
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
-            if (canKillKing(enemyPiece, finalSquare)) {
+            if (isMoveAllowed(enemyPiece, finalSquare)) {                                                                 //changed canKillKing to isMoveAllowed
                 return false;
             }
         }
@@ -324,7 +338,7 @@ public class Game {
         return false;
     }
 
-    void changePlayer() {
+    public void changePlayer() {
         // change currentPlayer to next Colour
         this.currentPlayer = this.currentPlayer == this.playerWhite ? this.playerBlack : this.playerWhite;
 
@@ -377,50 +391,6 @@ public class Game {
         } else {
             this.setSquareFinal(square);
         }
-    }
-
-    public boolean processMove(Square startSquare, Square finalSquare) {//NOPMD to process a move all if-clauses are needed here      //Move-Proccessing for GUI
-        Move currentMove = new Move(startSquare, finalSquare);
-        Piece selectedPiece = startSquare.getOccupiedBy();
-        Piece targetPiece = finalSquare.getOccupiedBy();
-        List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-        if (selectedPiece.getType() == Type.KING && ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard)) {
-            // move is castling, afterwards never in check -> is covered in canDoCastling()
-            currentMove.castlingMove(this.chessBoard);
-        } else if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).isEnPassant(finalSquare, this.moveHistory)) {
-            // move is an en passant capture
-            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1); // get last Move (of the enemy), but don't remove it
-            currentMove.enPassantMove(lastEnemyMove, this.chessBoard);
-            Piece enemy = lastEnemyMove.getMovingPiece();
-            this.beatenPieces.add(enemy);
-            if (isInCheck()) {
-                // King is in check, undo en passant
-                currentMove.undoEnPassant(enemy, lastEnemyMove, this.chessBoard);
-                this.beatenPieces.remove(enemy);
-                return false;
-            }
-        } else {
-            currentMove.doMove(this.chessBoard);
-            if (targetPiece != null) {
-                // add a beaten piece to the ArrayList before isInCheck() (don't examine it, it's already beaten)
-                beatenPieces.add(targetPiece);
-            }
-            if (!canMoveStay(targetPiece, currentMove) || isInCheck()) {
-                // move puts own King in check, undo move
-                return false;
-            }
-            if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
-                // move allows promotion
-                //TODO Promotion without key. Instead PopUp.
-                currentMove.doPromotion(this.chessBoard);
-            }
-        }
-        this.moveHistory.add(currentMove);
-        selectedPiece.setSquare(finalSquare);
-        selectedPiece.setNotMoved(false);
-        changePlayer();
-        isInCheck();
-        return true;
     }
 }
 

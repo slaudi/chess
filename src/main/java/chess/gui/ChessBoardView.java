@@ -1,6 +1,7 @@
 package chess.gui;
 
 import chess.game.*;
+import chess.game.Game;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import javafx.event.ActionEvent;
@@ -23,7 +24,7 @@ public class ChessBoardView extends BorderPane{
     public ChessBoardView(Game game) {
         HBox heading = generatePlayersMoveLabelBox(game);
         HBox bottom = generateBeatenPieces(game);
-        VBox right = generateRightMarginColumn();
+        VBox right = generateRightMarginColumn(game);
         GridPane center = generateButtonGrid(game);
 
         heading.setAlignment(Pos.CENTER);
@@ -36,13 +37,76 @@ public class ChessBoardView extends BorderPane{
         setBottom(bottom);
     }
 
-    public VBox generateRightMarginColumn(){
+    public VBox generateRightMarginColumn(Game game){
         Button btnOptions = new Button("Options");
+        btnOptions.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
         Button btnMoveHistory = new Button("Move-History");
+        btnMoveHistory.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ArrayList<Move> history = game.moveHistory;
+                String historyAsString = "";
+                if(!history.isEmpty()){
+                    for (int i = 0; i < history.size(); i++){
+                        historyAsString = historyAsString + history.get(i).getStartSquare().getLabel().toString() + "-" + history.get(i).getFinalSquare().getLabel().toString() + "\n";
+                    }
+                }
+                else {
+                    historyAsString = "new Game";
+                }
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Move-History");
+                alert.setHeaderText(null);
+                alert.setContentText(historyAsString);
+
+                alert.showAndWait();
+            }
+        });
         return new VBox(btnOptions, btnMoveHistory);
     }
 
     public HBox generatePlayersMoveLabelBox(Game game){
+        if(game.freshGame){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Welcome to a new Game of Chess");
+            alert.setHeaderText(null);
+            alert.setContentText("Choose your Enemy:");
+
+            ButtonType buttonTypeOne = new ButtonType("Human");
+            ButtonType buttonTypeTwo = new ButtonType("Computer");
+
+            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeOne){
+                game.enemyIsHuman = true;
+            } else {
+                game.enemyIsHuman = false;
+            }
+            if(!game.enemyIsHuman) {
+                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert2.setTitle("Welcome to a new Game of Chess");
+                alert2.setHeaderText(null);
+                alert2.setContentText("Choose your Colour:");
+
+                ButtonType buttonTypeThree = new ButtonType("White");
+                ButtonType buttonTypeFour = new ButtonType("Black");
+
+                alert2.getButtonTypes().setAll(buttonTypeThree, buttonTypeFour);
+
+                Optional<ButtonType> result2 = alert2.showAndWait();
+                if (result2.get() == buttonTypeThree) {
+                    game.userColour = Colour.WHITE;
+                } else {
+                    game.userColour = Colour.BLACK;
+                }
+            }
+        }
         Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
         return new HBox(label);
     }
@@ -91,6 +155,12 @@ public class ChessBoardView extends BorderPane{
                 }
                 currentGame.setSquareStart(null);
                 currentGame.setSquareFinal(null);
+                currentGame.isInCheck();
+                currentGame.isCheckMate();
+                currentGame.changePlayer();
+                currentGame.isInCheck();
+                currentGame.isCheckMate();
+                currentGame.changePlayer();
                 return 0;
             }
         }
@@ -902,5 +972,9 @@ public class ChessBoardView extends BorderPane{
             }
         }
         return null;
+    }
+    public GridPane chooseButtonGridGeneration(Game game){
+
+
     }
 }
