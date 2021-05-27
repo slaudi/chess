@@ -1,5 +1,7 @@
 package chess.gui;
 
+import chess.engine.EvaluatePieces;
+import chess.engine.Evaluation;
 import chess.game.*;
 import chess.game.Game;
 import chess.pieces.Pawn;
@@ -308,6 +310,12 @@ public class ChessBoardView extends BorderPane{
                     if(game.getSquareStart() != null && game.getSquareFinal() != null){
                         int result = processingMovement(game);
                         if(result == 0){
+                            if(!game.enemyIsHuman){
+                                Move AIMove = EvaluatePieces.nextBestMove(game);
+                                game.setSquareStart(AIMove.getStartSquare());
+                                game.setSquareFinal(AIMove.getFinalSquare());
+                                processingMovement(game);
+                            }
                             setCenter(chooseButtonGridGeneration(game));
                             setBottom(generateBeatenPieces(game));
                             setTop(generatePlayersMoveLabelBox(game));
@@ -409,6 +417,12 @@ public class ChessBoardView extends BorderPane{
                     if(game.getSquareStart() != null && game.getSquareFinal() != null){
                         int result = processingMovement(game);
                         if(result == 0){
+                            if(!game.enemyIsHuman){
+                                Move AIMove = EvaluatePieces.nextBestMove(game);
+                                game.setSquareStart(AIMove.getStartSquare());
+                                game.setSquareFinal(AIMove.getFinalSquare());
+                                processingMovement(game);
+                            }
                             setCenter(chooseButtonGridGeneration(game));
                             setBottom(generateBeatenPieces(game));
                             setTop(generatePlayersMoveLabelBox(game));
@@ -481,6 +495,12 @@ public class ChessBoardView extends BorderPane{
                     if(game.getSquareStart() != null && game.getSquareFinal() != null){
                         int result = processingMovement(game);
                         if(result == 0){
+                            if(!game.enemyIsHuman){
+                                Move AIMove = EvaluatePieces.nextBestMove(game);
+                                game.setSquareStart(AIMove.getStartSquare());
+                                game.setSquareFinal(AIMove.getFinalSquare());
+                                processingMovement(game);
+                            }
                             setCenter(chooseButtonGridGeneration(game));
                             setBottom(generateBeatenPieces(game));
                             setTop(generatePlayersMoveLabelBox(game));
@@ -582,6 +602,12 @@ public class ChessBoardView extends BorderPane{
                     if(game.getSquareStart() != null && game.getSquareFinal() != null){
                         int result = processingMovement(game);
                         if(result == 0){
+                            if(!game.enemyIsHuman){
+                                Move AIMove = EvaluatePieces.nextBestMove(game);
+                                game.setSquareStart(AIMove.getStartSquare());
+                                game.setSquareFinal(AIMove.getFinalSquare());
+                                processingMovement(game);
+                            }
                             setCenter(chooseButtonGridGeneration(game));
                             setBottom(generateBeatenPieces(game));
                             setTop(generatePlayersMoveLabelBox(game));
