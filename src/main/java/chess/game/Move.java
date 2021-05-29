@@ -10,7 +10,10 @@ public class Move {
     final Square startSquare;
     final Square finalSquare;
     final Piece movingPiece;
-    public int boardValueAfterMove;
+    /**
+     *
+     */
+    public int boardValueAfterMove = 0;
 
     /**
      * Constructor for creating new player.
@@ -22,7 +25,6 @@ public class Move {
         this.startSquare = start;
         this.finalSquare = finish;
         this.movingPiece = start.getOccupiedBy();
-        this.boardValueAfterMove = 0;
     }
 
     public Square getStartSquare() {
