@@ -9,6 +9,16 @@ import javafx.stage.Stage;
  * Starting point of the JavaFX GUI
  */
 public class Gui extends Application {
+
+    /**
+     * The entry point of the GUI application.
+     *
+     * @param args The command line arguments passed to the application
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     /**
      * This method is called by the Application to start the GUI.
      *
@@ -22,14 +32,5 @@ public class Gui extends Application {
         Scene chessScene = new Scene(chessBoardView);
         primaryStage.setScene(chessScene);
         primaryStage.show();
-    }
-
-    /**
-     * The entry point of the GUI application.
-     *
-     * @param args The command line arguments passed to the application
-     */
-    public static void main(String[] args) {
-        launch(args);
     }
 }
