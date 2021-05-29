@@ -10,9 +10,9 @@ import chess.pieces.Piece;
  */
 public interface Evaluation {
 
-    int bestScore = Integer.MAX_VALUE;
+    int highestScore = Integer.MAX_VALUE;
 
-    int worstScore = Integer.MIN_VALUE;
+    int lowestScore = Integer.MIN_VALUE;
 
     int balancedScore = 0;
 

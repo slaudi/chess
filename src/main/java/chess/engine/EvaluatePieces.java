@@ -22,13 +22,13 @@ public class EvaluatePieces implements Evaluation{
                 Piece piece = game.chessBoard.getPieceAt(x,y);
                 if (piece != null) {
                     int value = piecesValue(piece);
-                    int controledSquares = pieceControlsSquares(piece, game);
+                    int controlledSquares = pieceControlsSquares(piece, game);
                     if (piece.getColour() == playerColour) {
                         sum += value;
-                        sum += controledSquares;
+                        sum += controlledSquares;
                     } else {
                         sum -= value;
-                        sum -= controledSquares;
+                        sum -= controlledSquares;
                     }
                 }
             }
