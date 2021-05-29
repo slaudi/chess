@@ -41,30 +41,35 @@ public class ChessBoardView extends BorderPane{
             String highlightPossibleMoveStatus;
             String allowedChangeSelectedPieceStatus;
             String hintInCheckStatus;
+            String on = "ON";
+            String off = "OFF";
             if(game.isRotatingBoard){
-                isBoardRotationStatus = "ON";
+                isBoardRotationStatus = on;
             } else {
-                isBoardRotationStatus = "OFF";
+                isBoardRotationStatus = off;
             }
             if(game.highlightPossibleMoves){
-                highlightPossibleMoveStatus = "ON";
+                highlightPossibleMoveStatus = on;
             } else {
-                highlightPossibleMoveStatus = "OFF";
+                highlightPossibleMoveStatus = off;
             }
             if(game.allowedToChangeSelectedPiece){
-                allowedChangeSelectedPieceStatus = "ON";
+                allowedChangeSelectedPieceStatus = on;
             } else {
-                allowedChangeSelectedPieceStatus = "OFF";
+                allowedChangeSelectedPieceStatus = off;
             }
             if(game.hintInCheck){
-                hintInCheckStatus = "ON";
+                hintInCheckStatus = on;
             } else {
-                hintInCheckStatus = "OFF";
+                hintInCheckStatus = off;
             }
 
             Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
             alerti.setTitle("Game-Settings");
-            alerti.setHeaderText(" ChessBoard-Rotation is " + isBoardRotationStatus + "\n Highlighting of possible Moves is " + highlightPossibleMoveStatus + "\n Allowed to change selected Piece is " + allowedChangeSelectedPieceStatus + "\n Check-Notifications are " + hintInCheckStatus);
+            alerti.setHeaderText(" ChessBoard-Rotation is " + isBoardRotationStatus
+                    + "\n Highlighting of possible Moves is " + highlightPossibleMoveStatus
+                    + "\n Allowed to change selected Piece is " + allowedChangeSelectedPieceStatus
+                    + "\n Check-Notifications are " + hintInCheckStatus);
             alerti.setContentText("Choose Option you want to Change:");
 
             ButtonType buttonTypeOne = new ButtonType("Rotation");
@@ -248,58 +253,7 @@ public class ChessBoardView extends BorderPane{
                 int finalY = y;
                 btn.setOnAction(event -> {
                     game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    if(game.getSquareStart() != null && game.getSquareFinal() != null){
-                        int result = processingMovement(game);
-                        if(result == 0){
-                            if(!game.enemyIsHuman){
-                                Move AIMove = EvaluatePieces.nextBestMove(game);
-                                game.setSquareStart(AIMove.getStartSquare());
-                                game.setSquareFinal(AIMove.getFinalSquare());
-                                processingMovement(game);
-                            }
-                            setCenter(chooseButtonGridGeneration(game));
-                            setBottom(generateBeatenPieces(game));
-                            setTop(generatePlayersMoveLabelBox(game));
-                        }
-                        else if (result == 1){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Would be Check");
-                            alert.showAndWait();
-                        }
-                        else if (result == 2){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Not possible");
-                            alert.showAndWait();
-                        }
-                        else if (result == 3){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("CheckMate");
-                            alert.showAndWait();
-                        }
-                        else if (result == 4){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Draw");
-                            alert.showAndWait();
-                        }
-                        else if (result == 5){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Something unexpected happened!?");
-                            alert.showAndWait();
-                        }
-                    }
-                    if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                        setCenter(chooseButtonGridGeneration(game));
-                    }
+                    buttonSetAction(game);
                 });
                 grid.add(btn, x, y);
             }
@@ -351,58 +305,7 @@ public class ChessBoardView extends BorderPane{
                 int finalY = y;
                 btn.setOnAction(event -> {
                     game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    if(game.getSquareStart() != null && game.getSquareFinal() != null){
-                        int result = processingMovement(game);
-                        if(result == 0){
-                            if(!game.enemyIsHuman){
-                                Move AIMove = EvaluatePieces.nextBestMove(game);
-                                game.setSquareStart(AIMove.getStartSquare());
-                                game.setSquareFinal(AIMove.getFinalSquare());
-                                processingMovement(game);
-                            }
-                            setCenter(chooseButtonGridGeneration(game));
-                            setBottom(generateBeatenPieces(game));
-                            setTop(generatePlayersMoveLabelBox(game));
-                        }
-                        else if (result == 1){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Would be Check");
-                            alert.showAndWait();
-                        }
-                        else if (result == 2){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Not possible");
-                            alert.showAndWait();
-                        }
-                        else if (result == 3){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("CheckMate");
-                            alert.showAndWait();
-                        }
-                        else if (result == 4){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Draw");
-                            alert.showAndWait();
-                        }
-                        else if (result == 5){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Something unexpected happened!?");
-                            alert.showAndWait();
-                        }
-                    }
-                    if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                        setCenter(chooseButtonGridGeneration(game));
-                    }
+                    buttonSetAction(game);
                 });
                 grid.add(btn, x, y);
             }
@@ -429,58 +332,7 @@ public class ChessBoardView extends BorderPane{
                 int finalY = y;
                 btn.setOnAction(event -> {
                     game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    if(game.getSquareStart() != null && game.getSquareFinal() != null){
-                        int result = processingMovement(game);
-                        if(result == 0){
-                            if(!game.enemyIsHuman){
-                                Move AIMove = EvaluatePieces.nextBestMove(game);
-                                game.setSquareStart(AIMove.getStartSquare());
-                                game.setSquareFinal(AIMove.getFinalSquare());
-                                processingMovement(game);
-                            }
-                            setCenter(chooseButtonGridGeneration(game));
-                            setBottom(generateBeatenPieces(game));
-                            setTop(generatePlayersMoveLabelBox(game));
-                        }
-                        else if (result == 1){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Would be Check");
-                            alert.showAndWait();
-                        }
-                        else if (result == 2){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Not possible");
-                            alert.showAndWait();
-                        }
-                        else if (result == 3){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("CheckMate");
-                            alert.showAndWait();
-                        }
-                        else if (result == 4){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Draw");
-                            alert.showAndWait();
-                        }
-                        else if (result == 5){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Something unexpected happened!?");
-                            alert.showAndWait();
-                        }
-                    }
-                    if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                        setCenter(chooseButtonGridGeneration(game));
-                    }
+                    buttonSetAction(game);
                 });
                 grid.add(btn, 7 - x, 7 - y);
             }
@@ -523,58 +375,7 @@ public class ChessBoardView extends BorderPane{
                 int finalY = y;
                 btn.setOnAction(event -> {
                     game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    if(game.getSquareStart() != null && game.getSquareFinal() != null){
-                        int result = processingMovement(game);
-                        if(result == 0){
-                            if(!game.enemyIsHuman){
-                                Move AIMove = EvaluatePieces.nextBestMove(game);
-                                game.setSquareStart(AIMove.getStartSquare());
-                                game.setSquareFinal(AIMove.getFinalSquare());
-                                processingMovement(game);
-                            }
-                            setCenter(chooseButtonGridGeneration(game));
-                            setBottom(generateBeatenPieces(game));
-                            setTop(generatePlayersMoveLabelBox(game));
-                        }
-                        else if (result == 1){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Would be Check");
-                            alert.showAndWait();
-                        }
-                        else if (result == 2){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Movement-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Move not allowed: Not possible");
-                            alert.showAndWait();
-                        }
-                        else if (result == 3){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("CheckMate");
-                            alert.showAndWait();
-                        }
-                        else if (result == 4){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Draw");
-                            alert.showAndWait();
-                        }
-                        else if (result == 5){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Game-Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Something unexpected happened!?");
-                            alert.showAndWait();
-                        }
-                    }
-                    if(game.getSquareStart() != null && game.getSquareFinal() == null){
-                        setCenter(chooseButtonGridGeneration(game));
-                    }
+                    buttonSetAction(game);
                 });
                 grid.add(btn, 7 - x, 7 - y);
             }
@@ -673,6 +474,66 @@ public class ChessBoardView extends BorderPane{
                 }
                 return generateButtonGridBlackDown(game);
             }
+        }
+    }
+
+    private void buttonSetAction(Game game) {
+        if(game.getSquareStart() != null && game.getSquareFinal() != null) {
+            int result = processingMovement(game);
+            if (result == 0) {
+                if (!game.enemyIsHuman) {
+                    Move AIMove = EvaluatePieces.nextBestMove(game);
+                    game.setSquareStart(AIMove.getStartSquare());
+                    game.setSquareFinal(AIMove.getFinalSquare());
+                    processingMovement(game);
+                }
+                setCenter(chooseButtonGridGeneration(game));
+                setBottom(generateBeatenPieces(game));
+                setTop(generatePlayersMoveLabelBox(game));
+            } else {
+                generateAnswer(result);
+            }
+        }
+        if(game.getSquareStart() != null && game.getSquareFinal() == null){
+            setCenter(chooseButtonGridGeneration(game));
+        }
+    }
+
+    private void generateAnswer(int result) {
+        if (result == 1){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Movement Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Move not allowed: Would be Check");
+            alert.showAndWait();
+        }
+        else if (result == 2){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Movement Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Move not allowed: Not possible");
+            alert.showAndWait();
+        }
+        else if (result == 3){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CheckMate");
+            alert.showAndWait();
+        }
+        else if (result == 4){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Information");
+            alert.setHeaderText(null);
+            alert.setContentText("Draw");
+            alert.showAndWait();
+        }
+        else if (result == 5){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game-Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Something unexpected happened!?");
+            alert.showAndWait();
         }
     }
 
