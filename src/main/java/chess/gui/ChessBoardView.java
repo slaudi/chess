@@ -1,7 +1,6 @@
 package chess.gui;
 
 import chess.engine.EvaluatePieces;
-import chess.engine.Evaluation;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
@@ -14,29 +13,12 @@ import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 
 public class ChessBoardView extends BorderPane{
-
-    public ChessBoardView(Game game) {
-        HBox heading = generatePlayersMoveLabelBox(game);
-        HBox bottom = generateBeatenPieces(game);
-        VBox right = generateRightMarginColumn(game);
-        GridPane center = generateButtonGrid(game);
-
-        heading.setAlignment(Pos.CENTER);
-        bottom.setAlignment(Pos.CENTER);
-        right.setAlignment(Pos.CENTER);
-
-        setCenter(center);
-        setRight(right);
-        setTop(heading);
-        setBottom(bottom);
-    }
 
     Image BlackPawnOnWhite = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnWhite.png")));
     Image BlackPawnOnBlack = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("BlackPawnOnBlack.png")));
@@ -92,6 +74,22 @@ public class ChessBoardView extends BorderPane{
     Image EmptyWhiteX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyWhiteX.png")));
     Image EmptyBlackX = new Image(Objects.requireNonNull(ChessBoardView.class.getResourceAsStream("emptyBlackX.png")));
 
+
+    public ChessBoardView(Game game) {
+        HBox heading = generatePlayersMoveLabelBox(game);
+        HBox bottom = generateBeatenPieces(game);
+        VBox right = generateRightMarginColumn(game);
+        GridPane center = generateButtonGrid(game);
+
+        heading.setAlignment(Pos.CENTER);
+        bottom.setAlignment(Pos.CENTER);
+        right.setAlignment(Pos.CENTER);
+
+        setCenter(center);
+        setRight(right);
+        setTop(heading);
+        setBottom(bottom);
+    }
 
 
     public VBox generateRightMarginColumn(Game game){
@@ -153,7 +151,7 @@ public class ChessBoardView extends BorderPane{
 
                 Optional<ButtonType> resulto = alerto.showAndWait();
                 if (resulto.get() == ButtonType.OK){
-                    Game game1 = new Game();
+                    new Game();
                 }  //user chose CANCEL or closed the dialog
 
             }  //user chose CANCEL or closed the dialog
@@ -218,11 +216,9 @@ public class ChessBoardView extends BorderPane{
         }
         Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
         String currentPlayerIsInCheck = "       ";
-        if (game.hintInCheck){
-            if(game.currentPlayer.isInCheck()){
+        if (game.hintInCheck && game.currentPlayer.isInCheck()){
                 currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
             }
-        }
         Label checkLabel = new Label(currentPlayerIsInCheck);
         currentPlayerIsInCheck = "       ";
         return new HBox(label, checkLabel);
@@ -1360,4 +1356,5 @@ public class ChessBoardView extends BorderPane{
         }
         return null;
     }
+
 }
