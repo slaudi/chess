@@ -3,19 +3,17 @@ package chess.engine;
 import chess.game.*;
 import chess.pieces.Piece;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  */
-public class MinimaxAlgorithm implements Serializable {
+public class MinimaxAlgorithm {
 
     private int searchDepth;
-    Evaluation evaluation;
-    private List<Square> possibleSquares = new ArrayList<>();
+    private List<Square> possibleSquares;
     private List<Piece> alliedPieces;
+    Game tempGame;
 
     /**
      *
@@ -25,14 +23,12 @@ public class MinimaxAlgorithm implements Serializable {
         this.searchDepth = searchDepth;
     }
 
+
     /**
      *
-     * @param possibleSquares
+      * @param game
+     * @return
      */
-    public void setPossibleSquares(List<Square> possibleSquares) {
-        this.possibleSquares = possibleSquares;
-    }
-
     public Move computeBestMove(Game game) {
 
         Colour currentColour = game.currentPlayer.getColour();
@@ -41,36 +37,42 @@ public class MinimaxAlgorithm implements Serializable {
         Move bestMove = null;
 
         for (Piece ally : alliedPieces) {
+            possibleSquares = game.computePossibleSquares();
             for (Square square : possibleSquares) {
-                if(game.isMoveAllowed(ally, square)) {
-                    Game newGame = game;
-                    newGame.processMove(ally.getSquare(), square, ' ');
+                tempGame = game;
+                tempGame.processMove(ally.getSquare(), square, ' ');
 
-                    int value = recursiveBoardEvaluation(newGame, currentColour, searchDepth);
-
-                    if (value > highestValue) {
-                        highestValue = value;
-                        bestMove = new Move(ally.getSquare(), square);
-                    }
+                int value = recursiveBoardEvaluation(tempGame, currentColour, this.searchDepth);
+                if (value > highestValue) {
+                    highestValue = value;
+                    bestMove = new Move(ally.getSquare(), square);
+                }
                 }
             }
-        }
         return bestMove;
     }
 
 
+    /**
+     *
+     * @param game
+     * @param currentColour
+     * @param currentDepth
+     * @return
+     */
     int recursiveBoardEvaluation(Game game, Colour currentColour, int currentDepth) {
         if (currentDepth == 0) {
-            return evaluation.evaluateBoard(game.chessBoard, currentColour);
+            return EvaluatePieces.evaluateBoard(game, currentColour);
         }
 
+        Game newGame;
         if (currentDepth % 2 == 0) {
             int maxValue = Evaluation.lowestScore;
             this.alliedPieces = game.currentPlayer.getAlliedPieces(game.beatenPieces, game.chessBoard);
             for (Piece ally : alliedPieces) {
+                possibleSquares = game.computePossibleSquares();
                 for (Square square : possibleSquares) {
-                    if (game.isMoveAllowed(ally, square)) {
-                        Game newGame = game;
+                        newGame = game;
                         newGame.processMove(ally.getSquare(), square, ' ');
 
                         int value = recursiveBoardEvaluation(newGame, currentColour, currentDepth - 1);
@@ -79,17 +81,16 @@ public class MinimaxAlgorithm implements Serializable {
                         }
                     }
                 }
-            }
-        return maxValue;
+            return maxValue;
 
         } else {
             int minValue = Evaluation.highestScore;
             this.alliedPieces = game.currentPlayer.getAlliedPieces(game.beatenPieces, game.chessBoard);
 
             for (Piece ally : alliedPieces) {
+                possibleSquares = game.computePossibleSquares();
                 for (Square square : possibleSquares) {
-                    if (game.isMoveAllowed(ally, square)) {
-                        Game newGame = game;
+                        newGame = game;
                         newGame.processMove(ally.getSquare(), square, ' ');
 
                         int value = recursiveBoardEvaluation(newGame, currentColour, currentDepth - 1);
@@ -98,20 +99,8 @@ public class MinimaxAlgorithm implements Serializable {
                         }
                     }
                 }
-            }
             return minValue;
         }
     }
-
-    private Board copyBoard(Board board) {
-        Board newBoard = new Board(8,8);
-        newBoard = new Square[8][8];
-        for(byte c = 0; c < 8; c++)
-            for(byte r = 0; r < 8; r++)
-                newBoard.getBoard()[c][r] = board.getBoard()[c][r];
-
-        return newBoard;
-    }
-
 
 }
