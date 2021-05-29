@@ -174,55 +174,8 @@ public class ChessBoardView extends BorderPane{
     public int processingMovement(Game currentGame) {
         if((!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) && currentGame.getSquareStart() != null
                 && currentGame.getSquareFinal() != null) {
-                Piece selectedPiece = currentGame.getSquareStart().getOccupiedBy();
-                Square startSquare = currentGame.getSquareStart();
-                Square finalSquare = currentGame.getSquareFinal();
-                if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
-                    char key = 'Q';
-                    if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Promotion-Option");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Your Pawn should change to:");
-
-                        ButtonType buttonTypeOne = new ButtonType("Rook");
-                        ButtonType buttonTypeTwo = new ButtonType("Knight");
-                        ButtonType buttonTypeThree = new ButtonType("Bishop");
-                        ButtonType buttonTypeFour = new ButtonType("Queen");
-
-                        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour);
-
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == buttonTypeOne){
-                            key = 'R';
-                        } else if (result.get() == buttonTypeTwo) {
-                            key = 'N';
-                        } else if (result.get() == buttonTypeThree) {
-                            key = 'B';
-                        } else {
-                            key = 'Q';
-                        }
-                    }
-                    if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
-                        currentGame.setSquareStart(null);
-                        currentGame.setSquareFinal(null);
-                        return 1;
-                    }
-                } else {
-                    currentGame.setSquareStart(null);
-                    currentGame.setSquareFinal(null);
-                    return 2;
-                }
-                currentGame.setSquareStart(null);
-                currentGame.setSquareFinal(null);
-                currentGame.isInCheck();
-                currentGame.isCheckMate();
-                currentGame.changePlayer();
-                currentGame.isInCheck();
-                currentGame.isCheckMate();
-                currentGame.changePlayer();
-                return 0;
-            }
+                return isMoveAllowed(currentGame);
+        }
         if(currentGame.currentPlayer.isLoser()){
             return 3;
         }
@@ -230,6 +183,62 @@ public class ChessBoardView extends BorderPane{
             return 4;
         }
         return 5;
+    }
+
+    private int isMoveAllowed(Game currentGame) {
+        Piece selectedPiece = currentGame.getSquareStart().getOccupiedBy();
+        Square startSquare = currentGame.getSquareStart();
+        Square finalSquare = currentGame.getSquareFinal();
+        if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
+            char key = 'Q';
+            if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
+                key = promotionSelection();
+            }
+            if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
+                currentGame.setSquareStart(null);
+                currentGame.setSquareFinal(null);
+                return 1;
+            }
+        } else {
+            currentGame.setSquareStart(null);
+            currentGame.setSquareFinal(null);
+            return 2;
+        }
+        currentGame.setSquareStart(null);
+        currentGame.setSquareFinal(null);
+        currentGame.isInCheck();
+        currentGame.isCheckMate();
+        currentGame.changePlayer();
+        currentGame.isInCheck();
+        currentGame.isCheckMate();
+        currentGame.changePlayer();
+        return 0;
+    }
+
+    private char promotionSelection() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Promotion-Option");
+        alert.setHeaderText(null);
+        alert.setContentText("Your Pawn should change to:");
+
+        ButtonType buttonTypeOne = new ButtonType("Rook");
+        ButtonType buttonTypeTwo = new ButtonType("Knight");
+        ButtonType buttonTypeThree = new ButtonType("Bishop");
+        ButtonType buttonTypeFour = new ButtonType("Queen");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == buttonTypeOne){
+            return 'R';
+        } else if (result.get() == buttonTypeTwo) {
+            return 'N';
+        } else if (result.get() == buttonTypeThree) {
+            return 'B';
+        } else {
+            return 'Q';
+        }
     }
 
     public HBox generateBeatenPieces(Game game){
