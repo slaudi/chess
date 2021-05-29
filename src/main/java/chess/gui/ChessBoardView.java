@@ -599,29 +599,14 @@ public class ChessBoardView extends BorderPane{
                         if(game.getSquareStart().getOccupiedBy() != null){
                             if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
                                 return generateHighlightedButtonGrid(game);
+                            } else {
+                                alertPieceWrongColour(game);
                             }
-                            //alert: Piece is not your Colour
-                            else {
-                                game.setSquareStart(null);
-                                Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-                                alertia.setTitle("Piece Problem");
-                                alertia.setHeaderText(null);
-                                alertia.setContentText("Selected Piece is not your Colour!");
-
-                                alertia.showAndWait();
-                            }
-                        }
-                        //alert: no Piece
-                        else {
-                            game.setSquareStart(null);
-                            Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-                            alertis.setTitle("Piece Problem");
-                            alertis.setHeaderText(null);
-                            alertis.setContentText("There is no Piece to Move!");
-
-                            alertis.showAndWait();
+                        } else {
+                            alertNoPiece(game);
                         }
                     }
+                    // no highlighted moves
                     return generateButtonGrid(game);
                 }
                 // current player is black
@@ -631,24 +616,10 @@ public class ChessBoardView extends BorderPane{
                             if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
                                 return generateHighlightedButtonGridBlackDown(game);
                             } else {
-                                //alert Piece is not your Colour
-                                game.setSquareStart(null);
-                                Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-                                alertia.setTitle("Piece Problem");
-                                alertia.setHeaderText(null);
-                                alertia.setContentText("Selected Piece is not your Colour!");
-
-                                alertia.showAndWait();
+                                alertPieceWrongColour(game);
                             }
                         } else {
-                            //alert no Piece
-                            game.setSquareStart(null);
-                            Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-                            alertis.setTitle("Piece Problem");
-                            alertis.setHeaderText(null);
-                            alertis.setContentText("There is no Piece to Move!");
-
-                            alertis.showAndWait();
+                           alertNoPiece(game);
                         }
                     }
                     return generateButtonGridBlackDown(game);
@@ -657,33 +628,18 @@ public class ChessBoardView extends BorderPane{
             // Board doesn't rotate
             else {
                 if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                    if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
                         if (game.getSquareStart().getOccupiedBy() != null) {
-                            if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
-                                return generateHighlightedButtonGridBlackDown(game);
+                            if (game.getSquareStart().getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
+                                return generateHighlightedButtonGrid(game);
                             } else {
-                                //alert Piece is not your Colour
-                                game.setSquareStart(null);
-                                Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-                                alertia.setTitle("Piece Problem");
-                                alertia.setHeaderText(null);
-                                alertia.setContentText("Selected Piece is not your Colour!");
-
-                                alertia.showAndWait();
+                                alertPieceWrongColour(game);
                             }
                         } else {
-                            //alert no Piece
-                            game.setSquareStart(null);
-                            Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-                            alertis.setTitle("Piece Problem");
-                            alertis.setHeaderText(null);
-                            alertis.setContentText("There is no Piece to Move!");
-
-                            alertis.showAndWait();
+                            alertNoPiece(game);
                         }
-                    }
                 }
-                return generateButtonGridBlackDown(game);
+                // No rotation: no highlighted moves
+                return generateButtonGrid(game);
             }
         }
         // enemy is AI
@@ -693,27 +649,11 @@ public class ChessBoardView extends BorderPane{
                     if(game.getSquareStart().getOccupiedBy() != null){
                         if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
                             return generateHighlightedButtonGrid(game);
+                        } else {
+                            alertPieceWrongColour(game);
                         }
-                        else {
-                            //alert Piece is not your Colour
-                            game.setSquareStart(null);
-                            Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-                            alertia.setTitle("Piece Problem");
-                            alertia.setHeaderText(null);
-                            alertia.setContentText("Selected Piece is not your Colour!");
-
-                            alertia.showAndWait();
-                        }
-                    }
-                    else {
-                        //alert no Piece
-                        game.setSquareStart(null);
-                        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-                        alertis.setTitle("Piece Problem");
-                        alertis.setHeaderText(null);
-                        alertis.setContentText("There is no Piece to Move!");
-
-                        alertis.showAndWait();
+                    } else {
+                        alertNoPiece(game);
                     }
                 }
                 return generateButtonGrid(game);
@@ -724,32 +664,36 @@ public class ChessBoardView extends BorderPane{
                     if(game.getSquareStart().getOccupiedBy() != null){
                         if(game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK){
                             return generateHighlightedButtonGridBlackDown(game);
+                        } else {
+                            alertPieceWrongColour(game);
                         }
-                        else {
-                            //alert Piece is not your Colour
-                            game.setSquareStart(null);
-                            Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-                            alertia.setTitle("Piece Problem");
-                            alertia.setHeaderText(null);
-                            alertia.setContentText("Selected Piece is not your Colour!");
-
-                            alertia.showAndWait();
-                        }
-                    }
-                    else {
-                        //alert no Piece
-                        game.setSquareStart(null);
-                        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-                        alertis.setTitle("Piece Problem");
-                        alertis.setHeaderText(null);
-                        alertis.setContentText("There is no Piece to Move!");
-
-                        alertis.showAndWait();
+                    } else {
+                        alertNoPiece(game);
                     }
                 }
                 return generateButtonGridBlackDown(game);
             }
         }
+    }
+
+    private void alertPieceWrongColour(Game game) {
+        game.setSquareStart(null);
+        Alert alertia = new Alert(Alert.AlertType.INFORMATION);
+        alertia.setTitle("Piece Problem");
+        alertia.setHeaderText(null);
+        alertia.setContentText("Selected Piece is not your Colour!");
+
+        alertia.showAndWait();
+    }
+
+    private void alertNoPiece(Game game) {
+        game.setSquareStart(null);
+        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
+        alertis.setTitle("Piece Problem");
+        alertis.setHeaderText(null);
+        alertis.setContentText("There is no Piece to Move!");
+
+        alertis.showAndWait();
     }
 
 }
