@@ -1,20 +1,25 @@
 package chess.engine;
 
-import chess.game.Board;
 import chess.game.Colour;
 import chess.game.Game;
 import chess.game.Move;
 import chess.pieces.Piece;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Evaluates the value of the Pieces on the board.
  */
 public class EvaluatePieces implements Evaluation{
 
-
-
+    private static Game gameAfterOneMove;
+    /**
+     *
+     * @param game
+     * @param playerColour
+     * @return
+     */
     public static int evaluateBoard(Game game, Colour playerColour) {
         int sum = 0;
         for (int y = 0; y < game.chessBoard.getHeight(); y++) {
@@ -22,7 +27,7 @@ public class EvaluatePieces implements Evaluation{
                 Piece piece = game.chessBoard.getPieceAt(x,y);
                 if (piece != null) {
                     int value = piecesValue(piece);
-                    int controlledSquares = pieceControlsSquares(piece, game);
+                    int controlledSquares = pieceControlsSquares(piece, game); // funktioniert nur bei deiner eigenen Spielerfarbe wegen isMoveAllowed?
                     if (piece.getColour() == playerColour) {
                         sum += value;
                         sum += controlledSquares;
@@ -58,7 +63,7 @@ public class EvaluatePieces implements Evaluation{
         }
     }
 
-    public static int pieceControlsSquares(Piece piece, Game game){
+    private static int pieceControlsSquares(Piece piece, Game game){
         int squareCount = 0;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
@@ -70,10 +75,15 @@ public class EvaluatePieces implements Evaluation{
         return squareCount;
     }
 
+    /**
+     *
+     * @param game
+     * @return
+     */
     public static Move nextBestMove(Game game) {
         int max = 0;
-        ArrayList<Move> moveCollection = new ArrayList<>();
-        ArrayList<Piece> ownPieceCollection = new ArrayList<>();
+        List<Move> moveCollection = new ArrayList<>();
+        List<Piece> ownPieceCollection = new ArrayList<>();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 if (game.chessBoard.getSquareAt(x, y).getOccupiedBy() != null && game.chessBoard.getSquareAt(x, y).getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
@@ -91,7 +101,7 @@ public class EvaluatePieces implements Evaluation{
             }
         }
         for (Move move : moveCollection){
-            final Game gameAfterOneMove = game;
+            gameAfterOneMove = game;
             move.doMove(gameAfterOneMove.chessBoard);
             move.boardValueAfterMove = evaluateBoard(gameAfterOneMove, gameAfterOneMove.currentPlayer.getColour());
         }
@@ -100,11 +110,12 @@ public class EvaluatePieces implements Evaluation{
                 max = move.boardValueAfterMove;
             }
         }
-        for (int i = 0; i < moveCollection.size(); i++){
-            if(moveCollection.get(i).boardValueAfterMove == max){
-                return moveCollection.get(i);
+        for (Move move : moveCollection) {
+            if (move.boardValueAfterMove == max) {
+                return move;
             }
         }
         return moveCollection.get(0);
     }
+
 }
