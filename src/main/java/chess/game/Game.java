@@ -338,6 +338,10 @@ public class Game {
         return false;
     }
 
+    /**
+     * Changes the current player to the next Colour and checks if the last move set the next player
+     * checkmate.
+     */
     public void changePlayer() {
         // change currentPlayer to next Colour
         this.currentPlayer = this.currentPlayer == this.playerWhite ? this.playerBlack : this.playerWhite;
