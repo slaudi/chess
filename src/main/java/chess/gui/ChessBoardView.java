@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class ChessBoardView extends BorderPane{
     String highlight;
     int buttonHeight = 90;
     int buttonWidth = 90;
+    int fontSize = 17;
 
     public ChessBoardView(Game game) {
         HBox heading = generatePlayersMoveLabelBox(game);
@@ -31,10 +33,12 @@ public class ChessBoardView extends BorderPane{
         VBox right = generateRightMarginColumn(game);
         GridPane center = generateButtonGrid(game);
 
-        heading.setAlignment(Pos.CENTER);
+        heading.setAlignment(Pos.TOP_CENTER);
+        heading.setPadding(new Insets(20));
         bottom.setAlignment(Pos.BOTTOM_LEFT);
         bottom.setPadding(new Insets(30));
         right.setAlignment(Pos.CENTER);
+        right.setPadding(new Insets(20));
 
         setCenter(center);
         setRight(right);
@@ -89,16 +93,16 @@ public class ChessBoardView extends BorderPane{
 
             Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
             alerti.setTitle("Game-Settings");
-            alerti.setHeaderText(" ChessBoard-Rotation is " + isBoardRotationStatus
-                    + "\n Highlighting of possible Moves is " + highlightPossibleMoveStatus
-                    + "\n Allowed to change selected Piece is " + allowedChangeSelectedPieceStatus
-                    + "\n Check-Notifications are " + hintInCheckStatus);
+            alerti.setHeaderText(" ChessBoard-Rotation: " + isBoardRotationStatus
+                    + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
+                    + "\n Change selected Piece: " + allowedChangeSelectedPieceStatus
+                    + "\n Player is in Check-Notification: " + hintInCheckStatus);
             alerti.setContentText("Choose Option you want to Change:");
 
             ButtonType buttonTypeOne = new ButtonType("Rotation");
-            ButtonType buttonTypeTwo = new ButtonType("MoveHighlighting");
+            ButtonType buttonTypeTwo = new ButtonType("Highlight Moves");
             ButtonType buttonTypeThree = new ButtonType("Change Selected Piece");
-            ButtonType buttonTypeFour = new ButtonType("CheckHints");
+            ButtonType buttonTypeFour = new ButtonType("Check Notification");
             ButtonType buttonTypeFive = new ButtonType("Start New Game");
             ButtonType buttonTypeSix = new ButtonType("Cancel");
 
@@ -121,7 +125,7 @@ public class ChessBoardView extends BorderPane{
 
                 Optional<ButtonType> resulto = alerto.showAndWait();
                 if (resulto.get() == ButtonType.OK){
-                    Game newGame = new Game();
+                    new Game(); //TODO: neues Spiel
                 }  //user chose CANCEL or closed the dialog
 
             }  //user chose CANCEL or closed the dialog
@@ -136,9 +140,8 @@ public class ChessBoardView extends BorderPane{
                 for (Move move : history) {
                     historyAsString.append(move.getStartSquare().getLabel().toString()).append("-").append(move.getFinalSquare().getLabel().toString()).append("\n");
                 }
-            }
-            else {
-                historyAsString = new StringBuilder("new Game");
+            } else {
+                historyAsString = new StringBuilder(" ");
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Move-History");
@@ -147,44 +150,14 @@ public class ChessBoardView extends BorderPane{
 
             alert.showAndWait();
         });
-        return new VBox(btnOptions, btnMoveHistory);
+        VBox box = new VBox(15);
+        box.getChildren().addAll(btnOptions, btnMoveHistory);
+        return box;
     }
 
     private HBox generatePlayersMoveLabelBox(Game game){
-        if(game.freshGame){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Welcome to a new Game of Chess");
-            alert.setHeaderText(null);
-            alert.setContentText("Choose your Enemy:");
-
-            ButtonType buttonTypeOne = new ButtonType("Human");
-            ButtonType buttonTypeTwo = new ButtonType("Computer");
-
-            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            game.enemyIsHuman = result.get() == buttonTypeOne;
-            if(!game.enemyIsHuman) {
-                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                alert2.setTitle("Welcome to a new Game of Chess");
-                alert2.setHeaderText(null);
-                alert2.setContentText("Choose your Colour:");
-
-                ButtonType buttonTypeThree = new ButtonType("White");
-                ButtonType buttonTypeFour = new ButtonType("Black");
-
-                alert2.getButtonTypes().setAll(buttonTypeThree, buttonTypeFour);
-
-                Optional<ButtonType> result2 = alert2.showAndWait();
-                if (result2.get() == buttonTypeThree) {
-                    game.userColour = Colour.WHITE;
-                } else {
-                    game.userColour = Colour.BLACK;
-                }
-            }
-            game.freshGame = false;
-        }
         Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
+        label.setFont(new Font(fontSize));
         String currentPlayerIsInCheck = "       ";
         if (game.hintInCheck && game.currentPlayer.isInCheck()){
             currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
@@ -272,10 +245,11 @@ public class ChessBoardView extends BorderPane{
                 grid.add(btn, x, y);
             }
             String[] columns = {"1","2","3","4","5","6","7","8"};
-            grid.add(new Label(columns[y]), 8, y);
-
+            Label label = new Label(columns[7-y]);
+            label.setFont(new Font(fontSize));
+            grid.add(label, 8, y);
         }
-        addLabels(grid,"white");
+        addLetters(grid,"white");
         return grid;
     }
 
@@ -298,9 +272,11 @@ public class ChessBoardView extends BorderPane{
                 grid.add(btn, x, y);
             }
             String[] columns = {"1","2","3","4","5","6","7","8"};
-            grid.add(new Label(columns[y]), 8, y);
+            Label label = new Label(columns[7-y]);
+            label.setFont(new Font(fontSize));
+            grid.add(label, 8, y);
         }
-        addLabels(grid,"white");
+        addLetters(grid,"white");
         return grid;
     }
 
@@ -312,9 +288,11 @@ public class ChessBoardView extends BorderPane{
                 grid.add(btn, 7 - x, 7 - y);
             }
             String[] columns = {"1","2","3","4","5","6","7","8"};
-            grid.add(new Label(columns[7-y]), 8, y);
+            Label label = new Label(columns[y]);
+            label.setFont(new Font(fontSize));
+            grid.add(label, 8, y);
         }
-        addLabels(grid,"black");
+        addLetters(grid,"black");
         return grid;
     }
 
@@ -337,23 +315,29 @@ public class ChessBoardView extends BorderPane{
                 grid.add(btn, 7 - x, 7 - y);
             }
             String[] columns = {"1","2","3","4","5","6","7","8"};
-            grid.add(new Label(columns[7-y]), 8, y);
+            Label label = new Label(columns[7-y]);
+            label.setFont(new Font(fontSize));
+            grid.add(label, 8, y);
         }
-        addLabels(grid,"black");
+        addLetters(grid,"black");
         return grid;
     }
 
-    private void addLabels(GridPane grid, String colour) {
-        String[] labels = {"A","B","C","D","E","F","G","H"};
+    private void addLetters(GridPane grid, String colour) {
+        String[] letters = {"A","B","C","D","E","F","G","H"};
         if (colour.equals("black")) {
             int c = 0;
-            for (int i = labels.length - 1; i >= 0; i--) {
-                grid.add(new Label(labels[i]),c,8);
+            for (int i = letters.length - 1; i >= 0; i--) {
+                Label label = new Label(letters[i]);
+                label.setFont(new Font(fontSize));
+                grid.add(label,c,8);
                 c++;
             }
         } else {
-            for (int i = 0; i <= labels.length - 1; i++) {
-                grid.add(new Label(labels[i]),i,8);
+            for (int i = 0; i <= letters.length - 1; i++) {
+                Label label = new Label(letters[i]);
+                label.setFont(new Font(fontSize));
+                grid.add(label,i,8);
             }
         }
     }
@@ -384,7 +368,7 @@ public class ChessBoardView extends BorderPane{
         } else {
             btn.setStyle(black);
         }
-        String border = "-fx-border-width: 5px";
+        String border = "-fx-border-width: 4px";
         if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y)) && (y+x) %2 == 0){
             btn.setStyle(highlight + ";" + border + ";" + white);
         } else if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))) {
