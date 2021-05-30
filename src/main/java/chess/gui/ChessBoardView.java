@@ -187,8 +187,8 @@ public class ChessBoardView extends BorderPane{
         Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
         String currentPlayerIsInCheck = "       ";
         if (game.hintInCheck && game.currentPlayer.isInCheck()){
-                currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
-            }
+            currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
+        }
         Label checkLabel = new Label(currentPlayerIsInCheck);
         currentPlayerIsInCheck = "       ";
         return new HBox(label, checkLabel);
@@ -197,7 +197,7 @@ public class ChessBoardView extends BorderPane{
     private int processingMovement(Game currentGame) {
         if((!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) && currentGame.getSquareStart() != null
                 && currentGame.getSquareFinal() != null) {
-                return isMoveAllowed(currentGame);
+            return isMoveAllowed(currentGame);
         }
         if(currentGame.currentPlayer.isLoser()){
             return 3;
@@ -487,7 +487,7 @@ public class ChessBoardView extends BorderPane{
                                 alertPieceWrongColour(game);
                             }
                         } else {
-                           alertNoPiece(game);
+                            alertNoPiece(game);
                         }
                     }
                     return generateButtonGridBlackDown(game);
@@ -496,15 +496,15 @@ public class ChessBoardView extends BorderPane{
             // Board doesn't rotate
             else {
                 if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                        if (game.getSquareStart().getOccupiedBy() != null) {
-                            if (game.getSquareStart().getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
-                                return generateHighlightedButtonGrid(game);
-                            } else {
-                                alertPieceWrongColour(game);
-                            }
+                    if (game.getSquareStart().getOccupiedBy() != null) {
+                        if (game.getSquareStart().getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
+                            return generateHighlightedButtonGrid(game);
                         } else {
-                            alertNoPiece(game);
+                            alertPieceWrongColour(game);
                         }
+                    } else {
+                        alertNoPiece(game);
+                    }
                 }
                 // No rotation & no highlighted moves
                 return generateButtonGrid(game);

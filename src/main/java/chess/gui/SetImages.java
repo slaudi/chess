@@ -218,8 +218,4 @@ public class SetImages {
         return null;
     }
 
-    static void setImage(int width, int height) {
-
-    }
-
 }
