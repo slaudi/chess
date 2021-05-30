@@ -4,6 +4,7 @@ import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,7 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 
+
 public class ChessBoardView extends BorderPane{
+
+    String white;
+    String black;
+    String highlight;
+    int buttonHeight = 90;
+    int buttonWidth = 90;
 
     public ChessBoardView(Game game) {
         HBox heading = generatePlayersMoveLabelBox(game);
@@ -24,17 +32,32 @@ public class ChessBoardView extends BorderPane{
         GridPane center = generateButtonGrid(game);
 
         heading.setAlignment(Pos.CENTER);
-        bottom.setAlignment(Pos.CENTER);
+        bottom.setAlignment(Pos.BOTTOM_LEFT);
+        bottom.setPadding(new Insets(30));
         right.setAlignment(Pos.CENTER);
 
         setCenter(center);
         setRight(right);
         setTop(heading);
         setBottom(bottom);
+
+        this.white = "-fx-background-color: floralwhite";
+        this.black = "-fx-background-color: slategray";
+        this.highlight = "-fx-border-color: skyblue";
     }
 
+    private HBox generateBeatenPieces(Game game){
+        HBox box = new HBox();
+        box.getChildren().add(new Label("Beaten Pieces:"));
+        if(!game.beatenPieces.isEmpty()){
+            for (Piece piece: game.beatenPieces){
+                box.getChildren().add(SetImages.chooseImage(piece.getType(),piece.getColour()));
+            }
+        }
+        return box;
+    }
 
-    public VBox generateRightMarginColumn(Game game){
+    private VBox generateRightMarginColumn(Game game){
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(event -> {
             String isBoardRotationStatus;
@@ -127,7 +150,7 @@ public class ChessBoardView extends BorderPane{
         return new VBox(btnOptions, btnMoveHistory);
     }
 
-    public HBox generatePlayersMoveLabelBox(Game game){
+    private HBox generatePlayersMoveLabelBox(Game game){
         if(game.freshGame){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Welcome to a new Game of Chess");
@@ -171,7 +194,7 @@ public class ChessBoardView extends BorderPane{
         return new HBox(label, checkLabel);
     }
 
-    public int processingMovement(Game currentGame) {
+    private int processingMovement(Game currentGame) {
         if((!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) && currentGame.getSquareStart() != null
                 && currentGame.getSquareFinal() != null) {
                 return isMoveAllowed(currentGame);
@@ -241,124 +264,61 @@ public class ChessBoardView extends BorderPane{
         }
     }
 
-    public HBox generateBeatenPieces(Game game){
-        HBox box = new HBox();
-        box.getChildren().add(new Label("Beaten Pieces:"));
-        if(!game.beatenPieces.isEmpty()){
-            for (Piece piece: game.beatenPieces){
-                box.getChildren().add(SetImages.chooseImage(piece.getType(),piece.getColour()));
-            }
-        }
-        return box;
-    }
-
-    public GridPane generateButtonGrid(Game game){
+    private GridPane generateButtonGrid(Game game){
         GridPane grid = new GridPane();
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = new Button();
-                btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-                int finalX = x;
-                int finalY = y;
-                btn.setOnAction(event -> {
-                    game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    buttonSetAction(game);
-                });
-                grid.add(btn, x, y);
-            }
-            grid.add(new Label("TODO"), 8 , y);
-        }
-        grid.add(new Label("A"), 0, 8);
-        grid.add(new Label("B"), 1, 8);
-        grid.add(new Label("C"), 2, 8);
-        grid.add(new Label("D"), 3, 8);
-        grid.add(new Label("E"), 4, 8);
-        grid.add(new Label("F"), 5, 8);
-        grid.add(new Label("G"), 6, 8);
-        grid.add(new Label("H"), 7, 8);
-        return grid;
-    }
-
-    public GridPane generateHighlightedButtonGrid(Game game){
-        GridPane grid = new GridPane();
-
-       /* for (int y = 0; y < 8; y++) {
+        for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                if ((8*y+x) % 2 == 0) {
-                    grid.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-                } else {
-                    grid.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-                }
-            }
-        }*/
-        List<Square> allowedSquares = game.computePossibleSquares();
-        if(allowedSquares.isEmpty()){
-            game.setSquareStart(null);
-            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
-            alertu.setTitle("No Moves possible");
-            alertu.setHeaderText(null);
-            alertu.setContentText("This Piece cannot move. Try another!");
-
-            alertu.showAndWait();
-        }
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = new Button();
-                if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))){
-                    btn.setGraphic(SetImages.chooseHighlightedImage(game.chessBoard.getSquareAt(x, y)));
-                }
-                else {
-                    btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-                }
-                int finalX = x;
-                int finalY = y;
-                btn.setOnAction(event -> {
-                    game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    buttonSetAction(game);
-                });
+                Button btn = setButton(game,x,y);
                 grid.add(btn, x, y);
             }
-            grid.add(new Label("TODO"), 8 , y);
+            String[] columns = {"1","2","3","4","5","6","7","8"};
+            grid.add(new Label(columns[y]), 8, y);
+
         }
-        grid.add(new Label("A"), 0, 8);
-        grid.add(new Label("B"), 1, 8);
-        grid.add(new Label("C"), 2, 8);
-        grid.add(new Label("D"), 3, 8);
-        grid.add(new Label("E"), 4, 8);
-        grid.add(new Label("F"), 5, 8);
-        grid.add(new Label("G"), 6, 8);
-        grid.add(new Label("H"), 7, 8);
+        addLabels(grid,"white");
         return grid;
     }
 
-    public GridPane generateButtonGridBlackDown(Game game){
+    private GridPane generateHighlightedButtonGrid(Game game){
+        GridPane grid = new GridPane();
+
+        List<Square> allowedSquares = game.computePossibleSquares();
+        if(allowedSquares.isEmpty()){
+            game.setSquareStart(null);
+            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
+            alertu.setTitle("No Moves possible");
+            alertu.setHeaderText(null);
+            alertu.setContentText("This Piece cannot move. Try another!");
+
+            alertu.showAndWait();
+        }
+        for (int y = 0; y < 8; y++){
+            for (int x = 0; x < 8; x++){
+                Button btn = setHighlightedButton(game,x,y,allowedSquares);
+                grid.add(btn, x, y);
+            }
+            String[] columns = {"1","2","3","4","5","6","7","8"};
+            grid.add(new Label(columns[y]), 8, y);
+        }
+        addLabels(grid,"white");
+        return grid;
+    }
+
+    private GridPane generateButtonGridBlackDown(Game game){
         GridPane grid = new GridPane();
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                Button btn = new Button();
-                btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-                int finalX = x;
-                int finalY = y;
-                btn.setOnAction(event -> {
-                    game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    buttonSetAction(game);
-                });
+                Button btn = setButton(game, x, y);
                 grid.add(btn, 7 - x, 7 - y);
             }
-            grid.add(new Label("TODO"), 8 , y);
+            String[] columns = {"1","2","3","4","5","6","7","8"};
+            grid.add(new Label(columns[7-y]), 8, y);
         }
-        grid.add(new Label("H"), 0, 8);
-        grid.add(new Label("G"), 1, 8);
-        grid.add(new Label("F"), 2, 8);
-        grid.add(new Label("E"), 3, 8);
-        grid.add(new Label("D"), 4, 8);
-        grid.add(new Label("C"), 5, 8);
-        grid.add(new Label("B"), 6, 8);
-        grid.add(new Label("A"), 7, 8);
+        addLabels(grid,"black");
         return grid;
     }
 
-    public GridPane generateHighlightedButtonGridBlackDown(Game game){
+    private GridPane generateHighlightedButtonGridBlackDown(Game game){
         GridPane grid = new GridPane();
         List<Square> allowedSquares = game.computePossibleSquares();
 
@@ -373,35 +333,133 @@ public class ChessBoardView extends BorderPane{
         }
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
-                Button btn = new Button();
-                if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))){
-                    btn.setGraphic(SetImages.chooseHighlightedImage(game.chessBoard.getSquareAt(x, y)));
-                }
-                else {
-                    btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-                }
-                int finalX = x;
-                int finalY = y;
-                btn.setOnAction(event -> {
-                    game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
-                    buttonSetAction(game);
-                });
+                Button btn = setHighlightedButton(game,x,y,allowedSquares);
                 grid.add(btn, 7 - x, 7 - y);
             }
-            grid.add(new Label("TODO"), 8 , y);
+            String[] columns = {"1","2","3","4","5","6","7","8"};
+            grid.add(new Label(columns[7-y]), 8, y);
         }
-        grid.add(new Label("H"), 0, 8);
-        grid.add(new Label("G"), 1, 8);
-        grid.add(new Label("F"), 2, 8);
-        grid.add(new Label("E"), 3, 8);
-        grid.add(new Label("D"), 4, 8);
-        grid.add(new Label("C"), 5, 8);
-        grid.add(new Label("B"), 6, 8);
-        grid.add(new Label("A"), 7, 8);
+        addLabels(grid,"black");
         return grid;
     }
 
-    public GridPane chooseButtonGridGeneration(Game game){
+    private void addLabels(GridPane grid, String colour) {
+        String[] labels = {"A","B","C","D","E","F","G","H"};
+        if (colour.equals("black")) {
+            int c = 0;
+            for (int i = labels.length - 1; i >= 0; i--) {
+                grid.add(new Label(labels[i]),c,8);
+                c++;
+            }
+        } else {
+            for (int i = 0; i <= labels.length - 1; i++) {
+                grid.add(new Label(labels[i]),i,8);
+            }
+        }
+    }
+
+    private Button setButton(Game game, int x, int y) {
+        Button btn = new Button();
+        btn.setMinHeight(buttonHeight);
+        btn.setMinWidth(buttonWidth);
+        if ((y+x) %2 == 0) {
+            btn.setStyle(white);
+        } else {
+            btn.setStyle(black);
+        }
+        btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
+        btn.setOnAction(event -> {
+            game.setBothMovingSquares(game.chessBoard.getSquareAt(x, y));
+            setButtonAction(game);
+        });
+        return btn;
+    }
+
+    private Button setHighlightedButton(Game game, int x, int y, List<Square> allowedSquares) {
+        Button btn = new Button();
+        btn.setMinHeight(buttonHeight);
+        btn.setMinWidth(buttonWidth);
+        if ((y+x) %2 == 0) {
+            btn.setStyle(white);
+        } else {
+            btn.setStyle(black);
+        }
+        String border = "-fx-border-width: 5px";
+        if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y)) && (y+x) %2 == 0){
+            btn.setStyle(highlight + ";" + border + ";" + white);
+        } else if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))) {
+            btn.setStyle(highlight + ";" + border + ";" + black);
+        }
+        btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
+        btn.setOnAction(event -> {
+            game.setBothMovingSquares(game.chessBoard.getSquareAt(x, y));
+            setButtonAction(game);
+        });
+        return btn;
+    }
+
+    private void setButtonAction(Game game) {
+        if (game.getSquareStart() != null && game.getSquareFinal() != null) {
+            int result = processingMovement(game);
+            if (result == 0) {
+                if (!game.enemyIsHuman) {
+                    Move AIMove = EvaluatePieces.nextBestMove(game);
+                    game.setSquareStart(AIMove.getStartSquare());
+                    game.setSquareFinal(AIMove.getFinalSquare());
+                    processingMovement(game);
+                }
+                setCenter(chooseButtonGridGeneration(game));
+                setBottom(generateBeatenPieces(game));
+                setTop(generatePlayersMoveLabelBox(game));
+            } else {
+                generateAnswer(result);
+            }
+        }
+        if (game.getSquareStart() != null && game.getSquareFinal() == null) {
+            setCenter(chooseButtonGridGeneration(game));
+        }
+    }
+
+    private void generateAnswer(int result) {
+        if (result == 1){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Movement Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Move not allowed: Would be Check");
+            alert.showAndWait();
+        }
+        else if (result == 2){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Movement Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Move not allowed: Not possible");
+            alert.showAndWait();
+        }
+        else if (result == 3){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CheckMate");
+            alert.showAndWait();
+        }
+        else if (result == 4){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Information");
+            alert.setHeaderText(null);
+            alert.setContentText("Draw");
+            alert.showAndWait();
+        }
+        else if (result == 5){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game-Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Something unexpected happened!?");
+            alert.showAndWait();
+        }
+    }
+
+
+    private GridPane chooseButtonGridGeneration(Game game){
         if(game.enemyIsHuman) {
             if (game.isRotatingBoard) {
                 if(game.currentPlayer.getColour() == Colour.WHITE){
@@ -448,7 +506,7 @@ public class ChessBoardView extends BorderPane{
                             alertNoPiece(game);
                         }
                 }
-                // No rotation: no highlighted moves
+                // No rotation & no highlighted moves
                 return generateButtonGrid(game);
             }
         }
@@ -483,66 +541,6 @@ public class ChessBoardView extends BorderPane{
                 }
                 return generateButtonGridBlackDown(game);
             }
-        }
-    }
-
-    private void buttonSetAction(Game game) {
-        if(game.getSquareStart() != null && game.getSquareFinal() != null) {
-            int result = processingMovement(game);
-            if (result == 0) {
-                if (!game.enemyIsHuman) {
-                    Move AIMove = EvaluatePieces.nextBestMove(game);
-                    game.setSquareStart(AIMove.getStartSquare());
-                    game.setSquareFinal(AIMove.getFinalSquare());
-                    processingMovement(game);
-                }
-                setCenter(chooseButtonGridGeneration(game));
-                setBottom(generateBeatenPieces(game));
-                setTop(generatePlayersMoveLabelBox(game));
-            } else {
-                generateAnswer(result);
-            }
-        }
-        if(game.getSquareStart() != null && game.getSquareFinal() == null){
-            setCenter(chooseButtonGridGeneration(game));
-        }
-    }
-
-    private void generateAnswer(int result) {
-        if (result == 1){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Movement Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Move not allowed: Would be Check");
-            alert.showAndWait();
-        }
-        else if (result == 2){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Movement Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Move not allowed: Not possible");
-            alert.showAndWait();
-        }
-        else if (result == 3){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Information");
-            alert.setHeaderText(null);
-            alert.setContentText("CheckMate");
-            alert.showAndWait();
-        }
-        else if (result == 4){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Draw");
-            alert.showAndWait();
-        }
-        else if (result == 5){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game-Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Something unexpected happened!?");
-            alert.showAndWait();
         }
     }
 
