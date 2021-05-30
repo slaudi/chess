@@ -29,7 +29,7 @@ public class Gui extends Application {
         primaryStage.setTitle("Hello Chess!");
         Game currentGame = new Game();
         ChessBoardView chessBoardView = new ChessBoardView(currentGame);
-        Scene chessScene = new Scene(chessBoardView);
+        Scene chessScene = new Scene(chessBoardView, 900, 900);
         primaryStage.setScene(chessScene);
         primaryStage.show();
     }
