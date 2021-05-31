@@ -33,6 +33,7 @@ public class ChessBoardView extends BorderPane{
         VBox right = generateRightMarginColumn(game);
         GridPane center = generateButtonGrid(game);
 
+        //TODO: bottom (beatenPieces) höher
         heading.setAlignment(Pos.TOP_CENTER);
         heading.setPadding(new Insets(20));
         bottom.setAlignment(Pos.BOTTOM_LEFT);
@@ -244,8 +245,14 @@ public class ChessBoardView extends BorderPane{
 
     private GridPane generateButtonGrid(Game game){
         GridPane grid = new GridPane();
+        // TODO: startFormation: squares mit verschiedenen Farben
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
+                /*if ((y+x) %2 == 0) {
+                    grid.setStyle(white);
+                } else {
+                    grid.setStyle(black);
+                }*/
                 Button btn = setButton(game,x,y);
                 grid.add(btn, x, y);
             }
@@ -451,86 +458,54 @@ public class ChessBoardView extends BorderPane{
     private GridPane chooseButtonGridGeneration(Game game){
         if(game.enemyIsHuman) {
             if (game.isRotatingBoard) {
-                if(game.currentPlayer.getColour() == Colour.WHITE){
-                    if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                        if(game.getSquareStart().getOccupiedBy() != null){
-                            if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
-                                return generateHighlightedButtonGrid(game);
-                            } else {
-                                alertPieceWrongColour(game);
-                            }
-                        } else {
-                            alertNoPiece(game);
-                        }
-                    }
-                    // no highlighted moves
-                    return generateButtonGrid(game);
+                if(game.currentPlayer.getColour() == Colour.WHITE) {
+                    return whitePlayersGrid(game);
+                } else {
+                    return blackPlayersGrid(game);
                 }
-                // current player is black
-                else {
-                    if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                        if (game.getSquareStart().getOccupiedBy() != null) {
-                            if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
-                                return generateHighlightedButtonGridBlackDown(game);
-                            } else {
-                                alertPieceWrongColour(game);
-                            }
-                        } else {
-                            alertNoPiece(game);
-                        }
-                    }
-                    return generateButtonGridBlackDown(game);
-                }
+            } else {
+                // Board doesn't rotate
+                return whitePlayersGrid(game);
             }
-            // Board doesn't rotate
-            else {
-                if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                    if (game.getSquareStart().getOccupiedBy() != null) {
-                        if (game.getSquareStart().getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
-                            return generateHighlightedButtonGrid(game);
-                        } else {
-                            alertPieceWrongColour(game);
-                        }
-                    } else {
-                        alertNoPiece(game);
-                    }
-                }
-                // No rotation & no highlighted moves
-                return generateButtonGrid(game);
-            }
-        }
-        // enemy is AI
-        else {
+        } else {
+            // enemy is AI
             if(game.userColour == Colour.WHITE){
-                if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                    if(game.getSquareStart().getOccupiedBy() != null){
-                        if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
-                            return generateHighlightedButtonGrid(game);
-                        } else {
-                            alertPieceWrongColour(game);
-                        }
-                    } else {
-                        alertNoPiece(game);
-                    }
-                }
-                return generateButtonGrid(game);
-            }
-            // AI: user colour is black
-            else {
-                if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-                    if(game.getSquareStart().getOccupiedBy() != null){
-                        if(game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK){
-                            return generateHighlightedButtonGridBlackDown(game);
-                        } else {
-                            alertPieceWrongColour(game);
-                        }
-                    } else {
-                        alertNoPiece(game);
-                    }
-                }
-                return generateButtonGridBlackDown(game);
+                return whitePlayersGrid(game);
+            } else {
+                return blackPlayersGrid(game);
             }
         }
+    }
+
+    private GridPane whitePlayersGrid(Game game) {
+        if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+            if(game.getSquareStart().getOccupiedBy() != null){
+                if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
+                    return generateHighlightedButtonGrid(game);
+                } else {
+                    alertPieceWrongColour(game);
+                }
+            } else {
+                alertNoPiece(game);
+            }
+        }
+        // no highlighted moves
+        return generateButtonGrid(game);
+    }
+
+    private GridPane blackPlayersGrid(Game game){
+        if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
+            if (game.getSquareStart().getOccupiedBy() != null) {
+                if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
+                    return generateHighlightedButtonGridBlackDown(game);
+                } else {
+                    alertPieceWrongColour(game);
+                }
+            } else {
+                alertNoPiece(game);
+            }
+        }
+        return generateButtonGridBlackDown(game);
     }
 
     private void alertPieceWrongColour(Game game) {
