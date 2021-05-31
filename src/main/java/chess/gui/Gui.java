@@ -6,13 +6,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.util.Optional;
 
 /**
@@ -20,8 +18,7 @@ import java.util.Optional;
  */
 public class Gui extends Application {
 
-    Stage chessWindow;
-    Scene startScene, chessScene;
+    static Scene startScene, chessScene;
 
     /**
      * The entry point of the GUI application.
@@ -39,34 +36,36 @@ public class Gui extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
-        chessWindow = primaryStage;
         Game currentGame = new Game();
 
         // Start
         Label label = new Label("Welcome to a new Game of Chess!");
-        Button startGame = new Button("Start Game");
-        startGame.setOnAction(e -> {
+        Button startLocalGame = new Button("Start Game");
+        startLocalGame.setOnAction(e -> {
             chooseEnemy(currentGame);
-            chessWindow.setScene(chessScene);
+            primaryStage.setScene(chessScene);
         });
+        Button startNetworkGame = new Button("Network Game");
+        startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
+
         Button loadGame = new Button("Load Game");
-        loadGame.setOnAction(e -> chessWindow.setScene(chessScene));
+        loadGame.setOnAction(e -> primaryStage.setScene(chessScene));
 
         Button language = new Button("Language");
         language.setOnAction(e -> chooseLanguage());
 
         VBox layout1 = new VBox(20);
-        layout1.getChildren().addAll(label,startGame,loadGame,language);
+        layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
         layout1.setAlignment(Pos.CENTER);
-        startScene = new Scene(layout1,400,400);
+        startScene = new Scene(layout1,300,300);
 
         // Chess board
         ChessBoardView chessBoardView = new ChessBoardView(currentGame);
         chessScene = new Scene(chessBoardView, 900, 900);
 
-        chessWindow.setScene(startScene);
-        chessWindow.setTitle("Chess!");
-        chessWindow.show();
+        primaryStage.setScene(startScene);
+        primaryStage.setTitle("Chess!");
+        primaryStage.show();
     }
 
     private void chooseEnemy(Game game) {
@@ -103,6 +102,30 @@ public class Gui extends Application {
             }
             game.freshGame = false;
         }
+    }
+
+    private void startNetworkGame(Stage primaryStage) {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10));
+
+        Scene IP_scene = new Scene(grid, 350,150);
+        grid.add(new Label("IP Address: "), 0, 0);
+
+        TextField IPAddress = new TextField();
+        grid.add(IPAddress,1,2);
+
+        HBox btn = new HBox();
+        btn.setPadding(new Insets(5));
+        btn.setSpacing(10);
+        btn.setAlignment(Pos.BOTTOM_CENTER);
+        Button startGame = new Button("Start Connection");
+        Button cancel = new Button("Cancel");
+        cancel.setOnAction(e -> {primaryStage.setScene(startScene);});
+        btn.getChildren().addAll(startGame,cancel);
+        grid.add(btn,1,4);
+
+        primaryStage.setScene(IP_scene);
+        primaryStage.show();
     }
 
     private void chooseLanguage() {
