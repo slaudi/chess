@@ -26,6 +26,15 @@ public class SquareTest {
     }
 
     /**
+     * Tests if square has the right label.
+     */
+    @Test
+    public void getLabel(){
+        Label labelA3 = Label.a3;
+        assertEquals(labelA3,square.getLabel());
+    }
+
+    /**
      * Tests if the Square has the right colour.
      */
     @Test
@@ -94,6 +103,14 @@ public class SquareTest {
         assertEquals(6, Square.getXFromString("g5"));
         assertEquals(5, Square.getXFromString("f3"));
         assertEquals(4, Square.getXFromString("e3"));
+    }
+
+    /**
+     * Tests 'getXFromString' if it gets the right x coordinate from the command line
+     * input.
+     */
+    @Test
+    public void getXFromString2() {
         assertEquals(3, Square.getXFromString("d2"));
         assertEquals(2, Square.getXFromString("c1"));
         assertEquals(1, Square.getXFromString("b8"));
@@ -111,10 +128,19 @@ public class SquareTest {
         assertEquals(6, Square.getYFromString("e2"));
         assertEquals(5, Square.getYFromString("f3"));
         assertEquals(4, Square.getYFromString("h4"));
+    }
+
+    /**
+     * Tests 'getYFromString' if it gets the right y coordinate from the command line
+     * input.
+     */
+    @Test
+    public void getYFromString2() {
         assertEquals(3, Square.getYFromString("b5"));
         assertEquals(2, Square.getYFromString("f6"));
         assertEquals(1, Square.getYFromString("c7"));
         assertEquals(0, Square.getYFromString("d8"));
         assertEquals(9, Square.getYFromString("j9"));
     }
+
 }

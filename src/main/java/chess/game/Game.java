@@ -31,13 +31,14 @@ public class Game {
      */
     public final List<Piece> beatenPieces;
     public final List<Move> moveHistory;
+
     Square squareStart;                  // Helper-Attributs for Moving in GUI
     Square squareFinal;
     public boolean enemyIsHuman;
     public Colour userColour;
     public boolean isRotatingBoard;
     public boolean highlightPossibleMoves;
-    public boolean allowedToChangeSelectedPiece; //in processingmove
+    public boolean allowedToChangeSelectedPiece; //in processingMove
     public boolean hintInCheck;
     public boolean freshGame;
 

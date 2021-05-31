@@ -120,7 +120,7 @@ public class Gui extends Application {
         btn.setAlignment(Pos.BOTTOM_CENTER);
         Button startGame = new Button("Start Connection");
         Button cancel = new Button("Cancel");
-        cancel.setOnAction(e -> {primaryStage.setScene(startScene);});
+        cancel.setOnAction(e -> backToScratch(primaryStage));
         btn.getChildren().addAll(startGame,cancel);
         grid.add(btn,1,4);
 
@@ -139,5 +139,9 @@ public class Gui extends Application {
 
         alert.getButtonTypes().setAll(german,english);
         alert.showAndWait();
+    }
+
+    private void backToScratch(Stage primaryStage) {
+        primaryStage.setScene(startScene);
     }
 }
