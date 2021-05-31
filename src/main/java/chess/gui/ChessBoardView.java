@@ -55,7 +55,7 @@ public class ChessBoardView extends BorderPane{
         box.getChildren().add(new Label("Beaten Pieces:"));
         if(!game.beatenPieces.isEmpty()){
             for (Piece piece: game.beatenPieces){
-                box.getChildren().add(SetImages.chooseImage(piece.getType(),piece.getColour()));
+                box.getChildren().add(SetImages.getBeatenPieces(piece.getType(),piece.getColour()));
             }
         }
         return box;
@@ -109,26 +109,29 @@ public class ChessBoardView extends BorderPane{
             alerti.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeFive, buttonTypeSix);
 
             Optional<ButtonType> result = alerti.showAndWait();
-            if (result.get() == buttonTypeOne){
-                game.isRotatingBoard = !game.isRotatingBoard;
-            } else if (result.get() == buttonTypeTwo) {
-                game.highlightPossibleMoves = !game.highlightPossibleMoves;
-            } else if (result.get() == buttonTypeThree) {
-                game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
-            } else if (result.get() == buttonTypeFour) {
-                game.hintInCheck = !game.hintInCheck;
-            } else if (result.get() == buttonTypeFive) {
-                Alert alerto = new Alert(Alert.AlertType.CONFIRMATION);
-                alerto.setTitle("New Game?");
-                alerto.setHeaderText(null);
-                alerto.setContentText("Do you really want to start a new Game?");
+            if (result.isPresent()) {
+                if (result.get() == buttonTypeOne) {
+                    game.isRotatingBoard = !game.isRotatingBoard;
+                } else if (result.get() == buttonTypeTwo) {
+                    game.highlightPossibleMoves = !game.highlightPossibleMoves;
+                } else if (result.get() == buttonTypeThree) {
+                    game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
+                } else if (result.get() == buttonTypeFour) {
+                    game.hintInCheck = !game.hintInCheck;
+                } else if (result.get() == buttonTypeFive) {
+                    Alert alerto = new Alert(Alert.AlertType.CONFIRMATION);
+                    alerto.setTitle("New Game?");
+                    alerto.setHeaderText(null);
+                    alerto.setContentText("Do you really want to start a new Game?");
 
-                Optional<ButtonType> resulto = alerto.showAndWait();
-                if (resulto.get() == ButtonType.OK){
-                    new Game(); //TODO: neues Spiel
+                    Optional<ButtonType> resulto = alerto.showAndWait();
+                    if (resulto.isPresent()) {
+                        if (resulto.get() == ButtonType.OK) {
+                            new Game(); //TODO: neues Spiel
+                        }  //user chose CANCEL or closed the dialog
+                    }
                 }  //user chose CANCEL or closed the dialog
-
-            }  //user chose CANCEL or closed the dialog
+            }
 
 
         });
@@ -163,7 +166,6 @@ public class ChessBoardView extends BorderPane{
             currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
         }
         Label checkLabel = new Label(currentPlayerIsInCheck);
-        currentPlayerIsInCheck = "       ";
         return new HBox(label, checkLabel);
     }
 
@@ -226,15 +228,18 @@ public class ChessBoardView extends BorderPane{
 
         Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.get() == buttonTypeOne){
-            return 'R';
-        } else if (result.get() == buttonTypeTwo) {
-            return 'N';
-        } else if (result.get() == buttonTypeThree) {
-            return 'B';
-        } else {
-            return 'Q';
+        if (result.isPresent()) {
+            if (result.get() == buttonTypeOne) {
+                return 'R';
+            } else if (result.get() == buttonTypeTwo) {
+                return 'N';
+            } else if (result.get() == buttonTypeThree) {
+                return 'B';
+            } else {
+                return 'Q';
+            }
         }
+        return ' ';
     }
 
     private GridPane generateButtonGrid(Game game){
