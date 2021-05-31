@@ -112,9 +112,9 @@ public class King extends Piece {
 
     private List<Square> queensideCastling(Board chessBoard) {
         List<Square> castlingPath = new ArrayList<>();
-        if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[0][7].getOccupiedBy() != null) {
+        if (helperCastling(Colour.WHITE, 0,7, chessBoard)) {
             for (int i = 1; i < 4; i++) {
-                if (chessBoard.getPieceAt(i, 7) != null || !chessBoard.getPieceAt(0, 7).hasNotMoved()) {
+                if (chessBoard.getPieceAt(i, 7) != null ) {
                     return castlingPath; // empty path
                 }
             }
@@ -122,9 +122,9 @@ public class King extends Piece {
             castlingPath.add(chessBoard.getSquareAt(3,7));
             castlingPath.add(chessBoard.getSquareAt(2,7));
 
-        } else if (this.getColour() == Colour.BLACK && chessBoard.getBoard()[0][0].getOccupiedBy() != null){
+        } else if (helperCastling(Colour.BLACK,0,0,chessBoard)){
             for (int i = 1; i < 4; i++) {
-                if (chessBoard.getPieceAt(i, 0) != null || !chessBoard.getPieceAt(0, 0).hasNotMoved()) {
+                if (chessBoard.getPieceAt(i, 0) != null) {
                     return castlingPath; // empty path
                 }
             }
@@ -135,19 +135,16 @@ public class King extends Piece {
         return castlingPath;
     }
 
-
     private List<Square> kingsideCastling(Board chessBoard) {
         List<Square> castlingPath = new ArrayList<>();
-        if (this.getColour() == Colour.WHITE && chessBoard.getBoard()[7][7].getOccupiedBy() != null
-                && chessBoard.getPieceAt(5, 7) == null && chessBoard.getPieceAt(6, 7) == null) {
-            if(chessBoard.getPieceAt(7, 7).hasNotMoved()){
+        if (helperCastling(Colour.WHITE,7,7,chessBoard)) {
+            if(chessBoard.getPieceAt(5, 7) == null && chessBoard.getPieceAt(6, 7) == null){
                 castlingPath.add(chessBoard.getSquareAt(4,7));
                 castlingPath.add(chessBoard.getSquareAt(5,7));
                 castlingPath.add(chessBoard.getSquareAt(6,7));
             }
-        } else if (this.getColour() == Colour.BLACK && chessBoard.getBoard()[7][0].getOccupiedBy() != null
-                && chessBoard.getPieceAt(5, 0) == null && chessBoard.getPieceAt(6, 0) == null) {
-            if (!chessBoard.getPieceAt(7, 0).hasNotMoved()) {
+        } else if (helperCastling(Colour.BLACK,7,0,chessBoard)) {
+            if (chessBoard.getPieceAt(5, 0) == null && chessBoard.getPieceAt(6, 0) == null) {
                 return castlingPath;
             }
             castlingPath.add(chessBoard.getSquareAt(4, 0));
@@ -156,6 +153,13 @@ public class King extends Piece {
         }
         return castlingPath;
     }
+
+
+    private boolean helperCastling(Colour colour, int x, int y, Board chessBoard) {
+        return this.getColour() == colour && chessBoard.getBoard()[x][y].getOccupiedBy() != null
+                && chessBoard.getPieceAt(x, y).hasNotMoved();
+    }
+
 
     private boolean underAttack(List<Square> castlingPath, List<Piece> enemies, Board currentBoard){
         for (Square field : castlingPath){
