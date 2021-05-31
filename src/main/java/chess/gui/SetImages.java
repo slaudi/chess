@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 public class SetImages {
 
     static ImageView getBeatenPieces(Type type, Colour colour) {
-
         int height = 40;
 
         return setImage(colour, type, height);
@@ -19,7 +18,6 @@ public class SetImages {
 
 
     static ImageView chooseImage(Square square) {
-
         int height = 60;
 
         if (square.getOccupiedBy() == null) {
@@ -32,35 +30,43 @@ public class SetImages {
     }
 
     private static ImageView setImage(Colour colour, Type type, int height) {
-
         if (colour == Colour.WHITE) {
-            if (type == Type.PAWN) {
-                return getImage("WhitePawn",height);
-            } else if (type == Type.ROOK) {
-                return getImage("WhiteRook",height);
-            } else if (type == Type.KNIGHT) {
-                return getImage("WhiteKnight",height);
-            } else if (type == Type.BISHOP) {
-                return getImage("WhiteBishop",height);
-            } else if (type == Type.QUEEN) {
-                return getImage("WhiteQueen",height);
-            } else if (type == Type.KING) {
-                return getImage("WhiteKing",height);
-            }
+            return whitePieces(type, height);
         } else {
-            if (type == Type.PAWN) {
-                return getImage("BlackPawn",height);
-            } else if (type == Type.ROOK) {
-                return getImage("BlackRook",height);
-            } else if (type == Type.KNIGHT) {
-                return getImage("BlackKnight",height);
-            } else if (type == Type.BISHOP) {
-                return getImage("BlackBishop",height);
-            } else if (type == Type.QUEEN) {
-                return getImage("BlackQueen",height);
-            } else if (type == Type.KING) {
-                return getImage("BlackKing",height);
-            }
+            return blackPieces(type, height);
+        }
+    }
+
+    private static ImageView blackPieces(Type type, int height){
+        if (type == Type.PAWN) {
+            return getImage("BlackPawn",height);
+        } else if (type == Type.ROOK) {
+            return getImage("BlackRook",height);
+        } else if (type == Type.KNIGHT) {
+            return getImage("BlackKnight",height);
+        } else if (type == Type.BISHOP) {
+            return getImage("BlackBishop",height);
+        } else if (type == Type.QUEEN) {
+            return getImage("BlackQueen",height);
+        } else if (type == Type.KING) {
+            return getImage("BlackKing",height);
+        }
+        return null;
+    }
+
+    private static ImageView whitePieces(Type type, int height){
+        if (type == Type.PAWN) {
+            return getImage("WhitePawn",height);
+        } else if (type == Type.ROOK) {
+            return getImage("WhiteRook",height);
+        } else if (type == Type.KNIGHT) {
+            return getImage("WhiteKnight",height);
+        } else if (type == Type.BISHOP) {
+            return getImage("WhiteBishop",height);
+        } else if (type == Type.QUEEN) {
+            return getImage("WhiteQueen",height);
+        } else if (type == Type.KING) {
+            return getImage("WhiteKing",height);
         }
         return null;
     }
@@ -73,7 +79,5 @@ public class SetImages {
 
         return pieceView;
     }
-
-
 
 }
