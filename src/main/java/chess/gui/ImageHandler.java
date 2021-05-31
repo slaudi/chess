@@ -12,6 +12,11 @@ public class ImageHandler {
 
     private final Map<String, Image> imgs = new HashMap<>();
 
+    /**
+     * Generates a new ImageHandler instance if none exists yet.
+     *
+     * @return ImageHandler The instance of the ImageHandler.
+     */
     public static ImageHandler getInstance() {
         if (instance == null) {
             instance = new ImageHandler();
@@ -24,6 +29,12 @@ public class ImageHandler {
         imgs.put(name, image);
     }
 
+    /**
+     * Gets an already loaded image from a HashMap. If it hasn't been loaded yet, it wil load it and inserts it into
+     * the HashMap.
+     * @param key A String of the name of the requested image.
+     * @return Image The requested image.
+     */
     public Image getImage (String key) {
         if (imgs.get(key) == null) {
             loadImage(key);
