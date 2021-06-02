@@ -4,21 +4,20 @@ import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 
 public class ChessBoardView extends BorderPane{
 
-    public Gui gui;
     String white;
     String black;
     String highlight;
@@ -31,7 +30,7 @@ public class ChessBoardView extends BorderPane{
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
-        GridPane center = chooseButtonGridGeneration(game);//generateButtonGrid(game);
+        GridPane center = chooseButtonGridGeneration(game);
         setCenter(center);
     }
 
@@ -103,44 +102,31 @@ public class ChessBoardView extends BorderPane{
     }
 
     private char promotionSelection() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Promotion-Option");
-        alert.setHeaderText(null);
-        alert.setContentText("Your Pawn should change to:");
-
         ButtonType buttonTypeOne = new ButtonType("Rook");
         ButtonType buttonTypeTwo = new ButtonType("Knight");
         ButtonType buttonTypeThree = new ButtonType("Bishop");
         ButtonType buttonTypeFour = new ButtonType("Queen");
 
-        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour);
+        List<ButtonType> options = new ArrayList<>();
+        Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour);
 
-        Optional<ButtonType> result = alert.showAndWait();
+        ButtonType buttonType = OptionBox.display("Promotion Options",null,"Your Pawn changes to:",options);
 
-        if (result.isPresent()) {
-            if (result.get() == buttonTypeOne) {
-                return 'R';
-            } else if (result.get() == buttonTypeTwo) {
-                return 'N';
-            } else if (result.get() == buttonTypeThree) {
-                return 'B';
-            } else {
-                return 'Q';
-            }
+        if (buttonType == buttonTypeOne) {
+            return 'R';
+        } else if (buttonType == buttonTypeTwo) {
+            return 'N';
+        } else if (buttonType == buttonTypeThree) {
+            return 'B';
+        } else {
+            return 'Q';
         }
-        return ' ';
     }
 
     private GridPane generateButtonGrid(Game game){
         GridPane grid = new GridPane();
-        // TODO: startFormation: squares mit verschiedenen Farben
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                /*if ((y+x) %2 == 0) {
-                    grid.setStyle(white);
-                } else {
-                    grid.setStyle(black);
-                }*/
                 Button btn = setButton(game,x,y);
                 grid.add(btn, x, y);
             }
@@ -159,12 +145,7 @@ public class ChessBoardView extends BorderPane{
         List<Square> allowedSquares = game.computePossibleSquares();
         if(allowedSquares.isEmpty()){
             game.setSquareStart(null);
-            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
-            alertu.setTitle("No Moves possible");
-            alertu.setHeaderText(null);
-            alertu.setContentText("This Piece cannot move. Try another!");
-
-            alertu.showAndWait();
+            AlertBox.display("No Moves possible",null,"This Piece cannot move. Try another!");
         }
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
@@ -202,12 +183,7 @@ public class ChessBoardView extends BorderPane{
 
         if(allowedSquares.isEmpty()){
             game.setSquareStart(null);
-            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
-            alertu.setTitle("No Moves possible");
-            alertu.setHeaderText(null);
-            alertu.setContentText("This Piece cannot move. Try another!");
-
-            alertu.showAndWait();
+            AlertBox.display("No Moves possible",null,"This Piece cannot move. Try another!");
         }
         for (int y = 0; y < 8; y++){
             for (int x = 0; x < 8; x++){
@@ -293,8 +269,6 @@ public class ChessBoardView extends BorderPane{
                     processingMovement(game);
                 }
                 setCenter(chooseButtonGridGeneration(game));
-                setBottom(generateBeatenPieces(game));
-                setTop(generatePlayersMoveLabelBox(game));
             } else {
                 generateAnswer(result);
             }
@@ -306,39 +280,19 @@ public class ChessBoardView extends BorderPane{
 
     private void generateAnswer(int result) {
         if (result == 1){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Movement Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Move not allowed: Would be Check");
-            alert.showAndWait();
+            AlertBox.display("Movement Error",null,"Move not allowed: Would be Check");
         }
         else if (result == 2){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Movement Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Move not allowed: Not possible");
-            alert.showAndWait();
+            AlertBox.display("Movement Error",null,"Move not allowed: Not possible");
         }
         else if (result == 3){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Information");
-            alert.setHeaderText(null);
-            alert.setContentText("CheckMate");
-            alert.showAndWait();
+            AlertBox.display("Game Information",null,"CheckMate");
         }
         else if (result == 4){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Draw");
-            alert.showAndWait();
+            AlertBox.display("Game Information",null,"Draw");
         }
         else if (result == 5){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game-Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Something unexpected happened!?");
-            alert.showAndWait();
+            AlertBox.display("Game-Error",null,"Something unexpected happened!?");
         }
     }
 
@@ -371,10 +325,10 @@ public class ChessBoardView extends BorderPane{
                 if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
                     return generateHighlightedButtonGrid(game);
                 } else {
-                    alertPieceWrongColour(game);
+                    AlertBox.display("Piece problem",null,"Selected Piece is not your Colour!");
                 }
             } else {
-                alertNoPiece(game);
+                AlertBox.display("Piece Problem",null,"There is no Piece to move!");
             }
         }
         // no highlighted moves
@@ -387,33 +341,13 @@ public class ChessBoardView extends BorderPane{
                 if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
                     return generateHighlightedButtonGridBlackDown(game);
                 } else {
-                    alertPieceWrongColour(game);
+                    AlertBox.display("Piece problem",null,"Selected Piece is not your Colour!");
                 }
             } else {
-                alertNoPiece(game);
+                AlertBox.display("Piece Problem",null,"There is no Piece to move!");
             }
         }
         return generateButtonGridBlackDown(game);
-    }
-
-    private void alertPieceWrongColour(Game game) {
-        game.setSquareStart(null);
-        Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-        alertia.setTitle("Piece Problem");
-        alertia.setHeaderText(null);
-        alertia.setContentText("Selected Piece is not your Colour!");
-
-        alertia.showAndWait();
-    }
-
-    private void alertNoPiece(Game game) {
-        game.setSquareStart(null);
-        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-        alertis.setTitle("Piece Problem");
-        alertis.setHeaderText(null);
-        alertis.setContentText("There is no Piece to Move!");
-
-        alertis.showAndWait();
     }
 
 }

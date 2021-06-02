@@ -14,6 +14,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -153,16 +155,11 @@ public class Gui extends Application {
     private Scene chessWindow(Stage primaryStage, Game currentGame) {
         ChessBoardView chessBoardView = new ChessBoardView(currentGame);
 
-        final HBox heading = chessBoardView.generatePlayersMoveLabelBox(currentGame);
-        final HBox bottom = chessBoardView.generateBeatenPieces(currentGame);
+        HBox heading = chessBoardView.generatePlayersMoveLabelBox(currentGame);
+        HBox bottom = chessBoardView.generateBeatenPieces(currentGame);
         final VBox right = generateRightMarginColumn(currentGame, primaryStage);
 
-        final Pane empty = new Pane();
-        empty.minHeightProperty().bind(heading.heightProperty());
-        empty.minWidthProperty().bind(right.minWidthProperty());
-
         GridPane grid = new GridPane();
-        GridPane.setConstraints(empty,0,0);
         GridPane.setConstraints(heading,2,0);
         GridPane.setConstraints(right,4,2);
         GridPane.setConstraints(chessBoardView,2,2);
@@ -170,7 +167,7 @@ public class Gui extends Application {
 
         heading.setAlignment(Pos.CENTER);
 
-        grid.getChildren().addAll(heading, bottom,right,chessBoardView,empty);
+        grid.getChildren().addAll(heading, bottom,right,chessBoardView);
 
         return new Scene(grid, 900, 900);
     }
@@ -179,7 +176,7 @@ public class Gui extends Application {
     private VBox generateRightMarginColumn(Game game, Stage primaryStage){
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?", primaryStage);
+            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?");
 
             if (result) {
                 Game newGame = new Game();
@@ -194,61 +191,59 @@ public class Gui extends Application {
 
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(event -> {
-            String isBoardRotationStatus;
-            String highlightPossibleMoveStatus;
-            String allowedChangeSelectedPieceStatus;
-            String hintInCheckStatus;
-            String on = "ON";
-            String off = "OFF";
-            if(game.isRotatingBoard){
-                isBoardRotationStatus = on;
-            } else {
-                isBoardRotationStatus = off;
-            }
-            if(game.highlightPossibleMoves){
-                highlightPossibleMoveStatus = on;
-            } else {
-                highlightPossibleMoveStatus = off;
-            }
-            if(game.allowedToChangeSelectedPiece){
-                allowedChangeSelectedPieceStatus = on;
-            } else {
-                allowedChangeSelectedPieceStatus = off;
-            }
-            if(game.hintInCheck){
-                hintInCheckStatus = on;
-            } else {
-                hintInCheckStatus = off;
-            }
-
-            Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
-            alerti.setTitle("Game-Settings");
-            alerti.setHeaderText(" ChessBoard-Rotation: " + isBoardRotationStatus
-                    + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
-                    + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
-                    + "\n Player is in Check-Notification: " + hintInCheckStatus);
-            alerti.setContentText("Choose Option you want to Change:");
-
             ButtonType buttonTypeOne = new ButtonType("Rotation");
             ButtonType buttonTypeTwo = new ButtonType("Highlight");
             ButtonType buttonTypeThree = new ButtonType("Change Selection");
             ButtonType buttonTypeFour = new ButtonType("Check");
-            ButtonType buttonTypeSix = new ButtonType("Cancel");
+            ButtonType buttonTypeFive = new ButtonType("Cancel");
 
-            alerti.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeSix);
+            ButtonType buttonType;
+            do {
+                String isBoardRotationStatus;
+                String highlightPossibleMoveStatus;
+                String allowedChangeSelectedPieceStatus;
+                String hintInCheckStatus;
+                String on = "ON";
+                String off = "OFF";
+                if(game.isRotatingBoard){
+                    isBoardRotationStatus = on;
+                } else {
+                    isBoardRotationStatus = off;
+                }
+                if(game.highlightPossibleMoves){
+                    highlightPossibleMoveStatus = on;
+                } else {
+                    highlightPossibleMoveStatus = off;
+                }
+                if(game.allowedToChangeSelectedPiece){
+                    allowedChangeSelectedPieceStatus = on;
+                } else {
+                    allowedChangeSelectedPieceStatus = off;
+                }
+                if(game.hintInCheck){
+                    hintInCheckStatus = on;
+                } else {
+                    hintInCheckStatus = off;
+                }
 
-            Optional<ButtonType> result = alerti.showAndWait();
-            if (result.isPresent()) {
-                if (result.get() == buttonTypeOne) {
+                List<ButtonType> options = new ArrayList<>();
+                Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour,buttonTypeFive);
+                buttonType = OptionBox.display("Game-Settings",
+                        " ChessBoard-Rotation: " + isBoardRotationStatus
+                                + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
+                                + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
+                                + "\n Player is in Check-Notification: " + hintInCheckStatus,
+                        "Choose Option you want to Change:", options);
+                if (buttonType == buttonTypeOne) {
                     game.isRotatingBoard = !game.isRotatingBoard;
-                } else if (result.get() == buttonTypeTwo) {
+                } else if (buttonType == buttonTypeTwo) {
                     game.highlightPossibleMoves = !game.highlightPossibleMoves;
-                } else if (result.get() == buttonTypeThree) {
+                } else if (buttonType == buttonTypeThree) {
                     game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
-                } else if (result.get() == buttonTypeFour) {
+                } else if (buttonType == buttonTypeFour) {
                     game.hintInCheck = !game.hintInCheck;
                 }  //user chose CANCEL or closed the dialog
-            }
+            } while (buttonType != buttonTypeFive);
 
 
         });
@@ -263,12 +258,7 @@ public class Gui extends Application {
             } else {
                 historyAsString = new StringBuilder(" ");
             }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Move-History");
-            alert.setHeaderText(null);
-            alert.setContentText(historyAsString.toString());
-
-            alert.showAndWait();
+            AlertBox.display("Move History", null, historyAsString.toString());
         });
         VBox box = new VBox(15);
         box.getChildren().addAll(btnOptions, btnMoveHistory, btnNewGame);

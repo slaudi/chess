@@ -1,46 +1,28 @@
 package chess.gui;
 
-import chess.game.Game;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class ConfirmationBox {
 
     static boolean answer;
 
-    public static boolean display(String title, String message, Stage primaryStage){
-        Stage window = new Stage();
+    public static boolean display(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.NONE);
 
-        window.initModality(Modality.APPLICATION_MODAL); //blocks user interaction with other windows
-        window.setTitle(title);
-        window.setMinWidth(250);
+        alert.initModality(Modality.APPLICATION_MODAL); //blocks user interaction with other windows
+        alert.setTitle(title);
+        alert.setContentText(message);
 
-        Text text = new Text(message);
+        ButtonType yesButton = new ButtonType("Yes");
+        ButtonType noButton = new ButtonType("No");
+        alert.getButtonTypes().addAll(yesButton,noButton);
 
-        Button yesButton = new Button("Yes");
-        Button noButton = new Button("No");
-
-        yesButton.setOnAction(event -> {
-            answer = true;
-            window.close();
-        });
-
-        noButton.setOnAction(event -> {
-            answer = false;
-            window.close();
-        });
-
-        VBox layout = new VBox(20);
-        layout.getChildren().addAll(text,yesButton,noButton);
-        layout.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(layout);
-        window.setScene(scene);
-        window.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
+        result.ifPresent(buttonType -> answer = buttonType == yesButton); // answer = true if 'Yes'-Button is clicked
 
         return answer;
     }
