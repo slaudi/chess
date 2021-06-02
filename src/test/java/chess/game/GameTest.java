@@ -88,6 +88,74 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[0][3]));
     }
 
+    @Test
+    public void testPawnWithMoveHistory()
+    {
+        Game currentGame = new Game();
+
+        // first move
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[0][6];
+            Square finalSquare = currentGame.chessBoard.getBoard()[0][5];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        // second move
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[0][1];
+            Square finalSquare = currentGame.chessBoard.getBoard()[0][2];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        Piece selectedPiece = currentGame.chessBoard.getPieceAt(0, 5);
+        Square finalSquare = currentGame.chessBoard.getBoard()[0][4];
+        assertTrue(currentGame.isMoveAllowed(selectedPiece, finalSquare));
+    }
+
+    @Test
+    public void testPawnEnPassant()
+    {
+        Game currentGame = new Game();
+
+        // only to switch player
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[7][6];
+            Square finalSquare = currentGame.chessBoard.getBoard()[7][5];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[1][1];
+            Square finalSquare = currentGame.chessBoard.getBoard()[1][3];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        // only to switch player
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[7][5];
+            Square finalSquare = currentGame.chessBoard.getBoard()[7][4];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[1][3];
+            Square finalSquare = currentGame.chessBoard.getBoard()[1][4];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        {
+            Square startSquare = currentGame.chessBoard.getBoard()[0][6];
+            Square finalSquare = currentGame.chessBoard.getBoard()[0][4];
+            currentGame.processMove(startSquare, finalSquare, ' ');
+        }
+
+        Piece selectedPiece = currentGame.chessBoard.getPieceAt(1, 4);
+        Square startSquare = currentGame.chessBoard.getBoard()[1][4];
+        Square finalSquare = currentGame.chessBoard.getBoard()[0][5];
+        assertTrue(currentGame.isMoveAllowed(selectedPiece, finalSquare));
+        assertTrue(currentGame.processMove(startSquare, finalSquare, ' '));
+    }
+
     /**
      * tests if Pawn is allowed to capture correctly
      */
