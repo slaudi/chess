@@ -38,6 +38,9 @@ public class EvaluatePieces implements Evaluation{
                 }
             }
         }
+        if(game.isInCheck()){
+            sum = -100;
+        }
         return sum;
     }
 
@@ -67,7 +70,7 @@ public class EvaluatePieces implements Evaluation{
         int squareCount = 0;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                if(game.isMoveAllowed(piece, game.chessBoard.getSquareAt(x, y))){
+                if(game.isMoveAllowedAI(piece, game.chessBoard.getSquareAt(x, y))){
                     squareCount++;
                 }
             }
@@ -81,6 +84,10 @@ public class EvaluatePieces implements Evaluation{
      * @return
      */
     public static Move nextBestMove(Game game) {
+        Colour colourAI = Colour.BLACK;
+        if(game.userColour == Colour.BLACK){
+            colourAI = Colour.WHITE;
+        }
         int max = 0;
         List<Move> moveCollection = new ArrayList<>();
         List<Piece> ownPieceCollection = new ArrayList<>();
@@ -94,7 +101,7 @@ public class EvaluatePieces implements Evaluation{
         for (Piece piece : ownPieceCollection) {
             for (int y = 0; y < 8; y++) {
                 for (int x = 0; x < 8; x++) {
-                    if(game.isMoveAllowed(piece, game.chessBoard.getSquareAt(x, y))){
+                    if(game.isMoveAllowedAI(piece, game.chessBoard.getSquareAt(x, y))){
                         moveCollection.add(new Move(piece.getSquare(), game.chessBoard.getSquareAt(x, y)));
                     }
                 }
@@ -105,7 +112,7 @@ public class EvaluatePieces implements Evaluation{
             Game gameAfterOneMove = new Game();
             gameAfterOneMove.chessBoard = game.chessBoard;
             move.doMove(gameAfterOneMove.chessBoard);
-            move.boardValueAfterMove = evaluateBoard(gameAfterOneMove, gameAfterOneMove.currentPlayer.getColour());
+            move.boardValueAfterMove = evaluateBoard(gameAfterOneMove, colourAI);
             if (temporaryBeatenPiece == null){
                 move.undoMove(gameAfterOneMove.chessBoard);
             }

@@ -60,7 +60,7 @@ public class MinimaxAlgorithm {
      * @param currentDepth
      * @return
      */
-    int recursiveBoardEvaluation(Game game, Colour currentColour, int currentDepth) {
+    public int recursiveBoardEvaluation(Game game, Colour currentColour, int currentDepth) {
         if (currentDepth == 0) {
             return EvaluatePieces.evaluateBoard(game, currentColour);
         }
