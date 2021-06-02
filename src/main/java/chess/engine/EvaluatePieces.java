@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class EvaluatePieces implements Evaluation{
 
-    private static Game gameAfterOneMove;
+    //private static Game gameAfterOneMove;
     /**
      *
      * @param game
@@ -101,9 +101,18 @@ public class EvaluatePieces implements Evaluation{
             }
         }
         for (Move move : moveCollection){
-            gameAfterOneMove = game;
+            Piece temporaryBeatenPiece = game.chessBoard.getPieceAt(move.getFinalSquare().getX(), move.getFinalSquare().getY());
+            Game gameAfterOneMove = new Game();
+            gameAfterOneMove.chessBoard = game.chessBoard;
             move.doMove(gameAfterOneMove.chessBoard);
             move.boardValueAfterMove = evaluateBoard(gameAfterOneMove, gameAfterOneMove.currentPlayer.getColour());
+            if (temporaryBeatenPiece == null){
+                move.undoMove(gameAfterOneMove.chessBoard);
+            }
+            else {
+                move.undoMove(temporaryBeatenPiece, gameAfterOneMove.chessBoard);
+            }
+
         }
         for (Move move : moveCollection){
             if(move.boardValueAfterMove > max){
