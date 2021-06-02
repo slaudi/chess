@@ -31,7 +31,7 @@ public class ChessBoardView extends BorderPane{
         HBox heading = generatePlayersMoveLabelBox(game);
         HBox bottom = generateBeatenPieces(game);
         VBox right = generateRightMarginColumn(game);
-        GridPane center = generateButtonGrid(game);
+        GridPane center = chooseButtonGridGeneration(game);//generateButtonGrid(game);
 
         //TODO: bottom (beatenPieces) höher
         heading.setAlignment(Pos.TOP_CENTER);
