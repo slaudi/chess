@@ -4,8 +4,6 @@ import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -20,6 +18,7 @@ import java.util.Optional;
 
 public class ChessBoardView extends BorderPane{
 
+    public Gui gui;
     String white;
     String black;
     String highlight;
@@ -32,26 +31,11 @@ public class ChessBoardView extends BorderPane{
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
-        HBox heading = generatePlayersMoveLabelBox(game);
-        HBox bottom = generateBeatenPieces(game);
-        VBox right = generateRightMarginColumn(game);
         GridPane center = chooseButtonGridGeneration(game);//generateButtonGrid(game);
-
-        //TODO: bottom (beatenPieces) höher
-        heading.setAlignment(Pos.TOP_CENTER);
-        heading.setPadding(new Insets(20));
-        bottom.setAlignment(Pos.BOTTOM_LEFT);
-        bottom.setPadding(new Insets(30));
-        right.setAlignment(Pos.CENTER);
-        right.setPadding(new Insets(20));
-
         setCenter(center);
-        setRight(right);
-        setTop(heading);
-        setBottom(bottom);
     }
 
-    private HBox generateBeatenPieces(Game game){
+    HBox generateBeatenPieces(Game game){
         HBox box = new HBox();
         box.getChildren().add(new Label("Beaten Pieces:"));
         if(!game.beatenPieces.isEmpty()){
@@ -62,104 +46,7 @@ public class ChessBoardView extends BorderPane{
         return box;
     }
 
-    private VBox generateRightMarginColumn(Game game){
-        Button btnOptions = new Button("Options");
-        btnOptions.setOnAction(event -> {
-            String isBoardRotationStatus;
-            String highlightPossibleMoveStatus;
-            String allowedChangeSelectedPieceStatus;
-            String hintInCheckStatus;
-            String on = "ON";
-            String off = "OFF";
-            if(game.isRotatingBoard){
-                isBoardRotationStatus = on;
-            } else {
-                isBoardRotationStatus = off;
-            }
-            if(game.highlightPossibleMoves){
-                highlightPossibleMoveStatus = on;
-            } else {
-                highlightPossibleMoveStatus = off;
-            }
-            if(game.allowedToChangeSelectedPiece){
-                allowedChangeSelectedPieceStatus = on;
-            } else {
-                allowedChangeSelectedPieceStatus = off;
-            }
-            if(game.hintInCheck){
-                hintInCheckStatus = on;
-            } else {
-                hintInCheckStatus = off;
-            }
-
-            Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
-            alerti.setTitle("Game-Settings");
-            alerti.setHeaderText(" ChessBoard-Rotation: " + isBoardRotationStatus
-                    + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
-                    + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
-                    + "\n Player is in Check-Notification: " + hintInCheckStatus);
-            alerti.setContentText("Choose Option you want to Change:");
-
-            ButtonType buttonTypeOne = new ButtonType("Rotation");
-            ButtonType buttonTypeTwo = new ButtonType("Highlight");
-            ButtonType buttonTypeThree = new ButtonType("Change Selection");
-            ButtonType buttonTypeFour = new ButtonType("Check");
-            ButtonType buttonTypeFive = new ButtonType("Start New Game");
-            ButtonType buttonTypeSix = new ButtonType("Cancel");
-
-            alerti.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeFive, buttonTypeSix);
-
-            Optional<ButtonType> result = alerti.showAndWait();
-            if (result.isPresent()) {
-                if (result.get() == buttonTypeOne) {
-                    game.isRotatingBoard = !game.isRotatingBoard;
-                } else if (result.get() == buttonTypeTwo) {
-                    game.highlightPossibleMoves = !game.highlightPossibleMoves;
-                } else if (result.get() == buttonTypeThree) {
-                    game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
-                } else if (result.get() == buttonTypeFour) {
-                    game.hintInCheck = !game.hintInCheck;
-                } else if (result.get() == buttonTypeFive) {
-                    Alert alerto = new Alert(Alert.AlertType.CONFIRMATION);
-                    alerto.setTitle("New Game?");
-                    alerto.setHeaderText(null);
-                    alerto.setContentText("Do you really want to start a new Game?");
-
-                    Optional<ButtonType> resulto = alerto.showAndWait();
-                    if (resulto.isPresent()) {
-                        if (resulto.get() == ButtonType.OK) {
-                            new Game(); //TODO: neues Spiel
-                        }  //user chose CANCEL or closed the dialog
-                    }
-                }  //user chose CANCEL or closed the dialog
-            }
-
-
-        });
-        Button btnMoveHistory = new Button("Move-History");
-        btnMoveHistory.setOnAction(event -> {
-            List<Move> history = game.moveHistory;
-            StringBuilder historyAsString = new StringBuilder();
-            if(!history.isEmpty()){
-                for (Move move : history) {
-                    historyAsString.append(move.getStartSquare().getLabel().toString()).append("-").append(move.getFinalSquare().getLabel().toString()).append("\n");
-                }
-            } else {
-                historyAsString = new StringBuilder(" ");
-            }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Move-History");
-            alert.setHeaderText(null);
-            alert.setContentText(historyAsString.toString());
-
-            alert.showAndWait();
-        });
-        VBox box = new VBox(15);
-        box.getChildren().addAll(btnOptions, btnMoveHistory);
-        return box;
-    }
-
-    private HBox generatePlayersMoveLabelBox(Game game){
+    HBox generatePlayersMoveLabelBox(Game game){
         Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
         label.setFont(new Font(fontSize));
         String currentPlayerIsInCheck = "       ";
@@ -169,6 +56,7 @@ public class ChessBoardView extends BorderPane{
         Label checkLabel = new Label(currentPlayerIsInCheck);
         return new HBox(label, checkLabel);
     }
+
 
     private int processingMovement(Game currentGame) {
         if((!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) && currentGame.getSquareStart() != null
