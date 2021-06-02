@@ -56,7 +56,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    void undoMove (Board board){
+    public void undoMove (Board board){
         board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
         this.movingPiece.setSquare(this.startSquare);
         board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(null);
@@ -69,7 +69,7 @@ public class Move {
      * @param targetPiece   The Piece captured by the move of the selected Piece.
      * @param board         The current board.
      */
-    void undoMove (Piece targetPiece, Board board){
+    public void undoMove (Piece targetPiece, Board board){
         board.getBoard()[this.startSquare.getX()][this.startSquare.getY()].setOccupiedBy(this.movingPiece);
         this.movingPiece.setSquare(this.startSquare);
         board.getBoard()[this.finalSquare.getX()][this.finalSquare.getY()].setOccupiedBy(targetPiece);

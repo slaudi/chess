@@ -74,38 +74,35 @@ public class Gui extends Application {
 
 
     private void chooseEnemy(Game game) {
-        if(game.freshGame){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(null);
-            alert.setHeaderText(null);
-            alert.setContentText("Choose your Enemy:");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Choose your Enemy:");
 
-            ButtonType buttonTypeOne = new ButtonType("Human");
-            ButtonType buttonTypeTwo = new ButtonType("Computer");
+        ButtonType buttonTypeOne = new ButtonType("Human");
+        ButtonType buttonTypeTwo = new ButtonType("Computer");
 
-            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
-            Optional<ButtonType> result = alert.showAndWait();
-            game.enemyIsHuman = result.get() == buttonTypeOne;
-            if(!game.enemyIsHuman) {
-                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-                alert2.setTitle(null);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Choose your Colour:");
+        Optional<ButtonType> result = alert.showAndWait();
+        game.enemyIsHuman = result.get() == buttonTypeOne;
+        if(!game.enemyIsHuman) {
+            Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert2.setTitle(null);
+            alert2.setHeaderText(null);
+            alert2.setContentText("Choose your Colour:");
 
-                ButtonType buttonTypeThree = new ButtonType("White");
-                ButtonType buttonTypeFour = new ButtonType("Black");
+            ButtonType buttonTypeThree = new ButtonType("White");
+            ButtonType buttonTypeFour = new ButtonType("Black");
 
-                alert2.getButtonTypes().setAll(buttonTypeThree, buttonTypeFour);
+            alert2.getButtonTypes().setAll(buttonTypeThree, buttonTypeFour);
 
-                Optional<ButtonType> result2 = alert2.showAndWait();
-                if (result2.get() == buttonTypeThree) {
-                    game.userColour = Colour.WHITE;
-                } else {
-                    game.userColour = Colour.BLACK;
-                }
+            Optional<ButtonType> result2 = alert2.showAndWait();
+            if (result2.get() == buttonTypeThree) {
+                game.userColour = Colour.WHITE;
+            } else {
+                game.userColour = Colour.BLACK;
             }
-            game.freshGame = false;
         }
     }
 
