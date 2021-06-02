@@ -28,6 +28,10 @@ public class ChessBoardView extends BorderPane{
     int fontSize = 17;
 
     public ChessBoardView(Game game) {
+        this.white = "-fx-background-color: floralwhite";
+        this.black = "-fx-background-color: slategray";
+        this.highlight = "-fx-border-color: skyblue";
+
         HBox heading = generatePlayersMoveLabelBox(game);
         HBox bottom = generateBeatenPieces(game);
         VBox right = generateRightMarginColumn(game);
@@ -45,10 +49,6 @@ public class ChessBoardView extends BorderPane{
         setRight(right);
         setTop(heading);
         setBottom(bottom);
-
-        this.white = "-fx-background-color: floralwhite";
-        this.black = "-fx-background-color: slategray";
-        this.highlight = "-fx-border-color: skyblue";
     }
 
     private HBox generateBeatenPieces(Game game){
