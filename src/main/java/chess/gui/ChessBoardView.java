@@ -96,14 +96,14 @@ public class ChessBoardView extends BorderPane{
             alerti.setTitle("Game-Settings");
             alerti.setHeaderText(" ChessBoard-Rotation: " + isBoardRotationStatus
                     + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
-                    + "\n Change selected Piece: " + allowedChangeSelectedPieceStatus
+                    + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
                     + "\n Player is in Check-Notification: " + hintInCheckStatus);
             alerti.setContentText("Choose Option you want to Change:");
 
             ButtonType buttonTypeOne = new ButtonType("Rotation");
-            ButtonType buttonTypeTwo = new ButtonType("Highlight Moves");
-            ButtonType buttonTypeThree = new ButtonType("Change Selected Piece");
-            ButtonType buttonTypeFour = new ButtonType("Check Notification");
+            ButtonType buttonTypeTwo = new ButtonType("Highlight");
+            ButtonType buttonTypeThree = new ButtonType("Change Selection");
+            ButtonType buttonTypeFour = new ButtonType("Check");
             ButtonType buttonTypeFive = new ButtonType("Start New Game");
             ButtonType buttonTypeSix = new ButtonType("Cancel");
 

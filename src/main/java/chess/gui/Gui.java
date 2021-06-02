@@ -39,6 +39,18 @@ public class Gui extends Application {
         Game currentGame = new Game();
 
         // Start
+        startScene = startWindow(primaryStage,currentGame);
+
+        // Chess board
+        ChessBoardView chessBoardView = new ChessBoardView(currentGame);
+        chessScene = new Scene(chessBoardView, 900, 900);
+
+        primaryStage.setScene(startScene);
+        primaryStage.setTitle("Chess!");
+        primaryStage.show();
+    }
+
+    private Scene startWindow(Stage primaryStage, Game currentGame){
         Label label = new Label("Welcome to a new Game of Chess!");
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
@@ -57,16 +69,9 @@ public class Gui extends Application {
         VBox layout1 = new VBox(20);
         layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
         layout1.setAlignment(Pos.CENTER);
-        startScene = new Scene(layout1,300,300);
-
-        // Chess board
-        ChessBoardView chessBoardView = new ChessBoardView(currentGame);
-        chessScene = new Scene(chessBoardView, 900, 900);
-
-        primaryStage.setScene(startScene);
-        primaryStage.setTitle("Chess!");
-        primaryStage.show();
+        return new Scene(layout1,300,300);
     }
+
 
     private void chooseEnemy(Game game) {
         if(game.freshGame){
@@ -120,7 +125,7 @@ public class Gui extends Application {
         btn.setAlignment(Pos.BOTTOM_CENTER);
         Button startGame = new Button("Start Connection");
         Button cancel = new Button("Cancel");
-        cancel.setOnAction(e -> backToScratch(primaryStage));
+        cancel.setOnAction(e -> primaryStage.setScene(startScene));
         btn.getChildren().addAll(startGame,cancel);
         grid.add(btn,1,4);
 
@@ -141,7 +146,4 @@ public class Gui extends Application {
         alert.showAndWait();
     }
 
-    private void backToScratch(Stage primaryStage) {
-        primaryStage.setScene(startScene);
-    }
 }
