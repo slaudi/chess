@@ -75,7 +75,7 @@ public class Game {
      * @param finalSquare   The Square which the Player wants his Piece to move to.
      * @return boolean Returns 'true' if the move is possible.
      */
-    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all cases
+    public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
         if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
             return false;
         }
@@ -420,7 +420,7 @@ public class Game {
         return possibleSquares;
     }
 
-    public boolean isMoveAllowedAI(Piece selectedPiece, Square finalSquare) {//NOPMD all if-clauses are needed to cover all cases
+    public boolean isMoveAllowedAI(Piece selectedPiece, Square finalSquare) {
         if (selectedPiece == null) {
             return false;
         }
