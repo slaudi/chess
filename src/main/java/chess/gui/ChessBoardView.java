@@ -23,8 +23,8 @@ public class ChessBoardView extends BorderPane{
     String white;
     String black;
     String highlight;
-    int buttonHeight = 90;
-    int buttonWidth = 90;
+    int buttonHeight = 85;
+    int buttonWidth = 85;
     int fontSize = 17;
 
     public ChessBoardView(Game game) {
@@ -62,14 +62,19 @@ public class ChessBoardView extends BorderPane{
     }
 
     HBox generatePlayersMoveLabelBox(Game game){
-        Label label = new Label(game.currentPlayer.getColour().toString() + "'s Turn");
-        label.setFont(new Font(fontSize));
-        String currentPlayerIsInCheck = "       ";
-        if (game.hintInCheck && game.currentPlayer.isInCheck()){
-            currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
+        Label label = new Label(game.currentPlayer.getColour().toString() + "s Turn");
+        if (game.isCheckMate()) {
+            label = new Label(" -- " + game.currentPlayer.getColour().toString() + " has lost the Game!");
+            AlertBox.display("Check Mate",null,game.currentPlayer.getColour().toString() + "is Checkmate!");
+        } else if (game.isADraw()) {
+            label = new Label("The Game ended in a draw!");
+            AlertBox.display("Draw",null,"The Game ended in a draw!");
+        } else if (game.hintInCheck && game.currentPlayer.isInCheck()){
+            label = new Label(game.currentPlayer.getColour().toString() + "s Turn -- " + game.currentPlayer.getColour().toString() + " is in Check!");
+            AlertBox.display("Check Hint",null,game.currentPlayer.getColour().toString() + " is in Check!");
         }
-        Label checkLabel = new Label(currentPlayerIsInCheck);
-        return new HBox(label, checkLabel);
+        label.setFont(new Font(fontSize));
+        return new HBox(label);
     }
 
 
@@ -78,7 +83,7 @@ public class ChessBoardView extends BorderPane{
                 && currentGame.getSquareFinal() != null) {
             return isMoveAllowed(currentGame);
         }
-        if(currentGame.currentPlayer.isLoser()){
+        if(currentGame.isCheckMate()){
             return 3;
         }
         if(currentGame.isADraw()){
@@ -110,9 +115,11 @@ public class ChessBoardView extends BorderPane{
         currentGame.setSquareFinal(null);
         currentGame.isInCheck();
         currentGame.isCheckMate();
+
         currentGame.changePlayer();
         currentGame.isInCheck();
         currentGame.isCheckMate();
+
         currentGame.changePlayer();
         return 0;
     }
@@ -141,11 +148,8 @@ public class ChessBoardView extends BorderPane{
 
     private GridPane generateButtonGrid(Game game){
         GridPane grid = new GridPane();
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                Button btn = setButton(game,x,y);
-                grid.add(btn, x, y);
-            }
+        setButtons(grid,game);
+        for (int y = 0; y <8; y++){
             String[] columns = {"1","2","3","4","5","6","7","8"};
             Label label = new Label(columns[7-y]);
             label.setFont(new Font(fontSize));
@@ -157,17 +161,8 @@ public class ChessBoardView extends BorderPane{
 
     private GridPane generateHighlightedButtonGrid(Game game){
         GridPane grid = new GridPane();
-
-        List<Square> allowedSquares = game.computePossibleSquares();
-        if(allowedSquares.isEmpty()){
-            game.setSquareStart(null);
-            AlertBox.display("No Moves possible",null,"This Piece cannot move. Try another!");
-        }
+        setHighlightedButtons(grid,game);
         for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = setHighlightedButton(game,x,y,allowedSquares);
-                grid.add(btn, x, y);
-            }
             String[] columns = {"1","2","3","4","5","6","7","8"};
             Label label = new Label(columns[7-y]);
             label.setFont(new Font(fontSize));
@@ -179,11 +174,8 @@ public class ChessBoardView extends BorderPane{
 
     private GridPane generateButtonGridBlackDown(Game game){
         GridPane grid = new GridPane();
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = setButton(game, x, y);
-                grid.add(btn, 7 - x, 7 - y);
-            }
+        setButtons(grid,game);
+        for (int y = 0; y < 8; y++) {
             String[] columns = {"1","2","3","4","5","6","7","8"};
             Label label = new Label(columns[y]);
             label.setFont(new Font(fontSize));
@@ -195,19 +187,10 @@ public class ChessBoardView extends BorderPane{
 
     private GridPane generateHighlightedButtonGridBlackDown(Game game){
         GridPane grid = new GridPane();
-        List<Square> allowedSquares = game.computePossibleSquares();
-
-        if(allowedSquares.isEmpty()){
-            game.setSquareStart(null);
-            AlertBox.display("No Moves possible",null,"This Piece cannot move. Try another!");
-        }
+        setHighlightedButtons(grid,game);
         for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = setHighlightedButton(game,x,y,allowedSquares);
-                grid.add(btn, 7 - x, 7 - y);
-            }
             String[] columns = {"1","2","3","4","5","6","7","8"};
-            Label label = new Label(columns[7-y]);
+            Label label = new Label(columns[y]);
             label.setFont(new Font(fontSize));
             grid.add(label, 8, y);
         }
@@ -234,44 +217,74 @@ public class ChessBoardView extends BorderPane{
         }
     }
 
-    private Button setButton(Game game, int x, int y) {
-        Button btn = new Button();
-        btn.setMinHeight(buttonHeight);
-        btn.setMinWidth(buttonWidth);
-        if ((y+x) %2 == 0) {
-            btn.setStyle(white);
-        } else {
-            btn.setStyle(black);
+    private void setButtons(GridPane grid, Game game) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Button button = new Button();
+                button.setMinHeight(buttonHeight);
+                button.setMinWidth(buttonWidth);
+                if ((y+x) %2 == 0) {
+                    button.setStyle(white);
+                } else {
+                    button.setStyle(black);
+                }
+                button.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
+                int finalX = x;
+                int finalY = y;
+                if (!game.isADraw() || !game.isCheckMate()) {
+                    button.setOnAction(event -> {
+                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+                        setButtonAction(game);
+                    });
+                }
+                if (game.currentPlayer.getColour() == Colour.WHITE) {
+                    grid.add(button, x, y);
+                } else {
+                    grid.add(button, 7 - x, 7 - y);
+                }
+            }
         }
-        btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-        btn.setOnAction(event -> {
-            game.setBothMovingSquares(game.chessBoard.getSquareAt(x, y));
-            setButtonAction(game);
-        });
-        return btn;
     }
 
-    private Button setHighlightedButton(Game game, int x, int y, List<Square> allowedSquares) {
-        Button btn = new Button();
-        btn.setMinHeight(buttonHeight);
-        btn.setMinWidth(buttonWidth);
-        if ((y+x) %2 == 0) {
-            btn.setStyle(white);
-        } else {
-            btn.setStyle(black);
+    private void setHighlightedButtons(GridPane grid, Game game) {
+        List<Square> allowedSquares = game.computePossibleSquares();
+
+        if(allowedSquares.isEmpty()){
+            game.setSquareStart(null);
+            AlertBox.display("No Moves Possible",null,"This Piece cannot move. Try another!");
         }
-        String border = "-fx-border-width: 4px";
-        if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y)) && (y+x) %2 == 0){
-            btn.setStyle(highlight + ";" + border + ";" + white);
-        } else if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))) {
-            btn.setStyle(highlight + ";" + border + ";" + black);
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Button btn = new Button();
+                btn.setMinHeight(buttonHeight);
+                btn.setMinWidth(buttonWidth);
+                if ((y + x) % 2 == 0) {
+                    btn.setStyle(white);
+                } else {
+                    btn.setStyle(black);
+                }
+                String border = "-fx-border-width: 4px";
+                if (allowedSquares.contains(game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
+                    btn.setStyle(highlight + ";" + border + ";" + white);
+                } else if (allowedSquares.contains(game.chessBoard.getSquareAt(x, y))) {
+                    btn.setStyle(highlight + ";" + border + ";" + black);
+                }
+                btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
+                int finalX = x;
+                int finalY = y;
+                if (!game.isADraw() && !game.isCheckMate()) {
+                    btn.setOnAction(event -> {
+                        game.setBothMovingSquares(game.chessBoard.getSquareAt(finalX, finalY));
+                        setButtonAction(game);
+                    });
+                }
+                if (game.currentPlayer.getColour() == Colour.WHITE) {
+                    grid.add(btn, x, y);
+                } else {
+                    grid.add(btn, 7 - x, 7 - y);
+                }
+            }
         }
-        btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-        btn.setOnAction(event -> {
-            game.setBothMovingSquares(game.chessBoard.getSquareAt(x, y));
-            setButtonAction(game);
-        });
-        return btn;
     }
 
     private void setButtonAction(Game game) {
@@ -288,9 +301,9 @@ public class ChessBoardView extends BorderPane{
             } else {
                 // not an allowed Move
                 generateAnswer(result);
+                chooseButtonGridGeneration(game);
             }
-        }
-        if (game.getSquareStart() != null && game.getSquareFinal() == null) {
+        } else if (game.getSquareStart() != null && game.getSquareFinal() == null) {
             generatePane(game);
         }
     }
