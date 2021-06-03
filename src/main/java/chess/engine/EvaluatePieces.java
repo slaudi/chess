@@ -1,5 +1,6 @@
 package chess.engine;
 
+import chess.gui.GuiGame;
 import chess.game.Colour;
 import chess.game.Game;
 import chess.game.Move;
@@ -13,7 +14,6 @@ import java.util.List;
  */
 public class EvaluatePieces implements Evaluation{
 
-    //private static Game gameAfterOneMove;
     /**
      *
      * @param game
@@ -27,7 +27,7 @@ public class EvaluatePieces implements Evaluation{
                 Piece piece = game.chessBoard.getPieceAt(x,y);
                 if (piece != null) {
                     int value = piecesValue(piece);
-                    int controlledSquares = pieceControlsSquares(piece, game); // funktioniert nur bei deiner eigenen Spielerfarbe wegen isMoveAllowed?
+                    int controlledSquares = pieceControlsSquares(piece, game);
                     if (piece.getColour() == playerColour) {
                         sum += value;
                         sum += controlledSquares;

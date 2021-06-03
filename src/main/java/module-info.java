@@ -9,5 +9,5 @@ module chess {
     opens chess.pieces;
     opens chess.gui;
 
-    exports chess.gui;
+    exports chess;
 }

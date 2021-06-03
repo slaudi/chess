@@ -1,7 +1,6 @@
 package chess.gui;
 
 import chess.game.Colour;
-import chess.game.Game;
 import chess.game.Move;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -36,7 +35,7 @@ public class Gui extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
-        Game currentGame = new Game();
+        GuiGame currentGame = new GuiGame();
 
         // Start
         startScene = startWindow(primaryStage,currentGame);
@@ -50,11 +49,11 @@ public class Gui extends Application {
     }
 
 
-    private Scene startWindow(Stage primaryStage, Game currentGame){
+    private Scene startWindow(Stage primaryStage, GuiGame guiGame){
         Label label = new Label("Welcome to a new Game of Chess!");
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
-            chooseEnemy(currentGame);
+            chooseEnemy(guiGame);
             primaryStage.setScene(chessScene);
         });
 
@@ -81,7 +80,7 @@ public class Gui extends Application {
     }
 
 
-    private void chooseEnemy(Game game) {
+    private void chooseEnemy(GuiGame guiGame) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(null);
         alert.setHeaderText(null);
@@ -93,8 +92,8 @@ public class Gui extends Application {
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
         Optional<ButtonType> result = alert.showAndWait();
-        result.ifPresent(buttonType -> game.enemyIsHuman = buttonType == buttonTypeOne);
-        if(!game.enemyIsHuman) {
+        result.ifPresent(buttonType -> guiGame.enemyIsHuman = buttonType == buttonTypeOne);
+        if(!guiGame.enemyIsHuman) {
             Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
             alert2.setTitle(null);
             alert2.setHeaderText(null);
@@ -108,9 +107,9 @@ public class Gui extends Application {
             Optional<ButtonType> result2 = alert2.showAndWait();
             if (result2.isPresent()) {
                 if (result2.get() == buttonTypeThree) {
-                    game.userColour = Colour.WHITE;
+                    guiGame.game.userColour = Colour.WHITE;
                 } else {
-                    game.userColour = Colour.BLACK;
+                    guiGame.game.userColour = Colour.BLACK;
                 }
             }
         }
@@ -153,11 +152,11 @@ public class Gui extends Application {
         alert.showAndWait();
     }
 
-    private Scene chessWindow(Stage primaryStage, Game currentGame) {
+    private Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
         BorderPane pane = new BorderPane();
 
-        ChessBoardView chessBoardView = new ChessBoardView(currentGame);
-        VBox right = generateRightMarginColumn(currentGame, primaryStage);
+        ChessBoardView chessBoardView = new ChessBoardView(guiGame);
+        VBox right = generateRightMarginColumn(guiGame, primaryStage);
 
         right.setAlignment(Pos.CENTER);
         right.setPadding(new Insets(40));
@@ -168,15 +167,15 @@ public class Gui extends Application {
     }
 
 
-    private VBox generateRightMarginColumn(Game game, Stage primaryStage){
+    private VBox generateRightMarginColumn(GuiGame guiGame, Stage primaryStage){
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?");
 
             if (result) {
-                Game newGame = new Game();
-                startScene = startWindow(primaryStage, newGame);
-                chessScene = chessWindow(primaryStage, newGame);
+                GuiGame newGuiGame = new GuiGame();
+                startScene = startWindow(primaryStage, newGuiGame);
+                chessScene = chessWindow(primaryStage, newGuiGame);
 
                 primaryStage.setScene(startScene);
                 primaryStage.setTitle("Chess!");
@@ -200,22 +199,22 @@ public class Gui extends Application {
                 String hintInCheckStatus;
                 String on = "ON";
                 String off = "OFF";
-                if(game.isRotatingBoard){
+                if(guiGame.isRotatingBoard){
                     isBoardRotationStatus = on;
                 } else {
                     isBoardRotationStatus = off;
                 }
-                if(game.highlightPossibleMoves){
+                if(guiGame.highlightPossibleMoves){
                     highlightPossibleMoveStatus = on;
                 } else {
                     highlightPossibleMoveStatus = off;
                 }
-                if(game.allowedToChangeSelectedPiece){
+                if(guiGame.allowedToChangeSelectedPiece){
                     allowedChangeSelectedPieceStatus = on;
                 } else {
                     allowedChangeSelectedPieceStatus = off;
                 }
-                if(game.hintInCheck){
+                if(guiGame.hintInCheck){
                     hintInCheckStatus = on;
                 } else {
                     hintInCheckStatus = off;
@@ -230,13 +229,13 @@ public class Gui extends Application {
                                 + "\n Player is in Check-Notification: " + hintInCheckStatus,
                         "Choose Option you want to Change:", options);
                 if (buttonType == buttonTypeOne) {
-                    game.isRotatingBoard = !game.isRotatingBoard;
+                    guiGame.isRotatingBoard = !guiGame.isRotatingBoard;
                 } else if (buttonType == buttonTypeTwo) {
-                    game.highlightPossibleMoves = !game.highlightPossibleMoves;
+                    guiGame.highlightPossibleMoves = !guiGame.highlightPossibleMoves;
                 } else if (buttonType == buttonTypeThree) {
-                    game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
+                    guiGame.allowedToChangeSelectedPiece = !guiGame.allowedToChangeSelectedPiece;
                 } else if (buttonType == buttonTypeFour) {
-                    game.hintInCheck = !game.hintInCheck;
+                    guiGame.hintInCheck = !guiGame.hintInCheck;
                 }  //user chose CANCEL or closed the dialog
             } while (buttonType != buttonTypeFive);
 
@@ -244,7 +243,7 @@ public class Gui extends Application {
         });
         Button btnMoveHistory = new Button("Move-History");
         btnMoveHistory.setOnAction(event -> {
-            List<Move> history = game.moveHistory;
+            List<Move> history = guiGame.game.moveHistory;
             StringBuilder historyAsString = new StringBuilder();
             if(!history.isEmpty()){
                 for (Move move : history) {
