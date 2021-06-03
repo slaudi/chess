@@ -8,16 +8,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Starting point of the JavaFX GUI
@@ -25,7 +21,6 @@ import java.util.Optional;
 public class Gui extends Application {
 
     static Scene startScene, chessScene;
-    int fontSize = 17;
 
     /**
      * The entry point of the GUI application.
@@ -69,13 +64,19 @@ public class Gui extends Application {
         startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
 
         Button loadGame = new Button("Load Game");
-        // TODO: implement loading a game
-        loadGame.setOnAction(e -> primaryStage.setScene(chessScene));
+        loadGame.setOnAction(e -> {
+                boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?");
+
+                if (result) {
+                    // TODO: implement loading a game
+                    primaryStage.setScene(chessScene);
+                }
+        });
 
         Button language = new Button("Language");
         language.setOnAction(e -> chooseLanguage());
 
-        VBox layout1 = new VBox(20);
+        VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
         layout1.setAlignment(Pos.CENTER);
         return new Scene(layout1,300,300);
@@ -94,7 +95,7 @@ public class Gui extends Application {
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
         Optional<ButtonType> result = alert.showAndWait();
-        game.enemyIsHuman = result.get() == buttonTypeOne;
+        result.ifPresent(buttonType -> game.enemyIsHuman = buttonType == buttonTypeOne);
         if(!game.enemyIsHuman) {
             Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
             alert2.setTitle(null);
@@ -107,10 +108,12 @@ public class Gui extends Application {
             alert2.getButtonTypes().setAll(buttonTypeThree, buttonTypeFour);
 
             Optional<ButtonType> result2 = alert2.showAndWait();
-            if (result2.get() == buttonTypeThree) {
-                game.userColour = Colour.WHITE;
-            } else {
-                game.userColour = Colour.BLACK;
+            if (result2.isPresent()) {
+                if (result2.get() == buttonTypeThree) {
+                    game.userColour = Colour.WHITE;
+                } else {
+                    game.userColour = Colour.BLACK;
+                }
             }
         }
     }
@@ -141,7 +144,7 @@ public class Gui extends Application {
 
     private void chooseLanguage() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(null);
+        alert.setTitle("Language Selection");
         alert.setHeaderText(null);
         alert.setContentText("Choose Language: ");
 
@@ -153,23 +156,17 @@ public class Gui extends Application {
     }
 
     private Scene chessWindow(Stage primaryStage, Game currentGame) {
+        BorderPane pane = new BorderPane();
+
         ChessBoardView chessBoardView = new ChessBoardView(currentGame);
+        VBox right = generateRightMarginColumn(currentGame, primaryStage);
 
-        HBox heading = chessBoardView.generatePlayersMoveLabelBox(currentGame);
-        HBox bottom = chessBoardView.generateBeatenPieces(currentGame);
-        final VBox right = generateRightMarginColumn(currentGame, primaryStage);
+        right.setAlignment(Pos.CENTER);
+        right.setPadding(new Insets(40));
+        pane.setRight(right);
+        pane.setCenter(chessBoardView);
 
-        GridPane grid = new GridPane();
-        GridPane.setConstraints(heading,2,0);
-        GridPane.setConstraints(right,4,2);
-        GridPane.setConstraints(chessBoardView,2,2);
-        GridPane.setConstraints(bottom,2,4);
-
-        heading.setAlignment(Pos.CENTER);
-
-        grid.getChildren().addAll(heading, bottom,right,chessBoardView);
-
-        return new Scene(grid, 900, 900);
+        return new Scene(pane, 1000, 900);
     }
 
 
@@ -261,7 +258,7 @@ public class Gui extends Application {
             AlertBox.display("Move History", null, historyAsString.toString());
         });
         VBox box = new VBox(15);
-        box.getChildren().addAll(btnOptions, btnMoveHistory, btnNewGame);
+        box.getChildren().addAll(btnNewGame, btnOptions, btnMoveHistory);
         return box;
     }
 

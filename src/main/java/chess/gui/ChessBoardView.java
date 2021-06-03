@@ -4,6 +4,8 @@ import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -30,13 +32,27 @@ public class ChessBoardView extends BorderPane{
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
-        GridPane center = chooseButtonGridGeneration(game);
-        setCenter(center);
+        generatePane(game);
+    }
+
+    void generatePane(Game game) {
+        HBox heading = generatePlayersMoveLabelBox(game);
+        heading.setAlignment(Pos.TOP_CENTER);
+        heading.setPadding(new Insets(10));
+        setTop(heading);
+
+        GridPane chessBoard = chooseButtonGridGeneration(game);
+        chessBoard.setAlignment(Pos.TOP_CENTER);
+        setCenter(chessBoard);
+
+        HBox bottom = generateBeatenPieces(game);
+        bottom.setAlignment(Pos.CENTER_LEFT);
+        bottom.setPadding(new Insets(20));
+        setBottom(bottom);
     }
 
     HBox generateBeatenPieces(Game game){
         HBox box = new HBox();
-        box.getChildren().add(new Label("Beaten Pieces:"));
         if(!game.beatenPieces.isEmpty()){
             for (Piece piece: game.beatenPieces){
                 box.getChildren().add(SetImages.getBeatenPieces(piece.getType(),piece.getColour()));
@@ -46,7 +62,7 @@ public class ChessBoardView extends BorderPane{
     }
 
     HBox generatePlayersMoveLabelBox(Game game){
-        Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
+        Label label = new Label(game.currentPlayer.getColour().toString() + "'s Turn");
         label.setFont(new Font(fontSize));
         String currentPlayerIsInCheck = "       ";
         if (game.hintInCheck && game.currentPlayer.isInCheck()){
@@ -268,13 +284,14 @@ public class ChessBoardView extends BorderPane{
                     game.setSquareFinal(AIMove.getFinalSquare());
                     processingMovement(game);
                 }
-                setCenter(chooseButtonGridGeneration(game));
+                generatePane(game);
             } else {
+                // not an allowed Move
                 generateAnswer(result);
             }
         }
         if (game.getSquareStart() != null && game.getSquareFinal() == null) {
-            setCenter(chooseButtonGridGeneration(game));
+            generatePane(game);
         }
     }
 
@@ -322,7 +339,11 @@ public class ChessBoardView extends BorderPane{
     private GridPane whitePlayersGrid(Game game) {
         if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
             if(game.getSquareStart().getOccupiedBy() != null){
-                if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
+                if(game.currentPlayer.getColour() == Colour.WHITE && game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
+                    return generateHighlightedButtonGrid(game);
+                }
+                // no rotation and blacks turn
+                else if (game.currentPlayer.getColour() == Colour.BLACK && game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
                     return generateHighlightedButtonGrid(game);
                 } else {
                     AlertBox.display("Piece problem",null,"Selected Piece is not your Colour!");
