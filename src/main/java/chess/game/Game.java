@@ -79,6 +79,10 @@ public class Game {
         if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
             return false;
         }
+        return canDoMove(selectedPiece,finalSquare);
+    }
+
+    private boolean canDoMove(Piece selectedPiece, Square finalSquare) {
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (targetPiece != null) {
             // the final Square is occupied by another piece
@@ -93,16 +97,16 @@ public class Game {
                 // target piece is ally
                 return false;
             }
-        // final square is empty
+            // final square is empty
         } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
-                Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
-                Square start = lastEnemyMove.getStartSquare();
-                Square end = lastEnemyMove.getFinalSquare();
-                int diff_enemy = start.getY() - end.getY();
-                if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
-                    // is en passant possible
-                    return ((Pawn)selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
-                }
+            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
+            Square start = lastEnemyMove.getStartSquare();
+            Square end = lastEnemyMove.getFinalSquare();
+            int diff_enemy = start.getY() - end.getY();
+            if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
+                // is en passant possible
+                return ((Pawn)selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
+            }
         } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
             // is castling possible
             List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
@@ -420,37 +424,7 @@ public class Game {
         if (selectedPiece == null) {
             return false;
         }
-        Piece targetPiece = finalSquare.getOccupiedBy();
-        if (targetPiece != null) {
-            // the final Square is occupied by another piece
-            if (targetPiece.getColour() != selectedPiece.getColour()) {
-                if (selectedPiece.getType() == Type.PAWN) {
-                    // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
-                    return ((Pawn) selectedPiece).canCapture(finalSquare);
-                } else {
-                    return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
-                }
-            } else {
-                // target piece is ally
-                return false;
-            }
-            // final square is empty
-        } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
-            Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
-            Square start = lastEnemyMove.getStartSquare();
-            Square end = lastEnemyMove.getFinalSquare();
-            int diff_enemy = start.getY() - end.getY();
-            if (Math.abs(diff_enemy) == 2 && end.getY() == selectedPiece.getSquare().getY() && end.getOccupiedBy().getType() == Type.PAWN) {
-                // is en passant possible
-                return ((Pawn)selectedPiece).isEnPassant(finalSquare, lastEnemyMove) || selectedPiece.isPiecesMove(finalSquare, this.chessBoard);
-            }
-        } else if (selectedPiece.getType() == Type.KING && Math.abs(selectedPiece.getSquare().getX() - finalSquare.getX()) == 2){
-            // is castling possible
-            List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-            return ((King)selectedPiece).canDoCastling(finalSquare, enemies, this.chessBoard);
-        }
-        // all other moves
-        return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
+        return canDoMove(selectedPiece,finalSquare);
     }
 }
 
