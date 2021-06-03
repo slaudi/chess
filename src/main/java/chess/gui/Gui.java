@@ -92,8 +92,8 @@ public class Gui extends Application {
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
         Optional<ButtonType> result = alert.showAndWait();
-        result.ifPresent(buttonType -> guiGame.enemyIsHuman = buttonType == buttonTypeOne);
-        if(!guiGame.enemyIsHuman) {
+        result.ifPresent(buttonType -> guiGame.game.enemyIsHuman = buttonType == buttonTypeOne);
+        if(!guiGame.game.enemyIsHuman) {
             Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
             alert2.setTitle(null);
             alert2.setHeaderText(null);

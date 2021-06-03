@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
@@ -231,9 +232,10 @@ public class ChessBoardView extends BorderPane{
                 button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
                 int finalX = x;
                 int finalY = y;
-                if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
+                if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
                     button.setOnAction(event -> {
                         guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(finalX, finalY));
+                        button.setStyle("-fx-background-color: #5F537BFF");
                         setButtonAction(guiGame);
                     });
                 }
@@ -263,7 +265,7 @@ public class ChessBoardView extends BorderPane{
                 } else {
                     btn.setStyle(black);
                 }
-                String border = "-fx-border-width: 4px";
+                String border = "-fx-border-width: 3px";
                 if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
                     btn.setStyle(highlight + ";" + border + ";" + white);
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
@@ -291,7 +293,7 @@ public class ChessBoardView extends BorderPane{
         if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             int result = processingMovement(guiGame);
             if (result == 0) {
-                if (!guiGame.enemyIsHuman) {
+                if (!guiGame.game.enemyIsHuman) {
                     Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
                     guiGame.setSquareStart(AIMove.getStartSquare());
                     guiGame.setSquareFinal(AIMove.getFinalSquare());
@@ -328,7 +330,7 @@ public class ChessBoardView extends BorderPane{
 
 
     private GridPane chooseButtonGridGeneration(GuiGame guiGame){
-        if(guiGame.enemyIsHuman) {
+        if(guiGame.game.enemyIsHuman) {
             if (guiGame.isRotatingBoard) {
                 if(guiGame.game.currentPlayer.getColour() == Colour.WHITE) {
                     return whitePlayersGrid(guiGame);

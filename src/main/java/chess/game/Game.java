@@ -31,8 +31,9 @@ public class Game {
      */
     public final List<Piece> beatenPieces;
     public final List<Move> moveHistory;
-    boolean enemyIsHuman;
     public Colour userColour;
+    public boolean enemyIsHuman;
+
 
 
 
@@ -48,8 +49,9 @@ public class Game {
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new ArrayList<>();
 
-        this.enemyIsHuman = true;
+
         this.userColour = Colour.WHITE;
+        this.enemyIsHuman = true;
 
     }
 
