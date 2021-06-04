@@ -67,6 +67,7 @@ public class Square {
     public void setOccupiedBy(Piece occupiedBy) {
         this.occupiedBy = occupiedBy;
     }
+
     public Colour getColour(){
         return this.colour;
     }

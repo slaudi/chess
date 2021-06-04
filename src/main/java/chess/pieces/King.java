@@ -144,7 +144,7 @@ public class King extends Piece {
                 castlingPath.add(chessBoard.getSquareAt(6,7));
             }
         } else if (helperCastling(Colour.BLACK,7,0,chessBoard)) {
-            if (chessBoard.getPieceAt(5, 0) == null && chessBoard.getPieceAt(6, 0) == null) {
+            if (chessBoard.getPieceAt(5, 0) != null && chessBoard.getPieceAt(6, 0) != null) {
                 return castlingPath;
             }
             castlingPath.add(chessBoard.getSquareAt(4, 0));
