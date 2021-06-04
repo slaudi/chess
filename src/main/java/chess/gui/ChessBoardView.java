@@ -6,15 +6,16 @@ import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 
@@ -23,282 +24,159 @@ public class ChessBoardView extends BorderPane{
     String white;
     String black;
     String highlight;
-    int buttonHeight = 90;
-    int buttonWidth = 90;
+    int buttonHeight = 85;
+    int buttonWidth = 85;
     int fontSize = 17;
 
-    public ChessBoardView(Game game) {
+    public ChessBoardView(GuiGame guiGame) {
         this.white = "-fx-background-color: floralwhite";
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
-        HBox heading = generatePlayersMoveLabelBox(game);
-        HBox bottom = generateBeatenPieces(game);
-        VBox right = generateRightMarginColumn(game);
-        GridPane center = chooseButtonGridGeneration(game);//generateButtonGrid(game);
+        generatePane(guiGame);
+    }
 
-        //TODO: bottom (beatenPieces) höher
+    void generatePane(GuiGame guiGame) {
+        HBox heading = generatePlayersMoveLabelBox(guiGame);
         heading.setAlignment(Pos.TOP_CENTER);
-        heading.setPadding(new Insets(20));
-        bottom.setAlignment(Pos.BOTTOM_LEFT);
-        bottom.setPadding(new Insets(30));
-        right.setAlignment(Pos.CENTER);
-        right.setPadding(new Insets(20));
-
-        setCenter(center);
-        setRight(right);
+        heading.setPadding(new Insets(10));
         setTop(heading);
+
+        GridPane chessBoard = chooseButtonGridGeneration(guiGame);
+        chessBoard.setAlignment(Pos.TOP_CENTER);
+        setCenter(chessBoard);
+
+        HBox bottom = generateBeatenPieces(guiGame);
+        bottom.setAlignment(Pos.CENTER_LEFT);
+        bottom.setPadding(new Insets(20));
         setBottom(bottom);
     }
 
-    private HBox generateBeatenPieces(Game game){
+    HBox generateBeatenPieces(GuiGame guiGame){
         HBox box = new HBox();
-        box.getChildren().add(new Label("Beaten Pieces:"));
-        if(!game.beatenPieces.isEmpty()){
-            for (Piece piece: game.beatenPieces){
+        if(!guiGame.game.beatenPieces.isEmpty()){
+            for (Piece piece: guiGame.game.beatenPieces){
                 box.getChildren().add(SetImages.getBeatenPieces(piece.getType(),piece.getColour()));
             }
         }
         return box;
     }
 
-    private VBox generateRightMarginColumn(Game game){
-        Button btnOptions = new Button("Options");
-        btnOptions.setOnAction(event -> {
-            String isBoardRotationStatus;
-            String highlightPossibleMoveStatus;
-            String allowedChangeSelectedPieceStatus;
-            String hintInCheckStatus;
-            String on = "ON";
-            String off = "OFF";
-            if(game.isRotatingBoard){
-                isBoardRotationStatus = on;
-            } else {
-                isBoardRotationStatus = off;
-            }
-            if(game.highlightPossibleMoves){
-                highlightPossibleMoveStatus = on;
-            } else {
-                highlightPossibleMoveStatus = off;
-            }
-            if(game.allowedToChangeSelectedPiece){
-                allowedChangeSelectedPieceStatus = on;
-            } else {
-                allowedChangeSelectedPieceStatus = off;
-            }
-            if(game.hintInCheck){
-                hintInCheckStatus = on;
-            } else {
-                hintInCheckStatus = off;
-            }
-
-            Alert alerti = new Alert(Alert.AlertType.CONFIRMATION);
-            alerti.setTitle("Game-Settings");
-            alerti.setHeaderText(" ChessBoard-Rotation: " + isBoardRotationStatus
-                    + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
-                    + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
-                    + "\n Player is in Check-Notification: " + hintInCheckStatus);
-            alerti.setContentText("Choose Option you want to Change:");
-
-            ButtonType buttonTypeOne = new ButtonType("Rotation");
-            ButtonType buttonTypeTwo = new ButtonType("Highlight");
-            ButtonType buttonTypeThree = new ButtonType("Change Selection");
-            ButtonType buttonTypeFour = new ButtonType("Check");
-            ButtonType buttonTypeFive = new ButtonType("Start New Game");
-            ButtonType buttonTypeSix = new ButtonType("Cancel");
-
-            alerti.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeFive, buttonTypeSix);
-
-            Optional<ButtonType> result = alerti.showAndWait();
-            if (result.isPresent()) {
-                if (result.get() == buttonTypeOne) {
-                    game.isRotatingBoard = !game.isRotatingBoard;
-                } else if (result.get() == buttonTypeTwo) {
-                    game.highlightPossibleMoves = !game.highlightPossibleMoves;
-                } else if (result.get() == buttonTypeThree) {
-                    game.allowedToChangeSelectedPiece = !game.allowedToChangeSelectedPiece;
-                } else if (result.get() == buttonTypeFour) {
-                    game.hintInCheck = !game.hintInCheck;
-                } else if (result.get() == buttonTypeFive) {
-                    Alert alerto = new Alert(Alert.AlertType.CONFIRMATION);
-                    alerto.setTitle("New Game?");
-                    alerto.setHeaderText(null);
-                    alerto.setContentText("Do you really want to start a new Game?");
-
-                    Optional<ButtonType> resulto = alerto.showAndWait();
-                    if (resulto.isPresent()) {
-                        if (resulto.get() == ButtonType.OK) {
-                            new Game(); //TODO: neues Spiel
-                        }  //user chose CANCEL or closed the dialog
-                    }
-                }  //user chose CANCEL or closed the dialog
-            }
-
-
-        });
-        Button btnMoveHistory = new Button("Move-History");
-        btnMoveHistory.setOnAction(event -> {
-            List<Move> history = game.moveHistory;
-            StringBuilder historyAsString = new StringBuilder();
-            if(!history.isEmpty()){
-                for (Move move : history) {
-                    historyAsString.append(move.getStartSquare().getLabel().toString()).append("-").append(move.getFinalSquare().getLabel().toString()).append("\n");
-                }
-            } else {
-                historyAsString = new StringBuilder(" ");
-            }
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Move-History");
-            alert.setHeaderText(null);
-            alert.setContentText(historyAsString.toString());
-
-            alert.showAndWait();
-        });
-        VBox box = new VBox(15);
-        box.getChildren().addAll(btnOptions, btnMoveHistory);
-        return box;
-    }
-
-    private HBox generatePlayersMoveLabelBox(Game game){
-        Label label = new Label("CHESS --- " + game.currentPlayer.getColour().toString() + "'s Turn");
+    HBox generatePlayersMoveLabelBox(GuiGame guiGame){
+        Label label = new Label(guiGame.game.currentPlayer.getColour().toString() + "s Turn");
+        if (guiGame.game.isCheckMate()) {
+            label = new Label(" -- " + guiGame.game.currentPlayer.getColour().toString() + " has lost the Game!");
+            AlertBox.display("Check Mate",null, guiGame.game.currentPlayer.getColour().toString() + "is Checkmate!");
+        } else if (guiGame.game.isADraw()) {
+            label = new Label("The Game ended in a draw!");
+            AlertBox.display("Draw",null,"The Game ended in a draw!");
+        } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
+            label = new Label(guiGame.game.currentPlayer.getColour().toString() + "s Turn -- " + guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
+            AlertBox.display("Check Hint",null, guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
+        }
         label.setFont(new Font(fontSize));
-        String currentPlayerIsInCheck = "       ";
-        if (game.hintInCheck && game.currentPlayer.isInCheck()){
-            currentPlayerIsInCheck = currentPlayerIsInCheck + game.currentPlayer.getColour() + " is in Check!!!";
-        }
-        Label checkLabel = new Label(currentPlayerIsInCheck);
-        return new HBox(label, checkLabel);
+        return new HBox(label);
     }
 
-    private int processingMovement(Game currentGame) {
-        if((!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) && currentGame.getSquareStart() != null
-                && currentGame.getSquareFinal() != null) {
-            return isMoveAllowed(currentGame);
+
+    private int processingMovement(GuiGame guiGame) {
+        if((!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw()) && guiGame.getSquareStart() != null
+                && guiGame.getSquareFinal() != null) {
+            return isMoveAllowed(guiGame);
         }
-        if(currentGame.currentPlayer.isLoser()){
+        if(guiGame.game.isCheckMate()){
             return 3;
         }
-        if(currentGame.isADraw()){
+        if(guiGame.game.isADraw()){
             return 4;
         }
         return 5;
     }
 
-    private int isMoveAllowed(Game currentGame) {
-        Piece selectedPiece = currentGame.getSquareStart().getOccupiedBy();
-        Square startSquare = currentGame.getSquareStart();
-        Square finalSquare = currentGame.getSquareFinal();
-        if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
+    private int isMoveAllowed(GuiGame guiGame) {
+        Piece selectedPiece = guiGame.getSquareStart().getOccupiedBy();
+        Square startSquare = guiGame.getSquareStart();
+        Square finalSquare = guiGame.getSquareFinal();
+        if (guiGame.game.isMoveAllowed(selectedPiece, finalSquare)) {
             char key = 'Q';
             if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
                 key = promotionSelection();
             }
-            if (!currentGame.processMove(startSquare, finalSquare, key) && currentGame.currentPlayer.isInCheck()) {
-                currentGame.setSquareStart(null);
-                currentGame.setSquareFinal(null);
+            if (!guiGame.game.processMove(startSquare, finalSquare, key) && guiGame.game.currentPlayer.isInCheck()) {
+                guiGame.setSquareStart(null);
+                guiGame.setSquareFinal(null);
                 return 1;
             }
         } else {
-            currentGame.setSquareStart(null);
-            currentGame.setSquareFinal(null);
+            guiGame.setSquareStart(null);
+            guiGame.setSquareFinal(null);
             return 2;
         }
-        currentGame.setSquareStart(null);
-        currentGame.setSquareFinal(null);
-        currentGame.isInCheck();
-        currentGame.isCheckMate();
-        currentGame.changePlayer();
-        currentGame.isInCheck();
-        currentGame.isCheckMate();
-        currentGame.changePlayer();
+        guiGame.setSquareStart(null);
+        guiGame.setSquareFinal(null);
+        guiGame.game.isInCheck();
+        guiGame.game.isCheckMate();
+
+        guiGame.game.changePlayer();
+        guiGame.game.isInCheck();
+        guiGame.game.isCheckMate();
+
+        guiGame.game.changePlayer();
         return 0;
     }
 
     private char promotionSelection() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Promotion-Option");
-        alert.setHeaderText(null);
-        alert.setContentText("Your Pawn should change to:");
-
         ButtonType buttonTypeOne = new ButtonType("Rook");
         ButtonType buttonTypeTwo = new ButtonType("Knight");
         ButtonType buttonTypeThree = new ButtonType("Bishop");
         ButtonType buttonTypeFour = new ButtonType("Queen");
 
-        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour);
+        List<ButtonType> options = new ArrayList<>();
+        Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour);
 
-        Optional<ButtonType> result = alert.showAndWait();
+        ButtonType buttonType = OptionBox.display("Promotion Options",null,"Your Pawn changes to:",options);
 
-        if (result.isPresent()) {
-            if (result.get() == buttonTypeOne) {
-                return 'R';
-            } else if (result.get() == buttonTypeTwo) {
-                return 'N';
-            } else if (result.get() == buttonTypeThree) {
-                return 'B';
-            } else {
-                return 'Q';
-            }
+        if (buttonType == buttonTypeOne) {
+            return 'R';
+        } else if (buttonType == buttonTypeTwo) {
+            return 'N';
+        } else if (buttonType == buttonTypeThree) {
+            return 'B';
+        } else {
+            return 'Q';
         }
-        return ' ';
     }
 
-    private GridPane generateButtonGrid(Game game){
+    private GridPane generateButtonGrid(GuiGame guiGame){
         GridPane grid = new GridPane();
-        // TODO: startFormation: squares mit verschiedenen Farben
+        setButtons(grid, guiGame);
+        for (int y = 0; y <8; y++){
+            String[] columns = {"1","2","3","4","5","6","7","8"};
+            Label label = new Label(columns[7-y]);
+            label.setFont(new Font(fontSize));
+            grid.add(label, 8, y);
+        }
+        addLetters(grid,"white");
+        return grid;
+    }
+
+    private GridPane generateHighlightedButtonGrid(GuiGame guiGame){
+        GridPane grid = new GridPane();
+        setHighlightedButtons(grid, guiGame);
+        for (int y = 0; y < 8; y++){
+            String[] columns = {"1","2","3","4","5","6","7","8"};
+            Label label = new Label(columns[7-y]);
+            label.setFont(new Font(fontSize));
+            grid.add(label, 8, y);
+        }
+        addLetters(grid,"white");
+        return grid;
+    }
+
+    private GridPane generateButtonGridBlackDown(GuiGame guiGame){
+        GridPane grid = new GridPane();
+        setButtons(grid, guiGame);
         for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                /*if ((y+x) %2 == 0) {
-                    grid.setStyle(white);
-                } else {
-                    grid.setStyle(black);
-                }*/
-                Button btn = setButton(game,x,y);
-                grid.add(btn, x, y);
-            }
-            String[] columns = {"1","2","3","4","5","6","7","8"};
-            Label label = new Label(columns[7-y]);
-            label.setFont(new Font(fontSize));
-            grid.add(label, 8, y);
-        }
-        addLetters(grid,"white");
-        return grid;
-    }
-
-    private GridPane generateHighlightedButtonGrid(Game game){
-        GridPane grid = new GridPane();
-
-        List<Square> allowedSquares = game.computePossibleSquares();
-        if(allowedSquares.isEmpty()){
-            game.setSquareStart(null);
-            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
-            alertu.setTitle("No Moves possible");
-            alertu.setHeaderText(null);
-            alertu.setContentText("This Piece cannot move. Try another!");
-
-            alertu.showAndWait();
-        }
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = setHighlightedButton(game,x,y,allowedSquares);
-                grid.add(btn, x, y);
-            }
-            String[] columns = {"1","2","3","4","5","6","7","8"};
-            Label label = new Label(columns[7-y]);
-            label.setFont(new Font(fontSize));
-            grid.add(label, 8, y);
-        }
-        addLetters(grid,"white");
-        return grid;
-    }
-
-    private GridPane generateButtonGridBlackDown(Game game){
-        GridPane grid = new GridPane();
-        for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = setButton(game, x, y);
-                grid.add(btn, 7 - x, 7 - y);
-            }
             String[] columns = {"1","2","3","4","5","6","7","8"};
             Label label = new Label(columns[y]);
             label.setFont(new Font(fontSize));
@@ -308,26 +186,12 @@ public class ChessBoardView extends BorderPane{
         return grid;
     }
 
-    private GridPane generateHighlightedButtonGridBlackDown(Game game){
+    private GridPane generateHighlightedButtonGridBlackDown(GuiGame guiGame){
         GridPane grid = new GridPane();
-        List<Square> allowedSquares = game.computePossibleSquares();
-
-        if(allowedSquares.isEmpty()){
-            game.setSquareStart(null);
-            Alert alertu = new Alert(Alert.AlertType.INFORMATION);
-            alertu.setTitle("No Moves possible");
-            alertu.setHeaderText(null);
-            alertu.setContentText("This Piece cannot move. Try another!");
-
-            alertu.showAndWait();
-        }
+        setHighlightedButtons(grid, guiGame);
         for (int y = 0; y < 8; y++){
-            for (int x = 0; x < 8; x++){
-                Button btn = setHighlightedButton(game,x,y,allowedSquares);
-                grid.add(btn, 7 - x, 7 - y);
-            }
             String[] columns = {"1","2","3","4","5","6","7","8"};
-            Label label = new Label(columns[7-y]);
+            Label label = new Label(columns[y]);
             label.setFont(new Font(fontSize));
             grid.add(label, 8, y);
         }
@@ -354,178 +218,179 @@ public class ChessBoardView extends BorderPane{
         }
     }
 
-    private Button setButton(Game game, int x, int y) {
-        Button btn = new Button();
-        btn.setMinHeight(buttonHeight);
-        btn.setMinWidth(buttonWidth);
-        if ((y+x) %2 == 0) {
-            btn.setStyle(white);
-        } else {
-            btn.setStyle(black);
-        }
-        btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-        btn.setOnAction(event -> {
-            game.setBothMovingSquares(game.chessBoard.getSquareAt(x, y));
-            setButtonAction(game);
-        });
-        return btn;
-    }
-
-    private Button setHighlightedButton(Game game, int x, int y, List<Square> allowedSquares) {
-        Button btn = new Button();
-        btn.setMinHeight(buttonHeight);
-        btn.setMinWidth(buttonWidth);
-        if ((y+x) %2 == 0) {
-            btn.setStyle(white);
-        } else {
-            btn.setStyle(black);
-        }
-        String border = "-fx-border-width: 4px";
-        if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y)) && (y+x) %2 == 0){
-            btn.setStyle(highlight + ";" + border + ";" + white);
-        } else if(allowedSquares.contains(game.chessBoard.getSquareAt(x, y))) {
-            btn.setStyle(highlight + ";" + border + ";" + black);
-        }
-        btn.setGraphic(SetImages.chooseImage(game.chessBoard.getSquareAt(x, y)));
-        btn.setOnAction(event -> {
-            game.setBothMovingSquares(game.chessBoard.getSquareAt(x, y));
-            setButtonAction(game);
-        });
-        return btn;
-    }
-
-    private void setButtonAction(Game game) {
-        if (game.getSquareStart() != null && game.getSquareFinal() != null) {
-            int result = processingMovement(game);
-            if (result == 0) {
-                if (!game.enemyIsHuman) {
-                    Move AIMove = EvaluatePieces.nextBestMove(game);
-                    game.setSquareStart(AIMove.getStartSquare());
-                    game.setSquareFinal(AIMove.getFinalSquare());
-                    processingMovement(game);
+    private void setButtons(GridPane grid, GuiGame guiGame) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Button button = new Button();
+                button.setMinHeight(buttonHeight);
+                button.setMinWidth(buttonWidth);
+                if ((y+x) %2 == 0) {
+                    button.setStyle(white);
+                } else {
+                    button.setStyle(black);
                 }
-                setCenter(chooseButtonGridGeneration(game));
-                setBottom(generateBeatenPieces(game));
-                setTop(generatePlayersMoveLabelBox(game));
-            } else {
-                generateAnswer(result);
+                button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
+                int finalX = x;
+                int finalY = y;
+                if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
+                    button.setOnAction(event -> {
+                        guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(finalX, finalY));
+                        button.setStyle("-fx-background-color: #5F537BFF");
+                        setButtonAction(guiGame);
+                    });
+                }
+                if (guiGame.game.currentPlayer.getColour() == Colour.WHITE) {
+                    grid.add(button, x, y);
+                } else {
+                    grid.add(button, 7 - x, 7 - y);
+                }
             }
         }
-        if (game.getSquareStart() != null && game.getSquareFinal() == null) {
-            setCenter(chooseButtonGridGeneration(game));
+    }
+
+    private void setHighlightedButtons(GridPane grid, GuiGame guiGame) {
+        List<Square> allowedSquares = guiGame.computePossibleSquares();
+
+        if(allowedSquares.isEmpty()){
+            guiGame.setSquareStart(null);
+            AlertBox.display("No Moves Possible",null,"This Piece cannot move. Try another!");
+        }
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Button btn = new Button();
+                btn.setMinHeight(buttonHeight);
+                btn.setMinWidth(buttonWidth);
+                if ((y + x) % 2 == 0) {
+                    btn.setStyle(white);
+                } else {
+                    btn.setStyle(black);
+                }
+                String border = "-fx-border-width: 3px";
+                if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
+                    btn.setStyle(highlight + ";" + border + ";" + white);
+                } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
+                    btn.setStyle(highlight + ";" + border + ";" + black);
+                }
+                btn.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
+                int finalX = x;
+                int finalY = y;
+                if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
+                    btn.setOnAction(event -> {
+                        guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(finalX, finalY));
+                        setButtonAction(guiGame);
+                    });
+                }
+                if (guiGame.game.currentPlayer.getColour() == Colour.WHITE) {
+                    grid.add(btn, x, y);
+                } else {
+                    grid.add(btn, 7 - x, 7 - y);
+                }
+            }
+        }
+    }
+
+    private void setButtonAction(GuiGame guiGame) {
+        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
+            int result = processingMovement(guiGame);
+            if (result == 0) {
+                if (!guiGame.game.enemyIsHuman) {
+                    Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+                    guiGame.setSquareStart(AIMove.getStartSquare());
+                    guiGame.setSquareFinal(AIMove.getFinalSquare());
+                    processingMovement(guiGame);
+                }
+                generatePane(guiGame);
+            } else {
+                // not an allowed Move
+                generateAnswer(result);
+                chooseButtonGridGeneration(guiGame);
+            }
+        } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
+            generatePane(guiGame);
         }
     }
 
     private void generateAnswer(int result) {
         if (result == 1){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Movement Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Move not allowed: Would be Check");
-            alert.showAndWait();
+            AlertBox.display("Movement Error",null,"Move not allowed: Would be Check");
         }
         else if (result == 2){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Movement Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Move not allowed: Not possible");
-            alert.showAndWait();
+            AlertBox.display("Movement Error",null,"Move not allowed: Not possible");
         }
         else if (result == 3){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Information");
-            alert.setHeaderText(null);
-            alert.setContentText("CheckMate");
-            alert.showAndWait();
+            AlertBox.display("Game Information",null,"CheckMate");
         }
         else if (result == 4){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Draw");
-            alert.showAndWait();
+            AlertBox.display("Game Information",null,"Draw");
         }
         else if (result == 5){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game-Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Something unexpected happened!?");
-            alert.showAndWait();
+            AlertBox.display("Game-Error",null,"Something unexpected happened!?");
         }
     }
 
 
-    private GridPane chooseButtonGridGeneration(Game game){
-        if(game.enemyIsHuman) {
-            if (game.isRotatingBoard) {
-                if(game.currentPlayer.getColour() == Colour.WHITE) {
-                    return whitePlayersGrid(game);
+    private GridPane chooseButtonGridGeneration(GuiGame guiGame){
+        if(guiGame.game.enemyIsHuman) {
+            if (guiGame.isRotatingBoard) {
+                if(guiGame.game.currentPlayer.getColour() == Colour.WHITE) {
+                    return whitePlayersGrid(guiGame);
                 } else {
-                    return blackPlayersGrid(game);
+                    return blackPlayersGrid(guiGame);
                 }
             } else {
                 // Board doesn't rotate
-                return whitePlayersGrid(game);
+                return whitePlayersGrid(guiGame);
             }
         } else {
             // enemy is AI
-            if(game.userColour == Colour.WHITE){
-                return whitePlayersGrid(game);
+            if(guiGame.game.userColour == Colour.WHITE){
+                return whitePlayersGrid(guiGame);
             } else {
-                return blackPlayersGrid(game);
+                if(guiGame.freshGame){
+                    guiGame.game.processMove(guiGame.game.chessBoard.getSquareAt(4, 6), guiGame.game.chessBoard.getSquareAt(4, 4), 'Q');
+
+                    guiGame.freshGame = false;
+                    System.out.println("tst");
+                    generatePane(guiGame);
+                }
+                return blackPlayersGrid(guiGame);
             }
         }
     }
 
-    private GridPane whitePlayersGrid(Game game) {
-        if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-            if(game.getSquareStart().getOccupiedBy() != null){
-                if(game.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
-                    return generateHighlightedButtonGrid(game);
+    private GridPane whitePlayersGrid(GuiGame guiGame) {
+        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null && guiGame.highlightPossibleMoves) {
+            if(guiGame.getSquareStart().getOccupiedBy() != null){
+                if(guiGame.game.currentPlayer.getColour() == Colour.WHITE && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE){
+                    return generateHighlightedButtonGrid(guiGame);
+                }
+                // no rotation and blacks turn
+                else if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
+                    return generateHighlightedButtonGrid(guiGame);
                 } else {
-                    alertPieceWrongColour(game);
+                    AlertBox.display("Piece problem",null,"Selected Piece is not your Colour!");
                 }
             } else {
-                alertNoPiece(game);
+                AlertBox.display("Piece Problem",null,"There is no Piece to move!");
             }
         }
         // no highlighted moves
-        return generateButtonGrid(game);
+        return generateButtonGrid(guiGame);
     }
 
-    private GridPane blackPlayersGrid(Game game){
-        if (game.getSquareStart() != null && game.getSquareFinal() == null && game.highlightPossibleMoves) {
-            if (game.getSquareStart().getOccupiedBy() != null) {
-                if (game.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
-                    return generateHighlightedButtonGridBlackDown(game);
+    private GridPane blackPlayersGrid(GuiGame guiGame){
+        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null && guiGame.highlightPossibleMoves) {
+            if (guiGame.getSquareStart().getOccupiedBy() != null) {
+                if (guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
+                    return generateHighlightedButtonGridBlackDown(guiGame);
                 } else {
-                    alertPieceWrongColour(game);
+                    AlertBox.display("Piece problem",null,"Selected Piece is not your Colour!");
                 }
             } else {
-                alertNoPiece(game);
+                AlertBox.display("Piece Problem",null,"There is no Piece to move!");
             }
         }
-        return generateButtonGridBlackDown(game);
-    }
-
-    private void alertPieceWrongColour(Game game) {
-        game.setSquareStart(null);
-        Alert alertia = new Alert(Alert.AlertType.INFORMATION);
-        alertia.setTitle("Piece Problem");
-        alertia.setHeaderText(null);
-        alertia.setContentText("Selected Piece is not your Colour!");
-
-        alertia.showAndWait();
-    }
-
-    private void alertNoPiece(Game game) {
-        game.setSquareStart(null);
-        Alert alertis = new Alert(Alert.AlertType.INFORMATION);
-        alertis.setTitle("Piece Problem");
-        alertis.setHeaderText(null);
-        alertis.setContentText("There is no Piece to Move!");
-
-        alertis.showAndWait();
+        return generateButtonGridBlackDown(guiGame);
     }
 
 }

@@ -11,14 +11,14 @@ import javafx.scene.image.ImageView;
 public class SetImages {
 
     static ImageView getBeatenPieces(Type type, Colour colour) {
-        int height = 40;
+        int height = 35;
 
         return setImage(colour, type, height);
     }
 
 
     static ImageView chooseImage(Square square) {
-        int height = 60;
+        int height = 50;
 
         if (square.getOccupiedBy() == null) {
             return null;
