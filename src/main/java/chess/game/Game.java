@@ -194,7 +194,7 @@ public class Game {
      */
     public boolean isCheckMate() {
         Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
-        if (this.currentPlayer.isInCheck()) {
+        if (isInCheck()) {
             if (canKingMove()) {
                 return false;
             }
@@ -283,7 +283,7 @@ public class Game {
     public boolean isSafeSquare(Square finalSquare) {
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
         for (Piece enemyPiece : enemies) {
-            if (isMoveAllowed(enemyPiece, finalSquare)) {                                                                 //changed canKillKing to isMoveAllowed
+            if (canDoMove(enemyPiece, finalSquare)) {                                                                 //changed canKillKing to isMoveAllowed
                 return false;
             }
         }
