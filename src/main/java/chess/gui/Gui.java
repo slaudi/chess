@@ -54,6 +54,8 @@ public class Gui extends Application {
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
             chooseEnemy(guiGame);
+            System.out.println(guiGame.game.enemyIsHuman);
+            System.out.println(guiGame.game.userColour);
             primaryStage.setScene(chessScene);
         });
 

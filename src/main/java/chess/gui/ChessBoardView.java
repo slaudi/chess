@@ -346,6 +346,13 @@ public class ChessBoardView extends BorderPane{
             if(guiGame.game.userColour == Colour.WHITE){
                 return whitePlayersGrid(guiGame);
             } else {
+                if(guiGame.freshGame){
+                    guiGame.game.processMove(guiGame.game.chessBoard.getSquareAt(4, 6), guiGame.game.chessBoard.getSquareAt(4, 4), 'Q');
+
+                    guiGame.freshGame = false;
+                    System.out.println("tst");
+                    generatePane(guiGame);
+                }
                 return blackPlayersGrid(guiGame);
             }
         }
