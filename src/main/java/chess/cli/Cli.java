@@ -1,8 +1,7 @@
 package chess.cli;
 
-import chess.game.Game;
-import chess.game.Label;
-import chess.game.Square;
+import chess.engine.EvaluatePieces;
+import chess.game.*;
 import chess.pieces.Piece;
 
 import java.util.ArrayList;
@@ -63,6 +62,16 @@ public class Cli {
             System.out.println(currentGame.beatenPieces);
             return false;
         }
+        if (userInput.equals("ai")) {
+            System.out.println("starting new Game against AI.");
+            currentGame.chessBoard = new Board(8, 8);
+            currentGame.currentPlayer = currentGame.playerWhite;
+            currentGame.beatenPieces.clear();
+            currentGame.moveHistory.clear();
+            currentGame.enemyIsHuman = false;
+            toConsole(currentGame);
+            return false;
+        }
         if (userInput.equals("giveUp")) {
             System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
             currentGame.currentPlayer.setLoser(true);
@@ -83,6 +92,20 @@ public class Cli {
 
             if (currentGame.processMove(startSquare, finalSquare, key)) {
                 System.out.println("!" + userInput);
+                if(!currentGame.enemyIsHuman){
+                    Move enemyMove = EvaluatePieces.nextBestMove(currentGame);
+                    Piece selectedPieceEnemy = enemyMove.getMovingPiece();
+                    Square startSquareEnemy = enemyMove.getStartSquare();
+                    Square finalSquareEnemy = enemyMove.getFinalSquare();
+                    char keyEnemy = 'Q';
+                    if (!currentGame.processMove(startSquareEnemy, finalSquareEnemy, keyEnemy)) {
+                        System.out.println("!Move not allowed(AI)\n");
+                    }
+                    else{
+                        System.out.println("!" + startSquareEnemy.getLabel().toString() + "-" + finalSquareEnemy.getLabel().toString() + "\n");
+                    }
+                    //toConsole(currentGame);
+                }
                 return true;
             } else {
                 // if move puts King in check

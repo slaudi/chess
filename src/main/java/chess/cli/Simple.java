@@ -1,7 +1,9 @@
 package chess.cli;
 
 
+import chess.engine.EvaluatePieces;
 import chess.game.Game;
+import chess.game.Move;
 import chess.game.Square;
 import chess.pieces.Piece;
 
@@ -43,6 +45,21 @@ public class Simple {
                     }
                     else{
                         System.out.println("!" + userInput + "\n");
+                        if(!currentGame.enemyIsHuman){
+                            Move enemyMove = EvaluatePieces.nextBestMove(currentGame);
+                            Piece selectedPieceEnemy = enemyMove.getMovingPiece();
+                            Square startSquareEnemy = enemyMove.getStartSquare();
+                            Square finalSquareEnemy = enemyMove.getFinalSquare();
+                            char keyEnemy = 'Q';
+                            if (!currentGame.processMove(startSquareEnemy, finalSquareEnemy, keyEnemy)) {
+                                System.out.println("!Move not allowed(AI)\n");
+                                continue;
+                            }
+                            else{
+                                System.out.println("!" + startSquareEnemy.getLabel().toString() + "-" + finalSquareEnemy.getLabel().toString() + "\n");
+                            }
+                            Cli.toConsole(currentGame);
+                        }
                     }
                 } else {
                     System.out.println("!Move not allowed\n");
