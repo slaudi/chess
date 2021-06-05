@@ -19,7 +19,23 @@ public class Cli {
      */
     public static void main(String[] args) {
         Game currentGame = new Game();
-        toConsole(currentGame);
+        System.out.println("Do you want to play against a person or an AI? \n person/ai");
+        String answer;
+        do {
+            answer = getInput();
+            if (answer.equals("ai")) {
+                System.out.println("Starting new Game against AI.");
+                currentGame.currentPlayer = currentGame.playerWhite;
+                currentGame.beatenPieces.clear();
+                currentGame.moveHistory.clear();
+                currentGame.enemyIsHuman = false;
+                toConsole(currentGame);
+            } else if (answer.equals("person")) {
+                // default
+                System.out.println("Starting new Game against another person.");
+                toConsole(currentGame);
+            }
+        } while (!(answer.equals("ai") || answer.equals("person")));
 
         while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {
             // to keep the game running
@@ -62,14 +78,8 @@ public class Cli {
             System.out.println(currentGame.beatenPieces);
             return false;
         }
-        if (userInput.equals("ai")) {
-            System.out.println("starting new Game against AI.");
-            currentGame.chessBoard = new Board(8, 8);
-            currentGame.currentPlayer = currentGame.playerWhite;
-            currentGame.beatenPieces.clear();
-            currentGame.moveHistory.clear();
-            currentGame.enemyIsHuman = false;
-            toConsole(currentGame);
+        if (userInput.equals("english")) {
+            System.out.println("You changed the language to english.");
             return false;
         }
         if (userInput.equals("giveUp")) {
