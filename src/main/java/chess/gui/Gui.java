@@ -51,6 +51,8 @@ public class Gui extends Application {
 
     private Scene startWindow(Stage primaryStage, GuiGame guiGame){
         Label label = new Label("Welcome to a new Game of Chess!");
+
+        // Define Start Game-Button
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
             chooseEnemy(guiGame);
@@ -59,9 +61,11 @@ public class Gui extends Application {
             primaryStage.setScene(chessScene);
         });
 
+        // Define Network Game-Button
         Button startNetworkGame = new Button("Network Game");
         startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
 
+        // Define Load Game-Button
         Button loadGame = new Button("Load Game");
         loadGame.setOnAction(e -> {
                 boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?");
@@ -72,6 +76,7 @@ public class Gui extends Application {
                 }
         });
 
+        // Define Language-Button
         Button language = new Button("Language");
         language.setOnAction(e -> chooseLanguage());
 
@@ -83,36 +88,29 @@ public class Gui extends Application {
 
 
     private void chooseEnemy(GuiGame guiGame) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText("Choose your Enemy:");
+        ButtonType human = new ButtonType("Human");
+        ButtonType computer = new ButtonType("Computer");
 
-        ButtonType buttonTypeOne = new ButtonType("Human");
-        ButtonType buttonTypeTwo = new ButtonType("Computer");
+        List<ButtonType> enemy = new ArrayList<>();
+        Collections.addAll(enemy,human,computer);
 
-        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+        ButtonType result = OptionBox.display("Enemy Selection",null,"Choose your Enemy",enemy);
+        if (result == computer){
+            guiGame.game.enemyIsHuman = false;
+        }
 
-        Optional<ButtonType> result = alert.showAndWait();
-        result.ifPresent(buttonType -> guiGame.game.enemyIsHuman = buttonType == buttonTypeOne);
         if(!guiGame.game.enemyIsHuman) {
-            Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
-            alert2.setTitle(null);
-            alert2.setHeaderText(null);
-            alert2.setContentText("Choose your Colour:");
+            ButtonType white = new ButtonType("White");
+            ButtonType black = new ButtonType("Black");
 
-            ButtonType buttonTypeThree = new ButtonType("White");
-            ButtonType buttonTypeFour = new ButtonType("Black");
+            List<ButtonType> colour = new ArrayList<>();
+            Collections.addAll(colour,white,black);
 
-            alert2.getButtonTypes().setAll(buttonTypeThree, buttonTypeFour);
-
-            Optional<ButtonType> result2 = alert2.showAndWait();
-            if (result2.isPresent()) {
-                if (result2.get() == buttonTypeThree) {
-                    guiGame.game.userColour = Colour.WHITE;
-                } else {
-                    guiGame.game.userColour = Colour.BLACK;
-                }
+            ButtonType result2 = OptionBox.display("Colour Selection",null,"Choose your Colour", colour);
+            if (result2 == white) {
+                guiGame.game.userColour = Colour.WHITE;
+            } else {
+                guiGame.game.userColour = Colour.BLACK;
             }
         }
     }
@@ -131,6 +129,7 @@ public class Gui extends Application {
         btn.setPadding(new Insets(5));
         btn.setSpacing(10);
         btn.setAlignment(Pos.BOTTOM_CENTER);
+        // Define buttons
         Button startGame = new Button("Start Connection");
         Button cancel = new Button("Cancel");
         cancel.setOnAction(e -> primaryStage.setScene(startScene));
@@ -142,16 +141,17 @@ public class Gui extends Application {
     }
 
     private void chooseLanguage() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Language Selection");
-        alert.setHeaderText(null);
-        alert.setContentText("Choose Language: ");
-
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("English");
 
-        alert.getButtonTypes().setAll(german,english);
-        alert.showAndWait();
+        List<ButtonType> language = new ArrayList<>();
+        Collections.addAll(language,german,english);
+
+        ButtonType result = OptionBox.display("Language Selection",null,"Choose Language",language);
+        // TODO: Sprache ändern können
+        if (result == english){
+            german = english;
+        }
     }
 
     private Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
@@ -170,6 +170,7 @@ public class Gui extends Application {
 
 
     private VBox generateRightMarginColumn(GuiGame guiGame, Stage primaryStage){
+        //Define New Game-Button
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?");
@@ -185,6 +186,7 @@ public class Gui extends Application {
             }
         });
 
+        // Define Option-Button
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(event -> {
             ButtonType buttonTypeOne = new ButtonType("Rotation");
@@ -238,11 +240,11 @@ public class Gui extends Application {
                     guiGame.allowedToChangeSelectedPiece = !guiGame.allowedToChangeSelectedPiece;
                 } else if (buttonType == buttonTypeFour) {
                     guiGame.hintInCheck = !guiGame.hintInCheck;
-                }  //user chose CANCEL or closed the dialog
-            } while (buttonType != buttonTypeFive);
-
-
+                }
+            } while (buttonType != buttonTypeFive); // user chose CANCEL
         });
+
+        // Define Move History-Button
         Button btnMoveHistory = new Button("Move-History");
         btnMoveHistory.setOnAction(event -> {
             List<Move> history = guiGame.game.moveHistory;
