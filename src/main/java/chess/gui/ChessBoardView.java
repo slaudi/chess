@@ -337,7 +337,6 @@ public class ChessBoardView extends BorderPane{
                 }
             } else {
                 // Board doesn't rotate
-                System.out.println("No Rotation");
                 return whitePlayersGrid(guiGame);
             }
         } else {
@@ -365,7 +364,6 @@ public class ChessBoardView extends BorderPane{
                 }
                 // no rotation and blacks turn
                 else if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
-                    System.out.println("Highlight no rotation");
                     return generateHighlightedButtonGrid(guiGame);
                 } else {
                     AlertBox.display("Piece problem",null,"Selected Piece is not your Colour!");
