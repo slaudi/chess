@@ -49,7 +49,6 @@ public class Game {
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new ArrayList<>();
 
-
         this.userColour = Colour.WHITE;
         this.enemyIsHuman = true;
 
@@ -92,8 +91,9 @@ public class Game {
                 // target piece is ally
                 return false;
             }
-            // final square is empty
-        } else if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
+        }
+        // final square is empty
+        if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
             Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
             Square start = lastEnemyMove.getStartSquare();
             Square end = lastEnemyMove.getFinalSquare();
@@ -161,6 +161,16 @@ public class Game {
         selectedPiece.setSquare(finalSquare);
         selectedPiece.setNotMoved(false);
         changePlayer();
+        if (isCheckMate()) {
+            // TODO: was macht das?
+            // check if next player is checkmate after the last move
+            //this.squareStart = null;
+            //this.squareFinal = null;
+            //if (isCheckMate()) {
+            // check if this player is checkmate after the move
+            this.currentPlayer.setLoser(true);
+            //}
+        }
         return true;
     }
 
@@ -182,38 +192,6 @@ public class Game {
             }
         }
         this.currentPlayer.setInCheck(false);
-        return false;
-    }
-
-    /**
-     * Evaluates if current Players King is in check and if they are able to avoid it.If not
-     * sets the value of the variable 'loser' in the Player class to true and the current
-     * player loses the game.
-     *
-     * @return boolean Returns 'true' if the current Player is checkmate.
-     */
-    public boolean isCheckMate() {
-        Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
-        if (isInCheck()) {
-            if (canKingMove()) {
-                return false;
-            }
-            // can ally defend the King against enemies if the King can't move
-            List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
-            for (Piece enemyPiece : enemies) {
-                if (enemyPiece.getType() == Type.PAWN && ((Pawn)enemyPiece).canCapture(squareKing)
-                        || enemyPiece.isPiecesMove(squareKing, this.chessBoard) && enemyPiece.isPathEmpty(squareKing, this.chessBoard)) {
-                    if (canDefendKing(enemyPiece)) {
-                        // ally can defend against this enemy -> check next enemy
-                        continue;
-                    }
-                    // cannot move and ally can't defend -> checkmate
-                    this.currentPlayer.setLoser(true);
-                    return true;
-                }
-            }
-        }
-        // King is not in check
         return false;
     }
 
@@ -249,6 +227,38 @@ public class Game {
     }
 
     /**
+     * Evaluates if current Players King is in check and if they are able to avoid it.If not
+     * sets the value of the variable 'loser' in the Player class to true and the current
+     * player loses the game.
+     *
+     * @return boolean Returns 'true' if the current Player is checkmate.
+     */
+    public boolean isCheckMate() {
+        Square squareKing = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
+        if (isInCheck()) {
+            if (canKingMove()) {
+                // King can move -> not checkmate
+                return false;
+            }
+            // can ally defend the King against enemies if the King can't move
+            List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+            for (Piece enemyPiece : enemies) {
+                if (enemyPiece.getType() == Type.PAWN && ((Pawn)enemyPiece).canCapture(squareKing)
+                        || enemyPiece.isPiecesMove(squareKing, this.chessBoard) && enemyPiece.isPathEmpty(squareKing, this.chessBoard)) {
+                    if (canDefendKing(enemyPiece)) {
+                        // ally can defend against this enemy -> check next enemy
+                        continue;
+                    }
+                    // cannot move and ally can't defend -> checkmate
+                    return true;
+                }
+            }
+        }
+        // King is not in check
+        return false;
+    }
+
+    /**
      * Evaluates if the King is able to move somewhere not putting themself in check.
      *
      * @return boolean Returns 'true' if the King is able to make a safe move.
@@ -257,20 +267,24 @@ public class Game {
         Square kingSquare = this.chessBoard.getSquareOfKing(this.currentPlayer.getColour());
         for (int i = 0; i < 8 ; i++) {
             for (int j = 0; j < 8; j++) {
-                // looping through board to check if Square is next to King and is not occupied by ally
                 Square tempSquare = this.chessBoard.getBoard()[i][j];
                 if (Piece.isSurroundingSquare(kingSquare, tempSquare)) {
+                    // tempSquare is next to the Kings square
                     if (tempSquare.getOccupiedBy() != null) {
-                        if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour()) {
-                            // if a Square is next to the King is it safe to move there
-                            return isSafeSquare(tempSquare);
-                        }
+                        if (tempSquare.getOccupiedBy().getColour() != this.currentPlayer.getColour() && isSafeSquare(tempSquare)) {
+                            // tempSquare is occupied by enemy and it is safe to move there
+                                return true;
+                            }
                     } else {
-                        return isSafeSquare(tempSquare);
+                        // tempSquare is not occupied
+                        if(isSafeSquare(tempSquare)){
+                            return true; // it's safe to move there
+                        }
                     }
                 }
             }
         }
+        // no safe square exists for the King
         return false;
     }
 
@@ -282,11 +296,18 @@ public class Game {
      */
     public boolean isSafeSquare(Square finalSquare) {
         List<Piece> enemies = this.currentPlayer.getEnemyPieces(this.beatenPieces, this.chessBoard);
+
         for (Piece enemyPiece : enemies) {
-            if (canDoMove(enemyPiece, finalSquare)) {                                                                 //changed canKillKing to isMoveAllowed
+            Piece piece = finalSquare.getOccupiedBy();
+            finalSquare.setOccupiedBy(chessBoard.getSquareOfKing(this.currentPlayer.getColour()).getOccupiedBy()); // temporary put King on finalSquare as if moved there
+            if (canDoMove(enemyPiece, finalSquare)) {
+                // enemy can attack the Square the King wants to move to
+                finalSquare.setOccupiedBy(piece); // put Original piece back
                 return false;
             }
+            finalSquare.setOccupiedBy(piece); // put Original piece back
         }
+        // a safe square for the King exists
         return true;
     }
 
@@ -299,9 +320,7 @@ public class Game {
      *                  where the King wants to move to.
      */
     boolean canKillKing(Piece enemyPiece, Square kingSquare) {
-        if (enemyPiece.getType() == Type.BISHOP
-                || enemyPiece.getType() == Type.ROOK
-                || enemyPiece.getType() == Type.QUEEN) {
+        if (enemyPiece.getType() == Type.BISHOP || enemyPiece.getType() == Type.ROOK || enemyPiece.getType() == Type.QUEEN) {
             if(enemyPiece.isPiecesMove(kingSquare, this.chessBoard)){
                 return enemyPiece.isPathEmpty(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()), this.chessBoard);
             }
@@ -345,19 +364,7 @@ public class Game {
      * checkmate.
      */
     public void changePlayer() {
-        // change currentPlayer to next Colour
         this.currentPlayer = this.currentPlayer == this.playerWhite ? this.playerBlack : this.playerWhite;
-
-        if (isCheckMate()) {
-            // TODO: was macht das?
-            // check if next player is checkmate after the last move
-            //this.squareStart = null;
-            //this.squareFinal = null;
-            if (isCheckMate()) {
-                // check if this player is checkmate after the move
-                this.currentPlayer.setLoser(true);
-            }
-        }
     }
 
     boolean canMoveStay(Piece targetPiece, Move currentMove) {
