@@ -88,7 +88,7 @@ public class Gui extends Application {
 
 
     private void chooseEnemy(GuiGame guiGame) {
-        ButtonType human = new ButtonType("Human");
+        ButtonType human = new ButtonType("Person");
         ButtonType computer = new ButtonType("Computer");
 
         List<ButtonType> enemy = new ArrayList<>();
@@ -120,7 +120,7 @@ public class Gui extends Application {
         grid.setPadding(new Insets(10));
 
         Scene IP_scene = new Scene(grid, 350,150);
-        grid.add(new Label("IP Address: "), 0, 0);
+        grid.add(new Label("Enter IP Address of Enemy: "), 0, 0);
 
         TextField IPAddress = new TextField();
         grid.add(IPAddress,1,2);
