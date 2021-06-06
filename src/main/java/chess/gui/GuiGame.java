@@ -5,9 +5,16 @@ import chess.game.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class GuiGame {
 
+    /**
+     *
+     */
     public Game game;
+
     Square squareStart;
     Square squareFinal;
     boolean isRotatingBoard;
@@ -69,8 +76,5 @@ public class GuiGame {
         }
         return possibleSquares;
     }
-
-
-
 
 }

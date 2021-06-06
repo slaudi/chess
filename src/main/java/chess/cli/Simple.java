@@ -47,7 +47,6 @@ public class Simple {
                         System.out.println("!" + userInput + "\n");
                         if(!currentGame.enemyIsHuman){
                             Move enemyMove = EvaluatePieces.nextBestMove(currentGame);
-                            Piece selectedPieceEnemy = enemyMove.getMovingPiece();
                             Square startSquareEnemy = enemyMove.getStartSquare();
                             Square finalSquareEnemy = enemyMove.getFinalSquare();
                             char keyEnemy = 'Q';

@@ -1,6 +1,5 @@
 package chess.engine;
 
-import chess.gui.GuiGame;
 import chess.game.Colour;
 import chess.game.Game;
 import chess.game.Move;

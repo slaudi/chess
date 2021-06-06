@@ -83,16 +83,11 @@ public class ChessBoardView extends BorderPane{
     }
 
     private GridPane chooseButtonGridGeneration(GuiGame guiGame){
-        if (!guiGame.game.enemyIsHuman) {
-            if (guiGame.game.userColour != Colour.WHITE) {
-                if (guiGame.freshGame) {
-                    guiGame.game.processMove(guiGame.game.chessBoard.getSquareAt(4, 6), guiGame.game.chessBoard.getSquareAt(4, 4), 'Q');
-
-                    guiGame.freshGame = false;
-                    System.out.println("tst");
-                    generatePane(guiGame);
-                }
-            }
+        if (!guiGame.game.enemyIsHuman && guiGame.game.userColour != Colour.WHITE && guiGame.freshGame) {
+            guiGame.game.processMove(guiGame.game.chessBoard.getSquareAt(4, 6), guiGame.game.chessBoard.getSquareAt(4, 4), 'Q');
+            guiGame.freshGame = false;
+            System.out.println("tst");
+            generatePane(guiGame);
         }
         return generateGrid(guiGame);
     }
@@ -179,21 +174,7 @@ public class ChessBoardView extends BorderPane{
                 } else {
                     button.setStyle(black);
                 }
-                button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
-                int finalX = x;
-                int finalY = y;
-                if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
-                    button.setOnAction(event -> {
-                        guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(finalX, finalY));
-                        button.setStyle("-fx-background-color: #5F537BFF");
-                        setButtonAction(guiGame);
-                    });
-                }
-                if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard) {
-                    grid.add(button, x, y);
-                } else {
-                    grid.add(button, 7 - x, 7 - y);
-                }
+                setButtonsOnGrid(button,guiGame,grid,x,y);
             }
         }
     }
@@ -207,61 +188,63 @@ public class ChessBoardView extends BorderPane{
         }
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                Button btn = new Button();
-                btn.setMinHeight(buttonHeight);
-                btn.setMinWidth(buttonWidth);
+                Button button = new Button();
+                button.setMinHeight(buttonHeight);
+                button.setMinWidth(buttonWidth);
                 if ((y + x) % 2 == 0) {
-                    btn.setStyle(white);
+                    button.setStyle(white);
                 } else {
-                    btn.setStyle(black);
+                    button.setStyle(black);
                 }
                 String border = "-fx-border-width: 3px";
                 if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
-                    btn.setStyle(highlight + ";" + border + ";" + white);
+                    button.setStyle(highlight + ";" + border + ";" + white);
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
-                    btn.setStyle(highlight + ";" + border + ";" + black);
+                    button.setStyle(highlight + ";" + border + ";" + black);
                 }
-                btn.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
-                int finalX = x;
-                int finalY = y;
-                if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
-                    btn.setOnAction(event -> {
-                        guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(finalX, finalY));
-                        setButtonAction(guiGame);
-                    });
-                }
-                if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard) {
-                    grid.add(btn, x, y);
-                } else {
-                    grid.add(btn, 7 - x, 7 - y);
-                }
+                setButtonsOnGrid(button,guiGame,grid,x,y);
             }
         }
     }
 
-    private void setButtonAction(GuiGame guiGame) {
-        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
-            int result = processingMovement(guiGame);
-            if (result == 0) {
-                // Move is allowed
-                if (!guiGame.game.enemyIsHuman) {
-                    // generate move of AI
-                    Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
-                    guiGame.setSquareStart(AIMove.getStartSquare());
-                    guiGame.setSquareFinal(AIMove.getFinalSquare());
-                    processingMovement(guiGame);
-                }
-                generatePane(guiGame);
-            } else {
-                // not an allowed Move, in check afterwards etc.
-                generateAnswer(result, guiGame); // show why it's not allowed
-                guiGame.setSquareStart(null);
-                guiGame.setSquareFinal(null);
-                chooseButtonGridGeneration(guiGame);
-            }
-        } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
-            generatePane(guiGame);
+    private void setButtonsOnGrid(Button button, GuiGame guiGame, GridPane grid, int x, int y) {
+        button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
+        if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
+            button.setOnAction(event -> {
+                guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(x, y));
+                setButtonAction(guiGame);
+            });
         }
+        if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard) {
+            grid.add(button, x, y);
+        } else {
+            grid.add(button, 7 - x, 7 - y);
+        }
+    }
+
+    private void setButtonAction(GuiGame guiGame){
+            if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
+                int result = processingMovement(guiGame);
+                if (result == 0) {
+                    // Move is allowed
+                    if (!guiGame.game.enemyIsHuman) {
+                        // generate move of AI
+                        Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+                        guiGame.setSquareStart(AIMove.getStartSquare());
+                        guiGame.setSquareFinal(AIMove.getFinalSquare());
+                        processingMovement(guiGame);
+                    }
+                    generatePane(guiGame);
+                } else {
+                    // not an allowed Move, in check afterwards etc.
+                    generateAnswer(result, guiGame); // show why it's not allowed
+                    guiGame.setSquareStart(null);
+                    guiGame.setSquareFinal(null);
+                    chooseButtonGridGeneration(guiGame);
+                }
+            } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
+                generatePane(guiGame);
+            }
     }
 
     private void generateAnswer(int result, GuiGame guiGame) {
@@ -283,7 +266,7 @@ public class ChessBoardView extends BorderPane{
     }
 
     private int processingMovement(GuiGame guiGame) {
-        if((!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw()) || !guiGame.game.isCheckMate()
+        if(!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw() || !guiGame.game.isCheckMate()
                 && guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             return isMoveAllowed(guiGame);
         }
@@ -351,7 +334,5 @@ public class ChessBoardView extends BorderPane{
             return 'Q';
         }
     }
-
-
 
 }

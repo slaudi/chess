@@ -19,23 +19,7 @@ public class Cli {
      */
     public static void main(String[] args) {
         Game currentGame = new Game();
-        System.out.println("Do you want to play against a person or an AI? \n person/ai");
-        String answer;
-        do {
-            answer = getInput();
-            if (answer.equals("ai")) {
-                System.out.println("Starting new Game against AI.");
-                currentGame.currentPlayer = currentGame.playerWhite;
-                currentGame.beatenPieces.clear();
-                currentGame.moveHistory.clear();
-                currentGame.enemyIsHuman = false;
-                toConsole(currentGame);
-            } else if (answer.equals("person")) {
-                // default
-                System.out.println("Starting new Game against another person.");
-                toConsole(currentGame);
-            }
-        } while (!(answer.equals("ai") || answer.equals("person")));
+        checkForModus(currentGame);
 
         while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {
             // to keep the game running
@@ -55,7 +39,6 @@ public class Cli {
         }
     }
 
-
     /**
      * Gets the input as a String from the console.
      *
@@ -67,6 +50,26 @@ public class Cli {
         return scanner.nextLine();
     }
 
+    private static void checkForModus(Game currentGame) {
+        System.out.println("Do you want to play against a person or an AI? \n person/ai");
+        String answer;
+        do {
+            answer = getInput();
+            if (answer.equals("ai")) {
+                System.out.println("Starting new Game against AI.");
+                currentGame.currentPlayer = currentGame.playerWhite;
+                currentGame.beatenPieces.clear();
+                currentGame.moveHistory.clear();
+                currentGame.enemyIsHuman = false;
+                toConsole(currentGame);
+            } else if (answer.equals("person")) {
+                // default
+                System.out.println("Starting new Game against another person.");
+                toConsole(currentGame);
+            }
+        } while (!(answer.equals("ai") || answer.equals("person")));
+    }
+
 
     private static boolean canPieceMove(Game currentGame) {
         if (currentGame.currentPlayer.isInCheck()) {
@@ -74,17 +77,9 @@ public class Cli {
         }
         System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
         String userInput = getInput();
-        if (userInput.equals("beaten")) {
-            System.out.println(currentGame.beatenPieces);
-            return false;
-        }
-        if (userInput.equals("english")) {
-            System.out.println("You changed the language to english.");
-            return false;
-        }
-        if (userInput.equals("giveUp")) {
-            System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
-            currentGame.currentPlayer.setLoser(true);
+
+        if(checkForCommand(userInput, currentGame)){
+            // Input is a command, not a Move
             return false;
         }
         if (!isValidMove(userInput)) {
@@ -126,6 +121,23 @@ public class Cli {
             generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
         }
+    }
+
+    private static boolean checkForCommand(String userInput, Game currentGame){
+        if (userInput.equals("beaten")) {
+            System.out.println(currentGame.beatenPieces);
+            return true;
+        }
+        if (userInput.equals("english")) {
+            System.out.println("You changed the language to english.");
+            return true;
+        }
+        if (userInput.equals("giveUp")) {
+            System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
+            currentGame.currentPlayer.setLoser(true);
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -79,20 +79,28 @@ public class Game {
     private boolean canDoMove(Piece selectedPiece, Square finalSquare) {
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (targetPiece != null) {
-            // the final Square is occupied by another piece
-            if (targetPiece.getColour() != selectedPiece.getColour()) {
-                if (selectedPiece.getType() == Type.PAWN) {
-                    // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
-                    return ((Pawn) selectedPiece).canCapture(finalSquare);
-                } else {
-                    return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
-                }
-            } else {
-                // target piece is ally
-                return false;
-            }
+            return canDoMoveWithTarget(selectedPiece,targetPiece,finalSquare);
         }
         // final square is empty
+        return canDoMoveWithoutTarget(selectedPiece,finalSquare);
+    }
+
+    private boolean canDoMoveWithTarget(Piece selectedPiece, Piece targetPiece, Square finalSquare){
+        // the final Square is occupied by another piece
+        if (targetPiece.getColour() != selectedPiece.getColour()) {
+            if (selectedPiece.getType() == Type.PAWN) {
+                // if selected Piece is a Pawn see if it is allowed to capture the enemy Piece
+                return ((Pawn) selectedPiece).canCapture(finalSquare);
+            } else {
+                return selectedPiece.isPiecesMove(finalSquare, this.chessBoard) && selectedPiece.isPathEmpty(finalSquare, this.chessBoard);
+            }
+        } else {
+            // target piece is ally
+            return false;
+        }
+    }
+
+    private boolean canDoMoveWithoutTarget(Piece selectedPiece, Square finalSquare) {
         if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
             Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
             Square start = lastEnemyMove.getStartSquare();
