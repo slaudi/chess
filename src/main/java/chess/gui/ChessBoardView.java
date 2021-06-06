@@ -38,16 +38,17 @@ public class ChessBoardView extends BorderPane{
     void generatePane(GuiGame guiGame) {
         HBox heading = generatePlayersMoveLabelBox(guiGame);
         heading.setAlignment(Pos.TOP_CENTER);
-        heading.setPadding(new Insets(10));
+        heading.setPadding(new Insets(5));
         setTop(heading);
 
         GridPane chessBoard = chooseButtonGridGeneration(guiGame);
-        chessBoard.setAlignment(Pos.CENTER);
+        chessBoard.setAlignment(Pos.TOP_CENTER);
+        chessBoard.setPadding(new Insets(0,10,10,30));
         setCenter(chessBoard);
 
         HBox bottom = generateBeatenPieces(guiGame);
         bottom.setAlignment(Pos.CENTER_LEFT);
-        bottom.setPadding(new Insets(20));
+        bottom.setPadding(new Insets(5,0,5,40));
         setBottom(bottom);
     }
 
@@ -77,11 +78,12 @@ public class ChessBoardView extends BorderPane{
 
 
     private int processingMovement(GuiGame guiGame) {
-        if((!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw()) && guiGame.getSquareStart() != null
-                && guiGame.getSquareFinal() != null) {
+        if((!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw()) || !guiGame.game.isCheckMate()
+                && guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             return isMoveAllowed(guiGame);
         }
         if(guiGame.game.isCheckMate()){
+            // player is check mate
             return 3;
         }
         if(guiGame.game.isADraw()){
@@ -291,7 +293,9 @@ public class ChessBoardView extends BorderPane{
         if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             int result = processingMovement(guiGame);
             if (result == 0) {
+                // Move is allowed
                 if (!guiGame.game.enemyIsHuman) {
+                    // generate move of AI
                     Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
                     guiGame.setSquareStart(AIMove.getStartSquare());
                     guiGame.setSquareFinal(AIMove.getFinalSquare());
@@ -299,8 +303,10 @@ public class ChessBoardView extends BorderPane{
                 }
                 generatePane(guiGame);
             } else {
-                // not an allowed Move
-                generateAnswer(result, guiGame);
+                // not an allowed Move, in check afterwards etc.
+                generateAnswer(result, guiGame); // show why it's not allowed
+                guiGame.setSquareStart(null);
+                guiGame.setSquareFinal(null);
                 chooseButtonGridGeneration(guiGame);
             }
         } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {

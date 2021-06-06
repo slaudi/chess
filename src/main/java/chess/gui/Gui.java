@@ -161,11 +161,11 @@ public class Gui extends Application {
         VBox right = generateRightMarginColumn(guiGame, primaryStage);
 
         right.setAlignment(Pos.CENTER);
-        right.setPadding(new Insets(40));
+        right.setPadding(new Insets(30));
         pane.setRight(right);
         pane.setCenter(chessBoardView);
 
-        return new Scene(pane, 1000, 900);
+        return new Scene(pane, 900, 800);
     }
 
 
@@ -258,8 +258,9 @@ public class Gui extends Application {
             }
             AlertBox.display("Move History", null, historyAsString.toString());
         });
-        VBox box = new VBox(15);
-        box.getChildren().addAll(btnNewGame, btnOptions, btnMoveHistory);
+
+        VBox box = new VBox(20);
+        box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory);
         return box;
     }
 
