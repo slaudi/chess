@@ -246,11 +246,25 @@ public class PawnTest {
         squareA7.setOccupiedBy(null);
         squareA5.setOccupiedBy(enemyB);
         Move lastEnemyMoveB = new Move(squareA7,squareA5);
+
+        Square squareC7 = game.chessBoard.getSquareAt(2,1);
+        Square squareC5 = game.chessBoard.getSquareAt(2,3);
+        Piece enemyC = squareC7.getOccupiedBy();
+        enemyC.setSquare(squareC5);
+        squareC7.setOccupiedBy(null);
+        squareC5.setOccupiedBy(enemyB);
+        Move lastEnemyMoveC = new Move(squareC7,squareC5);
+
         Square squareB5 = game.chessBoard.getSquareAt(1,3);
         Pawn pawn = new Pawn(squareB5, Colour.WHITE);
         squareB5.setOccupiedBy(pawn);
+
         Square squareA6 = game.chessBoard.getSquareAt(0,2);
         assertTrue(pawn.isEnPassant(squareA6, lastEnemyMoveB));
+
+        Square squareC6 = game.chessBoard.getSquareAt(2,2);
+        assertTrue(pawn.isEnPassant(squareC6, lastEnemyMoveC));
+
         // not possible, one y-step too far
         assertFalse(pawn.isEnPassant(squareA7,lastEnemyMoveB));
         // not possible, one x-step too far
