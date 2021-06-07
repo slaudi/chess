@@ -283,33 +283,7 @@ public class ChessBoardView extends BorderPane {
             System.out.println(result);
             if (result == 0) {
                 // Move is allowed
-                System.out.println("Move is allowed");
-                guiGame.setSquareStart(null);
-                guiGame.setSquareFinal(null);
-                generatePane(guiGame);
-                if (!guiGame.game.enemyIsHuman) {
-                    // generate move of AI
-                    System.out.println("Generate Move of AI");
-                    Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
-                    System.out.println(AIMove.getStartSquare().getLabel() +", "+AIMove.getFinalSquare().getLabel());
-                    guiGame.setSquareStart(AIMove.getStartSquare());
-                    guiGame.setSquareFinal(AIMove.getFinalSquare());
-                    int AI_result = processingMovement(guiGame);
-                    guiGame.setSquareStart(null);
-                    guiGame.setSquareFinal(null);
-                    while (AI_result != 0) {
-                        AIMove = EvaluatePieces.nextBestMove(guiGame.game);
-                        System.out.println(AIMove.getStartSquare().getLabel() +", "+AIMove.getFinalSquare().getLabel());
-                        guiGame.setSquareStart(AIMove.getStartSquare());
-                        guiGame.setSquareFinal(AIMove.getFinalSquare());
-                        AI_result = processingMovement(guiGame);
-                    }
-                    guiGame.setSquareStart(null);
-                    guiGame.setSquareFinal(null);
-                    generatePane(guiGame);
-                }
-                guiGame.game.isInCheck();
-                guiGame.game.isCheckMate();
+                showAllowedMove(guiGame);
             } else {
                 // not an allowed Move
                 System.out.println("Move not allowed");
@@ -327,6 +301,36 @@ public class ChessBoardView extends BorderPane {
             System.out.println("Letzte if-condition in setButtonAction");
             generatePane(guiGame);
         }
+    }
+
+    private void showAllowedMove(GuiGame guiGame){
+        System.out.println("Move is allowed");
+        guiGame.setSquareStart(null);
+        guiGame.setSquareFinal(null);
+        generatePane(guiGame);
+        if (!guiGame.game.enemyIsHuman) {
+            // generate move of AI
+            System.out.println("Generate Move of AI");
+            Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+            System.out.println(AIMove.getStartSquare().getLabel() +", "+AIMove.getFinalSquare().getLabel());
+            guiGame.setSquareStart(AIMove.getStartSquare());
+            guiGame.setSquareFinal(AIMove.getFinalSquare());
+            int AI_result = processingMovement(guiGame);
+            guiGame.setSquareStart(null);
+            guiGame.setSquareFinal(null);
+            while (AI_result != 0) {
+                AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+                System.out.println(AIMove.getStartSquare().getLabel() +", "+AIMove.getFinalSquare().getLabel());
+                guiGame.setSquareStart(AIMove.getStartSquare());
+                guiGame.setSquareFinal(AIMove.getFinalSquare());
+                AI_result = processingMovement(guiGame);
+                guiGame.setSquareStart(null);
+                guiGame.setSquareFinal(null);
+            }
+            generatePane(guiGame);
+        }
+        guiGame.game.isInCheck();
+        guiGame.game.isCheckMate();
     }
 
     private void generateAnswer(int result) {
