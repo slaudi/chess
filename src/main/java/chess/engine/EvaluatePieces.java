@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Evaluates the value of the Pieces on the board.
  */
-public class EvaluatePieces implements Evaluation{
+public class EvaluatePieces {
 
     /**
      *
