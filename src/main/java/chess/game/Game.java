@@ -49,7 +49,7 @@ public class Game {
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new ArrayList<>();
 
-        this.userColour = Colour.WHITE;
+        this.userColour = Colour.BLACK;
         this.enemyIsHuman = true;
 
     }
@@ -63,15 +63,14 @@ public class Game {
      * @return boolean Returns 'true' if the move is possible.
      */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
-        if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
-            return false;
-        }
-        return canDoMove(selectedPiece,finalSquare);
-    }
-
-    public boolean isMoveAllowedAI(Piece selectedPiece, Square finalSquare) {
-        if (selectedPiece == null) {
-            return false;
+        if (enemyIsHuman) {
+            if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
+                return false;
+            }
+        } else {
+            if (selectedPiece == null) {
+                return false;
+            }
         }
         return canDoMove(selectedPiece,finalSquare);
     }
@@ -79,13 +78,13 @@ public class Game {
     private boolean canDoMove(Piece selectedPiece, Square finalSquare) {
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (targetPiece != null) {
-            return canDoMoveWithTarget(selectedPiece,targetPiece,finalSquare);
+            return canAttackTarget(selectedPiece,targetPiece,finalSquare);
         }
         // final square is empty
-        return canDoMoveWithoutTarget(selectedPiece,finalSquare);
+        return canMoveToEmptySquare(selectedPiece,finalSquare);
     }
 
-    private boolean canDoMoveWithTarget(Piece selectedPiece, Piece targetPiece, Square finalSquare){
+    private boolean canAttackTarget(Piece selectedPiece, Piece targetPiece, Square finalSquare){
         // the final Square is occupied by another piece
         if (targetPiece.getColour() != selectedPiece.getColour()) {
             if (selectedPiece.getType() == Type.PAWN) {
@@ -100,7 +99,7 @@ public class Game {
         }
     }
 
-    private boolean canDoMoveWithoutTarget(Piece selectedPiece, Square finalSquare) {
+    private boolean canMoveToEmptySquare(Piece selectedPiece, Square finalSquare) {
         if (selectedPiece.getType() == Type.PAWN && this.moveHistory.size() > 1) {
             Move lastEnemyMove = this.moveHistory.get(this.moveHistory.size() - 1);
             Square start = lastEnemyMove.getStartSquare();
@@ -258,6 +257,7 @@ public class Game {
                         continue;
                     }
                     // cannot move and ally can't defend -> checkmate
+                    currentPlayer.setLoser(true);
                     return true;
                 }
             }
@@ -310,10 +310,10 @@ public class Game {
             finalSquare.setOccupiedBy(chessBoard.getSquareOfKing(this.currentPlayer.getColour()).getOccupiedBy()); // temporary put King on finalSquare as if moved there
             if (canDoMove(enemyPiece, finalSquare)) {
                 // enemy can attack the Square the King wants to move to
-                finalSquare.setOccupiedBy(piece); // put Original piece back
+                finalSquare.setOccupiedBy(piece); // put original piece back
                 return false;
             }
-            finalSquare.setOccupiedBy(piece); // put Original piece back
+            finalSquare.setOccupiedBy(piece); // put original piece back
         }
         // a safe square for the King exists
         return true;

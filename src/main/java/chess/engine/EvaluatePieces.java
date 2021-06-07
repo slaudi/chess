@@ -69,7 +69,7 @@ public class EvaluatePieces {
         int squareCount = 0;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                if(game.isMoveAllowedAI(piece, game.chessBoard.getSquareAt(x, y))){
+                if(game.isMoveAllowed(piece, game.chessBoard.getSquareAt(x, y))){
                     squareCount++;
                 }
             }
@@ -87,6 +87,7 @@ public class EvaluatePieces {
         if(game.userColour == Colour.BLACK){
             colourAI = Colour.WHITE;
         }
+        System.out.println("AI Colour: " + colourAI);
         int max = 0;
         List<Move> moveCollection = new ArrayList<>();
         List<Piece> ownPieceCollection = new ArrayList<>();
@@ -100,7 +101,7 @@ public class EvaluatePieces {
         for (Piece piece : ownPieceCollection) {
             for (int y = 0; y < 8; y++) {
                 for (int x = 0; x < 8; x++) {
-                    if(game.isMoveAllowedAI(piece, game.chessBoard.getSquareAt(x, y))){
+                    if(game.isMoveAllowed(piece, game.chessBoard.getSquareAt(x, y))){
                         moveCollection.add(new Move(piece.getSquare(), game.chessBoard.getSquareAt(x, y)));
                     }
                 }
