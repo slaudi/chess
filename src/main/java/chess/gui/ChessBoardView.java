@@ -20,7 +20,7 @@ import java.util.List;
 /**
  *
  */
-public class ChessBoardView extends BorderPane{
+public class ChessBoardView extends BorderPane {
 
     String white;
     String black;
@@ -35,16 +35,18 @@ public class ChessBoardView extends BorderPane{
      * @param guiGame
      */
     public ChessBoardView(GuiGame guiGame) {
+
         this.white = "-fx-background-color: floralwhite";
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
-        System.out.println("Konstruktor");
+        System.out.println("\nKonstruktor");
         generatePane(guiGame);
     }
 
     private void generatePane(GuiGame guiGame) {
-        System.out.println("Generiert Pane");
+        System.out.println("generatePane: userColour " + guiGame.game.userColour);
+        System.out.println("generatePane: playerColour " + guiGame.game.currentPlayer.getColour());
         HBox heading = generatePlayersMoveLabelBox(guiGame);
         heading.setAlignment(Pos.TOP_CENTER);
         heading.setPadding(new Insets(5));
@@ -88,20 +90,34 @@ public class ChessBoardView extends BorderPane{
     }
 
     private GridPane chooseButtonGridGeneration(GuiGame guiGame){
-        System.out.println("Choose ButtonGrid Generation");
+        System.out.println("chooseButtonGridGeneration");
+        System.out.println("userColour " + guiGame.game.userColour);
+        System.out.println("playerColour " + guiGame.game.currentPlayer.getColour());
+        System.out.println("FreshGame " + guiGame.freshGame);
+        System.out.println("Enemy Human: " + guiGame.game.enemyIsHuman);
         if (!guiGame.game.enemyIsHuman && guiGame.game.userColour != Colour.WHITE && guiGame.freshGame) {
+            // enemy is AI, player chose BLACK, firstMove?
             System.out.println("AI in chooseButtonGridGeneration: calls generatePane");
-            guiGame.game.processMove(guiGame.game.chessBoard.getSquareAt(4, 6), guiGame.game.chessBoard.getSquareAt(4, 4), 'Q');
-            guiGame.freshGame = false;
-            System.out.println("tst");
-            generatePane(guiGame);
+            guiGame.setSquareStart(guiGame.game.chessBoard.getSquareAt(4, 6));
+            guiGame.setSquareFinal(guiGame.game.chessBoard.getSquareAt(4, 4));
+            int result = processingMovement(guiGame);
+            if (result == 0) {
+                guiGame.freshGame = false;
+                System.out.println("tst");
+                guiGame.setSquareStart(null);
+                guiGame.setSquareFinal(null);
+                generatePane(guiGame);
+            }
         }
         System.out.println("calls GenerateGrid");
         return generateGrid(guiGame);
     }
 
     private GridPane generateGrid(GuiGame guiGame){
-        System.out.println("GenerateGrid");
+        System.out.println("generateGrid");
+        if (!guiGame.game.enemyIsHuman && guiGame.game.userColour == Colour.WHITE){
+
+        }
         if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null && guiGame.highlightPossibleMoves) {
             System.out.println(guiGame.getSquareStart().getLabel());
             if(guiGame.getSquareStart().getOccupiedBy() != null){
@@ -126,7 +142,7 @@ public class ChessBoardView extends BorderPane{
     }
 
     private GridPane generateButtonGrid(GuiGame guiGame) {
-        System.out.println("GenerateButtonGrid");
+        System.out.println("generateButtonGrid");
         // test
         if (guiGame.getSquareStart() != null) {
             System.out.println(guiGame.getSquareStart().getLabel());
@@ -136,10 +152,13 @@ public class ChessBoardView extends BorderPane{
         }
         GridPane grid = new GridPane();
         setButtons(grid, guiGame);
-        if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard) {
-            addIndices(grid, "white");
-        } else {
+        if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
+            System.out.println("Black indices");
             addIndices(grid,"black");
+        }
+        if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
+            System.out.println("White indices");
+            addIndices(grid, "white");
         }
         return grid;
     }
@@ -148,10 +167,12 @@ public class ChessBoardView extends BorderPane{
         System.out.println("generateHighlightedButtonGrid");
         GridPane grid = new GridPane();
         setHighlightedButtons(grid, guiGame);
-        if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard) {
-            addIndices(grid, "white");
-        } else {
+        if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
+            System.out.println("Highlight: black indices");
             addIndices(grid,"black");
+        } else if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
+            System.out.println("Highlight: White indices");
+            addIndices(grid, "white");
         }
         return grid;
     }
@@ -239,56 +260,59 @@ public class ChessBoardView extends BorderPane{
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
                 guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(x, y));
-                setButtonAction(guiGame);
+                try {
+                    setButtonAction(guiGame);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         }
-        if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard) {
-            grid.add(button, x, y);
-        } else {
+        if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman) {
             grid.add(button, 7 - x, 7 - y);
+        }
+        if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
+            grid.add(button, x, y);
         }
     }
 
-    private void setButtonAction(GuiGame guiGame){
+    private void setButtonAction(GuiGame guiGame) throws InterruptedException {
         System.out.println("setButtonAction");
-        if (guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman ) {
-            // TODO: wird erst ausgeführt nach dem ein button geklickt wurde! muss woanders hin
-            System.out.println("setButtonAction: AI");
-            // generate move of AI
-            Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
-            guiGame.setSquareStart(AIMove.getStartSquare());
-            guiGame.setSquareFinal(AIMove.getFinalSquare());
-            processingMovement(guiGame);
-            generatePane(guiGame);
-        }
         if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             System.out.println(guiGame.getSquareStart().getLabel() + ", " + guiGame.getSquareFinal().getLabel());
             int result = processingMovement(guiGame);
             System.out.println(result);
             if (result == 0) {
                 // Move is allowed
-                if (!guiGame.game.enemyIsHuman) {
-                    // generate move of AI
-                    Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
-                    guiGame.setSquareStart(AIMove.getStartSquare());
-                    guiGame.setSquareFinal(AIMove.getFinalSquare());
-                    processingMovement(guiGame);
-                }
-                // TODO: Warum so oft?
+                System.out.println("Move is allowed");
                 guiGame.setSquareStart(null);
                 guiGame.setSquareFinal(null);
-                guiGame.game.isInCheck();
-                guiGame.game.isCheckMate();
-
-                guiGame.game.changePlayer();
-                guiGame.game.isInCheck();
-                guiGame.game.isCheckMate();
-
-                guiGame.game.changePlayer();
-
                 generatePane(guiGame);
+                if (!guiGame.game.enemyIsHuman) {
+                    // generate move of AI
+                    System.out.println("Generate Move of AI");
+                    Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+                    System.out.println(AIMove.getStartSquare().getLabel() +", "+AIMove.getFinalSquare().getLabel());
+                    guiGame.setSquareStart(AIMove.getStartSquare());
+                    guiGame.setSquareFinal(AIMove.getFinalSquare());
+                    int AI_result = processingMovement(guiGame);
+                    guiGame.setSquareStart(null);
+                    guiGame.setSquareFinal(null);
+                    while (AI_result != 0) {
+                        AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+                        System.out.println(AIMove.getStartSquare().getLabel() +", "+AIMove.getFinalSquare().getLabel());
+                        guiGame.setSquareStart(AIMove.getStartSquare());
+                        guiGame.setSquareFinal(AIMove.getFinalSquare());
+                        AI_result = processingMovement(guiGame);
+                    }
+                    guiGame.setSquareStart(null);
+                    guiGame.setSquareFinal(null);
+                    generatePane(guiGame);
+                }
+                guiGame.game.isInCheck();
+                guiGame.game.isCheckMate();
             } else {
                 // not an allowed Move
+                System.out.println("Move not allowed");
                 generateAnswer(result); // show why it's not allowed
                 if (!guiGame.allowedToChangeSelectedPiece) {
                     // not allowed to change Piece after having selected it
@@ -297,9 +321,10 @@ public class ChessBoardView extends BorderPane{
                     guiGame.setSquareStart(null);
                 }
                 guiGame.setSquareFinal(null);
-                chooseButtonGridGeneration(guiGame);
+                generatePane(guiGame);
             }
         } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
+            System.out.println("Letzte if-condition in setButtonAction");
             generatePane(guiGame);
         }
     }
@@ -372,5 +397,6 @@ public class ChessBoardView extends BorderPane{
             return 'Q';
         }
     }
+
 
 }

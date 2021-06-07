@@ -56,8 +56,7 @@ public class Gui extends Application {
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
             chooseEnemy(guiGame);
-            System.out.println(guiGame.game.enemyIsHuman);
-            System.out.println(guiGame.game.userColour);
+            chessScene = chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
         });
 
@@ -94,9 +93,10 @@ public class Gui extends Application {
         List<ButtonType> enemy = new ArrayList<>();
         Collections.addAll(enemy,human,computer);
 
-        ButtonType result = OptionBox.display("Enemy Selection",null,"Choose your Enemy",enemy);
-        if (result == computer){
+        ButtonType enemyResult = OptionBox.display("Enemy Selection",null,"Choose your Enemy",enemy);
+        if (enemyResult == computer){
             guiGame.game.enemyIsHuman = false;
+            guiGame.isRotatingBoard = false;
         }
 
         if(!guiGame.game.enemyIsHuman) {
@@ -106,8 +106,8 @@ public class Gui extends Application {
             List<ButtonType> colour = new ArrayList<>();
             Collections.addAll(colour,white,black);
 
-            ButtonType result2 = OptionBox.display("Colour Selection",null,"Choose your Colour", colour);
-            if (result2 == white) {
+            ButtonType colourResult = OptionBox.display("Colour Selection",null,"Choose your Colour", colour);
+            if (colourResult == white) {
                 guiGame.game.userColour = Colour.WHITE;
             } else {
                 guiGame.game.userColour = Colour.BLACK;
