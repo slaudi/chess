@@ -38,7 +38,13 @@ public class EvaluatePieces {
             }
         }
         if(game.isInCheck()){
-            sum = -100;
+            sum -= 100;
+        }
+        if (game.isADraw()){
+            sum -= 500;
+        }
+        if (game.isCheckMate()){
+            sum -= 1000;
         }
         return sum;
     }
