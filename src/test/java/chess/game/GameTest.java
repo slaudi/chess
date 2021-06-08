@@ -414,12 +414,37 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testcanDefendKing(){
+        //attaking Piece can be beaten
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(0, 1));
         game1.chessBoard.setPieceAt(0, 1, null);
         game1.chessBoard.getPieceAt(3, 6).setSquare(game1.chessBoard.getSquareAt(3, 6));
-        System.out.println(game1.currentPlayer.getAlliedPieces(game1.beatenPieces, game1.chessBoard));
-        Cli.toConsole(game1);
         assertTrue(game1.canDefendKing(game1.chessBoard.getPieceAt(3, 6)));
+
+        //attacking pieces path cam be blocked
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 0, new Rook(game1.chessBoard.getSquareAt(6, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(1, 1, new Rook(game1.chessBoard.getSquareAt(1, 1), Colour.WHITE));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(1, 1));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
+        assertTrue(game1.canDefendKing(game1.chessBoard.getPieceAt(6, 0)));
+
+        //cant defend king
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 0, new Rook(game1.chessBoard.getSquareAt(6, 0), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
+        assertFalse(game1.canDefendKing(game1.chessBoard.getPieceAt(6, 0)));
     }
 
 }

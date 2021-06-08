@@ -359,6 +359,9 @@ public class Game {
                 }
                 for (Square end : enemyPath) {
                     if (isMoveAllowed(alliedPiece, end)) {
+                        if (alliedPiece.getType() == Type.KING){
+                            continue;
+                        }
                         return true;
                     }
                 }
