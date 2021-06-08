@@ -2,7 +2,6 @@ package chess.cli;
 
 
 import chess.engine.Engine;
-import chess.engine.EvaluatePieces;
 import chess.game.Game;
 import chess.game.Move;
 import chess.game.Square;

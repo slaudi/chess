@@ -1,7 +1,6 @@
 package chess.cli;
 
 import chess.engine.Engine;
-import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Piece;
 

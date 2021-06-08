@@ -35,8 +35,6 @@ public class Game {
     public boolean enemyIsHuman;
 
 
-
-
     /**
      * Constructor for creating a new Game.
      */
