@@ -2,11 +2,8 @@ package chess.engine;
 
 import chess.game.Colour;
 import chess.game.Game;
-import chess.game.Move;
 import chess.pieces.Piece;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Evaluates the value of the Pieces on the board.
