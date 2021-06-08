@@ -79,6 +79,12 @@ public class King extends Piece {
         return diff_x < 2 && diff_y < 2;
     }
 
+    @Override
+    public int getPositionalValue(int x, int y) {
+        return 0;
+    }
+
+
     /**
      * Evaluates if the castling move is possible by checking the selected King and Rook.
      *

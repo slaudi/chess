@@ -64,6 +64,9 @@ public abstract class Piece {
      */
     public abstract boolean isPiecesMove(Square finalSquare, Board chessBoard);
 
+
+    public abstract int getPositionalValue(int x, int y);
+
     /**
      * A function determining if the direct path from one square to another is empty
      * except for the start and final Square.

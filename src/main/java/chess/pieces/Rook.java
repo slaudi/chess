@@ -80,4 +80,35 @@ public class Rook extends Piece {
         return diff_y == 0 || diff_x == 0;
     }
 
+    @Override
+    public int getPositionalValue(int x, int y) {
+        int[][] pawnSquareTable;
+        if (this.colour == Colour.BLACK){
+            pawnSquareTable = new int[][]
+                    {
+                        { 0,  0,  0,  0,  0,  0,  0,  0},
+                        { 5, 10, 10, 10, 10, 10, 10,  5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        { 0,  0,  0,  5,  5,  0,  0,  0}
+                    };
+        } else {
+            pawnSquareTable = new int[][]
+                    {
+                        { 0,  0,  0,  5,  5,  0,  0,  0},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        {-5,  0,  0,  0,  0,  0,  0, -5},
+                        { 5, 10, 10, 10, 10, 10, 10,  5},
+                        { 0,  0,  0,  0,  0,  0,  0,  0}
+                    };
+        }
+        return pawnSquareTable[x][y];
+    }
+
 }

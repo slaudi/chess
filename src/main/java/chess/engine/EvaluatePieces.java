@@ -7,7 +7,6 @@ import chess.pieces.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Evaluates the value of the Pieces on the board.
@@ -28,9 +27,11 @@ public class EvaluatePieces {
                 if (piece != null) {
                     int value = piecesValue(piece);
                     int controlledSquares = pieceControlsSquares(piece, game);
+                    int positionalValue = piece.getPositionalValue(piece.getSquare().getX(), piece.getSquare().getY());
                     if (piece.getColour() == playerColour) {
                         sum += value;
                         sum += controlledSquares;
+                        sum += positionalValue;
                     } else {
                         sum -= value;
                         sum -= controlledSquares;
@@ -39,13 +40,7 @@ public class EvaluatePieces {
             }
         }
         if(game.isInCheck()){
-            sum -= 100;
-        }
-        if (game.isADraw()){
-            sum -= 500;
-        }
-        if (game.isCheckMate()){
-            sum -= 1000;
+            sum += 100;
         }
         return sum;
     }
@@ -94,12 +89,12 @@ public class EvaluatePieces {
         if(game.userColour == Colour.BLACK){
             colourAI = Colour.WHITE;
         }
-        System.out.println("AI Colour: " + colourAI);
         int max = -1000;
         List<Move> moveCollection = new ArrayList<>();
         List<Piece> ownPieceCollection = new ArrayList<>();
         List<Move> maxValueMoves = new ArrayList<>();
         List<Move> dirtyMoveCollection = new ArrayList<>();
+
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 if (game.chessBoard.getSquareAt(x, y).getOccupiedBy() != null && game.chessBoard.getSquareAt(x, y).getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
@@ -116,18 +111,22 @@ public class EvaluatePieces {
                 }
             }
         }
+
         for (Move move : moveCollection){
             Piece temporaryBeatenPiece = game.chessBoard.getPieceAt(move.getFinalSquare().getX(), move.getFinalSquare().getY());
             Game gameAfterOneMove = new Game();
             gameAfterOneMove.chessBoard = game.chessBoard;
             move.doMove(gameAfterOneMove.chessBoard);
             move.boardValueAfterMove = evaluateBoard(gameAfterOneMove, colourAI);
-            gameAfterOneMove.changePlayer();
 
+            System.out.println(move.boardValueAfterMove);
+
+            gameAfterOneMove.changePlayer();
             if(gameAfterOneMove.isInCheck()){
                 dirtyMoveCollection.add(move);
             }
             gameAfterOneMove.changePlayer();
+
             if (temporaryBeatenPiece == null){
                 move.undoMove(gameAfterOneMove.chessBoard);
             }
@@ -135,22 +134,30 @@ public class EvaluatePieces {
                 move.undoMove(temporaryBeatenPiece, gameAfterOneMove.chessBoard);
             }
         }
+
         for (Move dirty : dirtyMoveCollection){
             moveCollection.remove(dirty);
         }
         if(moveCollection.isEmpty()){
             return null;
         }
+
         for (Move move : moveCollection){
             if(move.boardValueAfterMove > max){
                 max = move.boardValueAfterMove;
             }
         }
+
         for (Move move : moveCollection) {
             if (move.boardValueAfterMove == max) {
                 maxValueMoves.add(move);
             }
         }
+
+        System.out.println("Max: " + max);
+        System.out.println("Size: " + maxValueMoves.size());
+        System.out.println("maxValueMoves: "+maxValueMoves);
+
         int r = (int)(Math.random() * maxValueMoves.size());
         return maxValueMoves.get(r);
     }
