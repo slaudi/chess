@@ -409,4 +409,17 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
     }
 
+    /**
+     * tests if defending King-Method is working
+     */
+    @Test
+    public void testcanDefendKing(){
+        game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(0, 1));
+        game1.chessBoard.setPieceAt(0, 1, null);
+        game1.chessBoard.getPieceAt(3, 6).setSquare(game1.chessBoard.getSquareAt(3, 6));
+        System.out.println(game1.currentPlayer.getAlliedPieces(game1.beatenPieces, game1.chessBoard));
+        Cli.toConsole(game1);
+        assertTrue(game1.canDefendKing(game1.chessBoard.getPieceAt(3, 6)));
+    }
+
 }
