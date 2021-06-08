@@ -366,6 +366,25 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testDraw() {
+        //king can move
+        game1.chessBoard.setPieceAt(3, 7, null);
+        assertFalse(game1.isADraw());
+
+        //checkMate
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 0, new Rook(game1.chessBoard.getSquareAt(6, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Rook(game1.chessBoard.getSquareAt(6, 1), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
+        assertFalse(game1.isADraw());
+
+
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
