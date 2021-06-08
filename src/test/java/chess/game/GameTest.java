@@ -447,4 +447,67 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertFalse(game1.canDefendKing(game1.chessBoard.getPieceAt(6, 0)));
     }
 
+    /**
+     * tests checkmate-method
+     */
+    @Test
+    public void testCheckMate(){
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 0, new Rook(game1.chessBoard.getSquareAt(6, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Rook(game1.chessBoard.getSquareAt(6, 1), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
+        assertTrue(game1.isCheckMate());
+
+        //one last white move possible(Rook)
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 0, new Rook(game1.chessBoard.getSquareAt(6, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Rook(game1.chessBoard.getSquareAt(6, 1), Colour.BLACK));
+        game1.chessBoard.setPieceAt(1, 7, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.WHITE));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(1, 7));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
+        assertFalse(game1.isCheckMate());
+
+        //one last white move possible(Pawn)
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 0, new Rook(game1.chessBoard.getSquareAt(6, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Rook(game1.chessBoard.getSquareAt(6, 1), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Pawn(game1.chessBoard.getSquareAt(6, 1), Colour.WHITE));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(6, 1));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
+        assertFalse(game1.isCheckMate());
+
+        //white can beat attacking black pawn
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(2, 2, new King(game1.chessBoard.getSquareAt(2, 2), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(1, 1, new Pawn(game1.chessBoard.getSquareAt(1, 1), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(2, 2));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 1));
+        assertFalse(game1.isCheckMate());
+    }
+
 }
