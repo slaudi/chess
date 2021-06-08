@@ -108,6 +108,6 @@ public class Bishop extends Piece {
                         {-20,-10,-10,-10,-10,-10,-10,-20}
                     };
         }
-        return pawnSquareTable[x][y];
+        return pawnSquareTable[y][x];
     }
 }

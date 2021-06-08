@@ -107,6 +107,6 @@ public class Knight extends Piece {
                         {-50,-40,-30,-30,-30,-30,-40,-50}
                     };
         }
-        return pawnSquareTable[x][y];
+        return pawnSquareTable[y][x];
     }
 }

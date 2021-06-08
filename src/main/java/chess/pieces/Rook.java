@@ -108,7 +108,7 @@ public class Rook extends Piece {
                         { 0,  0,  0,  0,  0,  0,  0,  0}
                     };
         }
-        return pawnSquareTable[x][y];
+        return pawnSquareTable[y][x];
     }
 
 }
