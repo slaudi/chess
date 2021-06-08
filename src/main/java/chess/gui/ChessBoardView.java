@@ -1,5 +1,6 @@
 package chess.gui;
 
+import chess.engine.Engine;
 import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Pawn;
@@ -278,7 +279,7 @@ public class ChessBoardView extends BorderPane {
             // generate move of AI
             int AI_result;
              do {
-                Move AIMove = EvaluatePieces.nextBestMove(guiGame.game);
+                Move AIMove = Engine.nextBestMove(guiGame.game);
                 if(AIMove == null){
                     guiGame.setDraw(true);
                     break;

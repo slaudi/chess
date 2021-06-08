@@ -1,5 +1,6 @@
 package chess.cli;
 
+import chess.engine.Engine;
 import chess.engine.EvaluatePieces;
 import chess.game.*;
 import chess.pieces.Piece;
@@ -98,7 +99,7 @@ public class Cli {
             if (currentGame.processMove(startSquare, finalSquare, key)) {
                 System.out.println("!" + userInput);
                 if(!currentGame.enemyIsHuman){
-                    Move enemyMove = EvaluatePieces.nextBestMove(currentGame);
+                    Move enemyMove = Engine.nextBestMove(currentGame);
                     Square startSquareEnemy = enemyMove.getStartSquare();
                     Square finalSquareEnemy = enemyMove.getFinalSquare();
                     char keyEnemy = 'Q';
@@ -129,7 +130,7 @@ public class Cli {
             return true;
         }
         if (userInput.equals("english")) {
-            System.out.println("You changed the language to english.");
+            System.out.println("You changed the language to English.");
             return true;
         }
         if (userInput.equals("giveUp")) {

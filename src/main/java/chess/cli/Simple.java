@@ -1,6 +1,7 @@
 package chess.cli;
 
 
+import chess.engine.Engine;
 import chess.engine.EvaluatePieces;
 import chess.game.Game;
 import chess.game.Move;
@@ -46,7 +47,7 @@ public class Simple {
                     else{
                         System.out.println("!" + userInput + "\n");
                         if(!currentGame.enemyIsHuman){
-                            Move enemyMove = EvaluatePieces.nextBestMove(currentGame);
+                            Move enemyMove = Engine.nextBestMove(currentGame);
                             Square startSquareEnemy = enemyMove.getStartSquare();
                             Square finalSquareEnemy = enemyMove.getFinalSquare();
                             char keyEnemy = 'Q';
