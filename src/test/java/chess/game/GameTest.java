@@ -554,4 +554,53 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertFalse(game1.canMoveStay(null, game1.moveHistory.get(0)));
     }
 
+    /**
+     * tests MoveProcessing
+     */
+    @Test
+    public void testProcessMove() {
+        //castling Move
+        game1.chessBoard.setPieceAt(1, 7, null);
+        game1.chessBoard.setPieceAt(2, 7, null);
+        game1.chessBoard.setPieceAt(3, 7, null);
+        assertTrue(game1.processMove(game1.chessBoard.getSquareAt(4, 7), game1.chessBoard.getSquareAt(2, 7), 'Q'));
+
+        //beating enemyPiece
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(1, 0, new Rook(game1.chessBoard.getSquareAt(1, 0), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 0));
+        assertTrue(game1.processMove(game1.chessBoard.getSquareAt(0, 0), game1.chessBoard.getSquareAt(1, 0), 'Q'));
+
+        //not possible enPassantMove
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(3, 7, new King(game1.chessBoard.getSquareAt(3, 7), Colour.WHITE));
+        game1.chessBoard.setPieceAt(3, 0, new King(game1.chessBoard.getSquareAt(3, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(3, 1, new Rook(game1.chessBoard.getSquareAt(3, 1), Colour.BLACK));
+        game1.chessBoard.setPieceAt(2, 3, new Pawn(game1.chessBoard.getSquareAt(2, 3), Colour.BLACK));
+        game1.chessBoard.setPieceAt(3, 3, new Pawn(game1.chessBoard.getSquareAt(3, 3), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 7, new Rook(game1.chessBoard.getSquareAt(7, 7), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(3, 7));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(3, 3));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(3, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(3, 1));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(2, 3));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 7));
+        game1.moveHistory.add(0, new Move(game1.chessBoard.getSquareAt(2, 1), game1.chessBoard.getSquareAt(2, 3)));
+        game1.playerBlack.setInCheck(true);
+        game1.currentPlayer.setInCheck(true);
+        assertFalse(game1.processMove(game1.chessBoard.getSquareAt(3, 3), game1.chessBoard.getSquareAt(2, 2), 'Q'));
+
+
+
+    }
+
+
 }
