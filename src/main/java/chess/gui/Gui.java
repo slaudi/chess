@@ -40,10 +40,12 @@ public class Gui extends Application {
         // Start
         startScene = startWindow(primaryStage,currentGame);
 
+        primaryStage.setScene(startScene);
+
         // Chess board
         chessScene = chessWindow(primaryStage, currentGame);
 
-        primaryStage.setScene(startScene);
+
         primaryStage.setTitle("Chess!");
         primaryStage.show();
     }

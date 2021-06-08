@@ -7,6 +7,7 @@ import chess.pieces.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Evaluates the value of the Pieces on the board.
@@ -94,9 +95,11 @@ public class EvaluatePieces {
             colourAI = Colour.WHITE;
         }
         System.out.println("AI Colour: " + colourAI);
-        int max = 0;
+        int max = -1000;
         List<Move> moveCollection = new ArrayList<>();
         List<Piece> ownPieceCollection = new ArrayList<>();
+        List<Move> maxValueMoves = new ArrayList<>();
+        List<Move> dirtyMoveCollection = new ArrayList<>();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 if (game.chessBoard.getSquareAt(x, y).getOccupiedBy() != null && game.chessBoard.getSquareAt(x, y).getOccupiedBy().getColour() == game.currentPlayer.getColour()) {
@@ -119,13 +122,24 @@ public class EvaluatePieces {
             gameAfterOneMove.chessBoard = game.chessBoard;
             move.doMove(gameAfterOneMove.chessBoard);
             move.boardValueAfterMove = evaluateBoard(gameAfterOneMove, colourAI);
+            gameAfterOneMove.changePlayer();
+
+            if(gameAfterOneMove.isInCheck()){
+                dirtyMoveCollection.add(move);
+            }
+            gameAfterOneMove.changePlayer();
             if (temporaryBeatenPiece == null){
                 move.undoMove(gameAfterOneMove.chessBoard);
             }
             else {
                 move.undoMove(temporaryBeatenPiece, gameAfterOneMove.chessBoard);
             }
-
+        }
+        for (Move dirty : dirtyMoveCollection){
+            moveCollection.remove(dirty);
+        }
+        if(moveCollection.isEmpty()){
+            return null;
         }
         for (Move move : moveCollection){
             if(move.boardValueAfterMove > max){
@@ -134,10 +148,11 @@ public class EvaluatePieces {
         }
         for (Move move : moveCollection) {
             if (move.boardValueAfterMove == max) {
-                return move;
+                maxValueMoves.add(move);
             }
         }
-        return moveCollection.get(0);
+        int r = (int)(Math.random() * maxValueMoves.size());
+        return maxValueMoves.get(r);
     }
 
 }

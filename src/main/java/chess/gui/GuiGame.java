@@ -22,6 +22,7 @@ public class GuiGame {
     boolean allowedToChangeSelectedPiece; //in processingMove
     boolean hintInCheck;
     boolean freshGame;
+    boolean draw;
 
     public GuiGame(){
         this.game = new Game();
@@ -33,6 +34,7 @@ public class GuiGame {
         this.allowedToChangeSelectedPiece = false;
         this.hintInCheck = true;
         this.freshGame = true;
+        this.draw = false;
     }
 
     void setSquareStart(Square square){
@@ -41,6 +43,10 @@ public class GuiGame {
 
     void setSquareFinal(Square square){
         this.squareFinal = square;
+    }
+
+    void setDraw(boolean bool){
+        this.draw = bool;
     }
 
     Square getSquareStart(){
