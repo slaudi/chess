@@ -2,6 +2,7 @@ package chess.engine;
 
 import chess.game.Colour;
 import chess.game.Game;
+import chess.game.Type;
 import chess.pieces.Piece;
 
 
@@ -10,13 +11,15 @@ import chess.pieces.Piece;
  */
 public class EvaluatePieces {
 
+
     /**
      *
-     * @param game
-     * @param playerColour
-     * @return
+     * @param game current game
+     * @param AIColour colour of AI
+     * @return integer-value of current board
      */
-    public static int evaluateBoard(Game game, Colour playerColour) {
+    public static int evaluateBoard(Game game, Colour AIColour) {
+        boolean endgame = evaluateEndgame(game, AIColour);
         int sum = 0;
         for (int y = 0; y < game.chessBoard.getHeight(); y++) {
             for (int x = 0; x < game.chessBoard.getWidth(); x++) {
@@ -24,14 +27,15 @@ public class EvaluatePieces {
                 if (piece != null) {
                     int value = piecesValue(piece);
                     int controlledSquares = pieceControlsSquares(piece, game);
-                    int positionalValue = piece.getPositionalValue(piece.getSquare().getX(), piece.getSquare().getY());
-                    if (piece.getColour() == playerColour) {
+                    int positionalValue = piece.getPositionalValue(piece.getSquare().getX(), piece.getSquare().getY(), endgame);
+                    if (piece.getColour() == AIColour) {
                         sum += value;
                         sum += controlledSquares;
                         sum += positionalValue;
                     } else {
                         sum -= value;
                         sum -= controlledSquares;
+                        sum -= positionalValue;
                     }
                 }
             }
@@ -51,14 +55,16 @@ public class EvaluatePieces {
     private static int piecesValue(Piece piece){
         switch (piece.getType()) {
             case PAWN:
-                return 1;
+                return 100;
             case KNIGHT:
             case BISHOP:
-                return 3;
+                return 300;
             case ROOK:
-                return 5;
+                return 500;
             case QUEEN:
-                return 9;
+                return 900;
+            case KING:
+                return 10000;
             default:
                 return 0;
         }
@@ -74,6 +80,23 @@ public class EvaluatePieces {
             }
         }
         return squareCount;
+    }
+
+    /**
+     * @param game current game
+     * @param AIColour current AIColour
+     */
+    private static boolean evaluateEndgame(Game game, Colour AIColour){
+        int endgameSum = 0;
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Piece piece = game.chessBoard.getPieceAt(x, y);
+                if (piece != null && piece.getColour() == AIColour && piece.getType() != Type.KING) {
+                    endgameSum += piecesValue(piece);
+                }
+            }
+        }
+        return endgameSum < 1300;
     }
 
 }
