@@ -215,20 +215,17 @@ public class Game {
             // King is not in check but can't move
             List<Piece> allies = this.currentPlayer.getAlliedPieces(this.beatenPieces, this.chessBoard);
             allies.remove(this.chessBoard.getSquareOfKing(this.currentPlayer.getColour()).getOccupiedBy());
-            if (allies.isEmpty()) {
-                // if no ally exists -> it's a draw
-                return true;
-            } else {
-                // if ally exists
+            if (!allies.isEmpty()) {
+                // ally exists
                 for (Piece ally : allies) {
                     if (ally.canPieceMove(this.chessBoard)) {
                         // check if they can move somewhere -> it's not a draw
                         return false;
                     }
                 }
-                //there are allies but they cant move
-                return true;
             }
+            //nor allies or they cant move
+            return true;
         }
         // King is in check, but that's not a draw (might be checkmate though)
         return false;
