@@ -81,10 +81,10 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public int getPositionalValue(int x, int y) {
-        int[][] pawnSquareTable;
+    public int getPositionalValue(int x, int y, boolean endgame) {
+        int[][] bishopSquareTable;
         if (this.colour == Colour.BLACK){
-            pawnSquareTable = new int[][]
+            bishopSquareTable = new int[][]
                     {
                         {-20,-10,-10,-10,-10,-10,-10,-20},
                         {-10,  0,  0,  0,  0,  0,  0,-10},
@@ -96,7 +96,7 @@ public class Bishop extends Piece {
                         {-20,-10,-10,-10,-10,-10,-10,-20}
                     };
         } else {
-            pawnSquareTable = new int[][]
+            bishopSquareTable = new int[][]
                     {
                         {-20,-10,-10,-10,-10,-10,-10,-20},
                         {-10,  5,  0,  0,  0,  0,  5,-10},
@@ -108,6 +108,6 @@ public class Bishop extends Piece {
                         {-20,-10,-10,-10,-10,-10,-10,-20}
                     };
         }
-        return pawnSquareTable[y][x];
+        return bishopSquareTable[y][x];
     }
 }

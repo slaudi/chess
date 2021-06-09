@@ -81,10 +81,10 @@ public class Queen extends Piece {
     }
 
     @Override
-    public int getPositionalValue(int x, int y) {
-        int[][] pawnSquareTable;
+    public int getPositionalValue(int x, int y, boolean endgame) {
+        int[][] queenSquareTable;
         if (this.colour == Colour.BLACK){
-            pawnSquareTable = new int[][]
+            queenSquareTable = new int[][]
                     {
                         {-20,-10,-10, -5, -5,-10,-10,-20},
                         {-10,  0,  0,  0,  0,  0,  0,-10},
@@ -96,7 +96,7 @@ public class Queen extends Piece {
                         {-20,-10,-10, -5, -5,-10,-10,-20}
                     };
         } else {
-            pawnSquareTable = new int[][]
+            queenSquareTable = new int[][]
                     {
                         {-20,-10,-10, -5, -5,-10,-10,-20},
                         {-10,  0,  5,  0,  0,  0,  0,-10},
@@ -108,6 +108,6 @@ public class Queen extends Piece {
                         {-20,-10,-10, -5, -5,-10,-10,-20}
                     };
         }
-        return pawnSquareTable[y][x];
+        return queenSquareTable[y][x];
     }
 }

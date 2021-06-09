@@ -81,10 +81,10 @@ public class Rook extends Piece {
     }
 
     @Override
-    public int getPositionalValue(int x, int y) {
-        int[][] pawnSquareTable;
+    public int getPositionalValue(int x, int y, boolean endgame) {
+        int[][] rookSquareTable;
         if (this.colour == Colour.BLACK){
-            pawnSquareTable = new int[][]
+            rookSquareTable = new int[][]
                     {
                         { 0,  0,  0,  0,  0,  0,  0,  0},
                         { 5, 10, 10, 10, 10, 10, 10,  5},
@@ -96,7 +96,7 @@ public class Rook extends Piece {
                         { 0,  0,  0,  5,  5,  0,  0,  0}
                     };
         } else {
-            pawnSquareTable = new int[][]
+            rookSquareTable = new int[][]
                     {
                         { 0,  0,  0,  5,  5,  0,  0,  0},
                         {-5,  0,  0,  0,  0,  0,  0, -5},
@@ -108,7 +108,7 @@ public class Rook extends Piece {
                         { 0,  0,  0,  0,  0,  0,  0,  0}
                     };
         }
-        return pawnSquareTable[y][x];
+        return rookSquareTable[y][x];
     }
 
 }

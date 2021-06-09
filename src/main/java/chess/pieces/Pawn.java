@@ -99,9 +99,9 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public int getPositionalValue(int x, int y) {
+    public int getPositionalValue(int x, int y, boolean endgame) {
         int[][] pawnSquareTable;
-        if (this.colour == Colour.BLACK){
+        if (this.colour == Colour.WHITE){
             pawnSquareTable = new int[][]
                     {
                         {0,  0,  0,  0,  0,  0,  0,  0},

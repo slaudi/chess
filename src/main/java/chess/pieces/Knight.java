@@ -80,10 +80,10 @@ public class Knight extends Piece {
     }
 
     @Override
-    public int getPositionalValue(int x, int y) {
-        int[][] pawnSquareTable;
+    public int getPositionalValue(int x, int y, boolean endgame) {
+        int[][] knightSquareTable;
         if (this.colour == Colour.BLACK){
-            pawnSquareTable = new int[][]
+            knightSquareTable = new int[][]
                     {
                         {-50,-40,-30,-30,-30,-30,-40,-50},
                         {-40,-20,  0,  0,  0,  0,-20,-40},
@@ -95,7 +95,7 @@ public class Knight extends Piece {
                         {-50,-40,-30,-30,-30,-30,-40,-50}
                     };
         } else {
-            pawnSquareTable = new int[][]
+            knightSquareTable = new int[][]
                     {
                         {-50,-40,-30,-30,-30,-30,-40,-50},
                         {-40,-20,  0,  5,  5,  0,-20,-40},
@@ -107,6 +107,6 @@ public class Knight extends Piece {
                         {-50,-40,-30,-30,-30,-30,-40,-50}
                     };
         }
-        return pawnSquareTable[y][x];
+        return knightSquareTable[y][x];
     }
 }
