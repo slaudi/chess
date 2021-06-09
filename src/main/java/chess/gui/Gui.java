@@ -18,6 +18,8 @@ import java.util.*;
 public class Gui extends Application {
 
     static Scene startScene, chessScene;
+    String chess = "Chess!";
+    String schach = "Schach!";
 
     /**
      * The entry point of the GUI application.
@@ -40,10 +42,10 @@ public class Gui extends Application {
         // Start
         if (guiGame.game.isGerman()) {
             startScene = startWindowGerman(primaryStage, guiGame);
-            primaryStage.setTitle("Schach!");
+            primaryStage.setTitle(schach);
         } else {
             startScene = startWindowEnglish(primaryStage, guiGame);
-            primaryStage.setTitle("Chess!");
+            primaryStage.setTitle(chess);
         }
 
         // Chess board
@@ -244,18 +246,18 @@ public class Gui extends Application {
         if (source.equals("start")) {
             if (guiGame.game.isGerman()) {
                 startScene = startWindowGerman(primaryStage, guiGame);
-                primaryStage.setTitle("Schach!");
+                primaryStage.setTitle(schach);
             } else {
                 startScene = startWindowEnglish(primaryStage, guiGame);
-                primaryStage.setTitle("Chess!");
+                primaryStage.setTitle(chess);
             }
             primaryStage.setScene(startScene);
         } else {
             chessScene = chessWindow(primaryStage, guiGame);
             if (guiGame.game.isGerman()){
-                primaryStage.setTitle("Schach!");
+                primaryStage.setTitle(schach);
             } else {
-                primaryStage.setTitle("Chess!");
+                primaryStage.setTitle(chess);
             }
             primaryStage.setScene(chessScene);
         }
@@ -295,7 +297,7 @@ public class Gui extends Application {
                 chessScene = chessWindow(primaryStage, newGuiGame);
 
                 primaryStage.setScene(startScene);
-                primaryStage.setTitle("Chess!");
+                primaryStage.setTitle(chess);
                 primaryStage.show();
             }
         });
@@ -396,7 +398,7 @@ public class Gui extends Application {
                 chessScene = chessWindow(primaryStage, newGuiGame);
 
                 primaryStage.setScene(startScene);
-                primaryStage.setTitle("Schach!");
+                primaryStage.setTitle(schach);
                 primaryStage.show();
             }
         });
