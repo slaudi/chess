@@ -15,8 +15,8 @@ public class Engine {
 
     /**
      *
-     * @param game
-     * @return
+     * @param game current game state
+     * @return Move which is estimated best
      */
     public static Move nextBestMove(Game game) {
         Colour colourAI = Colour.BLACK;
@@ -24,7 +24,7 @@ public class Engine {
             colourAI = Colour.WHITE;
         }
 
-        int max = -1000;
+        int max = -100000;
         List<Move> moveCollection = new ArrayList<>();
         List<Piece> ownPieceCollection = new ArrayList<>();
         List<Move> maxValueMoves = new ArrayList<>();
