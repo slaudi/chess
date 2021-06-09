@@ -226,6 +226,7 @@ public class ChessBoardView extends BorderPane {
         button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
         if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
+
                 guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(x, y));
                 setButtonAction(guiGame);
             });

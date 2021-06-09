@@ -5,11 +5,15 @@ import chess.game.Move;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -34,24 +38,24 @@ public class Gui extends Application {
      * @param primaryStage The initial root stage of the application.
      */
     @Override
-    public void start(Stage primaryStage) throws InterruptedException {
+    public void start(Stage primaryStage) {
         GuiGame currentGame = new GuiGame();
 
         // Start
         startScene = startWindow(primaryStage,currentGame);
 
-        primaryStage.setScene(startScene);
-
         // Chess board
         chessScene = chessWindow(primaryStage, currentGame);
-
 
         primaryStage.setTitle("Chess!");
         primaryStage.show();
     }
 
 
-    private Scene startWindow(Stage primaryStage, GuiGame guiGame){
+    private Scene startWindow(Stage primaryStage, GuiGame guiGame) {
+
+        primaryStage.setScene(startScene);
+
         Label label = new Label("Welcome to a new Game of Chess!");
 
         // Define Start Game-Button
@@ -79,11 +83,12 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button language = new Button("Language");
-        language.setOnAction(e -> chooseLanguage());
+        language.setOnAction(e -> chooseLanguage(guiGame));
 
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
         layout1.setAlignment(Pos.CENTER);
+
         return new Scene(layout1,300,300);
     }
 
@@ -142,18 +147,19 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
-    private void chooseLanguage() {
+    private void chooseLanguage(GuiGame guiGame) {
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("English");
 
         List<ButtonType> language = new ArrayList<>();
         Collections.addAll(language,german,english);
-
-        ButtonType result = OptionBox.display("Language Selection",null,"Choose Language",language);
-        // TODO: Sprache ändern können
-        if (result == english){
-            german = english;
+        ButtonType result;
+        if (guiGame.game.german) {
+            result = OptionBox.display("Sprachauswahl",null,"Wähle Sprache",language);
+        } else {
+            result = OptionBox.display("Language Selection", null, "Choose Language", language);
         }
+        guiGame.game.german = result == german;
     }
 
     private Scene chessWindow(Stage primaryStage, GuiGame guiGame) {

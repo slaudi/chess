@@ -33,6 +33,7 @@ public class Game {
     public final List<Move> moveHistory;
     public Colour userColour;
     public boolean enemyIsHuman;
+    public boolean german;
 
 
     /**
@@ -49,6 +50,7 @@ public class Game {
 
         this.userColour = Colour.BLACK;
         this.enemyIsHuman = true;
+        this.german = false;
 
     }
 
