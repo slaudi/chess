@@ -384,6 +384,38 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertFalse(game1.isADraw());
 
+        //draw
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(1, 7, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Rook(game1.chessBoard.getSquareAt(6, 1), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
+        assertTrue(game1.isADraw());
+
+        //draw with pawn-ally
+        game1.chessBoard.clearBoard();
+        game1.chessBoard.clearBlackAlliance();
+        game1.chessBoard.clearWhiteAlliance();
+        game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
+        game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
+        game1.chessBoard.setPieceAt(1, 7, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
+        game1.chessBoard.setPieceAt(6, 1, new Rook(game1.chessBoard.getSquareAt(6, 1), Colour.BLACK));
+        game1.chessBoard.setPieceAt(3, 4, new Pawn(game1.chessBoard.getSquareAt(3, 4), Colour.WHITE));
+        game1.chessBoard.setPieceAt(3, 3, new Pawn(game1.chessBoard.getSquareAt(3, 3), Colour.BLACK));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(0, 0));
+        game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(3, 4));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(3, 3));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
+        game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
+        assertTrue(game1.isADraw());
+
 
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
