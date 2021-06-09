@@ -93,8 +93,6 @@ public class ChessBoardView extends BorderPane {
             guiGame.setSquareFinal(guiGame.game.chessBoard.getSquareAt(4, 4));
             int result = processingMovement(guiGame);
             if (result == 0) {
-                guiGame.freshGame = false;
-                System.out.println("tst");
                 guiGame.setSquareStart(null);
                 guiGame.setSquareFinal(null);
                 generatePane(guiGame);
@@ -133,10 +131,8 @@ public class ChessBoardView extends BorderPane {
         GridPane grid = new GridPane();
         setButtons(grid, guiGame);
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
-            System.out.println("Black indices");
             addIndices(grid,"black");
         } else if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
-            System.out.println("White indices");
             addIndices(grid, "white");
         }
         return grid;
@@ -277,7 +273,7 @@ public class ChessBoardView extends BorderPane {
         if (!guiGame.game.enemyIsHuman && !guiGame.game.isCheckMate()) {
             // generate move of AI
             int AI_result;
-             do {
+            do {
                 Move AIMove = Engine.nextBestMove(guiGame.game);
                 if(AIMove == null){
                     guiGame.setDraw(true);
@@ -295,10 +291,10 @@ public class ChessBoardView extends BorderPane {
 
     private void generateAnswer(int result) {
         if (result == 1){
-            AlertBox.display("Movement Error",null,"Move not allowed: Would be Check");
+            AlertBox.display("Movement Error",null,"Move not allowed: Your King would be in Check!");
         }
         else if (result == 2){
-            AlertBox.display("Movement Error",null,"Move not allowed: Not possible");
+            AlertBox.display("Movement Error",null,"Move not allowed: Not possible!");
         }
         else if (result == 5){
             AlertBox.display("Game-Error",null,"Something unexpected happened!?");
