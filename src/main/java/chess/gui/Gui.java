@@ -17,6 +17,7 @@ import java.util.*;
  */
 public class Gui extends Application {
 
+    public GuiGame guiGame;
     static Scene startScene, chessScene;
     String chess = "Chess!";
     String schach = "Schach!";
@@ -37,19 +38,19 @@ public class Gui extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        GuiGame guiGame = new GuiGame();
+        guiGame = new GuiGame();
 
         // Start
         if (guiGame.game.isGerman()) {
-            startScene = startWindowGerman(primaryStage, guiGame);
+            startScene = startWindowGerman(primaryStage);
             primaryStage.setTitle(schach);
         } else {
-            startScene = startWindowEnglish(primaryStage, guiGame);
+            startScene = startWindowEnglish(primaryStage);
             primaryStage.setTitle(chess);
         }
 
         // Chess board
-        chessScene = chessWindow(primaryStage, guiGame);
+        chessScene = chessWindow(primaryStage);
 
         primaryStage.setScene(startScene);
 
@@ -57,20 +58,20 @@ public class Gui extends Application {
     }
 
 
-    private Scene startWindowEnglish(Stage primaryStage, GuiGame guiGame) {
+    private Scene startWindowEnglish(Stage primaryStage) {
         Label label = new Label("Welcome to a new Game of Chess!");
 
         // Define Start Game-Button
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
-            chooseEnemyEnglish(guiGame);
-            chessScene = chessWindow(primaryStage,guiGame);
+            chooseEnemyEnglish();
+            chessScene = chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
         });
 
         // Define Network Game-Button
         Button startNetworkGame = new Button("Network Game");
-        startNetworkGame.setOnAction(e -> startNetworkGame(guiGame,primaryStage));
+        startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
 
         // Define Load Game-Button
         Button loadGame = new Button("Load Game");
@@ -86,7 +87,7 @@ public class Gui extends Application {
         // Define Language-Button
         Button language = new Button("Language");
         language.setOnAction(e -> {
-            chooseLanguage(guiGame, primaryStage, "start");
+            chooseLanguage(primaryStage, "start");
         });
 
         VBox layout1 = new VBox(25);
@@ -96,20 +97,20 @@ public class Gui extends Application {
         return new Scene(layout1,300,300);
     }
 
-    private Scene startWindowGerman(Stage primaryStage, GuiGame guiGame) {
+    private Scene startWindowGerman(Stage primaryStage) {
         Label label = new Label("Willkommen zu einer neuen Partie Schach!");
 
         // Define Start Game-Button
         Button startLocalGame = new Button("Starte Spiel");
         startLocalGame.setOnAction(e -> {
-            chooseEnemyGerman(guiGame);
-            chessScene = chessWindow(primaryStage,guiGame);
+            chooseEnemyGerman();
+            chessScene = chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
         });
 
         // Define Network Game-Button
         Button startNetworkGame = new Button("Netzwerk-Spiel");
-        startNetworkGame.setOnAction(e -> startNetworkGame(guiGame,primaryStage));
+        startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
 
         // Define Load Game-Button
         Button loadGame = new Button("Lade Spiel");
@@ -124,7 +125,7 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button language = new Button("Sprache");
-        language.setOnAction(e -> chooseLanguage(guiGame, primaryStage, "start"));
+        language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
 
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
@@ -134,7 +135,7 @@ public class Gui extends Application {
     }
 
 
-    private void chooseEnemyEnglish(GuiGame guiGame) {
+    private void chooseEnemyEnglish() {
         ButtonType human = new ButtonType("Person");
         ButtonType computer = new ButtonType("AI");
 
@@ -163,7 +164,7 @@ public class Gui extends Application {
         }
     }
 
-    private void chooseEnemyGerman(GuiGame guiGame) {
+    private void chooseEnemyGerman() {
         ButtonType human = new ButtonType("Mensch");
         ButtonType computer = new ButtonType("KI");
 
@@ -192,7 +193,7 @@ public class Gui extends Application {
         }
     }
 
-    private void startNetworkGame(GuiGame guiGame, Stage primaryStage) {
+    private void startNetworkGame(Stage primaryStage) {
         String ipAddress;
         String startConnection;
         String cancel;
@@ -229,7 +230,7 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
-    private void chooseLanguage(GuiGame guiGame, Stage primaryStage, String source) {
+    private void chooseLanguage(Stage primaryStage, String source) {
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("English");
 
@@ -245,15 +246,15 @@ public class Gui extends Application {
 
         if (source.equals("start")) {
             if (guiGame.game.isGerman()) {
-                startScene = startWindowGerman(primaryStage, guiGame);
+                startScene = startWindowGerman(primaryStage);
                 primaryStage.setTitle(schach);
             } else {
-                startScene = startWindowEnglish(primaryStage, guiGame);
+                startScene = startWindowEnglish(primaryStage);
                 primaryStage.setTitle(chess);
             }
             primaryStage.setScene(startScene);
         } else {
-            chessScene = chessWindow(primaryStage, guiGame);
+            chessScene = chessWindow(primaryStage);
             if (guiGame.game.isGerman()){
                 primaryStage.setTitle(schach);
             } else {
@@ -265,15 +266,15 @@ public class Gui extends Application {
 
     }
 
-    private Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
+    private Scene chessWindow(Stage primaryStage) {
         BorderPane pane = new BorderPane();
 
         ChessBoardView chessBoardView = new ChessBoardView(guiGame);
         VBox right;
         if (guiGame.game.isGerman()) {
-            right = generateRightMarginColumnGerman(guiGame, primaryStage);
+            right = generateRightMarginColumnGerman(primaryStage);
         } else {
-            right = generateRightMarginColumnEnglish(guiGame, primaryStage);
+            right = generateRightMarginColumnEnglish(primaryStage);
         }
 
         right.setAlignment(Pos.CENTER);
@@ -285,16 +286,16 @@ public class Gui extends Application {
     }
 
 
-    private VBox generateRightMarginColumnEnglish(GuiGame guiGame, Stage primaryStage){
+    private VBox generateRightMarginColumnEnglish(Stage primaryStage){
         //Define New Game-Button
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?");
 
             if (result) {
-                GuiGame newGuiGame = new GuiGame();
-                startScene = startWindowEnglish(primaryStage, newGuiGame);
-                chessScene = chessWindow(primaryStage, newGuiGame);
+                guiGame = new GuiGame();
+                startScene = startWindowEnglish(primaryStage);
+                chessScene = chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
                 primaryStage.setTitle(chess);
@@ -378,7 +379,7 @@ public class Gui extends Application {
         // Define Language-Button
         Button btnLanguage = new Button("Language");
         btnLanguage.setOnAction(event -> {
-            chooseLanguage(guiGame, primaryStage, "else");
+            chooseLanguage( primaryStage, "else");
         });
 
         VBox box = new VBox(20);
@@ -386,16 +387,16 @@ public class Gui extends Application {
         return box;
     }
 
-    private VBox generateRightMarginColumnGerman(GuiGame guiGame, Stage primaryStage){
+    private VBox generateRightMarginColumnGerman(Stage primaryStage){
         //Define New Game-Button
         Button btnNewGame = new Button("Neues Spiel");
         btnNewGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?");
 
             if (result) {
-                GuiGame newGuiGame = new GuiGame();
-                startScene = startWindowGerman(primaryStage, newGuiGame);
-                chessScene = chessWindow(primaryStage, newGuiGame);
+                guiGame = new GuiGame();
+                startScene = startWindowGerman(primaryStage);
+                chessScene = chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
                 primaryStage.setTitle(schach);
@@ -479,7 +480,7 @@ public class Gui extends Application {
         // Define Language-Button
         Button btnLanguage = new Button("Sprache");
         btnLanguage.setOnAction(event -> {
-            chooseLanguage(guiGame, primaryStage, "else");
+            chooseLanguage(primaryStage, "else");
         });
 
         VBox box = new VBox(20);
