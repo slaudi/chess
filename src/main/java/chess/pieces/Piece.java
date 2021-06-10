@@ -59,6 +59,7 @@ public abstract class Piece {
     /**
      * A function determining if a move is valid based on the type of the Piece.
      *
+     * @param chessBoard The current state of Play the method needs to know to decide if Move is allowed for selected Piece.
      * @param finalSquare The square where the Piece should move to.
      * @return boolean Returns 'true' if the move is allowed for the Piece.
      */
@@ -78,6 +79,7 @@ public abstract class Piece {
      * A function determining if the direct path from one square to another is empty
      * except for the start and final Square.
      *
+     * @param chessBoard The current state of Play the method needs to know to decide if selected path is empty for selected Piece.
      * @param finalSquare   The Square where the Piece should go to.
      * @return boolean Returns 'true' if the path is empty.
      */
@@ -105,6 +107,7 @@ public abstract class Piece {
      * A function generating a path of the visited Squares in between the first and last Square if Piece
      * moves more than one Square.
      *
+     * @param chessboard The current state of Chessboard to generate the path to finalsquare.
      * @param finalSquare The final Square of the move.
      * @return List A list of the visited Squares except for the first and last one.
      */
@@ -130,6 +133,7 @@ public abstract class Piece {
     /**
      * A function determining if a Square is directly next to a selected Piece.
      *
+     * @param piecesSquare The Square the selected Piece stands on.
      * @param squareOfInterest The Square where the Piece should move to.
      * @return boolean Returns 'true' if the selected Square is only one Square away from the Piece.
      */

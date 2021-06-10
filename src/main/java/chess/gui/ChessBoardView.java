@@ -31,8 +31,8 @@ public class ChessBoardView extends BorderPane {
 
 
     /**
-     *
-     * @param guiGame
+     * Constructor for GUIgame-Class
+     * @param guiGame The State of Current Game the View needs to display
      */
     public ChessBoardView(GuiGame guiGame) {
 
@@ -249,6 +249,7 @@ public class ChessBoardView extends BorderPane {
                 generatePane(guiGame);
 
                 makeAIMove(guiGame);
+                System.out.println(guiGame.game.isCheckMate());
 
                 guiGame.game.isInCheck();
                 guiGame.game.isCheckMate();

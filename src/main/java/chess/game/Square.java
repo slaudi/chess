@@ -16,6 +16,7 @@ public class Square {
     /**
      * Constructor for creating a single square when starting a new Game.
      *
+     * @param label The Label for the Square. Containing a letter and a digit.
      * @param x The x coordinate of this Square in the Board array (line from left to right).
      * @param y The y coordinate of this Square in the Board array (column from top to bottom).
      */
