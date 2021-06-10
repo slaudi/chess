@@ -226,9 +226,7 @@ public class ChessBoardView extends BorderPane {
                 guiGame.game.isInCheck();
                 guiGame.game.isCheckMate();
                 generatePane();
-
                 makeAIMove();
-
                 guiGame.game.isInCheck();
                 guiGame.game.isCheckMate();
                 if (guiGame.game.isGerman()){
@@ -237,24 +235,13 @@ public class ChessBoardView extends BorderPane {
                     englishGame.generateAnswer(result);
                 }
             } else if (result == 3){
+                // you're allowed to change your selected Piece
                 guiGame.setSquareStart(guiGame.getSquareFinal());
                 guiGame.setSquareFinal(null);
                 generatePane();
             } else {
                 // not an allowed Move
-                if (guiGame.game.isGerman()) {
-                    germanGame.generateAnswer(result); // show why it's not allowed
-                } else {
-                    englishGame.generateAnswer(result);
-                }
-                if (!guiGame.allowedToChangeSelectedPiece && !guiGame.game.isInCheck()) {
-                    // not allowed to change Piece after having selected it
-                    guiGame.setSquareStart(guiGame.getSquareStart());
-                } else {
-                    guiGame.setSquareStart(null);
-                }
-                guiGame.setSquareFinal(null);
-                generatePane();
+                notAllowedMove(result);
             }
         } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
             generatePane();
@@ -281,6 +268,22 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
+    private void notAllowedMove(int result){
+        if (guiGame.game.isGerman()) {
+            germanGame.generateAnswer(result); // show why it's not allowed
+        } else {
+            englishGame.generateAnswer(result);
+        }
+        if (!guiGame.allowedToChangeSelectedPiece && !guiGame.game.isInCheck()) {
+            // not allowed to change Piece after having selected it
+            guiGame.setSquareStart(guiGame.getSquareStart());
+        } else {
+            guiGame.setSquareStart(null);
+        }
+        guiGame.setSquareFinal(null);
+        generatePane();
+    }
+
 
     private int processingMovement() {
         if(!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw() || !guiGame.game.isCheckMate()
@@ -303,27 +306,37 @@ public class ChessBoardView extends BorderPane {
         Square finalSquare = guiGame.getSquareFinal();
         if (!guiGame.allowedToChangeSelectedPiece && finalSquare.getOccupiedBy() != null
                 && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour() && finalSquare != startSquare){
+            // you can't change selected Piece to another one
             return 1;
         }
+
         if (guiGame.game.isMoveAllowed(selectedPiece, finalSquare)) {
             char key = 'Q';
-            if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
-                if (guiGame.game.isGerman()) {
-                    key = germanGame.promotionSelection();
-                } else {
-                    key = englishGame.promotionSelection();
-                }
-            }
-            if (!guiGame.game.processMove(startSquare, finalSquare, key) && guiGame.game.currentPlayer.isInCheck()) {
+            key = checkPromotion(selectedPiece,finalSquare,key);
+            if (!guiGame.game.processMove(startSquare, finalSquare, key)) {
+                // wouldn't free King from check
                 return 2;
             }
-        } else if (guiGame.allowedToChangeSelectedPiece && finalSquare.getOccupiedBy() != null && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour()){
+        } else if (finalSquare.getOccupiedBy() != null && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour()){
+            // you're allowed to change selected Piece to another one
             return 3;
         } else {
+            // move is not allowed
             return 4;
         }
+        // move is allowed
         return 0;
     }
 
+    private char checkPromotion(Piece selectedPiece, Square finalSquare, char key){
+        if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
+            if (guiGame.game.isGerman()) {
+                key = germanGame.promotionSelection();
+            } else {
+                key = englishGame.promotionSelection();
+            }
+        }
+        return key;
+    }
 
 }
