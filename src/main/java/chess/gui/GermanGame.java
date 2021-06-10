@@ -21,8 +21,6 @@ public class GermanGame extends BorderPane {
     String black;
     String highlight;
     int fontSize = 17;
-    String colour;
-
 
 
     /**
@@ -30,14 +28,12 @@ public class GermanGame extends BorderPane {
      * @param guiGame
      */
     public GermanGame(GuiGame guiGame, ChessBoardView chessBoardView) {
-
         this.white = "-fx-background-color: floralwhite";
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
         this.guiGame = guiGame;
         this.chessBoardView = chessBoardView;
-
     }
 
 
@@ -95,16 +91,12 @@ public class GermanGame extends BorderPane {
     }
 
 
-
-
-
     void noAllowedSquares(List<Square> allowedSquares) {
         if (allowedSquares.isEmpty()) {
             guiGame.setSquareStart(null);
             AlertBox.display("Keine Züge möglich", null, "Diese Figur kann sich nicht bewegen. Versuch eine andere!!");
         }
     }
-
 
 
     void generateAnswer(int result) {
@@ -121,7 +113,6 @@ public class GermanGame extends BorderPane {
             AlertBox.display("Schach-Hinweis",null, getColour() + " steht im Schach!");
         }
     }
-
 
 
     char promotionSelection() {

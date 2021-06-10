@@ -160,6 +160,7 @@ public class Gui extends Application {
                 guiGame.game.userColour = Colour.WHITE;
             } else {
                 guiGame.game.userColour = Colour.BLACK;
+                guiGame.turnAI = true;
             }
         }
     }
@@ -189,6 +190,7 @@ public class Gui extends Application {
                 guiGame.game.userColour = Colour.WHITE;
             } else {
                 guiGame.game.userColour = Colour.BLACK;
+                guiGame.turnAI = true;
             }
         }
     }
