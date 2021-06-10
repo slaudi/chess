@@ -10,17 +10,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+/**
+ * A Class in which Tests are combined to test the PieceEvaluation
+ */
 public class EvaluatePiecesTest {
 
     Game game;
 
+    /**
+     * Just a simple SetUp for each Test: an initialisation of an new game to test on
+     */
     @BeforeEach
     public void setUp() {
         game = new Game();
     }
 
     /**
-     *
+     *a simple evaluation of a new game
      */
     @Test
     public void evaluateBoard() {
@@ -29,6 +35,9 @@ public class EvaluatePiecesTest {
 
     }
 
+    /**
+     * an evaluation of a nearly empty board with only a King and a Rook for each Player
+     */
     @Test
     public void evaluateBoardWithOnlyKing(){
         game.chessBoard.clearBoard();

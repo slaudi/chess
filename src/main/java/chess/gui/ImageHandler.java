@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Helper-Class for Image-Handling
+ */
 public class ImageHandler {
 
     private static ImageHandler instance;

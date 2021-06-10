@@ -87,6 +87,9 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 6), game1.chessBoard.getBoard()[0][3]));
     }
 
+    /**
+     * a few pawn-move tests
+     */
     @Test
     public void testPawnWithMoveHistory()
     {
@@ -111,6 +114,9 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertTrue(currentGame.isMoveAllowed(selectedPiece, finalSquare));
     }
 
+    /**
+     * tests for pawn-enPassantMoves
+     */
     @Test
     public void testPawnEnPassant()
     {
@@ -521,7 +527,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      * tests checkmate-method
      */
     @Test
-    public void testCheckMate(){
+    public void testCheckMate() {
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -534,7 +540,13 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertTrue(game1.isCheckMate());
+    }
 
+    /**
+     * tests checkmate-method while checked King can be saved by Pawn
+     */
+    @Test
+    public void testCheckMateRescueByRook(){
         //one last white move possible(Rook)
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
@@ -550,7 +562,12 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertFalse(game1.isCheckMate());
-
+    }
+    /**
+     * tests checkmate-method while checked King can be saved by Pawn
+     */
+    @Test
+    public void testCheckMateRescueByPawn(){
         //one last white move possible(Pawn)
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
@@ -566,7 +583,13 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertFalse(game1.isCheckMate());
+    }
 
+    /**
+     * tests checkmate-method when King is attacked by pawn
+     */
+    @Test
+    public void testCheckMateWhileAttackingPawn(){
         //white can beat attacking black pawn
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();

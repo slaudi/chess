@@ -65,6 +65,13 @@ public abstract class Piece {
     public abstract boolean isPiecesMove(Square finalSquare, Board chessBoard);
 
 
+    /**
+     * A Method to determine how good the current setUp of the Pieces is for one Player
+     * @param x x-Coordinate of selected Piece on Chessboard
+     * @param y y-Coordinate of selected Piece on Chessboard
+     * @param endgame boolean whether or not current game has entered the so called endgame
+     * @return An Integer-Value Ranking the current state of game
+     */
     public abstract int getPositionalValue(int x, int y, boolean endgame);
 
     /**

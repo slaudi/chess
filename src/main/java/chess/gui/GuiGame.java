@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * HelperClass for Gameclass for Methods only needed when Playing in GUI
  */
 public class GuiGame {
 
     /**
-     *
+     * Kind of Superclass for GUIGame
      */
     public Game game;
 
@@ -24,6 +24,9 @@ public class GuiGame {
     boolean freshGame;
     boolean draw;
 
+    /**
+     * Constructor for GuiGame-Objects
+     */
     public GuiGame(){
         this.game = new Game();
 

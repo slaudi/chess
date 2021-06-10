@@ -6,10 +6,20 @@ import javafx.scene.control.ButtonType;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class for Simplified Instantiating the Game-Options-Button
+ */
 public class OptionBox {
 
     static ButtonType buttonType;
 
+    /**
+     * @param title Title for the Options-Window
+     * @param headerText Heading in Options-Menu
+     * @param contentText Some Content in the Options-Menu
+     * @param options Name of the Options-Button
+     * @return Returns which Button is pressed
+     */
     public static ButtonType display(String title, String headerText, String contentText, List<ButtonType> options) {
         Alert alert = new Alert(Alert.AlertType.NONE);
 
