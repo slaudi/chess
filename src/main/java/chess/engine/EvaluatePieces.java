@@ -52,22 +52,24 @@ public class EvaluatePieces {
      * @param piece The Piece being evaluated.
      * @return int The value of the Piece.
      */
-    private static int piecesValue(Piece piece){
-        switch (piece.getType()) {
-            case PAWN:
-                return 100;
-            case KNIGHT:
-            case BISHOP:
-                return 300;
-            case ROOK:
-                return 500;
-            case QUEEN:
-                return 900;
-            case KING:
-                return 10000;
-            default:
-                return 0;
+    public static int piecesValue(Piece piece){
+        if(piece != null) {
+            switch (piece.getType()) {
+                case PAWN:
+                    return 100;
+                case KNIGHT:
+                    return 300;
+                case BISHOP:
+                    return 300;
+                case ROOK:
+                    return 500;
+                case QUEEN:
+                    return 900;
+                case KING:
+                    return 10000;
+            }
         }
+        return 0;
     }
 
     private static int pieceControlsSquares(Piece piece, Game game){

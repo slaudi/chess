@@ -144,6 +144,8 @@ public class King extends Piece {
     /**
      * Evaluates if the castling move is possible by checking the selected King and Rook.
      *
+     * @param enemies a List of enemy-pieces of current king
+     * @param currentBoard state of game.
      * @param finalSquare   The selected Square which can be kingside or queenside.
      * @return boolean Returns 'true' if castling is possible.
      */

@@ -68,7 +68,8 @@ public class Player {
     /**
      * A function gathering all allied Pieces of a player on the current board
      * in a ArrayList by removing the already beaten pieces from the Alliance.
-     *
+     * @param beatenPieces BeatenPieces-List of current Game
+     * @param chessBoard Current-Chessboard
      * @return ArrayList Contains all active allied Pieces
      */
     public List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
@@ -97,6 +98,8 @@ public class Player {
      * A function gathering all enemy Pieces of a player on the current board
      * in a ArrayList by removing the already beaten pieces from the Alliance.
      *
+     * @param beatenPieces BeatenPieces-List of current Game
+     * @param chessBoard Current-Chessboard
      * @return ArrayList Contains all active enemy Pieces.
      */
     public List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
