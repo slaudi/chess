@@ -15,14 +15,14 @@ public class GuiGame {
      */
     public Game game;
 
-    Square squareStart;
-    Square squareFinal;
+    private Square squareStart;
+    private Square squareFinal;
     boolean isRotatingBoard;
     boolean highlightPossibleMoves;
     boolean allowedToChangeSelectedPiece; //in processingMove
     boolean hintInCheck;
-    boolean freshGame;
     boolean draw;
+    boolean turnAI;
 
     public GuiGame(){
         this.game = new Game();
@@ -33,8 +33,8 @@ public class GuiGame {
         this.highlightPossibleMoves = true;
         this.allowedToChangeSelectedPiece = false;
         this.hintInCheck = true;
-        this.freshGame = true;
         this.draw = false;
+        this.turnAI = false;
     }
 
     void setSquareStart(Square square){
