@@ -44,8 +44,10 @@ public class GermanGame extends BorderPane {
     HBox generatePlayersMoveLabelBox(){
         Label label = new Label(getColour() + " ist am Zug");
         if (guiGame.game.isCheckMate()) {
+            AlertBox.display("Spiel-Information","Schachmatt",getColour() + " hat das Spiel verloren!");
             label = new Label(getColour() + " hat das Spiel verloren!");
         } else if (guiGame.game.isADraw() || guiGame.draw) {
+            AlertBox.display("Spiel-Information","Unentschieden","Das Spiel endet in einem Unentschieden!");
             label = new Label("Das Spiel endet in einem Unentschieden!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
             label = new Label(getColour() + " ist am Zug -- " + getColour() + " steht im Schach!");
@@ -64,30 +66,36 @@ public class GermanGame extends BorderPane {
 
 
     GridPane generateGrid(){
-        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null && guiGame.highlightPossibleMoves) {
-            System.out.println(guiGame.getSquareStart().getLabel());
-            if(guiGame.getSquareStart().getOccupiedBy() != null){
-                System.out.println(guiGame.getSquareStart().getOccupiedBy());
-                if(guiGame.game.currentPlayer.getColour() == Colour.WHITE && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE) {
-                    return chessBoardView.generateHighlightedButtonGrid();
-                } else if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
-                    return chessBoardView.generateHighlightedButtonGrid();
-                } else {
-                    if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
+        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
+            // player selected first square
+            if (guiGame.getSquareStart().getOccupiedBy() != null) {
+                // selected first square is occupied
+                if (guiGame.highlightPossibleMoves) {
+                    // 'highlighting' is turned on
+                    if (guiGame.game.currentPlayer.getColour() == guiGame.getSquareStart().getOccupiedBy().getColour() ) {
+                        return chessBoardView.generateHighlightedButtonGrid();
+                    } else {
+                        // selected Piece is not players colour
                         guiGame.setSquareStart(null);
                         AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
                     }
+                } else if (guiGame.getSquareStart().getOccupiedBy().getColour() != guiGame.game.currentPlayer.getColour()) {
+                    // 'highlighting' is turned off and selected Piece is not players colour
+                    guiGame.setSquareStart(null);
+                    AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
                 }
             } else {
-                if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
-                    guiGame.setSquareStart(null);
-                    AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
-                }
+                // selected first square is empty
+                guiGame.setSquareStart(null);
+                AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
             }
         }
         // no highlighted moves
         return chessBoardView.generateButtonGrid();
     }
+
+
+
 
 
     void noAllowedSquares(List<Square> allowedSquares) {
@@ -106,10 +114,6 @@ public class GermanGame extends BorderPane {
             AlertBox.display("Fehler",null,"Zug nicht erlaubt: Dein König wäre im Schach!");
         } else if (result == 4){
             AlertBox.display("Fehler",null,"Zug nicht möglich!");
-        } else if (result == 5){
-            AlertBox.display("Spiel-Information","Schachmatt",getColour() + " hat das Spiel verloren!");
-        } else if (result == 6){
-            AlertBox.display("Spiel-Information","Unentschieden","Das Spiel endet in einem Unentschieden!");
         } else if (result == 7){
             AlertBox.display("Spiel-Fehler",null,"Etwas unerwartetes ist passiert!?");
         }
