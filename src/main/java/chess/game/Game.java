@@ -33,8 +33,7 @@ public class Game {
     public final List<Move> moveHistory;
     public Colour userColour;
     public boolean enemyIsHuman;
-    public boolean german;
-
+    private boolean german;
 
     /**
      * Constructor for creating a new Game.
@@ -52,6 +51,14 @@ public class Game {
         this.enemyIsHuman = true;
         this.german = false;
 
+    }
+
+    public boolean isGerman() {
+        return german;
+    }
+
+    public void setGerman(boolean german) {
+        this.german = german;
     }
 
     /**
