@@ -292,18 +292,6 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
-    private void generateAnswer(int result) {
-        if (result == 1){
-            AlertBox.display("Movement Error",null,"Move not allowed: Your King would be in Check!");
-        }
-        else if (result == 2){
-            AlertBox.display("Movement Error",null,"Move not allowed: Not possible!");
-        }
-        else if (result == 5){
-            AlertBox.display("Game-Error",null,"Something unexpected happened!?");
-        }
-    }
-
     private int processingMovement() {
         if(!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw() || !guiGame.game.isCheckMate()
                 && guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
@@ -311,31 +299,42 @@ public class ChessBoardView extends BorderPane {
         }
         if(guiGame.game.isCheckMate()){
             // player is check mate
-            return 3;
+            return 5;
         }
         if(guiGame.game.isADraw()){
-            return 4;
+            return 6;
         }
-        return 5;
+        return 7;
     }
 
     private int isMoveAllowed() {
         Piece selectedPiece = guiGame.getSquareStart().getOccupiedBy();
         Square startSquare = guiGame.getSquareStart();
         Square finalSquare = guiGame.getSquareFinal();
+        if (!guiGame.allowedToChangeSelectedPiece && finalSquare.getOccupiedBy() != null
+                && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour() && finalSquare != startSquare){
+            // you can't change selected Piece to another one
+            return 1;
+        }
+
         if (guiGame.game.isMoveAllowed(selectedPiece, finalSquare)) {
             char key = 'Q';
-            if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
-                key = promotionSelection();
+            key = promotionSelection();
+            if (!guiGame.game.processMove(startSquare, finalSquare, key)) {
+                // wouldn't free King from check
+                return 2;
             }
-            if (!guiGame.game.processMove(startSquare, finalSquare, key) && guiGame.game.currentPlayer.isInCheck()) {
-                return 1;
-            }
+        } else if (finalSquare.getOccupiedBy() != null && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour()){
+            // you're allowed to change selected Piece to another one
+            return 3;
         } else {
-            return 2;
+            // move is not allowed
+            return 4;
         }
+        // move is allowed
         return 0;
     }
+
 
     private char promotionSelection() {
         ButtonType buttonTypeOne = new ButtonType("Rook");
