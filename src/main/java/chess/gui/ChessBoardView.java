@@ -139,31 +139,22 @@ public class ChessBoardView extends BorderPane {
     }
 
 
-    private GridPane generateButtonGrid() {
+    GridPane generateButtonGrid() {
         GridPane grid = new GridPane();
         setButtons(grid);
-        if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
-            addIndices(grid,"black");
-        } else if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
-            addIndices(grid, "white");
-        }
+        addIndices(grid);
         return grid;
     }
 
-
-    private GridPane generateHighlightedButtonGrid(){
+    GridPane generateHighlightedButtonGrid() {
         GridPane grid = new GridPane();
         setHighlightedButtons(grid);
-        if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
-            addIndices(grid,"black");
-        } else if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
-            addIndices(grid, "white");
-        }
+        addIndices(grid);
         return grid;
     }
 
     // Adds the row and column indices to the chessboard GUI
-    private void addIndices(GridPane grid, String colour) {
+    private void addIndices(GridPane grid) {
         String[] columns = {"A","B","C","D","E","F","G","H"};
         String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8"};
         if (colour.equals("black")) {
