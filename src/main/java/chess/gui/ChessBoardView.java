@@ -23,6 +23,7 @@ public class ChessBoardView extends BorderPane {
     public GuiGame guiGame;
     public GermanGame germanGame;
     public EnglishGame englishGame;
+
     String white;
     String black;
     String highlight;
@@ -45,19 +46,17 @@ public class ChessBoardView extends BorderPane {
 
     void generatePane() {
         HBox heading;
-        GridPane chessBoard;
         if (guiGame.game.isGerman()) {
             heading = germanGame.generatePlayersMoveLabelBox();
-            chessBoard = germanGame.generateGrid();
         } else {
             heading = englishGame.generatePlayersMoveLabelBox();
-            chessBoard = englishGame.generateGrid();
         }
 
         heading.setAlignment(Pos.TOP_CENTER);
         heading.setPadding(new Insets(5));
         setTop(heading);
 
+        GridPane chessBoard = generateGrid();
         chessBoard.setAlignment(Pos.TOP_CENTER);
         chessBoard.setPadding(new Insets(0, 10, 10, 30));
         setCenter(chessBoard);
@@ -66,6 +65,44 @@ public class ChessBoardView extends BorderPane {
         bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(5, 0, 5, 40));
         setBottom(bottom);
+    }
+
+
+    GridPane generateGrid(){
+        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
+            // player selected first square
+            if (guiGame.getSquareStart().getOccupiedBy() != null) {
+                // selected first square is occupied
+                if (guiGame.highlightPossibleMoves) {
+                    // 'highlighting' is turned on
+                    if (guiGame.game.currentPlayer.getColour() == guiGame.getSquareStart().getOccupiedBy().getColour() ) {
+                        return generateHighlightedButtonGrid();
+                    } else {
+                        // selected Piece is not players colour
+                        guiGame.setSquareStart(null);
+                        popUpBoxLanguage(1);
+                    }
+                } else if (guiGame.getSquareStart().getOccupiedBy().getColour() != guiGame.game.currentPlayer.getColour()) {
+                    // 'highlighting' is turned off and selected Piece is not players colour
+                    guiGame.setSquareStart(null);
+                    popUpBoxLanguage(1);
+                }
+            } else {
+                // selected first square is empty
+                guiGame.setSquareStart(null);
+                popUpBoxLanguage(2);
+            }
+        }
+        // no highlighted moves
+        return generateButtonGrid();
+    }
+
+    private void popUpBoxLanguage(int answer){
+        if (guiGame.game.isGerman()){
+            germanGame.gridAnswer(answer);
+        } else {
+            englishGame.gridAnswer(answer);
+        }
     }
 
     private HBox generateBeatenPieces(){

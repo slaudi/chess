@@ -1,12 +1,10 @@
 package chess.gui;
 
 
-import chess.game.Colour;
 import chess.game.Square;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
@@ -54,34 +52,15 @@ public class EnglishGame extends BorderPane {
         return new HBox(label);
     }
 
-    GridPane generateGrid(){
-        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
-            // player selected first square
-            if (guiGame.getSquareStart().getOccupiedBy() != null) {
-                // selected first square is occupied
-                if (guiGame.highlightPossibleMoves) {
-                    // 'highlighting' is turned on
-                    if (guiGame.game.currentPlayer.getColour() == guiGame.getSquareStart().getOccupiedBy().getColour() ) {
-                        return chessBoardView.generateHighlightedButtonGrid();
-                    } else {
-                        // selected Piece is not players colour
-                        guiGame.setSquareStart(null);
-                        AlertBox.display("Piece problem", null, "Selected Piece is not your Colour!");
-                    }
-                } else if (guiGame.getSquareStart().getOccupiedBy().getColour() != guiGame.game.currentPlayer.getColour()) {
-                    // 'highlighting' is turned off and selected Piece is not players colour
-                    guiGame.setSquareStart(null);
-                    AlertBox.display("Piece problem", null, "Selected Piece is not your Colour!");
-                }
-            } else {
-                // selected first square is empty
-                    guiGame.setSquareStart(null);
-                    AlertBox.display("Piece Problem", null, "There is no Piece to move!");
-            }
+
+    void gridAnswer(int answer) {
+        if (answer == 1){
+            AlertBox.display("Piece problem", null, "Selected Piece is not your Colour!");
+        } else {
+            AlertBox.display("Piece Problem", null, "There is no Piece to move!");
         }
-        // no highlighted moves
-        return chessBoardView.generateButtonGrid();
     }
+
 
     void noAllowedSquares(List<Square> allowedSquares) {
         if (allowedSquares.isEmpty()) {
@@ -89,6 +68,7 @@ public class EnglishGame extends BorderPane {
             AlertBox.display("No Moves Possible", null, "This Piece cannot move. Try another!");
         }
     }
+
 
     void generateAnswer(int result) {
         if (result == 1){
@@ -104,7 +84,6 @@ public class EnglishGame extends BorderPane {
             AlertBox.display("Check Hint",null, guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
         }
     }
-
 
 
     char promotionSelection() {

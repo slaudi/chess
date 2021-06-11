@@ -1,11 +1,11 @@
 package chess.gui;
 
+
 import chess.game.Colour;
 import chess.game.Square;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ *
+ */
 public class GermanGame extends BorderPane {
 
     public ChessBoardView chessBoardView;
@@ -52,6 +55,7 @@ public class GermanGame extends BorderPane {
         return new HBox(label);
     }
 
+
     private String getColour() {
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK) {
             return "SCHWARZ";
@@ -61,33 +65,12 @@ public class GermanGame extends BorderPane {
     }
 
 
-    GridPane generateGrid(){
-        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
-            // player selected first square
-            if (guiGame.getSquareStart().getOccupiedBy() != null) {
-                // selected first square is occupied
-                if (guiGame.highlightPossibleMoves) {
-                    // 'highlighting' is turned on
-                    if (guiGame.game.currentPlayer.getColour() == guiGame.getSquareStart().getOccupiedBy().getColour() ) {
-                        return chessBoardView.generateHighlightedButtonGrid();
-                    } else {
-                        // selected Piece is not players colour
-                        guiGame.setSquareStart(null);
-                        AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
-                    }
-                } else if (guiGame.getSquareStart().getOccupiedBy().getColour() != guiGame.game.currentPlayer.getColour()) {
-                    // 'highlighting' is turned off and selected Piece is not players colour
-                    guiGame.setSquareStart(null);
-                    AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
-                }
-            } else {
-                // selected first square is empty
-                guiGame.setSquareStart(null);
-                AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
-            }
+    void gridAnswer(int answer) {
+        if (answer == 1){
+            AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
+        } else {
+            AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
         }
-        // no highlighted moves
-        return chessBoardView.generateButtonGrid();
     }
 
 
