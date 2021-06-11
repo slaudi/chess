@@ -21,7 +21,7 @@ public class Cli {
         Game currentGame = new Game();
         checkForModus(currentGame);
 
-        while (!currentGame.currentPlayer.isLoser() && !currentGame.isADraw()) {
+        while (!currentGame.isCheckMate() && !currentGame.isADraw()) {
             // to keep the game running
 
             if (!canPieceMove(currentGame)) {
@@ -145,7 +145,7 @@ public class Cli {
             keyEnemy = 'Q';
         } while (!currentGame.processMove(startSquareEnemy,finalSquareEnemy,keyEnemy));
         if (currentGame.isDraw()){
-            System.out.println(" ");;
+            System.out.println(" ");
         } else {
             assert startSquareEnemy != null;
             System.out.println("!" + startSquareEnemy.getLabel().toString() + "-" + finalSquareEnemy.getLabel().toString() + "\n");
