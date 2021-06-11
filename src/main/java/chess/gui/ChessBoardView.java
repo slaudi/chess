@@ -316,7 +316,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
     private void generateAnswer(int result) {
         if (result == 1){
-            AlertBox.display("Piece Error", null, "'Change Selection' is turned off. You can't select another piece!");
+            AlertBox.display("Piece Error", null, "You can't select another piece!");
         } else if (result == 2) {
             AlertBox.display("Movement Error", null, "Move not allowed: Your King would be in Check!");
         } else if (result == 4){
