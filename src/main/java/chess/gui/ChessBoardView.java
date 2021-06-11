@@ -122,14 +122,14 @@ public class ChessBoardView extends BorderPane {
     }
 
 
-    GridPane generateButtonGrid() {
+    private GridPane generateButtonGrid() {
         GridPane grid = new GridPane();
         setButtons(grid);
         addIndices(grid);
         return grid;
     }
 
-    GridPane generateHighlightedButtonGrid() {
+    private GridPane generateHighlightedButtonGrid() {
         GridPane grid = new GridPane();
         setHighlightedButtons(grid);
         addIndices(grid);
@@ -238,6 +238,7 @@ public class ChessBoardView extends BorderPane {
     }
 
 
+
     private void setButtonAction() {
         if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             int result = processingMovement();
@@ -247,24 +248,18 @@ public class ChessBoardView extends BorderPane {
                 guiGame.setSquareFinal(null);
                 guiGame.game.isInCheck();
                 guiGame.game.isCheckMate();
+                guiGame.turnAI = true;
                 generatePane();
-
-                makeAIMove();
-                System.out.println(guiGame.game.isCheckMate());
-
-                guiGame.game.isInCheck();
-                guiGame.game.isCheckMate();
-            } else {
-                // not an allowed Move
-                generateAnswer(result); // show why it's not allowed
-                if (!guiGame.allowedToChangeSelectedPiece && !guiGame.game.isInCheck()) {
-                    // not allowed to change Piece after having selected it
-                    guiGame.setSquareStart(guiGame.getSquareStart());
-                } else {
-                    guiGame.setSquareStart(null);
-                }
+                // show AlertBox if next Player is in check
+                generateAnswer(result);
+            } else if (result == 3){
+                // you're allowed to change your selected Piece
+                guiGame.setSquareStart(guiGame.getSquareFinal());
                 guiGame.setSquareFinal(null);
                 generatePane();
+            } else {
+                // not an allowed Move
+                notAllowedMove(result);
             }
         } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
             generatePane();
@@ -272,11 +267,12 @@ public class ChessBoardView extends BorderPane {
     }
 
     private void makeAIMove(){
-        if (!guiGame.game.enemyIsHuman && !guiGame.game.isCheckMate()) {
+        if (!guiGame.game.isCheckMate() && !guiGame.game.isADraw()) {
             // generate move of AI
             int AI_result;
             do {
                 Move AIMove = Engine.nextBestMove(guiGame.game);
+                // no piece can move
                 if(AIMove == null){
                     guiGame.setDraw(true);
                     break;
@@ -287,11 +283,25 @@ public class ChessBoardView extends BorderPane {
                 guiGame.setSquareStart(null);
                 guiGame.setSquareFinal(null);
             } while (AI_result != 0);
+            guiGame.turnAI = false;
             generatePane();
         }
     }
 
-    void generateAnswer(int result) {
+    private void notAllowedMove(int result){
+        // show why it's not allowed
+        generateAnswer(result);
+        if (!guiGame.allowedToChangeSelectedPiece && !guiGame.game.isInCheck()) {
+            // not allowed to change Piece after having selected it
+            guiGame.setSquareStart(guiGame.getSquareStart());
+        } else {
+            guiGame.setSquareStart(null);
+        }
+        guiGame.setSquareFinal(null);
+        generatePane();
+    }
+
+    private void generateAnswer(int result) {
         if (result == 1){
             AlertBox.display("Piece Error", null, "'Change Selection' is turned off. You can't select another piece!");
         } else if (result == 2) {
