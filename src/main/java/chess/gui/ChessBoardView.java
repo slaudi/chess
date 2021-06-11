@@ -18,10 +18,13 @@ import java.util.List;
 
 
 /**
- *
+ * The class generating the chess board as a GUI.
  */
 public class ChessBoardView extends BorderPane {
 
+    /**
+     * ChessBoardView class has access to GuiGame class.
+     */
     public GuiGame guiGame;
 
     String white;
@@ -33,8 +36,9 @@ public class ChessBoardView extends BorderPane {
 
 
     /**
-     * Constructor for GUIgame-Class
-     * @param guiGame The State of Current Game the View needs to display
+     * Constructor for GuiGame-Class.
+     *
+     * @param guiGame The State of the current Game the View needs to display it.
      */
     public ChessBoardView(GuiGame guiGame) {
         this.guiGame = guiGame;
@@ -117,7 +121,7 @@ public class ChessBoardView extends BorderPane {
                 AlertBox.display("Piece Problem", null, "There is no Piece to move!");
             }
         }
-        // no highlighted moves
+        // no Square selected yet or highlight moves turned off
         return generateButtonGrid();
     }
 
@@ -129,6 +133,7 @@ public class ChessBoardView extends BorderPane {
         return grid;
     }
 
+
     private GridPane generateHighlightedButtonGrid() {
         GridPane grid = new GridPane();
         setHighlightedButtons(grid);
@@ -136,12 +141,14 @@ public class ChessBoardView extends BorderPane {
         return grid;
     }
 
+
     // Adds the row and column indices to the chessboard GUI
     private void addIndices(GridPane grid) {
         String[] columns = {"A","B","C","D","E","F","G","H"};
         String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8"};
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard
-                || !guiGame.game.enemyIsHuman && guiGame.game.userColour == Colour.BLACK) {
+                /*geht auch ohne nachfolgendes, wenn button Rotation bei KI-Spiel ausgeschaltet wäre*/
+                || !guiGame.game.enemyIsHuman && guiGame.game.userColour == Colour.BLACK ) {
             int c = 0;
             for (int i = columns.length - 1; i >= 0; i--) {
                 Label letter = new Label(columns[i]);
@@ -154,6 +161,7 @@ public class ChessBoardView extends BorderPane {
                 c++;
             }
         } else {
+            // Rotation is off or the player is White
             for (int i = 0; i <= columns.length - 1; i++) {
                 Label letter = new Label(columns[i]);
                 letter.setFont(new Font(fontSize));
@@ -165,6 +173,7 @@ public class ChessBoardView extends BorderPane {
             }
         }
     }
+
 
     private void setButtons(GridPane grid) {
         for (int y = 0; y < 8; y++) {
@@ -181,6 +190,7 @@ public class ChessBoardView extends BorderPane {
             }
         }
     }
+
 
     private void setHighlightedButtons(GridPane grid) {
         List<Square> allowedSquares = guiGame.computePossibleSquares();
@@ -226,17 +236,16 @@ public class ChessBoardView extends BorderPane {
             grid.add(button, x, y);
         }
 
-        if (!guiGame.game.enemyIsHuman && guiGame.turnAI) {
-            makeAIMove();
-        }
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
+            if (!guiGame.game.enemyIsHuman && guiGame.turnAI) {
+                makeAIMove();
+            }
             button.setOnAction(event -> {
                 guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(x, y));
                 setButtonAction();
             });
         }
     }
-
 
 
     private void setButtonAction() {
@@ -266,6 +275,7 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
+
     private void makeAIMove(){
         if (!guiGame.game.isCheckMate() && !guiGame.game.isADraw()) {
             // generate move of AI
@@ -288,6 +298,7 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
+
     private void notAllowedMove(int result){
         // show why it's not allowed
         generateAnswer(result);
@@ -295,11 +306,13 @@ public class ChessBoardView extends BorderPane {
             // not allowed to change Piece after having selected it
             guiGame.setSquareStart(guiGame.getSquareStart());
         } else {
+            // allowed to change the Piece
             guiGame.setSquareStart(null);
         }
         guiGame.setSquareFinal(null);
         generatePane();
     }
+
 
     private void generateAnswer(int result) {
         if (result == 1){
@@ -316,13 +329,13 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
+
     private int processingMovement() {
         if(!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw() || !guiGame.game.isCheckMate()
                 && guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
             return isMoveAllowed();
         }
         if(guiGame.game.isCheckMate()){
-            // player is check mate
             return 5;
         }
         if(guiGame.game.isADraw()){
@@ -331,7 +344,8 @@ public class ChessBoardView extends BorderPane {
         return 7;
     }
 
-    private int isMoveAllowed() {
+
+    private int isMoveAllowed() {//NOPMD all if-conditions need to cover all bases and it wouldn't make sense anywhere to relocate into a helper method
         Piece selectedPiece = guiGame.getSquareStart().getOccupiedBy();
         Square startSquare = guiGame.getSquareStart();
         Square finalSquare = guiGame.getSquareFinal();
@@ -340,10 +354,11 @@ public class ChessBoardView extends BorderPane {
             // you can't change selected Piece to another one
             return 1;
         }
-
         if (guiGame.game.isMoveAllowed(selectedPiece, finalSquare)) {
             char key = 'Q';
-            key = promotionSelection();
+            if (selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)) {
+                key = promotionSelection();
+            }
             if (!guiGame.game.processMove(startSquare, finalSquare, key)) {
                 // wouldn't free King from check
                 return 2;

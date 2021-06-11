@@ -5,15 +5,11 @@ import chess.game.Move;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -95,7 +91,7 @@ public class Gui extends Application {
 
     private void chooseEnemy(GuiGame guiGame) {
         ButtonType human = new ButtonType("Person");
-        ButtonType computer = new ButtonType("Computer");
+        ButtonType computer = new ButtonType("AI");
 
         List<ButtonType> enemy = new ArrayList<>();
         Collections.addAll(enemy,human,computer);
