@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class ChessBoardView extends BorderPane {
 
+    public GuiGame guiGame;
+
     String white;
     String black;
     String highlight;
@@ -35,32 +37,35 @@ public class ChessBoardView extends BorderPane {
      * @param guiGame The State of Current Game the View needs to display
      */
     public ChessBoardView(GuiGame guiGame) {
+        this.guiGame = guiGame;
 
         this.white = "-fx-background-color: floralwhite";
         this.black = "-fx-background-color: slategray";
         this.highlight = "-fx-border-color: skyblue";
 
-        generatePane(guiGame);
+        generatePane();
     }
 
-    private void generatePane(GuiGame guiGame) {
-        HBox heading = generatePlayersMoveLabelBox(guiGame);
+
+    private void generatePane() {
+        HBox heading = generatePlayersMoveLabelBox();
         heading.setAlignment(Pos.TOP_CENTER);
         heading.setPadding(new Insets(5));
         setTop(heading);
 
-        GridPane chessBoard = chooseButtonGridGeneration(guiGame);
+        GridPane chessBoard = chooseButtonGridGeneration();
         chessBoard.setAlignment(Pos.TOP_CENTER);
         chessBoard.setPadding(new Insets(0,10,10,30));
         setCenter(chessBoard);
 
-        HBox bottom = generateBeatenPieces(guiGame);
+        HBox bottom = generateBeatenPieces();
         bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(5,0,5,40));
         setBottom(bottom);
     }
 
-    private HBox generatePlayersMoveLabelBox(GuiGame guiGame){
+
+    private HBox generatePlayersMoveLabelBox(){
         Label label = new Label(guiGame.game.currentPlayer.getColour().toString() + "s Turn");
         if (guiGame.game.isCheckMate()) {
             AlertBox.display("Game Information","CheckMate",guiGame.game.currentPlayer.getColour().toString() + " has lost the Game!");
@@ -76,7 +81,8 @@ public class ChessBoardView extends BorderPane {
         return new HBox(label);
     }
 
-    private HBox generateBeatenPieces(GuiGame guiGame){
+
+    private HBox generateBeatenPieces(){
         HBox box = new HBox();
         if(!guiGame.game.beatenPieces.isEmpty()){
             for (Piece piece: guiGame.game.beatenPieces){
@@ -86,50 +92,56 @@ public class ChessBoardView extends BorderPane {
         return box;
     }
 
-    private GridPane chooseButtonGridGeneration(GuiGame guiGame){
+
+    private GridPane generateGrid(){
+        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
+            // player selected first square
+            if (guiGame.getSquareStart().getOccupiedBy() != null) {
+                // selected first square is occupied
+                if (guiGame.highlightPossibleMoves) {
+                    // 'highlighting' is turned on
+                    if (guiGame.game.currentPlayer.getColour() == guiGame.getSquareStart().getOccupiedBy().getColour() ) {
+                        return generateHighlightedButtonGrid();
+                    } else {
+                        // selected Piece is not players colour
+                        guiGame.setSquareStart(null);
+                        AlertBox.display("Piece problem", null, "Selected Piece is not your Colour!");
+                    }
+                } else if (guiGame.getSquareStart().getOccupiedBy().getColour() != guiGame.game.currentPlayer.getColour()) {
+                    // 'highlighting' is turned off and selected Piece is not players colour
+                    guiGame.setSquareStart(null);
+                    AlertBox.display("Piece problem", null, "Selected Piece is not your Colour!");
+                }
+            } else {
+                // selected first square is empty
+                guiGame.setSquareStart(null);
+                AlertBox.display("Piece Problem", null, "There is no Piece to move!");
+            }
+        }
+        // no highlighted moves
+        return generateButtonGrid();
+    }
+
+
+    private GridPane chooseButtonGridGeneration(){
         if (!guiGame.game.enemyIsHuman && guiGame.game.userColour != Colour.WHITE && guiGame.freshGame) {
             // enemy is AI, player chose BLACK, firstMove?
             guiGame.setSquareStart(guiGame.game.chessBoard.getSquareAt(4, 6));
             guiGame.setSquareFinal(guiGame.game.chessBoard.getSquareAt(4, 4));
-            int result = processingMovement(guiGame);
+            int result = processingMovement();
             if (result == 0) {
                 guiGame.setSquareStart(null);
                 guiGame.setSquareFinal(null);
-                generatePane(guiGame);
+                generatePane();
             }
         }
-        return generateGrid(guiGame);
+        return generateGrid();
     }
 
-    private GridPane generateGrid(GuiGame guiGame){
-        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null && guiGame.highlightPossibleMoves) {
-            System.out.println(guiGame.getSquareStart().getLabel());
-            if(guiGame.getSquareStart().getOccupiedBy() != null){
-                System.out.println(guiGame.getSquareStart().getOccupiedBy());
-                if(guiGame.game.currentPlayer.getColour() == Colour.WHITE && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.WHITE) {
-                    return generateHighlightedButtonGrid(guiGame);
-                } else if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.getSquareStart().getOccupiedBy().getColour() == Colour.BLACK) {
-                    return generateHighlightedButtonGrid(guiGame);
-                } else {
-                    if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
-                        guiGame.setSquareStart(null);
-                        AlertBox.display("Piece problem", null, "Selected Piece is not your Colour!");
-                    }
-                }
-            } else {
-                if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
-                    guiGame.setSquareStart(null);
-                    AlertBox.display("Piece Problem", null, "There is no Piece to move!");
-                }
-            }
-        }
-        // no highlighted moves
-        return generateButtonGrid(guiGame);
-    }
 
-    private GridPane generateButtonGrid(GuiGame guiGame) {
+    private GridPane generateButtonGrid() {
         GridPane grid = new GridPane();
-        setButtons(grid, guiGame);
+        setButtons(grid);
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
             addIndices(grid,"black");
         } else if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
@@ -138,9 +150,10 @@ public class ChessBoardView extends BorderPane {
         return grid;
     }
 
-    private GridPane generateHighlightedButtonGrid(GuiGame guiGame){
+
+    private GridPane generateHighlightedButtonGrid(){
         GridPane grid = new GridPane();
-        setHighlightedButtons(grid, guiGame);
+        setHighlightedButtons(grid);
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman){
             addIndices(grid,"black");
         } else if (guiGame.game.currentPlayer.getColour() == Colour.WHITE || !guiGame.isRotatingBoard || guiGame.game.userColour == Colour.WHITE && !guiGame.game.enemyIsHuman) {
@@ -178,7 +191,7 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
-    private void setButtons(GridPane grid, GuiGame guiGame) {
+    private void setButtons(GridPane grid) {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Button button = new Button();
@@ -189,12 +202,12 @@ public class ChessBoardView extends BorderPane {
                 } else {
                     button.setStyle(black);
                 }
-                setButtonsOnGrid(button,guiGame,grid,x,y);
+                setButtonsOnGrid(button,grid,x,y);
             }
         }
     }
 
-    private void setHighlightedButtons(GridPane grid, GuiGame guiGame) {
+    private void setHighlightedButtons(GridPane grid) {
         List<Square> allowedSquares = guiGame.computePossibleSquares();
 
         if(allowedSquares.isEmpty()){
@@ -217,18 +230,18 @@ public class ChessBoardView extends BorderPane {
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
                     button.setStyle(highlight + ";" + border + ";" + black);
                 }
-                setButtonsOnGrid(button,guiGame,grid,x,y);
+                setButtonsOnGrid(button,grid,x,y);
             }
         }
     }
 
-    private void setButtonsOnGrid(Button button, GuiGame guiGame, GridPane grid, int x, int y) {
+    private void setButtonsOnGrid(Button button, GridPane grid, int x, int y) {
         button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
         if (!guiGame.game.isADraw() || !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
 
                 guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(x, y));
-                setButtonAction(guiGame);
+                setButtonAction();
             });
         }
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard || guiGame.game.userColour == Colour.BLACK && !guiGame.game.enemyIsHuman) {
@@ -238,18 +251,18 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
-    private void setButtonAction(GuiGame guiGame) {
+    private void setButtonAction() {
         if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
-            int result = processingMovement(guiGame);
+            int result = processingMovement();
             if (result == 0) {
                 // Move is allowed
                 guiGame.setSquareStart(null);
                 guiGame.setSquareFinal(null);
                 guiGame.game.isInCheck();
                 guiGame.game.isCheckMate();
-                generatePane(guiGame);
+                generatePane();
 
-                makeAIMove(guiGame);
+                makeAIMove();
                 System.out.println(guiGame.game.isCheckMate());
 
                 guiGame.game.isInCheck();
@@ -264,14 +277,14 @@ public class ChessBoardView extends BorderPane {
                     guiGame.setSquareStart(null);
                 }
                 guiGame.setSquareFinal(null);
-                generatePane(guiGame);
+                generatePane();
             }
         } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
-            generatePane(guiGame);
+            generatePane();
         }
     }
 
-    private void makeAIMove(GuiGame guiGame){
+    private void makeAIMove(){
         if (!guiGame.game.enemyIsHuman && !guiGame.game.isCheckMate()) {
             // generate move of AI
             int AI_result;
@@ -283,11 +296,11 @@ public class ChessBoardView extends BorderPane {
                 }
                 guiGame.setSquareStart(AIMove.getStartSquare());
                 guiGame.setSquareFinal(AIMove.getFinalSquare());
-                AI_result = processingMovement(guiGame);
+                AI_result = processingMovement();
                 guiGame.setSquareStart(null);
                 guiGame.setSquareFinal(null);
             } while (AI_result != 0);
-            generatePane(guiGame);
+            generatePane();
         }
     }
 
@@ -303,10 +316,10 @@ public class ChessBoardView extends BorderPane {
         }
     }
 
-    private int processingMovement(GuiGame guiGame) {
+    private int processingMovement() {
         if(!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw() || !guiGame.game.isCheckMate()
                 && guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
-            return isMoveAllowed(guiGame);
+            return isMoveAllowed();
         }
         if(guiGame.game.isCheckMate()){
             // player is check mate
@@ -318,7 +331,7 @@ public class ChessBoardView extends BorderPane {
         return 5;
     }
 
-    private int isMoveAllowed(GuiGame guiGame) {
+    private int isMoveAllowed() {
         Piece selectedPiece = guiGame.getSquareStart().getOccupiedBy();
         Square startSquare = guiGame.getSquareStart();
         Square finalSquare = guiGame.getSquareFinal();
