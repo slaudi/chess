@@ -3,7 +3,6 @@ package chess.engine;
 import chess.game.Colour;
 import chess.game.Game;
 import chess.pieces.King;
-import chess.pieces.Piece;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 import org.junit.jupiter.api.BeforeEach;
