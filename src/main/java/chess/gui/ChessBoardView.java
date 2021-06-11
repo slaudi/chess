@@ -157,7 +157,8 @@ public class ChessBoardView extends BorderPane {
     private void addIndices(GridPane grid) {
         String[] columns = {"A","B","C","D","E","F","G","H"};
         String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8"};
-        if (colour.equals("black")) {
+        if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard
+                || !guiGame.game.enemyIsHuman && guiGame.game.userColour == Colour.BLACK) {
             int c = 0;
             for (int i = columns.length - 1; i >= 0; i--) {
                 Label letter = new Label(columns[i]);
