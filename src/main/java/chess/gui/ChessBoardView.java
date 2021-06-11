@@ -75,7 +75,6 @@ public class ChessBoardView extends BorderPane {
             label = new Label("The Game ended in a draw!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
             label = new Label(guiGame.game.currentPlayer.getColour().toString() + "s Turn -- " + guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
-            AlertBox.display("Check Hint",null, guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
         }
         label.setFont(new Font(fontSize));
         return new HBox(label);
@@ -289,6 +288,21 @@ public class ChessBoardView extends BorderPane {
                 guiGame.setSquareFinal(null);
             } while (AI_result != 0);
             generatePane();
+        }
+    }
+
+    void generateAnswer(int result) {
+        if (result == 1){
+            AlertBox.display("Piece Error", null, "'Change Selection' is turned off. You can't select another piece!");
+        } else if (result == 2) {
+            AlertBox.display("Movement Error", null, "Move not allowed: Your King would be in Check!");
+        } else if (result == 4){
+            AlertBox.display("Movement Error",null,"Move not allowed: Not possible!");
+        } else if (result == 7){
+            AlertBox.display("Game-Error",null,"Something unexpected happened!?");
+        }
+        if (result == 0 && guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
+            AlertBox.display("Check Hint",null, guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
         }
     }
 
