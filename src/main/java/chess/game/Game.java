@@ -226,10 +226,10 @@ public class Game {
                     }
                 }
             }
-            //nor allies or they cant move
+            //no allies or they cant move
             return true;
         }
-        // King is in check, but that's not a draw (might be checkmate though)
+        // King is in check -> not a draw
         return false;
     }
 
