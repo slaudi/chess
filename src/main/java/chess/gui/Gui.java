@@ -47,14 +47,14 @@ public class Gui extends Application {
         // Chess board
         chessScene = chessWindow(primaryStage, currentGame);
 
+
+        primaryStage.setScene(startScene);
         primaryStage.setTitle("Chess!");
         primaryStage.show();
     }
 
 
     private Scene startWindow(Stage primaryStage, GuiGame guiGame) {
-
-        primaryStage.setScene(startScene);
 
         Label label = new Label("Welcome to a new Game of Chess!");
 
