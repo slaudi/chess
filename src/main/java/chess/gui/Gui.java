@@ -118,9 +118,11 @@ public class Gui extends Application {
                 guiGame.game.userColour = Colour.WHITE;
             } else {
                 guiGame.game.userColour = Colour.BLACK;
+                guiGame.turnAI = true;
             }
         }
     }
+
 
     private void startNetworkGame(Stage primaryStage) {
         GridPane grid = new GridPane();
