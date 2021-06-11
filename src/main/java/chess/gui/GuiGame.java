@@ -21,8 +21,8 @@ public class GuiGame {
     boolean highlightPossibleMoves;
     boolean allowedToChangeSelectedPiece; //in processingMove
     boolean hintInCheck;
-    boolean freshGame;
     boolean draw;
+    boolean turnAI;
 
     /**
      * Constructor for GuiGame-Objects
@@ -36,8 +36,8 @@ public class GuiGame {
         this.highlightPossibleMoves = true;
         this.allowedToChangeSelectedPiece = false;
         this.hintInCheck = true;
-        this.freshGame = true;
         this.draw = false;
+        this.turnAI = false;
     }
 
     void setSquareStart(Square square){
