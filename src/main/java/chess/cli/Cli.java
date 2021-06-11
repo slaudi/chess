@@ -34,7 +34,7 @@ public class Cli {
             System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
             currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite ? currentGame.playerBlack : currentGame.playerWhite;
             System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
-        } else if (currentGame.isADraw()) {
+        } else if (currentGame.isDraw()) {
             System.out.println("The game ended in a draw!");
         }
     }
@@ -94,21 +94,10 @@ public class Cli {
 
         if (currentGame.isMoveAllowed(selectedPiece, finalSquare)) {
             // validates user-input semantically
-
             if (currentGame.processMove(startSquare, finalSquare, key)) {
                 System.out.println("!" + userInput);
                 if(!currentGame.enemyIsHuman){
-                    Move enemyMove = Engine.nextBestMove(currentGame);
-                    Square startSquareEnemy = enemyMove.getStartSquare();
-                    Square finalSquareEnemy = enemyMove.getFinalSquare();
-                    char keyEnemy = 'Q';
-                    if (!currentGame.processMove(startSquareEnemy, finalSquareEnemy, keyEnemy)) {
-                        System.out.println("!Move not allowed(AI)\n");
-                    }
-                    else{
-                        System.out.println("!" + startSquareEnemy.getLabel().toString() + "-" + finalSquareEnemy.getLabel().toString() + "\n");
-                    }
-                    //toConsole(currentGame);
+                    makeAIMove(currentGame);
                 }
                 return true;
             } else {
@@ -122,6 +111,7 @@ public class Cli {
             return false;
         }
     }
+
 
     private static boolean checkForCommand(String userInput, Game currentGame){
         if (userInput.equals("beaten")) {
@@ -138,6 +128,28 @@ public class Cli {
             return true;
         }
         return false;
+    }
+
+    private static void makeAIMove(Game currentGame){
+        Square startSquareEnemy = null;
+        Square finalSquareEnemy = null;
+        char keyEnemy;
+        do {
+            Move enemyMove = Engine.nextBestMove(currentGame);
+            if (enemyMove == null) {
+                currentGame.setDraw(true);
+                break;
+            }
+            startSquareEnemy = enemyMove.getStartSquare();
+            finalSquareEnemy = enemyMove.getFinalSquare();
+            keyEnemy = 'Q';
+        } while (!currentGame.processMove(startSquareEnemy,finalSquareEnemy,keyEnemy));
+        if (currentGame.isDraw()){
+            System.out.println(" ");;
+        } else {
+            assert startSquareEnemy != null;
+            System.out.println("!" + startSquareEnemy.getLabel().toString() + "-" + finalSquareEnemy.getLabel().toString() + "\n");
+        }
     }
 
     /**

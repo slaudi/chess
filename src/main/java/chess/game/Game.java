@@ -34,6 +34,7 @@ public class Game {
     public Colour userColour;
     public boolean enemyIsHuman;
     public boolean german;
+    private boolean draw;
 
 
     /**
@@ -51,7 +52,16 @@ public class Game {
         this.userColour = Colour.BLACK;
         this.enemyIsHuman = true;
         this.german = false;
+        this.draw = false;
 
+    }
+
+    public boolean isDraw() {
+        return draw;
+    }
+
+    public void setDraw(boolean bool){
+        this.draw = bool;
     }
 
     /**
@@ -227,6 +237,7 @@ public class Game {
                 }
             }
             //no allies or they cant move
+            setDraw(true);
             return true;
         }
         // King is in check -> not a draw
@@ -393,7 +404,6 @@ public class Game {
         // move doesn't put King in check
         return true;
     }
-
 
 }
 

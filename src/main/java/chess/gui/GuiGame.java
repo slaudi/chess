@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HelperClass for Gameclass for Methods only needed when Playing in GUI
+ * HelperClass for Game class for Methods only needed when Playing in GUI
  */
 public class GuiGame {
 
@@ -21,7 +21,6 @@ public class GuiGame {
     boolean highlightPossibleMoves;
     boolean allowedToChangeSelectedPiece; //in processingMove
     boolean hintInCheck;
-    boolean draw;
     boolean turnAI;
 
     /**
@@ -36,7 +35,6 @@ public class GuiGame {
         this.highlightPossibleMoves = true;
         this.allowedToChangeSelectedPiece = false;
         this.hintInCheck = true;
-        this.draw = false;
         this.turnAI = false;
     }
 
@@ -46,10 +44,6 @@ public class GuiGame {
 
     void setSquareFinal(Square square){
         this.squareFinal = square;
-    }
-
-    void setDraw(boolean bool){
-        this.draw = bool;
     }
 
     Square getSquareStart(){

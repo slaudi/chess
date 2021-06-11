@@ -74,7 +74,7 @@ public class ChessBoardView extends BorderPane {
         if (guiGame.game.isCheckMate()) {
             AlertBox.display("Game Information","CheckMate",guiGame.game.currentPlayer.getColour().toString() + " has lost the Game!");
             label = new Label(guiGame.game.currentPlayer.getColour().toString() + " lost the Game!");
-        } else if (guiGame.game.isADraw() || guiGame.draw) {
+        } else if (guiGame.game.isADraw() || guiGame.game.isDraw()) {
             AlertBox.display("Game Information","Draw","The Game ended in a draw!");
             label = new Label("The Game ended in a draw!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
@@ -284,7 +284,7 @@ public class ChessBoardView extends BorderPane {
                 Move AIMove = Engine.nextBestMove(guiGame.game);
                 // no piece can move
                 if(AIMove == null){
-                    guiGame.setDraw(true);
+                    guiGame.game.setDraw(true);
                     break;
                 }
                 guiGame.setSquareStart(AIMove.getStartSquare());
