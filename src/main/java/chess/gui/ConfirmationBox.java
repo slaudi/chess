@@ -6,10 +6,20 @@ import javafx.stage.Modality;
 
 import java.util.Optional;
 
+/**
+ * Class for Instantiating a PopUp with a Yes- and No-Button-Option
+ */
 public class ConfirmationBox {
 
     static boolean answer;
 
+    /**
+     * Function which displays the specified alert message.
+     *
+     * @param title Title of PopUp-Window
+     * @param message Content of PopUp-Window
+     * @return Returns the Answer of User(Yes or No) as a Boolean
+     */
     public static boolean display(String title, String message){
         Alert alert = new Alert(Alert.AlertType.NONE);
 
