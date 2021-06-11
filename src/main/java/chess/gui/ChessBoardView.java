@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * The class generating the chess board as a GUI.
  */
-public class ChessBoardView extends BorderPane {
+public class ChessBoardView extends BorderPane { //NOPMD will be lower when the option to change languages is integrated
 
     /**
      * ChessBoardView class has access to GuiGame class.
