@@ -20,7 +20,7 @@ public class Engine {
      */
     public static Move nextBestMove(Game game) {
         Colour colourAI = Colour.BLACK;
-        if(game.userColour == Colour.BLACK){
+        if(game.getUserColour() == Colour.BLACK){
             colourAI = Colour.WHITE;
         }
 

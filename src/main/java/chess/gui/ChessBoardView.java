@@ -148,7 +148,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8"};
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard
                 /*geht auch ohne nachfolgendes, wenn button Rotation bei KI-Spiel ausgeschaltet wäre*/
-                || !guiGame.game.enemyIsHuman && guiGame.game.userColour == Colour.BLACK ) {
+                || !guiGame.game.isEnemyHuman() && guiGame.game.getUserColour() == Colour.BLACK ) {
             int c = 0;
             for (int i = columns.length - 1; i >= 0; i--) {
                 Label letter = new Label(columns[i]);
@@ -224,8 +224,8 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
     private void setButtonsOnGrid(Button button, GridPane grid, int x, int y) {
         button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
 
-        if (!guiGame.game.enemyIsHuman) {
-            if (guiGame.game.userColour == Colour.BLACK) {
+        if (!guiGame.game.isEnemyHuman()) {
+            if (guiGame.game.getUserColour() == Colour.BLACK) {
                 grid.add(button, 7 - x, 7 - y);
             } else {
                 grid.add(button, x, y);
@@ -237,11 +237,11 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         }
 
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
-            if (!guiGame.game.enemyIsHuman && guiGame.turnAI) {
+            if (!guiGame.game.isEnemyHuman() && guiGame.turnAI) {
                 makeAIMove();
             }
             button.setOnAction(event -> {
-                guiGame.setBothMovingSquares(guiGame.game.chessBoard.getSquareAt(x, y));
+                guiGame.setBothSquares(guiGame.game.chessBoard.getSquareAt(x, y));
                 setButtonAction();
             });
         }

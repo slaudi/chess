@@ -6,61 +6,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HelperClass for Game class for Methods only needed when Playing in GUI
+ * HelperClass for Game class for Methods only needed when Playing in GUI.
  */
 public class GuiGame {
 
     /**
-     * Kind of Superclass for GUIGame
+     * The GuiGame class can access the actual Game class to make moves.
      */
     public Game game;
 
-    Square squareStart;
-    Square squareFinal;
-    boolean isRotatingBoard;
-    boolean highlightPossibleMoves;
-    boolean allowedToChangeSelectedPiece; //in processingMove
-    boolean hintInCheck;
-    boolean turnAI;
+    Square squareStart = null;
+    Square squareFinal = null;
+
+    boolean isRotatingBoard = true;
+    boolean highlightPossibleMoves = true;
+    boolean allowedToChangeSelectedPiece = false;
+    boolean hintInCheck = true;
+    boolean turnAI = false;
 
     /**
      * Constructor for GuiGame-Objects
      */
     public GuiGame(){
         this.game = new Game();
-
-        this.squareStart = null;
-        this.squareFinal = null;
-        this.isRotatingBoard = true;
-        this.highlightPossibleMoves = true;
-        this.allowedToChangeSelectedPiece = false;
-        this.hintInCheck = true;
-        this.turnAI = false;
-    }
-
-    void setSquareStart(Square square){
-        this.squareStart = square;
-    }
-
-    void setSquareFinal(Square square){
-        this.squareFinal = square;
     }
 
     Square getSquareStart(){
         return this.squareStart;
     }
 
+    void setSquareStart(Square square){
+        this.squareStart = square;
+    }
+
     Square getSquareFinal(){
         return this.squareFinal;
     }
 
-    void setBothMovingSquares(Square square){
+    void setSquareFinal(Square square){
+        this.squareFinal = square;
+    }
+
+
+    void setBothSquares(Square square){
         if(this.getSquareStart() == null){
             this.setSquareStart(square);
         } else {
             this.setSquareFinal(square);
         }
     }
+
 
     List<Square> computePossibleSquares() {
         List<Square> possibleSquares = new ArrayList<>();

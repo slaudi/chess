@@ -30,13 +30,18 @@ public class Game {
      * The list where all beaten pieces are stored.
      */
     public final List<Piece> beatenPieces;
+    /**
+     * This list stores every move made in the game.
+     */
     public final List<Move> moveHistory;
 
-    public Colour userColour;
-    public boolean enemyIsHuman;
-    public boolean german;
-    private boolean draw;
+    // variables to help control the chess engine
+    private Colour userColour = Colour.BLACK;
+    private boolean enemyHuman = true;
+    private boolean draw = false;
 
+    // variable to determine which language the user chose
+    private boolean german = false;
 
     /**
      * Constructor for creating a new Game.
@@ -49,12 +54,30 @@ public class Game {
         this.chessBoard = new Board(8,8);
         this.beatenPieces = new ArrayList<>();
         this.moveHistory = new ArrayList<>();
+    }
 
-        this.userColour = Colour.BLACK;
-        this.enemyIsHuman = true;
-        this.german = false;
-        this.draw = false;
+    public Colour getUserColour(){
+        return this.userColour;
+    }
 
+    public void setUserColour(Colour userColour){
+        this.userColour = userColour;
+    }
+
+    public boolean isEnemyHuman() {
+        return enemyHuman;
+    }
+
+    public void setEnemyHuman(boolean enemyIsHuman) {
+        this.enemyHuman = enemyIsHuman;
+    }
+
+    public boolean isGerman() {
+        return german;
+    }
+
+    public void setGerman(boolean german) {
+        this.german = german;
     }
 
     public boolean isDraw() {
@@ -74,7 +97,7 @@ public class Game {
      * @return boolean Returns 'true' if the move is possible.
      */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
-        if (enemyIsHuman) {
+        if (this.enemyHuman) {
             if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
                 return false;
             }
@@ -86,6 +109,7 @@ public class Game {
         return canDoMove(selectedPiece,finalSquare);
     }
 
+
     private boolean canDoMove(Piece selectedPiece, Square finalSquare) {
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (targetPiece != null) {
@@ -94,6 +118,7 @@ public class Game {
         // final square is empty
         return canMoveToEmptySquare(selectedPiece,finalSquare);
     }
+
 
     private boolean canAttackTarget(Piece selectedPiece, Piece targetPiece, Square finalSquare){
         // the final Square is occupied by another piece
@@ -228,7 +253,7 @@ public class Game {
                 }
             }
             //no allies or they cant move
-            setDraw(true);
+            this.draw = true;
             return true;
         }
         // King is in check -> not a draw
@@ -395,6 +420,7 @@ public class Game {
         // move doesn't put King in check
         return true;
     }
+
 
 }
 

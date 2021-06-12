@@ -98,11 +98,11 @@ public class Gui extends Application {
 
         ButtonType enemyResult = OptionBox.display("Enemy Selection",null,"Choose your Enemy",enemy);
         if (enemyResult == computer){
-            guiGame.game.enemyIsHuman = false;
+            guiGame.game.setEnemyHuman(false);
             guiGame.isRotatingBoard = false;
         }
 
-        if(!guiGame.game.enemyIsHuman) {
+        if(!guiGame.game.isEnemyHuman()) {
             ButtonType white = new ButtonType("White");
             ButtonType black = new ButtonType("Black");
 
@@ -111,9 +111,9 @@ public class Gui extends Application {
 
             ButtonType colourResult = OptionBox.display("Colour Selection",null,"Choose your Colour", colour);
             if (colourResult == white) {
-                guiGame.game.userColour = Colour.WHITE;
+                guiGame.game.setUserColour(Colour.WHITE);
             } else {
-                guiGame.game.userColour = Colour.BLACK;
+                guiGame.game.setUserColour(Colour.BLACK);
                 guiGame.turnAI = true;
             }
         }
@@ -152,12 +152,12 @@ public class Gui extends Application {
         List<ButtonType> language = new ArrayList<>();
         Collections.addAll(language,german,english);
         ButtonType result;
-        if (guiGame.game.german) {
+        if (guiGame.game.isGerman()) {
             result = OptionBox.display("Sprachauswahl",null,"Wähle Sprache",language);
         } else {
             result = OptionBox.display("Language Selection", null, "Choose Language", language);
         }
-        guiGame.game.german = result == german;
+        guiGame.game.setGerman(result == german);
     }
 
     private Scene chessWindow(Stage primaryStage, GuiGame guiGame) {

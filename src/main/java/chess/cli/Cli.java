@@ -60,7 +60,7 @@ public class Cli {
                 currentGame.currentPlayer = currentGame.playerWhite;
                 currentGame.beatenPieces.clear();
                 currentGame.moveHistory.clear();
-                currentGame.enemyIsHuman = false;
+                currentGame.setEnemyHuman(false);
                 toConsole(currentGame);
             } else if (answer.equals("person")) {
                 // default
@@ -96,7 +96,7 @@ public class Cli {
             // validates user-input semantically
             if (currentGame.processMove(startSquare, finalSquare, key)) {
                 System.out.println("!" + userInput);
-                if(!currentGame.enemyIsHuman){
+                if(!currentGame.isEnemyHuman()){
                     makeAIMove(currentGame);
                 }
                 return true;
