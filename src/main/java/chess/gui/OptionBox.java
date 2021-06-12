@@ -11,8 +11,6 @@ import java.util.Optional;
  */
 public class OptionBox {
 
-    static ButtonType buttonType;
-
     /**
      * @param title Title for the Options-Window
      * @param headerText Heading in Options-Menu
