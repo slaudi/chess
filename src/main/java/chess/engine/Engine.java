@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class Engine {
 
+    private static int boardValueAfterMove = 0;
+
     /**
      *
      * @param game current game state
@@ -42,13 +44,13 @@ public class Engine {
         }
 
         for (Move move : moveCollection){
-            if(move.boardValueAfterMove > max){
-                max = move.boardValueAfterMove;
+            if(boardValueAfterMove > max){
+                max = boardValueAfterMove;
             }
         }
 
         for (Move move : moveCollection) {
-            if (move.boardValueAfterMove == max) {
+            if (boardValueAfterMove == max) {
                 maxValueMoves.add(move);
             }
         }
@@ -83,7 +85,7 @@ public class Engine {
             Game gameAfterOneMove = new Game();
             gameAfterOneMove.chessBoard = game.chessBoard;
             move.doMove(gameAfterOneMove.chessBoard);
-            move.boardValueAfterMove = EvaluatePieces.evaluateBoard(gameAfterOneMove, colourAI);
+            boardValueAfterMove = EvaluatePieces.evaluateBoard(gameAfterOneMove, colourAI);
 
             gameAfterOneMove.changePlayer();
             if(gameAfterOneMove.isInCheck()){

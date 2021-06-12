@@ -7,13 +7,9 @@ import chess.pieces.*;
  * King of the current Player doing the move in check.
  */
 public class Move {
-    final Square startSquare;
-    final Square finalSquare;
-    final Piece movingPiece;
-    /**
-     *
-     */
-    public int boardValueAfterMove = 0;
+    private final Square startSquare;
+    private final Square finalSquare;
+    private final Piece movingPiece;
 
     /**
      * Constructor for creating new player.
