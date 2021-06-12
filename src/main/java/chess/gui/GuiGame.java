@@ -57,12 +57,13 @@ public class GuiGame {
     }
 
 
+    // computes a list a possible Squares to move to for a Piece to highlight in GUI
     List<Square> computePossibleSquares() {
         List<Square> possibleSquares = new ArrayList<>();
         for (int y = 0; y < game.chessBoard.getHeight(); y++) {
             for (int x = 0; x < game.chessBoard.getWidth(); x++) {
                 if (game.isMoveAllowed(getSquareStart().getOccupiedBy(), game.chessBoard.getSquareAt(x,y))){
-                    if(getSquareStart().getOccupiedBy().getType() != Type.KING){
+                    if(this.squareStart.getOccupiedBy().getType() != Type.KING){
                         possibleSquares.add(game.chessBoard.getSquareAt(x,y));
                     } else {
                         if(game.isSafeSquare(game.chessBoard.getSquareAt(x,y))){

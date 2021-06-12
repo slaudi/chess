@@ -125,6 +125,8 @@ public abstract class Piece {
 
     /**
      * A function determining if a Square is directly next to a selected Piece.
+     * It is a static method so isADraw() (which can't have any parameters as it's once called from the
+     * while-loop in CLI/Simple) can call it from canKingMove().
      *
      * @param piecesSquare The Square the selected Piece stands on.
      * @param squareOfInterest The Square where the Piece should move to.
