@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * The Game class which defines and controls the current game.
  */
-public class Game {
+public class Game {//NOPMD class controls the Game, needs more methods
+
     /**
      * The player associated with the Colour object White in the current game.
      */
@@ -27,13 +28,13 @@ public class Game {
      */
     public Board chessBoard;
     /**
-     * The list where all beaten pieces are stored.
+     * This list stores all beaten pieces.
      */
-    public final List<Piece> beatenPieces;
+    public final List<Piece> beatenPieces = new ArrayList<>();
     /**
      * This list stores every move made in the game.
      */
-    public final List<Move> moveHistory;
+    public final List<Move> moveHistory = new ArrayList<>();
 
     // variables to help control the chess engine
     private Colour userColour = Colour.BLACK;
@@ -52,8 +53,6 @@ public class Game {
         this.currentPlayer = playerWhite;   // White always begins
 
         this.chessBoard = new Board(8,8);
-        this.beatenPieces = new ArrayList<>();
-        this.moveHistory = new ArrayList<>();
     }
 
     public Colour getUserColour(){
