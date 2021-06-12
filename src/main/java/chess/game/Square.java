@@ -9,9 +9,9 @@ import chess.pieces.Piece;
 public class Square {
     private final int x;
     private final int y;
-    Piece occupiedBy = null;
-    Label label;
-    Colour colour;
+    private Piece occupiedBy = null;
+    private final Label label;
+    private final Colour colour;
 
     /**
      * Constructor for creating a single square when starting a new Game.
