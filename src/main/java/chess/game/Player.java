@@ -9,9 +9,9 @@ import java.util.List;
  * The Player class defines each of the two Players and their allies and enemies on the board.
  */
 public class Player {
-    private Colour colour;
-    boolean inCheck = false;
-    boolean loser = false;
+    private final Colour colour;
+    private boolean inCheck = false;
+    private boolean loser = false;
 
     /**
      * Constructor for creating a new player.
@@ -23,47 +23,27 @@ public class Player {
         this.colour = colour;
     }
 
-    /**
-     * Getter of Player-colour
-     * @return returns Player-Colour
-     */
+
     public Colour getColour() {
         return colour;
     }
 
-    /**
-     * Sets Player-Colour to black or white.
-     *
-     * @param x Colour: Black or White
-     */
-    public void setColour(Colour x) {
-        this.colour = x;
-    }
-
-    /**
-     * Gets Player Check-Status
-     * @return returns Players check-status
-     */
     public boolean isInCheck() {
-        return this.inCheck;
+        return inCheck;
     }
 
-    /**
-     * Sets Player-Check-Status to true or false.
-     *
-     * @param x boolean
-     */
-    public void setInCheck(boolean x) {
-        this.inCheck = x;
+    public void setInCheck(boolean inCheck) {
+        this.inCheck = inCheck;
     }
 
     public boolean isLoser() {
-        return this.loser;
+        return loser;
     }
 
-    public void setLoser(boolean lost) {
-        this.loser = lost;
+    public void setLoser(boolean loser) {
+        this.loser = loser;
     }
+
 
     /**
      * A function gathering all allied Pieces of a player on the current board
@@ -75,7 +55,7 @@ public class Player {
     public List<Piece> getAlliedPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> allies;
         List<Piece> piecesToRemove = new ArrayList<>();
-        if(this.getColour() == Colour.WHITE) {
+        if(this.colour == Colour.WHITE) {
             allies = chessBoard.getWhiteAlliance();
         } else {
             allies = chessBoard.getBlackAlliance();
@@ -105,7 +85,7 @@ public class Player {
     public List<Piece> getEnemyPieces(List<Piece> beatenPieces, Board chessBoard) {
         List<Piece> enemies;
         List<Piece> piecesToRemove = new ArrayList<>();
-        if(this.getColour() == Colour.WHITE) {
+        if(this.colour == Colour.WHITE) {
             enemies = chessBoard.getBlackAlliance();
         } else {
             enemies = chessBoard.getWhiteAlliance();

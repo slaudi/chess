@@ -42,21 +42,12 @@ public class PlayerTest {
     }
 
     /**
-     * tests setter for colour
-     */
-    @Test
-    public void setColour() {
-        game.currentPlayer.setColour(Colour.WHITE);
-        assertEquals(Colour.WHITE, game.currentPlayer.getColour());
-    }
-
-    /**
      * tests setter for incheck
      */
     @Test
     public void setInCheck() {
         game.currentPlayer.setInCheck(true);
-        assertTrue(game.currentPlayer.inCheck);
+        assertTrue(game.currentPlayer.isInCheck());
     }
 
     /**
@@ -65,7 +56,7 @@ public class PlayerTest {
     @Test
     public void setLoser() {
         game.currentPlayer.setLoser(true);
-        assertTrue(game.currentPlayer.loser);
+        assertTrue(game.currentPlayer.isLoser());
     }
 
     /**
