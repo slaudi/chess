@@ -44,11 +44,6 @@ public class King extends Piece {
     }
 
     @Override
-    public boolean hasNotMoved() {
-        return this.notMoved;
-    }
-
-    @Override
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
@@ -151,7 +146,7 @@ public class King extends Piece {
      */
     public boolean canDoCastling (Square finalSquare, List<Piece> enemies, Board currentBoard) {
         List<Square> castlingPath;
-        if (this.hasNotMoved()){
+        if (this.notMoved){
             if(this.getSquare().getX() - finalSquare.getX() == 2 && this.getSquare().getY() - finalSquare.getY() == 0){  //queenside
                 castlingPath = queensideCastling(currentBoard);
                 if (castlingPath.isEmpty()) {
@@ -221,7 +216,7 @@ public class King extends Piece {
 
     private boolean helperCastling(Colour colour, int x, int y, Board chessBoard) {
         return this.getColour() == colour && chessBoard.getBoard()[x][y].getOccupiedBy() != null
-                && chessBoard.getPieceAt(x, y).hasNotMoved();
+                && chessBoard.getPieceAt(x, y).notMoved;
     }
 
 

@@ -70,20 +70,12 @@ public class RookTest {
     }
 
     /**
-     * tests if getter for hasMoved works
-     */
-    @Test
-    public void getHasMoved() {
-        assertTrue(rook.hasNotMoved());
-    }
-
-    /**
      * tests setter for hasMoved
      */
     @Test
     public void setHasMoved() {
         rook.setNotMoved(false);
-        assertFalse(rook.hasNotMoved());
+        assertFalse(rook.notMoved);
     }
 
     /**
@@ -92,15 +84,6 @@ public class RookTest {
     @Test
     public void isPiecesMove() {
         assertTrue(rook.isPiecesMove(squareF4, game.chessBoard));
-    }
-
-    /**
-     * tests if piece has already moved
-     */
-    @Test
-    public void isHasMoved() {
-        rook.setNotMoved(false);
-        assertFalse(rook.hasNotMoved());
     }
 
     /**

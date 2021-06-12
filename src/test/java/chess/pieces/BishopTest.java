@@ -77,20 +77,12 @@ public class BishopTest {
     }
 
     /**
-     * tests getter for movedPiece
-     */
-    @Test
-    public void getHasMoved() {
-        assertTrue(bishop.hasNotMoved());
-    }
-
-    /**
      * tests setter for MovedPiece
      */
     @Test
     public void setHasMoved() {
         bishop.setNotMoved(false);
-        assertFalse(bishop.hasNotMoved());
+        assertFalse(bishop.notMoved);
     }
 
     /**
@@ -183,7 +175,7 @@ public class BishopTest {
     @Test
     public void hasNotMoved() {
         bishop.setNotMoved(false);
-        assertFalse(bishop.hasNotMoved());
+        assertFalse(bishop.notMoved);
     }
 
     /**

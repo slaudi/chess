@@ -43,11 +43,6 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean hasNotMoved() {
-        return this.notMoved;
-    }
-
-    @Override
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }

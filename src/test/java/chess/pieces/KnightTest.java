@@ -72,14 +72,6 @@ public class KnightTest {
     }
 
     /**
-     * tests getter for hasMoved
-     */
-    @Test
-    public void getHasMoved() {
-        assertTrue(knight.hasNotMoved());
-    }
-
-    /**
      * tests setter for hasMoved
      */
     @Test
@@ -101,14 +93,6 @@ public class KnightTest {
         assertFalse(knight.isPiecesMove(squareC4, game.chessBoard));
     }
 
-    /**
-     * tests is piece has moved
-     */
-    @Test
-    public void isHasMoved() {
-        knight.setNotMoved(false);
-        assertFalse(knight.hasNotMoved());
-    }
 
     /**
      * tests if toStringOutput works

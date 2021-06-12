@@ -78,20 +78,12 @@ public class PawnTest {
     }
 
     /**
-     * tests getter for has moved
-     */
-    @Test
-    public void getHasMoved() {
-        assertTrue(pawnW.hasNotMoved());
-    }
-
-    /**
      * tests setter for has moved
      */
     @Test
     public void setHasMoved() {
         pawnW.setNotMoved(false);
-        assertFalse(pawnW.hasNotMoved());
+        assertFalse(pawnW.notMoved);
     }
 
     /**
@@ -174,14 +166,6 @@ public class PawnTest {
         assertFalse(pawnB.isPiecesMove(game.chessBoard.getBoard()[2][4], game.chessBoard));
     }
 
-    /**
-     * tests if has moved works
-     */
-    @Test
-    public void isHasMoved() {
-        pawnW.setNotMoved(false);
-        assertFalse(pawnW.hasNotMoved());
-    }
 
     /**
      * tests if toStringOutput works

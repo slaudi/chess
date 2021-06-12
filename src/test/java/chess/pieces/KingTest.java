@@ -74,20 +74,12 @@ public class KingTest {
     }
 
     /**
-     * tests if hasn't moved works
-     */
-    @Test
-    public void hasNotMoved() {
-        assertTrue(king.hasNotMoved());
-    }
-
-    /**
      * tests setter for hasn't moved
      */
     @Test
     public void setHasMoved() {
         king.setNotMoved(false);
-        assertFalse(king.hasNotMoved());
+        assertFalse(king.notMoved);
     }
 
     /**
@@ -103,14 +95,6 @@ public class KingTest {
         assertFalse(king.isPiecesMove(square, game.chessBoard));
     }
 
-    /**
-     * tests if piece has moved
-     */
-    @Test
-    public void isHasMoved() {
-        king.setNotMoved(false);
-        assertFalse(king.hasNotMoved());
-    }
 
     /**
      * tests if output to string works

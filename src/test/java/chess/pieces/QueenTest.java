@@ -72,20 +72,12 @@ public class QueenTest {
     }
 
     /**
-     * tests if hasMoved works
-     */
-    @Test
-    public void getHasMoved() {
-        assertTrue(queen.hasNotMoved());
-    }
-
-    /**
      * tests setter for hasMoved
      */
     @Test
     public void setHasMoved() {
         queen.setNotMoved(false);
-        assertFalse(queen.hasNotMoved());
+        assertFalse(queen.notMoved);
     }
 
     /**
@@ -98,14 +90,6 @@ public class QueenTest {
         assertFalse(queen.isPiecesMove(squareC4, game.chessBoard));
     }
 
-    /**
-     * tests if piece already moved
-     */
-    @Test
-    public void isHasMoved() {
-        queen.setNotMoved(true);
-        assertTrue(queen.hasNotMoved());
-    }
 
     /**
      * tests if toStringOutput works
