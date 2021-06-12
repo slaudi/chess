@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class Gui extends Application {
 
-    static Scene startScene, chessScene;
+    private static Scene startScene, chessScene;
 
     /**
      * The entry point of the GUI application.

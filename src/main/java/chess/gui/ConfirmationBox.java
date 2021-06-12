@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public class ConfirmationBox {
 
-    static boolean answer;
+    private static boolean answer;
 
     /**
      * @param title Title of PopUp-Window

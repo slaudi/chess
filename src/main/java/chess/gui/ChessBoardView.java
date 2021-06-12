@@ -27,12 +27,11 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
      */
     public GuiGame guiGame;
 
-    String white;
-    String black;
-    String highlight;
-    int buttonHeight = 85;
-    int buttonWidth = 85;
-    int fontSize = 17;
+    private final String white;
+    private final String black;
+    private final int buttonHeight = 85;
+    private final int buttonWidth = 85;
+    private final int fontSize = 17;
 
 
     /**
@@ -45,7 +44,6 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
         this.white = "-fx-background-color: floralwhite";
         this.black = "-fx-background-color: slategray";
-        this.highlight = "-fx-border-color: skyblue";
 
         generatePane();
     }
@@ -210,6 +208,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
                     button.setStyle(black);
                 }
                 String border = "-fx-border-width: 3px";
+                String highlight = "-fx-border-color: skyblue";
                 if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
                     button.setStyle(highlight + ";" + border + ";" + white);
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {

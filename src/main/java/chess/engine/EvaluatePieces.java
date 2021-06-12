@@ -18,7 +18,7 @@ public class EvaluatePieces {
      * @param AIColour colour of AI
      * @return integer-value of current board
      */
-    public static int evaluateBoard(Game game, Colour AIColour) {
+    static int evaluateBoard(Game game, Colour AIColour) {
         boolean endgame = evaluateEndgame(game, AIColour);
         int sum = 0;
         for (int y = 0; y < game.chessBoard.getHeight(); y++) {
@@ -52,13 +52,12 @@ public class EvaluatePieces {
      * @param piece The Piece being evaluated.
      * @return int The value of the Piece.
      */
-    public static int piecesValue(Piece piece){
+    static int piecesValue(Piece piece){
         if(piece != null) {
             switch (piece.getType()) {
                 case PAWN:
                     return 100;
                 case KNIGHT:
-                    return 300;
                 case BISHOP:
                     return 300;
                 case ROOK:

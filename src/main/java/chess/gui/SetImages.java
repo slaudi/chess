@@ -6,7 +6,7 @@ import chess.game.Type;
 import javafx.scene.image.ImageView;
 
 /**
- *
+ * The class figures out which image is needed and gets the requested image from the ImageHandler class.
  */
 public class SetImages {
 
