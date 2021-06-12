@@ -1,6 +1,13 @@
-# Schach
+# Chess
 
-Bitte hier eine sinnvolle Dokumentation ergänzen!!!!!!
+This is a chess game written in Java 8. It has a CLI- and a GUI-based playing modus and a simple engine. 
+
+
+# How to run
+
+* `mvn javafx:run` starts the GUI-based frontend
+* `mvn javafx:run -Dargs="--no-gui"` starts the CLI-based frontend
+
 
 # Maven
 
