@@ -11,6 +11,8 @@ public class Move {
     private final Square finalSquare;
     private final Piece movingPiece;
 
+    private int boardValueAfterMove = 0;
+
     /**
      * Constructor for creating new player.
      *
@@ -33,6 +35,14 @@ public class Move {
 
     public Piece getMovingPiece() {
         return movingPiece;
+    }
+
+    public int getBoardValueAfterMove() {
+        return boardValueAfterMove;
+    }
+
+    public void setBoardValueAfterMove(int value){
+        this.boardValueAfterMove = value;
     }
 
     /**
