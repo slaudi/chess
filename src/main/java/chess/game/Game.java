@@ -38,8 +38,8 @@ public class Game {//NOPMD class controls the Game, needs more methods
 
     // variables to help control the chess engine
     private Colour userColour = Colour.BLACK;
-    private boolean enemyHuman = true;
-    private boolean draw = false;
+    private boolean artificialEnemy = false;
+    private boolean drawn = false;
 
     // variable to determine which language the user chose
     private boolean german = false;
@@ -53,11 +53,6 @@ public class Game {//NOPMD class controls the Game, needs more methods
         this.currentPlayer = playerWhite;   // White always begins
 
         this.chessBoard = new Board(8,8);
-
-        this.userColour = Colour.BLACK;
-        this.enemyHuman = true;
-        this.german = false;
-
     }
 
     public boolean isGerman() {
@@ -76,20 +71,20 @@ public class Game {//NOPMD class controls the Game, needs more methods
         this.userColour = userColour;
     }
 
-    public boolean isEnemyHuman() {
-        return enemyHuman;
+    public boolean isArtificialEnemy() {
+        return artificialEnemy;
     }
 
-    public void setEnemyHuman(boolean enemyIsHuman) {
-        this.enemyHuman = enemyIsHuman;
+    public void setArtificialEnemy(boolean artificialEnemy) {
+        this.artificialEnemy = artificialEnemy;
     }
 
-    public boolean isDraw() {
-        return draw;
+    public boolean isDrawn() {
+        return drawn;
     }
 
-    public void setDraw(boolean bool){
-        this.draw = bool;
+    public void setDrawn(boolean bool){
+        this.drawn = bool;
     }
 
     /**
@@ -101,7 +96,7 @@ public class Game {//NOPMD class controls the Game, needs more methods
      * @return boolean Returns 'true' if the move is possible.
      */
     public boolean isMoveAllowed(Piece selectedPiece, Square finalSquare) {
-        if (this.enemyHuman) {
+        if (this.artificialEnemy) {
             if (selectedPiece == null || selectedPiece.getColour() != this.currentPlayer.getColour()) {
                 return false;
             }
@@ -257,7 +252,7 @@ public class Game {//NOPMD class controls the Game, needs more methods
                 }
             }
             //no allies or they cant move
-            this.draw = true;
+            this.drawn = true;
             return true;
         }
         // King is in check -> not a draw

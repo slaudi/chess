@@ -45,7 +45,7 @@ public class GermanGame extends BorderPane {
         if (guiGame.game.isCheckMate()) {
             AlertBox.display("Spiel-Information","Schachmatt",getColour() + " hat das Spiel verloren!");
             label = new Label(getColour() + " hat das Spiel verloren!");
-        } else if (guiGame.game.isADraw() || guiGame.draw) {
+        } else if (guiGame.game.isADraw() || guiGame.game.isDrawn()) {
             AlertBox.display("Spiel-Information","Unentschieden","Das Spiel endet in einem Unentschieden!");
             label = new Label("Das Spiel endet in einem Unentschieden!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){

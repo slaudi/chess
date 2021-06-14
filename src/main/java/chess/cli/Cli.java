@@ -34,7 +34,7 @@ public class Cli {
             System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
             currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite ? currentGame.playerBlack : currentGame.playerWhite;
             System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
-        } else if (currentGame.isDraw()) {
+        } else if (currentGame.isDrawn()) {
             System.out.println("The game ended in a draw!");
         }
     }
@@ -67,7 +67,7 @@ public class Cli {
                 currentGame.currentPlayer = currentGame.playerWhite;
                 currentGame.beatenPieces.clear();
                 currentGame.moveHistory.clear();
-                currentGame.setEnemyHuman(false);
+                currentGame.setArtificialEnemy(false);
                 toConsole(currentGame);
             } else if (answer.equals("person")) {
                 // default
@@ -113,7 +113,7 @@ public class Cli {
             // validates user-input semantically
             if (currentGame.processMove(startSquare, finalSquare, key)) {
                 System.out.println("!" + userInput);
-                if(!currentGame.isEnemyHuman()){
+                if(currentGame.isArtificialEnemy()){
                     makeAIMove(currentGame);
                 }
                 return true;
@@ -164,14 +164,14 @@ public class Cli {
         do {
             Move enemyMove = Engine.nextBestMove(currentGame);
             if (enemyMove == null) {
-                currentGame.setDraw(true);
+                currentGame.setDrawn(true);
                 break;
             }
             startSquareEnemy = enemyMove.getStartSquare();
             finalSquareEnemy = enemyMove.getFinalSquare();
             keyEnemy = 'Q';
         } while (!currentGame.processMove(startSquareEnemy,finalSquareEnemy,keyEnemy));
-        if (currentGame.isDraw()){
+        if (currentGame.isDrawn()){
             System.out.println(" ");
         } else {
             assert startSquareEnemy != null;

@@ -45,7 +45,7 @@ public class Simple {
                     }
                     else{
                         System.out.println("!" + userInput + "\n");
-                        if(!currentGame.isEnemyHuman()){
+                        if(currentGame.isArtificialEnemy()){
                             Move enemyMove = Engine.nextBestMove(currentGame);
                             Square startSquareEnemy = enemyMove.getStartSquare();
                             Square finalSquareEnemy = enemyMove.getFinalSquare();

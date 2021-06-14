@@ -85,9 +85,7 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button language = new Button("Language");
-        language.setOnAction(e -> {
-            chooseLanguage(primaryStage, "start");
-        });
+        language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
 
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
@@ -143,11 +141,11 @@ public class Gui extends Application {
 
         ButtonType enemyResult = OptionBox.display("Enemy Selection",null,"Choose your Enemy",enemy);
         if (enemyResult == computer){
-            guiGame.game.setEnemyHuman(false);
+            guiGame.game.setArtificialEnemy(false);
             guiGame.isRotatingBoard = false;
         }
 
-        if(!guiGame.game.isEnemyHuman()) {
+        if(guiGame.game.isArtificialEnemy()) {
             ButtonType white = new ButtonType("White");
             ButtonType black = new ButtonType("Black");
 
@@ -174,11 +172,11 @@ public class Gui extends Application {
 
         ButtonType enemyResult = OptionBox.display("Gegner-Auswahl",null,"Wähle deinen Gegner:",enemy);
         if (enemyResult == computer){
-            guiGame.game.setEnemyHuman(false);
+            guiGame.game.setArtificialEnemy(false);
             guiGame.isRotatingBoard = false;
         }
 
-        if(!guiGame.game.isEnemyHuman()) {
+        if(guiGame.game.isArtificialEnemy()) {
             ButtonType white = new ButtonType("Weiß");
             ButtonType black = new ButtonType("Schwarz");
 
@@ -381,9 +379,7 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button btnLanguage = new Button("Language");
-        btnLanguage.setOnAction(event -> {
-            chooseLanguage( primaryStage, "else");
-        });
+        btnLanguage.setOnAction(event -> chooseLanguage( primaryStage, "else"));
 
         VBox box = new VBox(20);
         box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory, btnLanguage);
@@ -482,9 +478,7 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button btnLanguage = new Button("Sprache");
-        btnLanguage.setOnAction(event -> {
-            chooseLanguage(primaryStage, "else");
-        });
+        btnLanguage.setOnAction(event -> chooseLanguage(primaryStage, "else"));
 
         VBox box = new VBox(20);
         box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory, btnLanguage);
