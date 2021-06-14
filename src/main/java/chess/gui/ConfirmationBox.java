@@ -7,9 +7,6 @@ import javafx.stage.Modality;
 import java.util.Optional;
 
 /**
- * Class for Instanciating a PopUp with a Yes- and a No-Button-Option
- */
-/**
  * Class for Instantiating a PopUp with a Yes- and No-Button-Option
  */
 public class ConfirmationBox {

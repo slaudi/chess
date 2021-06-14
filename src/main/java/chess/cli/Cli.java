@@ -46,7 +46,7 @@ public class Cli {
      */
     private static String getInput (Game currentGame) {
         String output;
-        if (currentGame.isGerman()) {
+        if (currentGame.getLanguage() == Language.German) {
             output = "Zug oder Kommando: ";
         } else {
             output = "Enter Move or Command: ";
@@ -83,7 +83,7 @@ public class Cli {
         String invalidMove = null;
         String nowPlaying = null;
         String check = null;
-        if (currentGame.isGerman()) {
+        if (currentGame.getLanguage() == Language.German) {
             moveNotAllowed = "Zug nicht erlaubt";
             invalidMove = "Keine gültige Eingabe\n";
             nowPlaying = "Du spielst als ";
@@ -124,7 +124,7 @@ public class Cli {
             }
         } else {
             System.out.println(moveNotAllowed + "\n");
-            if (currentGame.isGerman()) {
+            if (currentGame.getLanguage() == Language.German) {
                 generateAnswerGerman(selectedPiece, finalSquare, currentGame);
             } else {
                 generateAnswerEnglish(selectedPiece,finalSquare,currentGame);
@@ -140,12 +140,12 @@ public class Cli {
             return true;
         }
         if (userInput.equals("english")) {
-            currentGame.setGerman(false);
+            currentGame.setLanguage(Language.English);
             System.out.println("You changed the language to English.");
             return true;
         }
         if (userInput.equals("deutsch")) {
-            currentGame.setGerman(true);
+            currentGame.setLanguage(Language.German);
             System.out.println("Du hast die Sprache auf Deutsch geändert.");
             return true;
         }

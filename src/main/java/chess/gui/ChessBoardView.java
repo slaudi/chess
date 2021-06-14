@@ -54,7 +54,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
     void generatePane() {
         HBox heading;
-        if (guiGame.game.isGerman()) {
+        if (guiGame.game.getLanguage() == Language.German) {
             heading = germanGame.generatePlayersMoveLabelBox();
         } else {
             heading = englishGame.generatePlayersMoveLabelBox();
@@ -107,7 +107,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
     }
 
     private void popUpBoxLanguage(int answer){
-        if (guiGame.game.isGerman()){
+        if (guiGame.game.getLanguage() == Language.German){
             germanGame.gridAnswer(answer);
         } else {
             englishGame.gridAnswer(answer);
@@ -163,7 +163,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
     private void setHighlightedButtons(GridPane grid) {
         List<Square> allowedSquares = guiGame.computePossibleSquares();
 
-        if (guiGame.game.isGerman()){
+        if (guiGame.game.getLanguage() == Language.German){
             germanGame.noAllowedSquares(allowedSquares);
         } else {
             englishGame.noAllowedSquares(allowedSquares);
@@ -263,7 +263,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
                 generatePane();
                 guiGame.game.isInCheck();
                 guiGame.game.isCheckMate();
-                if (guiGame.game.isGerman()){
+                if (guiGame.game.getLanguage() == Language.German){
                     germanGame.generateAnswer(result);
                 } else {
                     englishGame.generateAnswer(result);
@@ -307,7 +307,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
     private void notAllowedMove(int result){
         // show why it's not allowed
-        if (guiGame.game.isGerman()) {
+        if (guiGame.game.getLanguage() == Language.German) {
             germanGame.generateAnswer(result);
         } else {
             englishGame.generateAnswer(result);
@@ -367,7 +367,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
     private char checkPromotion(Piece selectedPiece, Square finalSquare, char key){
         if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
-            if (guiGame.game.isGerman()) {
+            if (guiGame.game.getLanguage() == Language.German) {
                 key = germanGame.promotionSelection();
             } else {
                 key = englishGame.promotionSelection();

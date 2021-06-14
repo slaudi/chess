@@ -100,7 +100,7 @@ public abstract class Piece {
      * A function generating a path of the visited Squares in between the first and last Square if Piece
      * moves more than one Square.
      *
-     * @param chessboard The current state of Chessboard to generate the path to finalsquare.
+     * @param chessboard The current state of Chessboard to generate the path to final square.
      * @param finalSquare The final Square of the move.
      * @return List A list of the visited Squares except for the first and last one.
      */
