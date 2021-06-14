@@ -195,11 +195,11 @@ public class Gui extends Application {
         // Define Option-Button
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(event -> {
-            ButtonType buttonTypeOne = new ButtonType("Rotation");
-            ButtonType buttonTypeTwo = new ButtonType("Highlight");
-            ButtonType buttonTypeThree = new ButtonType("Change Selection");
-            ButtonType buttonTypeFour = new ButtonType("Check");
-            ButtonType buttonTypeFive = new ButtonType("Cancel");
+            ButtonType rotation = new ButtonType("Rotation");
+            ButtonType highlight = new ButtonType("Highlight");
+            ButtonType changeSelection = new ButtonType("Change Selection");
+            ButtonType check = new ButtonType("Check");
+            ButtonType cancel = new ButtonType("Cancel");
 
             ButtonType buttonType;
             do {
@@ -231,23 +231,23 @@ public class Gui extends Application {
                 }
 
                 List<ButtonType> options = new ArrayList<>();
-                Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour,buttonTypeFive);
+                Collections.addAll(options,rotation,highlight,changeSelection,check,cancel);
                 buttonType = OptionBox.display("Game-Settings",
                         " ChessBoard-Rotation: " + isBoardRotationStatus
                                 + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
                                 + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
                                 + "\n Player is in Check-Notification: " + hintInCheckStatus,
                         "Choose Option you want to Change:", options);
-                if (buttonType == buttonTypeOne) {
+                if (buttonType == rotation) {
                     guiGame.isRotatingBoard = !guiGame.isRotatingBoard;
-                } else if (buttonType == buttonTypeTwo) {
+                } else if (buttonType == highlight) {
                     guiGame.highlightPossibleMoves = !guiGame.highlightPossibleMoves;
-                } else if (buttonType == buttonTypeThree) {
+                } else if (buttonType == changeSelection) {
                     guiGame.allowedToChangeSelectedPiece = !guiGame.allowedToChangeSelectedPiece;
-                } else if (buttonType == buttonTypeFour) {
+                } else if (buttonType == check) {
                     guiGame.hintInCheck = !guiGame.hintInCheck;
                 }
-            } while (buttonType != buttonTypeFive); // user chose CANCEL
+            } while (buttonType != cancel); // user chose CANCEL
         });
 
         // Define Move History-Button

@@ -29,6 +29,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
     private final String white;
     private final String black;
+    private final String highlightColour = "skyblue";
     private final int buttonHeight = 85;
     private final int buttonWidth = 85;
     private final int fontSize = 17;
@@ -174,11 +175,15 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
 
 
     private void setButtons(GridPane grid) {
+        String highlightBackground = "-fx-background-color: " + highlightColour;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Button button = new Button();
                 button.setMinHeight(buttonHeight);
                 button.setMinWidth(buttonWidth);
+                if (guiGame.getSquareStart() != null && guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
+                    button.setStyle(highlightBackground);
+                }
                 if ((y+x) %2 == 0) {
                     button.setStyle(white);
                 } else {
@@ -197,6 +202,9 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
             guiGame.setSquareStart(null);
             AlertBox.display("No Moves Possible",null,"This Piece cannot move. Try another!");
         }
+        String highlightBackground = "-fx-background-color: " + highlightColour;
+        String highlightBorder = "-fx-border-color: " + highlightColour;
+        String border = "-fx-border-width: 3px";
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Button button = new Button();
@@ -207,12 +215,13 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
                 } else {
                     button.setStyle(black);
                 }
-                String border = "-fx-border-width: 3px";
-                String highlight = "-fx-border-color: skyblue";
+                if (guiGame.getSquareStart() != null && guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
+                    button.setStyle(highlightBackground);
+                }
                 if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
-                    button.setStyle(highlight + ";" + border + ";" + white);
+                    button.setStyle(highlightBorder + ";" + border + ";" + white);
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
-                    button.setStyle(highlight + ";" + border + ";" + black);
+                    button.setStyle(highlightBorder + ";" + border + ";" + black);
                 }
                 setButtonsOnGrid(button,grid,x,y);
             }
@@ -239,6 +248,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
             if (!guiGame.game.isEnemyHuman() && guiGame.turnAI) {
                 makeAIMove();
             }
+            //String bstyle = String.format("-fx-background-color: skyblue");
             button.setOnAction(event -> {
                 guiGame.setBothSquares(guiGame.game.chessBoard.getSquareAt(x, y));
                 setButtonAction();
@@ -259,7 +269,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
                 guiGame.turnAI = true;
                 generatePane();
                 // show AlertBox if next Player is in check
-                generateAnswer(result);
+                //generateAnswer(result);
             } else if (result == 3){
                 // you're allowed to change your selected Piece
                 guiGame.setSquareStart(guiGame.getSquareFinal());
