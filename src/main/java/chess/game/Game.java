@@ -42,7 +42,7 @@ public class Game {//NOPMD class controls the Game, needs more methods
     private boolean drawn = false;
 
     // variable to determine which language the user chose
-    private boolean german = false;
+    private Language language = Language.English;
 
     /**
      * Constructor for creating a new Game.
@@ -55,12 +55,12 @@ public class Game {//NOPMD class controls the Game, needs more methods
         this.chessBoard = new Board(8,8);
     }
 
-    public boolean isGerman() {
-        return german;
+    public Language getLanguage() {
+        return this.language;
     }
 
-    public void setGerman(boolean german) {
-        this.german = german;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public Colour getUserColour(){

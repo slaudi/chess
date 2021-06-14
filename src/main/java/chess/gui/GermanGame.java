@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * The GermanGame class defines the output of the game when German is selected as language.
  */
 public class GermanGame extends BorderPane {
 
@@ -27,8 +27,10 @@ public class GermanGame extends BorderPane {
 
 
     /**
+     * The Constructor for GermanGame.
      *
-     * @param guiGame
+     * @param guiGame           The current guiGame.
+     * @param chessBoardView    The current chessBoardView.
      */
     public GermanGame(GuiGame guiGame, ChessBoardView chessBoardView) {
         this.white = "-fx-background-color: floralwhite";

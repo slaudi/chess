@@ -1,6 +1,7 @@
 package chess.gui;
 
 import chess.game.Colour;
+import chess.game.Language;
 import chess.game.Move;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -41,7 +42,7 @@ public class Gui extends Application {
         guiGame = new GuiGame();
 
         // Start
-        if (guiGame.game.isGerman()) {
+        if (guiGame.game.getLanguage() == Language.German) {
             startScene = startWindowGerman(primaryStage);
             primaryStage.setTitle(schach);
         } else {
@@ -198,7 +199,7 @@ public class Gui extends Application {
         String ipAddress;
         String startConnection;
         String cancel;
-        if (guiGame.game.isGerman()){
+        if (guiGame.game.getLanguage() == Language.German){
             ipAddress = "Gebe die IP-Adresse deines Gegners ein: ";
             startConnection = "Starte Verbindung";
             cancel = "Abbrechen";
@@ -238,15 +239,19 @@ public class Gui extends Application {
         List<ButtonType> language = new ArrayList<>();
         Collections.addAll(language,german,english);
         ButtonType result;
-        if (guiGame.game.isGerman()) {
+        if (guiGame.game.getLanguage() == Language.German) {
             result = OptionBox.display("Sprachauswahl",null,"Wähle Sprache",language);
         } else {
             result = OptionBox.display("Language Selection", null, "Choose Language", language);
         }
-        guiGame.game.setGerman(result==german);
+        if (result == german) {
+            guiGame.game.setLanguage(Language.German);
+        } else {
+            guiGame.game.setLanguage(Language.English);
+        }
 
         if (source.equals("start")) {
-            if (guiGame.game.isGerman()) {
+            if (guiGame.game.getLanguage() == Language.German) {
                 startScene = startWindowGerman(primaryStage);
                 primaryStage.setTitle(schach);
             } else {
@@ -256,7 +261,7 @@ public class Gui extends Application {
             primaryStage.setScene(startScene);
         } else {
             chessScene = chessWindow(primaryStage);
-            if (guiGame.game.isGerman()){
+            if (guiGame.game.getLanguage() == Language.German){
                 primaryStage.setTitle(schach);
             } else {
                 primaryStage.setTitle(chess);
@@ -272,7 +277,7 @@ public class Gui extends Application {
 
         ChessBoardView chessBoardView = new ChessBoardView(guiGame);
         VBox right;
-        if (guiGame.game.isGerman()) {
+        if (guiGame.game.getLanguage() == Language.German) {
             right = generateRightMarginColumnGerman(primaryStage);
         } else {
             right = generateRightMarginColumnEnglish(primaryStage);

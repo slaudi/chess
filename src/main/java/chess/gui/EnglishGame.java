@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The EnglishGame class defines the output of the game when English is selected as language.
+ */
 public class EnglishGame extends BorderPane {
 
     public ChessBoardView chessBoardView;
@@ -23,8 +26,10 @@ public class EnglishGame extends BorderPane {
 
 
     /**
+     * The Constructor for EnglishGame.
      *
-     * @param guiGame
+     * @param guiGame           The current guiGame.
+     * @param chessBoardView    The current chessBoardView.
      */
     public EnglishGame(GuiGame guiGame, ChessBoardView chessBoardView) {
 
