@@ -17,7 +17,10 @@ import java.util.*;
  */
 public class Gui extends Application {
 
-    private static Scene startScene, chessScene;
+    public GuiGame guiGame;
+    static Scene startScene, chessScene;
+    String chess = "Chess!";
+    String schach = "Schach!";
 
     /**
      * The entry point of the GUI application.
@@ -35,30 +38,33 @@ public class Gui extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        GuiGame currentGame = new GuiGame();
+        guiGame = new GuiGame();
 
         // Start
-        startScene = startWindow(primaryStage,currentGame);
+        if (guiGame.game.isGerman()) {
+            startScene = startWindowGerman(primaryStage);
+            primaryStage.setTitle(schach);
+        } else {
+            startScene = startWindowEnglish(primaryStage);
+            primaryStage.setTitle(chess);
+        }
 
         // Chess board
-        chessScene = chessWindow(primaryStage, currentGame);
-
+        chessScene = chessWindow(primaryStage);
 
         primaryStage.setScene(startScene);
-        primaryStage.setTitle("Chess!");
         primaryStage.show();
     }
 
 
-    private Scene startWindow(Stage primaryStage, GuiGame guiGame) {
-
+    private Scene startWindowEnglish(Stage primaryStage) {
         Label label = new Label("Welcome to a new Game of Chess!");
 
         // Define Start Game-Button
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setOnAction(e -> {
-            chooseEnemy(guiGame);
-            chessScene = chessWindow(primaryStage,guiGame);
+            chooseEnemyEnglish();
+            chessScene = chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
         });
 
@@ -79,7 +85,46 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button language = new Button("Language");
-        language.setOnAction(e -> chooseLanguage(guiGame));
+        language.setOnAction(e -> {
+            chooseLanguage(primaryStage, "start");
+        });
+
+        VBox layout1 = new VBox(25);
+        layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
+        layout1.setAlignment(Pos.CENTER);
+
+        return new Scene(layout1,300,300);
+    }
+
+    private Scene startWindowGerman(Stage primaryStage) {
+        Label label = new Label("Willkommen zu einer neuen Partie Schach!");
+
+        // Define Start Game-Button
+        Button startLocalGame = new Button("Starte Spiel");
+        startLocalGame.setOnAction(e -> {
+            chooseEnemyGerman();
+            chessScene = chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
+        });
+
+        // Define Network Game-Button
+        Button startNetworkGame = new Button("Netzwerk-Spiel");
+        startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
+
+        // Define Load Game-Button
+        Button loadGame = new Button("Lade Spiel");
+        loadGame.setOnAction(e -> {
+            boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?");
+
+            if (result) {
+                // TODO: implement loading a game
+                primaryStage.setScene(chessScene);
+            }
+        });
+
+        // Define Language-Button
+        Button language = new Button("Sprache");
+        language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
 
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
@@ -89,7 +134,7 @@ public class Gui extends Application {
     }
 
 
-    private void chooseEnemy(GuiGame guiGame) {
+    private void chooseEnemyEnglish() {
         ButtonType human = new ButtonType("Person");
         ButtonType computer = new ButtonType("AI");
 
@@ -120,12 +165,55 @@ public class Gui extends Application {
     }
 
 
+    private void chooseEnemyGerman() {
+        ButtonType human = new ButtonType("Mensch");
+        ButtonType computer = new ButtonType("KI");
+
+        List<ButtonType> enemy = new ArrayList<>();
+        Collections.addAll(enemy,human,computer);
+
+        ButtonType enemyResult = OptionBox.display("Gegner-Auswahl",null,"Wähle deinen Gegner:",enemy);
+        if (enemyResult == computer){
+            guiGame.game.setEnemyHuman(false);
+            guiGame.isRotatingBoard = false;
+        }
+
+        if(!guiGame.game.isEnemyHuman()) {
+            ButtonType white = new ButtonType("Weiß");
+            ButtonType black = new ButtonType("Schwarz");
+
+            List<ButtonType> colour = new ArrayList<>();
+            Collections.addAll(colour,white,black);
+
+            ButtonType colourResult = OptionBox.display("Farb-Auswahl",null,"Wähle deine Farbe:", colour);
+            if (colourResult == white) {
+                guiGame.game.setUserColour(Colour.WHITE);
+            } else {
+                guiGame.game.setUserColour(Colour.BLACK);
+                guiGame.turnAI = true;
+            }
+        }
+    }
+
+
     private void startNetworkGame(Stage primaryStage) {
+        String ipAddress;
+        String startConnection;
+        String cancel;
+        if (guiGame.game.isGerman()){
+            ipAddress = "Gebe die IP-Adresse deines Gegners ein: ";
+            startConnection = "Starte Verbindung";
+            cancel = "Abbrechen";
+        } else {
+            ipAddress = "Enter IP Address of Enemy: ";
+            startConnection = "Start Connection";
+            cancel = "Cancel";
+        }
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
 
         Scene IP_scene = new Scene(grid, 350,150);
-        grid.add(new Label("Enter IP Address of Enemy: "), 0, 0);
+        grid.add(new Label(ipAddress), 0, 0);
 
         TextField IPAddress = new TextField();
         grid.add(IPAddress,1,2);
@@ -135,17 +223,17 @@ public class Gui extends Application {
         btn.setSpacing(10);
         btn.setAlignment(Pos.BOTTOM_CENTER);
         // Define buttons
-        Button startGame = new Button("Start Connection");
-        Button cancel = new Button("Cancel");
-        cancel.setOnAction(e -> primaryStage.setScene(startScene));
-        btn.getChildren().addAll(startGame,cancel);
+        Button btnStartGame = new Button(startConnection);
+        Button btnCancel = new Button(cancel);
+        btnCancel.setOnAction(e -> primaryStage.setScene(startScene));
+        btn.getChildren().addAll(btnStartGame,btnCancel);
         grid.add(btn,1,4);
 
         primaryStage.setScene(IP_scene);
         primaryStage.show();
     }
 
-    private void chooseLanguage(GuiGame guiGame) {
+    private void chooseLanguage(Stage primaryStage, String source) {
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("English");
 
@@ -157,14 +245,40 @@ public class Gui extends Application {
         } else {
             result = OptionBox.display("Language Selection", null, "Choose Language", language);
         }
-        guiGame.game.setGerman(result == german);
+        guiGame.game.setGerman(result==german);
+
+        if (source.equals("start")) {
+            if (guiGame.game.isGerman()) {
+                startScene = startWindowGerman(primaryStage);
+                primaryStage.setTitle(schach);
+            } else {
+                startScene = startWindowEnglish(primaryStage);
+                primaryStage.setTitle(chess);
+            }
+            primaryStage.setScene(startScene);
+        } else {
+            chessScene = chessWindow(primaryStage);
+            if (guiGame.game.isGerman()){
+                primaryStage.setTitle(schach);
+            } else {
+                primaryStage.setTitle(chess);
+            }
+            primaryStage.setScene(chessScene);
+        }
+        primaryStage.show();
+
     }
 
-    private Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
+    private Scene chessWindow(Stage primaryStage) {
         BorderPane pane = new BorderPane();
 
         ChessBoardView chessBoardView = new ChessBoardView(guiGame);
-        VBox right = generateRightMarginColumn(guiGame, primaryStage);
+        VBox right;
+        if (guiGame.game.isGerman()) {
+            right = generateRightMarginColumnGerman(primaryStage);
+        } else {
+            right = generateRightMarginColumnEnglish(primaryStage);
+        }
 
         right.setAlignment(Pos.CENTER);
         right.setPadding(new Insets(30));
@@ -175,19 +289,19 @@ public class Gui extends Application {
     }
 
 
-    private VBox generateRightMarginColumn(GuiGame guiGame, Stage primaryStage){
+    private VBox generateRightMarginColumnEnglish(Stage primaryStage){
         //Define New Game-Button
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?");
 
             if (result) {
-                GuiGame newGuiGame = new GuiGame();
-                startScene = startWindow(primaryStage, newGuiGame);
-                chessScene = chessWindow(primaryStage, newGuiGame);
+                guiGame = new GuiGame();
+                startScene = startWindowEnglish(primaryStage);
+                chessScene = chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
-                primaryStage.setTitle("Chess!");
+                primaryStage.setTitle(chess);
                 primaryStage.show();
             }
         });
@@ -251,7 +365,7 @@ public class Gui extends Application {
         });
 
         // Define Move History-Button
-        Button btnMoveHistory = new Button("Move-History");
+        Button btnMoveHistory = new Button("Move History");
         btnMoveHistory.setOnAction(event -> {
             List<Move> history = guiGame.game.moveHistory;
             StringBuilder historyAsString = new StringBuilder();
@@ -265,8 +379,115 @@ public class Gui extends Application {
             AlertBox.display("Move History", null, historyAsString.toString());
         });
 
+        // Define Language-Button
+        Button btnLanguage = new Button("Language");
+        btnLanguage.setOnAction(event -> {
+            chooseLanguage( primaryStage, "else");
+        });
+
         VBox box = new VBox(20);
-        box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory);
+        box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory, btnLanguage);
+        return box;
+    }
+
+    private VBox generateRightMarginColumnGerman(Stage primaryStage){
+        //Define New Game-Button
+        Button btnNewGame = new Button("Neues Spiel");
+        btnNewGame.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?");
+
+            if (result) {
+                guiGame = new GuiGame();
+                startScene = startWindowGerman(primaryStage);
+                chessScene = chessWindow(primaryStage);
+
+                primaryStage.setScene(startScene);
+                primaryStage.setTitle(schach);
+                primaryStage.show();
+            }
+        });
+
+        // Define Option-Button
+        Button btnOptions = new Button("Optionen");
+        btnOptions.setOnAction(event -> {
+            ButtonType buttonTypeOne = new ButtonType("Rotieren");
+            ButtonType buttonTypeTwo = new ButtonType("Hervorheben");
+            ButtonType buttonTypeThree = new ButtonType("Auswahl ändern");
+            ButtonType buttonTypeFour = new ButtonType("Schach");
+            ButtonType buttonTypeFive = new ButtonType("Abbrechen");
+
+            ButtonType buttonType;
+            do {
+                String isBoardRotationStatus;
+                String highlightPossibleMoveStatus;
+                String allowedChangeSelectedPieceStatus;
+                String hintInCheckStatus;
+                String on = "AN";
+                String off = "AUS";
+                if(guiGame.isRotatingBoard){
+                    isBoardRotationStatus = on;
+                } else {
+                    isBoardRotationStatus = off;
+                }
+                if(guiGame.highlightPossibleMoves){
+                    highlightPossibleMoveStatus = on;
+                } else {
+                    highlightPossibleMoveStatus = off;
+                }
+                if(guiGame.allowedToChangeSelectedPiece){
+                    allowedChangeSelectedPieceStatus = on;
+                } else {
+                    allowedChangeSelectedPieceStatus = off;
+                }
+                if(guiGame.hintInCheck){
+                    hintInCheckStatus = on;
+                } else {
+                    hintInCheckStatus = off;
+                }
+
+                List<ButtonType> options = new ArrayList<>();
+                Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour,buttonTypeFive);
+                buttonType = OptionBox.display("Spiel-Einstellungen",
+                        " Schachbrett rotiert: " + isBoardRotationStatus
+                                + "\n Mögliche Züge hervorheben: " + highlightPossibleMoveStatus
+                                + "\n Ausgewählte Figur ändern: " + allowedChangeSelectedPieceStatus
+                                + "\n Hinweis: Spieler befindet sich im Schach: " + hintInCheckStatus,
+                        "Wähle Option, die du ändern möchtest:", options);
+                if (buttonType == buttonTypeOne) {
+                    guiGame.isRotatingBoard = !guiGame.isRotatingBoard;
+                } else if (buttonType == buttonTypeTwo) {
+                    guiGame.highlightPossibleMoves = !guiGame.highlightPossibleMoves;
+                } else if (buttonType == buttonTypeThree) {
+                    guiGame.allowedToChangeSelectedPiece = !guiGame.allowedToChangeSelectedPiece;
+                } else if (buttonType == buttonTypeFour) {
+                    guiGame.hintInCheck = !guiGame.hintInCheck;
+                }
+            } while (buttonType != buttonTypeFive); // user chose CANCEL
+        });
+
+        // Define Move History-Button
+        Button btnMoveHistory = new Button("Zug-Historie");
+        btnMoveHistory.setOnAction(event -> {
+            List<Move> history = guiGame.game.moveHistory;
+            StringBuilder historyAsString = new StringBuilder();
+            if(!history.isEmpty()){
+                for (Move move : history) {
+                    historyAsString.append(move.getStartSquare().getLabel().toString()).append("-").append(move.getFinalSquare().getLabel().toString()).append("\n");
+                }
+            } else {
+                historyAsString = new StringBuilder(" ");
+            }
+            AlertBox.display("Zug-Historie", null, historyAsString.toString());
+        });
+
+        // Define Language-Button
+        Button btnLanguage = new Button("Sprache");
+        btnLanguage.setOnAction(event -> {
+            chooseLanguage(primaryStage, "else");
+        });
+
+        VBox box = new VBox(20);
+        box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory, btnLanguage);
         return box;
     }
 

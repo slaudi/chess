@@ -53,6 +53,19 @@ public class Game {//NOPMD class controls the Game, needs more methods
         this.currentPlayer = playerWhite;   // White always begins
 
         this.chessBoard = new Board(8,8);
+
+        this.userColour = Colour.BLACK;
+        this.enemyHuman = true;
+        this.german = false;
+
+    }
+
+    public boolean isGerman() {
+        return german;
+    }
+
+    public void setGerman(boolean german) {
+        this.german = german;
     }
 
     public Colour getUserColour(){
@@ -69,14 +82,6 @@ public class Game {//NOPMD class controls the Game, needs more methods
 
     public void setEnemyHuman(boolean enemyIsHuman) {
         this.enemyHuman = enemyIsHuman;
-    }
-
-    public boolean isGerman() {
-        return german;
-    }
-
-    public void setGerman(boolean german) {
-        this.german = german;
     }
 
     public boolean isDraw() {

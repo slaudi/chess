@@ -44,17 +44,24 @@ public class Cli {
      *
      * @return String A String of the console input.
      */
-    private static String getInput () {
+    private static String getInput (Game currentGame) {
+        String output;
+        if (currentGame.isGerman()) {
+            output = "Zug oder Kommando: ";
+        } else {
+            output = "Enter Move or Command: ";
+        }
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter Move or Command:");
+        System.out.println(output);
         return scanner.nextLine();
     }
+
 
     private static void checkForModus(Game currentGame) {
         System.out.println("Do you want to play against a person or an AI? \n person/ai");
         String answer;
         do {
-            answer = getInput();
+            answer = getInput(currentGame);
             if (answer.equals("ai")) {
                 System.out.println("Starting new Game against AI.");
                 currentGame.currentPlayer = currentGame.playerWhite;
@@ -72,11 +79,21 @@ public class Cli {
 
 
     private static boolean canPieceMove(Game currentGame) {
-        if (currentGame.currentPlayer.isInCheck()) {
-            System.out.println(currentGame.currentPlayer.getColour() + " is in check!");
+        String moveNotAllowed = null;
+        String invalidMove = null;
+        String nowPlaying = null;
+        String check = null;
+        if (currentGame.isGerman()) {
+            moveNotAllowed = "Zug nicht erlaubt";
+            invalidMove = "Keine gültige Eingabe\n";
+            nowPlaying = "Du spielst als ";
+            check = " befindet sich im Schach";
         }
-        System.out.println("Now playing as " + currentGame.currentPlayer.getColour());
-        String userInput = getInput();
+        if (currentGame.currentPlayer.isInCheck()) {
+            System.out.println(currentGame.currentPlayer.getColour() + check);
+        }
+        System.out.println(nowPlaying + currentGame.currentPlayer.getColour());
+        String userInput = getInput(currentGame);
 
         if(checkForCommand(userInput, currentGame)){
             // Input is a command, not a Move
@@ -84,7 +101,7 @@ public class Cli {
         }
         if (!isValidMove(userInput)) {
             // validates user-input syntactically
-            System.out.println("!Invalid move\n");
+            System.out.println(invalidMove);
             return false;
         }
         Piece selectedPiece = currentGame.chessBoard.getMovingPieceFromInput(userInput);
@@ -102,12 +119,16 @@ public class Cli {
                 return true;
             } else {
                 // if move puts King in check
-                System.out.println("!Move not allowed\n" + currentGame.currentPlayer.getColour() + " would be in check!\n");
+                System.out.println(moveNotAllowed + "\n" + currentGame.currentPlayer.getColour() + check + "\n");
                 return false;
             }
         } else {
-            System.out.println("!Move not allowed");
-            generateAnswer(selectedPiece, finalSquare, currentGame);
+            System.out.println(moveNotAllowed + "\n");
+            if (currentGame.isGerman()) {
+                generateAnswerGerman(selectedPiece, finalSquare, currentGame);
+            } else {
+                generateAnswerEnglish(selectedPiece,finalSquare,currentGame);
+            }
             return false;
         }
     }
@@ -119,7 +140,13 @@ public class Cli {
             return true;
         }
         if (userInput.equals("english")) {
+            currentGame.setGerman(false);
             System.out.println("You changed the language to English.");
+            return true;
+        }
+        if (userInput.equals("deutsch")) {
+            currentGame.setGerman(true);
+            System.out.println("Du hast die Sprache auf Deutsch geändert.");
             return true;
         }
         if (userInput.equals("giveUp")) {
@@ -160,7 +187,7 @@ public class Cli {
      * @param finalSquare   The Square the piece wants to move to.
      * @param currentGame   The current game.
      */
-    private static void generateAnswer (Piece selectedPiece, Square finalSquare, Game currentGame){
+    private static void generateAnswerEnglish (Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (selectedPiece == null) {
             System.out.println("There is no Piece to move!\n");
@@ -170,6 +197,19 @@ public class Cli {
             System.out.println("You have to move!\n");
         } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
             System.out.println("You cannot attack your own Piece!\n");
+        }
+    }
+
+    private static void generateAnswerGerman (Piece selectedPiece, Square finalSquare, Game currentGame){
+        Piece targetPiece = finalSquare.getOccupiedBy();
+        if (selectedPiece == null) {
+            System.out.println("Auf dem ausgewählten Feld steht keine Figur!\n");
+        } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
+            System.out.println("Die ausgewählte Figur ist nicht deine Figur!\n");
+        } else if (targetPiece != null && selectedPiece.getSquare() == finalSquare) {
+            System.out.println("Du musst einen Zug machen!\n");
+        } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
+            System.out.println("Du kannst nicht deine eigene Figur angreifen!\n");
         }
     }
 
