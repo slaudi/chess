@@ -1,0 +1,7 @@
+rnbqkbnrpppXXpppXXXXpXXXXXXPXXXXXXXXXXXXXXXXXXXXPPPPXPPPRNBQKBNR
+W
+B
+false
+p
+e2-e4.d7-d5.e4-d5.e7-e6.
+e

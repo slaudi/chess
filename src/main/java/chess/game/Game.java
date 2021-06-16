@@ -30,11 +30,11 @@ public class Game {//NOPMD class controls the Game, needs more methods
     /**
      * This list stores all beaten pieces.
      */
-    public final List<Piece> beatenPieces = new ArrayList<>();
+    public List<Piece> beatenPieces = new ArrayList<>();
     /**
      * This list stores every move made in the game.
      */
-    public final List<Move> moveHistory = new ArrayList<>();
+    public List<Move> moveHistory = new ArrayList<>();
 
     // variables to help control the chess engine
     private Colour userColour = Colour.BLACK;

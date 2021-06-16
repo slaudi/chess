@@ -10,7 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import chess.savegame.Savegame;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -79,6 +82,34 @@ public class Gui extends Application {
                 boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?");
 
                 if (result) {
+                    File f = new File("src/main/resources/saves");
+                    String[] fileArray = f.list();
+                    if(fileArray.length != 0) {
+                        List<String> choices = new ArrayList<>();
+                        Collections.addAll(choices, fileArray);
+                        ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
+                        dialog.setTitle("Savegame-Choice");
+                        dialog.setHeaderText(null);
+                        dialog.setContentText("Choose a Savegame:");
+
+                        Optional<String> result2 = dialog.showAndWait();
+                        if (result2.isPresent()) {
+                            File loadingFile = new File("src/main/resources/saves/" + result2.get());
+                            Scanner sc = null;
+                            try {
+                                sc = new Scanner(loadingFile);
+                            } catch (FileNotFoundException fileNotFoundException) {
+                                fileNotFoundException.printStackTrace();
+                            }
+                            ArrayList<String> loadingGame = new ArrayList<>();
+                            while (true) {
+                                assert sc != null;
+                                if (!sc.hasNextLine()) break;
+                                loadingGame.add(sc.nextLine());
+                            }
+                            guiGame.game = Savegame.load(loadingGame);
+                        }
+                    }
                     // TODO: implement loading a game
                     primaryStage.setScene(chessScene);
                 }
@@ -116,6 +147,34 @@ public class Gui extends Application {
             boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?");
 
             if (result) {
+                File f = new File("src/main/resources/saves");
+                String[] fileArray = f.list();
+                if(fileArray.length != 0) {
+                    List<String> choices = new ArrayList<>();
+                    Collections.addAll(choices, fileArray);
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
+                    dialog.setTitle("Speicherstand-Auswahl");
+                    dialog.setHeaderText(null);
+                    dialog.setContentText("Wähle einen Speicherstand:");
+
+                    Optional<String> result2 = dialog.showAndWait();
+                    if (result2.isPresent()) {
+                        File loadingFile = new File("src/main/resources/saves/" + result2.get());
+                        Scanner sc = null;
+                        try {
+                            sc = new Scanner(loadingFile);
+                        } catch (FileNotFoundException fileNotFoundException) {
+                            fileNotFoundException.printStackTrace();
+                        }
+                        ArrayList<String> loadingGame = new ArrayList<>();
+                        while (true) {
+                            assert sc != null;
+                            if (!sc.hasNextLine()) break;
+                            loadingGame.add(sc.nextLine());
+                        }
+                        guiGame.game = Savegame.load(loadingGame);
+                    }
+                }
                 // TODO: implement loading a game
                 primaryStage.setScene(chessScene);
             }
@@ -309,6 +368,16 @@ public class Gui extends Application {
             }
         });
 
+        //Define New Game-Button
+        Button btnSaveGame = new Button("Save Game");
+        btnSaveGame.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Save Game", "Do you really want to save this Game?");
+
+            if (result) {
+                Savegame.save(guiGame.game);
+            }
+        });
+
         // Define Option-Button
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(event -> {
@@ -387,7 +456,7 @@ public class Gui extends Application {
         btnLanguage.setOnAction(event -> chooseLanguage( primaryStage, "else"));
 
         VBox box = new VBox(20);
-        box.getChildren().addAll(btnOptions, btnNewGame, btnMoveHistory, btnLanguage);
+        box.getChildren().addAll(btnOptions, btnNewGame, btnSaveGame, btnMoveHistory, btnLanguage);
         return box;
     }
 
