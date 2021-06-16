@@ -201,7 +201,7 @@ public class Gui extends Application {
 
         ButtonType enemyResult = OptionBox.display("Enemy Selection",null,"Choose your Enemy",enemy);
         if (enemyResult == computer){
-            guiGame.game.setArtificialEnemy(false);
+            guiGame.game.setArtificialEnemy(true);
             guiGame.isRotatingBoard = false;
         }
 
@@ -232,7 +232,7 @@ public class Gui extends Application {
 
         ButtonType enemyResult = OptionBox.display("Gegner-Auswahl",null,"Wähle deinen Gegner:",enemy);
         if (enemyResult == computer){
-            guiGame.game.setArtificialEnemy(false);
+            guiGame.game.setArtificialEnemy(true);
             guiGame.isRotatingBoard = false;
         }
 
