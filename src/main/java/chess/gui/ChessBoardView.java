@@ -26,8 +26,8 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
     public GermanGame germanGame;
     public EnglishGame englishGame;
 
-    String white;
-    String black;
+    String white = "-fx-background-color: floralwhite";
+    String black = "-fx-background-color: slategray";
     private final String highlightColour = "skyblue";
     private final String highlightBackground = "-fx-background-color: " + highlightColour;
     int buttonHeight = 85;
@@ -42,8 +42,6 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
      */
     public ChessBoardView(GuiGame guiGame) {
         this.guiGame = guiGame;
-        this.white = "-fx-background-color: floralwhite";
-        this.black = "-fx-background-color: slategray";
 
         this.germanGame = new GermanGame(guiGame,this);
         this.englishGame = new EnglishGame(guiGame,this);

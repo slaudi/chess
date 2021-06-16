@@ -20,9 +20,6 @@ public class GermanGame extends BorderPane {
 
     public ChessBoardView chessBoardView;
     public GuiGame guiGame;
-    String white;
-    String black;
-    String highlight;
     int fontSize = 17;
 
 
@@ -33,10 +30,6 @@ public class GermanGame extends BorderPane {
      * @param chessBoardView    The current chessBoardView.
      */
     public GermanGame(GuiGame guiGame, ChessBoardView chessBoardView) {
-        this.white = "-fx-background-color: floralwhite";
-        this.black = "-fx-background-color: slategray";
-        this.highlight = "-fx-border-color: skyblue";
-
         this.guiGame = guiGame;
         this.chessBoardView = chessBoardView;
     }
