@@ -1,6 +1,9 @@
 package chess.gui;
 
+import chess.engine.Engine;
 import chess.game.*;
+import chess.pieces.Pawn;
+import chess.pieces.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +18,8 @@ public class GuiGame {
      */
     public Game game;
 
-    Square squareStart = null;
-    Square squareFinal = null;
+    private Square squareStart = null;
+    private Square squareFinal = null;
 
     boolean isRotatingBoard = true;
     boolean highlightPossibleMoves = true;
@@ -35,24 +38,20 @@ public class GuiGame {
         return this.squareStart;
     }
 
-    void setSquareStart(Square square){
-        this.squareStart = square;
+    void setSquareStartNull(){
+        this.squareStart = null;
     }
 
     Square getSquareFinal(){
         return this.squareFinal;
     }
 
-    void setSquareFinal(Square square){
-        this.squareFinal = square;
-    }
-
 
     void setBothSquares(Square square){
-        if(this.getSquareStart() == null){
-            this.setSquareStart(square);
+        if(this.squareStart == null){
+            this.squareStart = square;
         } else {
-            this.setSquareFinal(square);
+            this.squareFinal = square;
         }
     }
 
@@ -74,6 +73,132 @@ public class GuiGame {
             }
         }
         return possibleSquares;
+    }
+
+
+    void setButtonAction(ChessBoardView chessBoardView) {
+        if (this.squareStart != null && this.squareFinal != null) {
+            int result = processingMovement(chessBoardView);
+            if (result == 0) {
+                // Move is allowed
+                this.squareStart = null;
+                this.squareFinal = null;
+                game.isInCheck();
+                game.isCheckMate();
+                turnAI = true;
+                chessBoardView.generatePane();
+                game.isInCheck();
+                game.isCheckMate();
+                if (game.getLanguage() == Language.German){
+                    chessBoardView.germanGame.generateAnswer(result);
+                } else {
+                    chessBoardView.englishGame.generateAnswer(result);
+                }
+            } else if (result == 3){
+                // you're allowed to change your selected Piece
+                this.squareStart = this.squareFinal;
+                this.squareFinal = null;
+                chessBoardView.generatePane();
+            } else {
+                // not an allowed Move
+                notAllowedMove(result,chessBoardView);
+            }
+        } else {
+            chessBoardView.generatePane();
+        }
+    }
+
+
+    private void notAllowedMove(int result, ChessBoardView chessBoardView){
+        // show why it's not allowed
+        if (game.getLanguage() == Language.German) {
+            chessBoardView.germanGame.generateAnswer(result);
+        } else {
+            chessBoardView.englishGame.generateAnswer(result);
+        }
+        if (allowedToChangeSelectedPiece || game.isInCheck()) {
+            // allowed to change Piece after having selected it
+            this.squareStart = null;
+        }
+        this.squareFinal = null;
+        chessBoardView.generatePane();
+    }
+
+
+    void makeAIMove(ChessBoardView chessBoardView){
+        if (!game.isCheckMate() && !game.isADraw()) {
+            // generate move of AI
+            int AI_result;
+            do {
+                Move AIMove = Engine.nextBestMove(game);
+                // no piece can move
+                if(AIMove == null){
+                    game.setDrawn(true);
+                    break;
+                }
+                this.squareStart = AIMove.getStartSquare();
+                this.squareFinal = AIMove.getFinalSquare();
+                AI_result = processingMovement(chessBoardView);
+                this.squareStart = null;
+                this.squareFinal = null;
+            } while (AI_result != 0);
+            turnAI = false;
+            chessBoardView.generatePane();
+        }
+    }
+
+
+    private int processingMovement(ChessBoardView chessBoardView) {
+        if(!game.currentPlayer.isLoser() || !game.isADraw() || !game.isCheckMate()
+                && this.squareStart != null && this.squareFinal != null) {
+            return isMoveAllowed(chessBoardView);
+        }
+        if(game.isCheckMate()){
+            // player is check mate
+            return 5;
+        }
+        if(game.isADraw()){
+            return 6;
+        }
+        return 7;
+    }
+
+
+    private int isMoveAllowed(ChessBoardView chessBoardView) {
+        Piece selectedPiece = this.squareStart.getOccupiedBy();
+        if (!allowedToChangeSelectedPiece && this.squareFinal.getOccupiedBy() != null
+                && selectedPiece.getColour() == this.squareFinal.getOccupiedBy().getColour() && this.squareFinal != this.squareStart){
+            // you can't change selected Piece to another one
+            return 1;
+        }
+        if (game.isMoveAllowed(selectedPiece, this.squareFinal)) {
+            char key = 'Q';
+            key = checkPromotion(selectedPiece,key,chessBoardView);
+            if (!game.processMove(this.squareStart, this.squareFinal, key)) {
+                // wouldn't free King from check
+                return 2;
+            }
+        } else if (this.squareFinal.getOccupiedBy() != null && selectedPiece.getColour() == this.squareFinal.getOccupiedBy().getColour()){
+            // you're allowed to change selected Piece to another one
+            return 3;
+        } else {
+            // move is not allowed
+            return 4;
+        }
+        // move is allowed
+        return 0;
+    }
+
+
+    private char checkPromotion(Piece selectedPiece, char key, ChessBoardView chessBoardView){
+        if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(this.squareFinal)){
+            if (game.getLanguage() == Language.German) {
+                key = chessBoardView.germanGame.promotionSelection();
+            } else {
+                key = chessBoardView.englishGame.promotionSelection();
+            }
+        }
+        return key;
     }
 
 }

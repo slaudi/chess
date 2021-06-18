@@ -62,7 +62,7 @@ public class EnglishGame extends BorderPane {
 
     void noAllowedSquares(List<Square> allowedSquares) {
         if (allowedSquares.isEmpty()) {
-            guiGame.setSquareStart(null);
+            guiGame.setSquareStartNull();
             AlertBox.display("No Moves Possible", null, "This Piece cannot move. Try another!");
         }
     }

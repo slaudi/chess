@@ -71,7 +71,7 @@ public class GermanGame extends BorderPane {
 
     void noAllowedSquares(List<Square> allowedSquares) {
         if (allowedSquares.isEmpty()) {
-            guiGame.setSquareStart(null);
+            guiGame.setSquareStartNull();
             AlertBox.display("Keine Züge möglich", null, "Diese Figur kann sich nicht bewegen. Versuch eine andere!!");
         }
     }

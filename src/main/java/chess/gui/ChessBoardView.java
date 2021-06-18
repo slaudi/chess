@@ -1,8 +1,6 @@
 package chess.gui;
 
-import chess.engine.Engine;
 import chess.game.*;
-import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -86,17 +84,17 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
                         return generateHighlightedButtonGrid();
                     } else {
                         // selected Piece is not players colour
-                        guiGame.setSquareStart(null);
+                        guiGame.setSquareStartNull();
                         popUpBoxLanguage(1);
                     }
                 } else if (guiGame.getSquareStart().getOccupiedBy().getColour() != guiGame.game.currentPlayer.getColour()) {
                     // 'highlighting' is turned off and selected Piece is not players colour
-                    guiGame.setSquareStart(null);
+                    guiGame.setSquareStartNull();
                     popUpBoxLanguage(1);
                 }
             } else {
                 // selected first square is empty
-                guiGame.setSquareStart(null);
+                guiGame.setSquareStartNull();
                 popUpBoxLanguage(2);
             }
         }
@@ -238,140 +236,19 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         }
 
         if (guiGame.game.isArtificialEnemy() && guiGame.turnAI) {
-            makeAIMove();
+            guiGame.makeAIMove(this);
         }
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
                 guiGame.setBothSquares(guiGame.game.chessBoard.getSquareAt(x, y));
-                setButtonAction();
+                guiGame.setButtonAction(this);
             });
         }
     }
 
-    private void setButtonAction() {
-        if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
-            int result = processingMovement();
-            if (result == 0) {
-                // Move is allowed
-                guiGame.setSquareStart(null);
-                guiGame.setSquareFinal(null);
-                guiGame.game.isInCheck();
-                guiGame.game.isCheckMate();
-                guiGame.turnAI = true;
-                generatePane();
-                guiGame.game.isInCheck();
-                guiGame.game.isCheckMate();
-                if (guiGame.game.getLanguage() == Language.German){
-                    germanGame.generateAnswer(result);
-                } else {
-                    englishGame.generateAnswer(result);
-                }
-            } else if (result == 3){
-                // you're allowed to change your selected Piece
-                guiGame.setSquareStart(guiGame.getSquareFinal());
-                guiGame.setSquareFinal(null);
-                generatePane();
-            } else {
-                // not an allowed Move
-                notAllowedMove(result);
-            }
-        } else if (guiGame.getSquareStart() != null && guiGame.getSquareFinal() == null) {
-            generatePane();
-        }
-    }
 
 
-    private void makeAIMove(){
-        if (!guiGame.game.isCheckMate() && !guiGame.game.isADraw()) {
-            // generate move of AI
-            int AI_result;
-            do {
-                Move AIMove = Engine.nextBestMove(guiGame.game);
-                // no piece can move
-                if(AIMove == null){
-                    guiGame.game.setDrawn(true);
-                    break;
-                }
-                guiGame.setSquareStart(AIMove.getStartSquare());
-                guiGame.setSquareFinal(AIMove.getFinalSquare());
-                AI_result = processingMovement();
-                guiGame.setSquareStart(null);
-                guiGame.setSquareFinal(null);
-            } while (AI_result != 0);
-            guiGame.turnAI = false;
-            generatePane();
-        }
-    }
-
-    private void notAllowedMove(int result){
-        // show why it's not allowed
-        if (guiGame.game.getLanguage() == Language.German) {
-            germanGame.generateAnswer(result);
-        } else {
-            englishGame.generateAnswer(result);
-        }
-        if (!guiGame.allowedToChangeSelectedPiece && !guiGame.game.isInCheck()) {
-            // not allowed to change Piece after having selected it
-            guiGame.setSquareStart(guiGame.getSquareStart());
-        } else {
-            guiGame.setSquareStart(null);
-        }
-        guiGame.setSquareFinal(null);
-        generatePane();
-    }
 
 
-    private int processingMovement() {
-        if(!guiGame.game.currentPlayer.isLoser() || !guiGame.game.isADraw() || !guiGame.game.isCheckMate()
-                && guiGame.getSquareStart() != null && guiGame.getSquareFinal() != null) {
-            return isMoveAllowed();
-        }
-        if(guiGame.game.isCheckMate()){
-            // player is check mate
-            return 5;
-        }
-        if(guiGame.game.isADraw()){
-            return 6;
-        }
-        return 7;
-    }
-
-    private int isMoveAllowed() {
-        Piece selectedPiece = guiGame.getSquareStart().getOccupiedBy();
-        Square startSquare = guiGame.getSquareStart();
-        Square finalSquare = guiGame.getSquareFinal();
-        if (!guiGame.allowedToChangeSelectedPiece && finalSquare.getOccupiedBy() != null
-                && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour() && finalSquare != startSquare){
-            // you can't change selected Piece to another one
-            return 1;
-        }
-        if (guiGame.game.isMoveAllowed(selectedPiece, finalSquare)) {
-            char key = 'Q';
-            key = checkPromotion(selectedPiece,finalSquare,key);
-            if (!guiGame.game.processMove(startSquare, finalSquare, key)) {
-                // wouldn't free King from check
-                return 2;
-            }
-        } else if (finalSquare.getOccupiedBy() != null && selectedPiece.getColour() == finalSquare.getOccupiedBy().getColour()){
-            // you're allowed to change selected Piece to another one
-            return 3;
-        } else {
-            // move is not allowed
-            return 4;
-        }
-        // move is allowed
-        return 0;
-    }
-
-    private char checkPromotion(Piece selectedPiece, Square finalSquare, char key){
-        if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(finalSquare)){
-            if (guiGame.game.getLanguage() == Language.German) {
-                key = germanGame.promotionSelection();
-            } else {
-                key = englishGame.promotionSelection();
-            }
-        }
-        return key;
-    }
 
 }
