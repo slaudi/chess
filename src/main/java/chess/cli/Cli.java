@@ -3,6 +3,7 @@ package chess.cli;
 import chess.engine.Engine;
 import chess.game.*;
 import chess.pieces.Piece;
+import chess.savegame.SaveGame;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -30,7 +31,8 @@ public class Cli {
 
             toConsole(currentGame);
         }
-        if (currentGame.currentPlayer.isLoser()) {                                              //checks if current Player has lost or game is draw
+        //checks if current Player has lost or if game is a draw
+        if (currentGame.currentPlayer.isLoser()) {
             System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
             currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite ? currentGame.playerBlack : currentGame.playerWhite;
             System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
@@ -79,20 +81,20 @@ public class Cli {
 
 
     private static boolean canPieceMove(Game currentGame) {
-        String moveNotAllowed = null;
-        String invalidMove = null;
-        String nowPlaying = null;
-        String check = null;
+        String moveNotAllowed = "!Move not allowed";
+        String invalidMove = "!Invalid move";
+        String nowPlaying = "'s move";
+        String check = " is in check!";
         if (currentGame.getLanguage() == Language.German) {
-            moveNotAllowed = "Zug nicht erlaubt";
-            invalidMove = "Keine gültige Eingabe\n";
-            nowPlaying = "Du spielst als ";
-            check = " befindet sich im Schach";
+            moveNotAllowed = "!Zug nicht erlaubt";
+            invalidMove = "!Keine gültige Eingabe\n";
+            nowPlaying = " ist am Zug";
+            check = " befindet sich im Schach!";
         }
         if (currentGame.currentPlayer.isInCheck()) {
             System.out.println(currentGame.currentPlayer.getColour() + check);
         }
-        System.out.println(nowPlaying + currentGame.currentPlayer.getColour());
+        System.out.println(currentGame.currentPlayer.getColour() + nowPlaying);
         String userInput = getInput(currentGame);
 
         if(checkForCommand(userInput, currentGame)){
@@ -152,6 +154,11 @@ public class Cli {
         if (userInput.equals("giveUp")) {
             System.out.println(currentGame.currentPlayer.getColour() + " gave up!");
             currentGame.currentPlayer.setLoser(true);
+            return true;
+        }
+        if (userInput.equals("save")) {
+            System.out.println("You saved the current stage of the game!");
+            SaveGame.save(currentGame);
             return true;
         }
         return false;
