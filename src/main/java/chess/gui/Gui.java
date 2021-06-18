@@ -294,6 +294,7 @@ public class Gui extends Application {
     private void chooseLanguage(Stage primaryStage, String source) {
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("English");
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         List<ButtonType> language = new ArrayList<>();
         Collections.addAll(language,german,english);
@@ -385,7 +386,7 @@ public class Gui extends Application {
             ButtonType highlight = new ButtonType("Highlight");
             ButtonType changeSelection = new ButtonType("Change Selection");
             ButtonType check = new ButtonType("Check");
-            ButtonType cancel = new ButtonType("Cancel");
+            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
             ButtonType buttonType;
             do {
@@ -484,7 +485,7 @@ public class Gui extends Application {
             ButtonType buttonTypeTwo = new ButtonType("Hervorheben");
             ButtonType buttonTypeThree = new ButtonType("Auswahl ändern");
             ButtonType buttonTypeFour = new ButtonType("Schach");
-            ButtonType buttonTypeFive = new ButtonType("Abbrechen");
+            ButtonType buttonTypeFive = new ButtonType("Abbrechen", ButtonBar.ButtonData.CANCEL_CLOSE);
 
             ButtonType buttonType;
             do {
