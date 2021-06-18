@@ -172,8 +172,7 @@ public class GuiGame {
             return 1;
         }
         if (game.isMoveAllowed(selectedPiece, this.squareFinal)) {
-            char key = 'Q';
-            key = checkPromotion(selectedPiece,key,chessBoardView);
+            char key = checkPromotion(selectedPiece,chessBoardView);
             if (!game.processMove(this.squareStart, this.squareFinal, key)) {
                 // wouldn't free King from check
                 return 2;
@@ -190,7 +189,8 @@ public class GuiGame {
     }
 
 
-    private char checkPromotion(Piece selectedPiece, char key, ChessBoardView chessBoardView){
+    private char checkPromotion(Piece selectedPiece, ChessBoardView chessBoardView){
+        char key = 'Q';
         if(selectedPiece.getType() == Type.PAWN && ((Pawn)selectedPiece).promotionPossible(this.squareFinal)){
             if (game.getLanguage() == Language.German) {
                 key = chessBoardView.germanGame.promotionSelection();

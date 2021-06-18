@@ -3,6 +3,7 @@ package chess.gui;
 import chess.game.Colour;
 import chess.game.Language;
 import chess.game.Move;
+import chess.savegame.LoadGame;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -84,13 +85,14 @@ public class Gui extends Application {
                 if (result) {
                     File f = new File("src/main/resources/saves");
                     String[] fileArray = f.list();
+                    assert fileArray != null;
                     if(fileArray.length != 0) {
                         List<String> choices = new ArrayList<>();
                         Collections.addAll(choices, fileArray);
                         ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
-                        dialog.setTitle("Savegame-Choice");
+                        dialog.setTitle("Choose Game");
                         dialog.setHeaderText(null);
-                        dialog.setContentText("Choose a Savegame:");
+                        dialog.setContentText("Choose a saved Game:");
 
                         Optional<String> result2 = dialog.showAndWait();
                         if (result2.isPresent()) {
@@ -107,7 +109,7 @@ public class Gui extends Application {
                                 if (!sc.hasNextLine()) break;
                                 loadingGame.add(sc.nextLine());
                             }
-                            guiGame.game = SaveGame.load(loadingGame);
+                            guiGame.game = LoadGame.load(loadingGame);
                         }
                     }
                     // TODO: implement loading a game
@@ -149,6 +151,7 @@ public class Gui extends Application {
             if (result) {
                 File f = new File("src/main/resources/saves");
                 String[] fileArray = f.list();
+                assert fileArray != null;
                 if(fileArray.length != 0) {
                     List<String> choices = new ArrayList<>();
                     Collections.addAll(choices, fileArray);
@@ -172,7 +175,7 @@ public class Gui extends Application {
                             if (!sc.hasNextLine()) break;
                             loadingGame.add(sc.nextLine());
                         }
-                        guiGame.game = SaveGame.load(loadingGame);
+                        guiGame.game = LoadGame.load(loadingGame);
                     }
                 }
                 // TODO: implement loading a game
@@ -297,7 +300,7 @@ public class Gui extends Application {
         ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         List<ButtonType> language = new ArrayList<>();
-        Collections.addAll(language,german,english);
+        Collections.addAll(language,german,english,cancel);
         ButtonType result;
         if (guiGame.game.getLanguage() == Language.German) {
             result = OptionBox.display("Sprachauswahl",null,"Wähle Sprache",language);
