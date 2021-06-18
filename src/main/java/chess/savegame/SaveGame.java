@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaveGame {
+    //TODO: speichern ob v.a. König/Turm sich schon bewegt haben
 
     public static void save(Game game) {
         try {
@@ -205,7 +206,7 @@ public class SaveGame {
         else return Language.German;
     }
 }
-//TODO: speichern ob v.a. König/Turm sich schon bewegt haben
+
 /*
 Format of Savegame: Line-wise
 Board from a8 to h1: X for empty-Square, Letters like in CLI for Non-Empty-Square
