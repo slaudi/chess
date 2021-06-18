@@ -9,14 +9,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Savegame {
+public class SaveGame {
 
     public static void save(Game game) {
         try {
-
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
             String date = dtf.format(LocalDateTime.now());
-            String filename = "src/main/resources/saves/Savegame" + date + ".txt";
+            String filename = "src/main/resources/saves/SaveGame" + date + ".txt";
             FileWriter myWriter;
             myWriter = new FileWriter(filename);
             myWriter.write(boardToStringLine(game));
@@ -183,9 +182,9 @@ public class Savegame {
         ArrayList<Move> moveHistory = new ArrayList<>();
         if(!string.isEmpty()){
             String[] slicedString = string.split(".");
-            for(int i = 0; i < slicedString.length; i++){
-                Square startSquare = game.chessBoard.getStartSquareFromInput(slicedString[i]);
-                Square finalSquare = game.chessBoard.getFinalSquareFromInput(slicedString[i]);
+            for (String s : slicedString) {
+                Square startSquare = game.chessBoard.getStartSquareFromInput(s);
+                Square finalSquare = game.chessBoard.getFinalSquareFromInput(s);
                 moveHistory.add(new Move(startSquare, finalSquare));
             }
         }
@@ -206,7 +205,7 @@ public class Savegame {
         else return Language.German;
     }
 }
-
+//TODO: speichern ob v.a. König/Turm sich schon bewegt haben
 /*
 Format of Savegame: Line-wise
 Board from a8 to h1: X for empty-Square, Letters like in CLI for Non-Empty-Square

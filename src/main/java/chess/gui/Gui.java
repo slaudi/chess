@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import chess.savegame.Savegame;
+import chess.savegame.SaveGame;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -107,7 +107,7 @@ public class Gui extends Application {
                                 if (!sc.hasNextLine()) break;
                                 loadingGame.add(sc.nextLine());
                             }
-                            guiGame.game = Savegame.load(loadingGame);
+                            guiGame.game = SaveGame.load(loadingGame);
                         }
                     }
                     // TODO: implement loading a game
@@ -172,7 +172,7 @@ public class Gui extends Application {
                             if (!sc.hasNextLine()) break;
                             loadingGame.add(sc.nextLine());
                         }
-                        guiGame.game = Savegame.load(loadingGame);
+                        guiGame.game = SaveGame.load(loadingGame);
                     }
                 }
                 // TODO: implement loading a game
@@ -374,7 +374,7 @@ public class Gui extends Application {
             boolean result = ConfirmationBox.display("Save Game", "Do you really want to save this Game?");
 
             if (result) {
-                Savegame.save(guiGame.game);
+                SaveGame.save(guiGame.game);
             }
         });
 
