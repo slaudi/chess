@@ -25,7 +25,7 @@ public class LoadGame {
     }
 
 
-    public static Board stringToBoard(String boardString){
+    private static Board stringToBoard(String boardString){
         Board board = new Board(8, 8);
         for (int i = 0; i < 64; i++){
             if(boardString.charAt(i) != 'X'){
@@ -38,28 +38,32 @@ public class LoadGame {
     }
 
 
-    public static Colour stringToCurrentPlayerColour(String string){
+    private static Colour stringToCurrentPlayerColour(String string){
         if(string.charAt(0) == 'W'){
             return Colour.WHITE;
         }
-        else return Colour.BLACK;
+        else {
+            return Colour.BLACK;
+        }
     }
 
 
-    public static Colour stringToUserColour(String string){
+    private static Colour stringToUserColour(String string){
         if(string.charAt(0) == 'W'){
             return Colour.WHITE;
         }
-        else return Colour.BLACK;
+        else {
+            return Colour.BLACK;
+        }
     }
 
 
-    public static boolean stringToArtificialEnemy(String string){
+    private static boolean stringToArtificialEnemy(String string){
         return string.equals("true");
     }
 
 
-    public static List<Piece> stringToBeatenPieces(String string){
+    private static List<Piece> stringToBeatenPieces(String string){
         ArrayList<Piece> beatenPieces = new ArrayList<>();
         if(string.length() > 0){
             for (int i = 0; i < string.length(); i++){
@@ -70,7 +74,7 @@ public class LoadGame {
     }
 
 
-    public static List<Move> stringToMoveHistory(String string, Game game){
+    private static List<Move> stringToMoveHistory(String string, Game game){
         ArrayList<Move> moveHistory = new ArrayList<>();
         if(!string.isEmpty()){
             String[] slicedString = string.split(".");
@@ -84,15 +88,17 @@ public class LoadGame {
     }
 
 
-    public static Language stringToLanguage(String string){
+    private static Language stringToLanguage(String string){
         if(string.charAt(0) == 'e'){
             return Language.English;
         }
-        else return Language.German;
+        else {
+            return Language.German;
+        }
     }
 
 
-    public static Piece charToPiece(char c, Square square){
+    private static Piece charToPiece(char c, Square square){
         switch (c) {
             case 'r':
                 return new Rook(square, Colour.BLACK);

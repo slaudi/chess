@@ -6,7 +6,6 @@ import chess.pieces.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SaveGame {
@@ -42,7 +41,7 @@ public class SaveGame {
 
 
 
-    public static String boardToStringLine(Game game){
+    private static String boardToStringLine(Game game){
         StringBuilder boardString = new StringBuilder();
         for (int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
@@ -58,31 +57,37 @@ public class SaveGame {
     }
 
 
-    public static String currentPlayerColourToLine(Game game){
+    private static String currentPlayerColourToLine(Game game){
         if(game.currentPlayer.getColour() == Colour.WHITE){
             return "W";
         }
-        else return "B";
+        else {
+            return "B";
+        }
     }
 
 
-    public static String userColourToLine(Game game){
+    private static String userColourToLine(Game game){
         if(game.getUserColour() == Colour.WHITE){
             return "W";
         }
-        else return "B";
+        else {
+            return "B";
+        }
     }
 
 
-    public static String artificialEnemyToLine(Game game){
+    private static String artificialEnemyToLine(Game game){
         if(game.isArtificialEnemy()){
             return "true";
         }
-        else return "false";
+        else {
+            return "false";
+        }
     }
 
 
-    public static String beatenPiecesToLine(Game game){
+    private static String beatenPiecesToLine(Game game){
         StringBuilder beatenPiecesString = new StringBuilder();
         if(!game.beatenPieces.isEmpty()) {
             for (Piece piece : game.beatenPieces) {
@@ -93,7 +98,7 @@ public class SaveGame {
     }
 
 
-    public static String moveHistoryToLine(Game game){
+    private static String moveHistoryToLine(Game game){
         StringBuilder moveHistoryString = new StringBuilder();
         List<Move> history = game.moveHistory;
         if(!history.isEmpty()){
@@ -105,11 +110,13 @@ public class SaveGame {
     }
 
 
-    public  static String languageToLine(Game game){
+    private static String languageToLine(Game game){
         if(game.getLanguage() == Language.English){
             return "e";
         }
-        else return "g";
+        else {
+            return "g";
+        }
     }
 
 }
