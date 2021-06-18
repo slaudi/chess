@@ -1,6 +1,7 @@
 package chess.gui;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 
@@ -28,7 +29,7 @@ public class ConfirmationBox {
         alert.setContentText(message);
 
         ButtonType yesButton = new ButtonType("Yes");
-        ButtonType noButton = new ButtonType("No");
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().addAll(yesButton,noButton);
 
         Optional<ButtonType> result = alert.showAndWait();
