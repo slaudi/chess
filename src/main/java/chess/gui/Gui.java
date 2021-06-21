@@ -94,23 +94,7 @@ public class Gui extends Application {
                         dialog.setHeaderText(null);
                         dialog.setContentText("Choose a saved Game:");
 
-                        Optional<String> result2 = dialog.showAndWait();
-                        if (result2.isPresent()) {
-                            File loadingFile = new File("src/main/resources/saves/" + result2.get());
-                            Scanner sc = null;
-                            try {
-                                sc = new Scanner(loadingFile);
-                            } catch (FileNotFoundException fileNotFoundException) {
-                                fileNotFoundException.printStackTrace();
-                            }
-                            ArrayList<String> loadingGame = new ArrayList<>();
-                            while (true) {
-                                assert sc != null;
-                                if (!sc.hasNextLine()) break;
-                                loadingGame.add(sc.nextLine());
-                            }
-                            guiGame.game = LoadGame.load(loadingGame);
-                        }
+                        loadingGame(dialog);
                     }
                     // TODO: implement loading a game
                     primaryStage.setScene(chessScene);
@@ -160,23 +144,7 @@ public class Gui extends Application {
                     dialog.setHeaderText(null);
                     dialog.setContentText("Wähle einen Speicherstand:");
 
-                    Optional<String> result2 = dialog.showAndWait();
-                    if (result2.isPresent()) {
-                        File loadingFile = new File("src/main/resources/saves/" + result2.get());
-                        Scanner sc = null;
-                        try {
-                            sc = new Scanner(loadingFile);
-                        } catch (FileNotFoundException fileNotFoundException) {
-                            fileNotFoundException.printStackTrace();
-                        }
-                        ArrayList<String> loadingGame = new ArrayList<>();
-                        while (true) {
-                            assert sc != null;
-                            if (!sc.hasNextLine()) break;
-                            loadingGame.add(sc.nextLine());
-                        }
-                        guiGame.game = LoadGame.load(loadingGame);
-                    }
+                    loadingGame(dialog);
                 }
                 // TODO: implement loading a game
                 primaryStage.setScene(chessScene);
@@ -192,6 +160,27 @@ public class Gui extends Application {
         layout1.setAlignment(Pos.CENTER);
 
         return new Scene(layout1,300,300);
+    }
+
+
+    private void loadingGame(ChoiceDialog<String> dialog){
+        Optional<String> result2 = dialog.showAndWait();
+        if (result2.isPresent()) {
+            File loadingFile = new File("src/main/resources/saves/" + result2.get());
+            Scanner sc = null;
+            try {
+                sc = new Scanner(loadingFile);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+            ArrayList<String> loadingGame = new ArrayList<>();
+            while (true) {
+                assert sc != null;
+                if (!sc.hasNextLine()) break;
+                loadingGame.add(sc.nextLine());
+            }
+            guiGame.game = LoadGame.load(loadingGame);
+        }
     }
 
 
