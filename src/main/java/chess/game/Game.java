@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * The Game class which defines and controls the current game.
  */
-public class Game {//NOPMD class controls the Game, needs more methods
+public class Game {
 
     /**
      * The player associated with the Colour object White in the current game.
@@ -163,7 +163,7 @@ public class Game {//NOPMD class controls the Game, needs more methods
      * @param key           The char for a potential promotion.
      * @return boolean Returns 'true' if the move doesn't put the player in check.
      */
-    public boolean processMove(Square startSquare, Square finalSquare, char key) {//NOPMD to process a move all if-conditions are needed here
+    public boolean processMove(Square startSquare, Square finalSquare, char key) {
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();

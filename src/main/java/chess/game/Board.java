@@ -61,7 +61,7 @@ public class Board {
      * @return Returns board
      */
     public Square[][] getBoard(){
-        return this.chessBoard;//NOPMD the game doesn't work with a deep copy atm
+        return this.chessBoard;
     }
 
 
