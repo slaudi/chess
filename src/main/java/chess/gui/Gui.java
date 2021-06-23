@@ -1,5 +1,6 @@
 package chess.gui;
 
+
 import chess.game.Colour;
 import chess.game.Language;
 import chess.game.Move;
@@ -9,7 +10,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import chess.savegame.SaveGame;
 
@@ -63,11 +68,19 @@ public class Gui extends Application {
 
 
     private Scene startWindowEnglish(Stage primaryStage) {
-        Label label = new Label("Welcome to a new Game of Chess!");
+        VBox layout1 = new VBox(25);
+        Scene scene = new Scene(layout1,550,450);
+        scene.getStylesheets().add(Objects.requireNonNull(Gui.class.getResource("style.css")).toString());
+
+        Button welcome = new Button("Welcome to a new Game of Chess!");
+        //welcome.setFont(Font.font("Times New Roman", FontWeight.BOLD,15));
+        welcome.getStyleClass().add("orangeStart");
 
         // Define Start Game-Button
         Button startLocalGame = new Button("Start Game");
-        startLocalGame.setOnAction(e -> {
+        startLocalGame.setDefaultButton(true);
+        startLocalGame.getStyleClass().add("orange");
+            startLocalGame.setOnAction(e -> {
             chooseEnemyEnglish();
             chessScene = chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
@@ -104,11 +117,14 @@ public class Gui extends Application {
         Button language = new Button("Language");
         language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
 
-        VBox layout1 = new VBox(25);
-        layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
+
+        Image chessboard = new Image(Objects.requireNonNull(Gui.class.getResourceAsStream("chessboard.jpeg")));
+        layout1.setBackground(new Background(new BackgroundImage(chessboard,BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize(40,40,false,false,false,true))));
+        layout1.getChildren().addAll(welcome, startLocalGame, startNetworkGame, loadGame, language);
         layout1.setAlignment(Pos.CENTER);
 
-        return new Scene(layout1,300,300);
+        return scene;
     }
 
     private Scene startWindowGerman(Stage primaryStage) {
@@ -264,7 +280,7 @@ public class Gui extends Application {
         grid.add(new Label(ipAddress), 0, 0);
 
         TextField IPAddress = new TextField();
-        grid.add(IPAddress,1,2);
+        grid.add(IPAddress,0,2);
 
         HBox btn = new HBox();
         btn.setPadding(new Insets(5));
@@ -275,7 +291,7 @@ public class Gui extends Application {
         Button btnCancel = new Button(cancel);
         btnCancel.setOnAction(e -> primaryStage.setScene(startScene));
         btn.getChildren().addAll(btnStartGame,btnCancel);
-        grid.add(btn,1,4);
+        grid.add(btn,0,4);
 
         primaryStage.setScene(IP_scene);
         primaryStage.show();
@@ -380,32 +396,12 @@ public class Gui extends Application {
 
             ButtonType buttonType;
             do {
-                String isBoardRotationStatus;
-                String highlightPossibleMoveStatus;
-                String allowedChangeSelectedPieceStatus;
-                String hintInCheckStatus;
-                String on = "ON";
-                String off = "OFF";
-                if(guiGame.isRotatingBoard){
-                    isBoardRotationStatus = on;
-                } else {
-                    isBoardRotationStatus = off;
-                }
-                if(guiGame.highlightPossibleMoves){
-                    highlightPossibleMoveStatus = on;
-                } else {
-                    highlightPossibleMoveStatus = off;
-                }
-                if(guiGame.allowedToChangeSelectedPiece){
-                    allowedChangeSelectedPieceStatus = on;
-                } else {
-                    allowedChangeSelectedPieceStatus = off;
-                }
-                if(guiGame.hintInCheck){
-                    hintInCheckStatus = on;
-                } else {
-                    hintInCheckStatus = off;
-                }
+                String isBoardRotationStatus = "ON";
+                String highlightPossibleMoveStatus = "ON";
+                String allowedChangeSelectedPieceStatus = "OFF";
+                String hintInCheckStatus = "ON";
+
+                List<String> status = statusChange(isBoardRotationStatus,highlightPossibleMoveStatus,allowedChangeSelectedPieceStatus,hintInCheckStatus);
 
                 List<ButtonType> options = new ArrayList<>();
                 Collections.addAll(options,rotation,highlight,changeSelection,check,cancel);
@@ -479,40 +475,20 @@ public class Gui extends Application {
 
             ButtonType buttonType;
             do {
-                String isBoardRotationStatus;
-                String highlightPossibleMoveStatus;
-                String allowedChangeSelectedPieceStatus;
-                String hintInCheckStatus;
-                String on = "AN";
-                String off = "AUS";
-                if(guiGame.isRotatingBoard){
-                    isBoardRotationStatus = on;
-                } else {
-                    isBoardRotationStatus = off;
-                }
-                if(guiGame.highlightPossibleMoves){
-                    highlightPossibleMoveStatus = on;
-                } else {
-                    highlightPossibleMoveStatus = off;
-                }
-                if(guiGame.allowedToChangeSelectedPiece){
-                    allowedChangeSelectedPieceStatus = on;
-                } else {
-                    allowedChangeSelectedPieceStatus = off;
-                }
-                if(guiGame.hintInCheck){
-                    hintInCheckStatus = on;
-                } else {
-                    hintInCheckStatus = off;
-                }
+                String isBoardRotationStatus = "AN";
+                String highlightPossibleMoveStatus = "AN";
+                String allowedChangeSelectedPieceStatus = "AUS";
+                String hintInCheckStatus = "AN";
+
+                List<String> status = statusChange(isBoardRotationStatus,highlightPossibleMoveStatus,allowedChangeSelectedPieceStatus,hintInCheckStatus);
 
                 List<ButtonType> options = new ArrayList<>();
                 Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour,buttonTypeFive);
                 buttonType = OptionBox.display("Spiel-Einstellungen",
-                        " Schachbrett rotiert: " + isBoardRotationStatus
-                                + "\n Mögliche Züge hervorheben: " + highlightPossibleMoveStatus
-                                + "\n Ausgewählte Figur ändern: " + allowedChangeSelectedPieceStatus
-                                + "\n Hinweis: Spieler befindet sich im Schach: " + hintInCheckStatus,
+                        " Schachbrett rotiert: " + status.get(0)
+                                + "\n Mögliche Züge hervorheben: " + status.get(1)
+                                + "\n Ausgewählte Figur ändern: " + status.get(2)
+                                + "\n Hinweis: Spieler befindet sich im Schach: " + status.get(3),
                         "Wähle Option, die du ändern möchtest:", options);
                 if (buttonType == buttonTypeOne) {
                     guiGame.isRotatingBoard = !guiGame.isRotatingBoard;
@@ -551,5 +527,37 @@ public class Gui extends Application {
     }
 
 
+    private List<String> statusChange(String rotation, String highlight, String changePiece, String hint) {
+        String on = "AN";
+        String off = "AUS";
+        if (guiGame.game.getLanguage() == Language.English){
+            on = "ON";
+            off = "OFF";
+        }
+        if(guiGame.isRotatingBoard){
+            rotation = on;
+        } else {
+            rotation = off;
+        }
+        if(guiGame.highlightPossibleMoves){
+            highlight = on;
+        } else {
+            highlight = off;
+        }
+        if(guiGame.allowedToChangeSelectedPiece){
+            changePiece = on;
+        } else {
+            changePiece = off;
+        }
+        if(guiGame.hintInCheck){
+            hint = on;
+        } else {
+            hint = off;
+        }
+
+        List<String> status = new ArrayList<>();
+        Collections.addAll(status,rotation,highlight,changePiece,hint);
+        return status;
+    }
 
 }
