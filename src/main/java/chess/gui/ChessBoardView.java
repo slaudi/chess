@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * The class generating the chess board as a GUI.
  */
-public class ChessBoardView extends BorderPane { //NOPMD will be lower when the option to change languages is integrated
+public class ChessBoardView extends BorderPane {
 
     /**
      * ChessBoardView class has access to GuiGame class.
@@ -47,6 +47,21 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         generatePane();
     }
 
+/*
+    MenuBar createMenu(){
+        // File menu
+        Menu gameMenu = new Menu("Game");
+
+        // Menu items
+        gameMenu.getItems().add(new MenuItem("Settings"));
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(gameMenu);
+
+        return menuBar;
+    }*/
+
 
     void generatePane() {
         HBox heading;
@@ -55,7 +70,6 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         } else {
             heading = englishGame.generatePlayersMoveLabelBox();
         }
-
         heading.setAlignment(Pos.TOP_CENTER);
         heading.setPadding(new Insets(5));
         setTop(heading);
@@ -69,6 +83,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(5, 0, 5, 40));
         setBottom(bottom);
+
     }
 
 
@@ -220,6 +235,7 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
         }
     }
 
+
     private void setButtonsOnGrid(Button button, GridPane grid, int x, int y) {
         button.setGraphic(SetImages.chooseImage(guiGame.game.chessBoard.getSquareAt(x, y)));
 
@@ -245,10 +261,5 @@ public class ChessBoardView extends BorderPane { //NOPMD will be lower when the 
             });
         }
     }
-
-
-
-
-
 
 }

@@ -96,7 +96,6 @@ public class Gui extends Application {
 
                         loadingGame(dialog);
                     }
-                    // TODO: implement loading a game
                     primaryStage.setScene(chessScene);
                 }
         });
@@ -146,7 +145,6 @@ public class Gui extends Application {
 
                     loadingGame(dialog);
                 }
-                // TODO: implement loading a game
                 primaryStage.setScene(chessScene);
             }
         });

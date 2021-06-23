@@ -5,5 +5,23 @@ package chess.game;
  */
 public enum Colour {
     BLACK,
-    WHITE
+    WHITE,
+    SCHWARZ,
+    WEISS
+
+  /*  public Colour getColourName(Language language, Colour colour){
+       if (language == Language.German) {
+           if (colour == BLACK) {
+               return SCHWARZ;
+           } else {
+               return WEISS;
+           }
+       } else {
+           if (colour == BLACK) {
+               return BLACK;
+           } else {
+               return WHITE;
+           }
+       }
+    }*/
 }

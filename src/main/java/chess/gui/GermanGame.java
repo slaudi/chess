@@ -36,26 +36,26 @@ public class GermanGame extends BorderPane {
 
 
     HBox generatePlayersMoveLabelBox(){
-        Label label = new Label(getColour() + " ist am Zug");
+        Label label = new Label(getColourName() + " ist am Zug");
         if (guiGame.game.isCheckMate()) {
-            AlertBox.display("Spiel-Information","Schachmatt",getColour() + " hat das Spiel verloren!");
-            label = new Label(getColour() + " hat das Spiel verloren!");
+            AlertBox.display("Spiel-Information","Schachmatt", getColourName() + " hat das Spiel verloren!");
+            label = new Label(getColourName() + " hat das Spiel verloren!");
         } else if (guiGame.game.isADraw() || guiGame.game.isDrawn()) {
             AlertBox.display("Spiel-Information","Unentschieden","Das Spiel endet in einem Unentschieden!");
             label = new Label("Das Spiel endet in einem Unentschieden!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
-            label = new Label(getColour() + " ist am Zug -- " + getColour() + " steht im Schach!");
+            label = new Label(getColourName() + " ist am Zug -- " + getColourName() + " steht im Schach!");
         }
         label.setFont(new Font(fontSize));
         return new HBox(label);
     }
 
 
-    private String getColour() {
+    private Colour getColourName() {
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK) {
-            return "SCHWARZ";
+            return Colour.SCHWARZ;
         } else {
-            return "WEISS";
+            return Colour.WEISS;
         }
     }
 
@@ -88,7 +88,7 @@ public class GermanGame extends BorderPane {
             AlertBox.display("Spiel-Fehler",null,"Etwas unerwartetes ist passiert!?");
         }
         if (result == 0 && guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
-            AlertBox.display("Schach-Hinweis",null, getColour() + " steht im Schach!");
+            AlertBox.display("Schach-Hinweis",null, getColourName() + " steht im Schach!");
         }
     }
 
@@ -102,7 +102,7 @@ public class GermanGame extends BorderPane {
         List<ButtonType> options = new ArrayList<>();
         Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour);
 
-        ButtonType buttonType = OptionBox.display("Umwandlungs-Optionen",null,"Dein Bauer wird zu:",options);
+        ButtonType buttonType = OptionBox.display("Umwandlungsoptionen",null,"Dein Bauer wird zu:",options);
 
         if (buttonType == buttonTypeOne) {
             return 'R';

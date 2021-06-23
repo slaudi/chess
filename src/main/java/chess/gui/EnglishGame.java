@@ -19,7 +19,6 @@ public class EnglishGame extends BorderPane {
 
     public ChessBoardView chessBoardView;
     public GuiGame guiGame;
-
     int fontSize = 17;
 
 
@@ -36,15 +35,15 @@ public class EnglishGame extends BorderPane {
 
 
     HBox generatePlayersMoveLabelBox(){
-        Label label = new Label(guiGame.game.currentPlayer.getColour().toString() + "s Turn");
+        Label label = new Label(guiGame.game.currentPlayer.getColour() + "s Turn");
         if (guiGame.game.isCheckMate()) {
-            AlertBox.display("Game Information","CheckMate",guiGame.game.currentPlayer.getColour().toString() + " has lost the Game!");
-            label = new Label(guiGame.game.currentPlayer.getColour().toString() + " lost the Game!");
+            AlertBox.display("Game Information","CheckMate",guiGame.game.currentPlayer.getColour() + " has lost the Game!");
+            label = new Label(guiGame.game.currentPlayer.getColour() + " lost the Game!");
         } else if (guiGame.game.isADraw() || guiGame.game.isDrawn()) {
             AlertBox.display("Game Information","Draw","The Game ended in a draw!");
             label = new Label("The Game ended in a draw!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
-            label = new Label(guiGame.game.currentPlayer.getColour().toString() + "s Turn -- " + guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
+            label = new Label(guiGame.game.currentPlayer.getColour() + "s Turn -- " + guiGame.game.currentPlayer.getColour() + " is in Check!");
         }
         label.setFont(new Font(fontSize));
         return new HBox(label);
@@ -79,7 +78,7 @@ public class EnglishGame extends BorderPane {
             AlertBox.display("Game-Error",null,"Something unexpected happened!?");
         }
         if (result == 0 && guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
-            AlertBox.display("Check Hint",null, guiGame.game.currentPlayer.getColour().toString() + " is in Check!");
+            AlertBox.display("Check Hint",null, guiGame.game.currentPlayer.getColour() + " is in Check!");
         }
     }
 
