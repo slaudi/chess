@@ -12,9 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import chess.savegame.SaveGame;
 
@@ -388,28 +385,22 @@ public class Gui extends Application {
         // Define Option-Button
         Button btnOptions = new Button("Options");
         btnOptions.setOnAction(event -> {
+            List<ButtonType> options = new ArrayList<>();
             ButtonType rotation = new ButtonType("Rotation");
             ButtonType highlight = new ButtonType("Highlight");
             ButtonType changeSelection = new ButtonType("Change Selection");
             ButtonType check = new ButtonType("Check");
             ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Collections.addAll(options,rotation,highlight,changeSelection,check,cancel);
 
             ButtonType buttonType;
             do {
-                String isBoardRotationStatus = "ON";
-                String highlightPossibleMoveStatus = "ON";
-                String allowedChangeSelectedPieceStatus = "OFF";
-                String hintInCheckStatus = "ON";
-
-                List<String> status = statusChange(isBoardRotationStatus,highlightPossibleMoveStatus,allowedChangeSelectedPieceStatus,hintInCheckStatus);
-
-                List<ButtonType> options = new ArrayList<>();
-                Collections.addAll(options,rotation,highlight,changeSelection,check,cancel);
+                List<String> status = statusChange();
                 buttonType = OptionBox.display("Game-Settings",
-                        " ChessBoard-Rotation: " + isBoardRotationStatus
-                                + "\n Highlighting of Moves: " + highlightPossibleMoveStatus
-                                + "\n Change a selected Piece: " + allowedChangeSelectedPieceStatus
-                                + "\n Player is in Check-Notification: " + hintInCheckStatus,
+                        " ChessBoard-Rotation: " + status.get(0)
+                                + "\n Highlighting of Moves: " + status.get(1)
+                                + "\n Change a selected Piece: " + status.get(2)
+                                + "\n Player is in Check-Notification: " + status.get(3),
                         "Choose Option you want to Change:", options);
                 if (buttonType == rotation) {
                     guiGame.isRotatingBoard = !guiGame.isRotatingBoard;
@@ -420,7 +411,7 @@ public class Gui extends Application {
                 } else if (buttonType == check) {
                     guiGame.hintInCheck = !guiGame.hintInCheck;
                 }
-            } while (buttonType != cancel); // user chose CANCEL
+            } while (buttonType != cancel); // player chose CANCEL
         });
 
         // Define Move History-Button
@@ -472,18 +463,12 @@ public class Gui extends Application {
             ButtonType buttonTypeThree = new ButtonType("Auswahl ändern");
             ButtonType buttonTypeFour = new ButtonType("Schach");
             ButtonType buttonTypeFive = new ButtonType("Abbrechen", ButtonBar.ButtonData.CANCEL_CLOSE);
+            List<ButtonType> options = new ArrayList<>();
+            Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour,buttonTypeFive);
 
             ButtonType buttonType;
             do {
-                String isBoardRotationStatus = "AN";
-                String highlightPossibleMoveStatus = "AN";
-                String allowedChangeSelectedPieceStatus = "AUS";
-                String hintInCheckStatus = "AN";
-
-                List<String> status = statusChange(isBoardRotationStatus,highlightPossibleMoveStatus,allowedChangeSelectedPieceStatus,hintInCheckStatus);
-
-                List<ButtonType> options = new ArrayList<>();
-                Collections.addAll(options,buttonTypeOne,buttonTypeTwo,buttonTypeThree,buttonTypeFour,buttonTypeFive);
+                List<String> status = statusChange();
                 buttonType = OptionBox.display("Spiel-Einstellungen",
                         " Schachbrett rotiert: " + status.get(0)
                                 + "\n Mögliche Züge hervorheben: " + status.get(1)
@@ -499,7 +484,7 @@ public class Gui extends Application {
                 } else if (buttonType == buttonTypeFour) {
                     guiGame.hintInCheck = !guiGame.hintInCheck;
                 }
-            } while (buttonType != buttonTypeFive); // user chose CANCEL
+            } while (buttonType != buttonTypeFive); // player chose CANCEL
         });
 
         // Define Move History-Button
@@ -527,13 +512,19 @@ public class Gui extends Application {
     }
 
 
-    private List<String> statusChange(String rotation, String highlight, String changePiece, String hint) {
+    private List<String> statusChange() {
+        String rotation;
+        String highlight;
+        String changePiece;
+        String hint;
+
         String on = "AN";
         String off = "AUS";
         if (guiGame.game.getLanguage() == Language.English){
             on = "ON";
             off = "OFF";
         }
+
         if(guiGame.isRotatingBoard){
             rotation = on;
         } else {
@@ -556,7 +547,7 @@ public class Gui extends Application {
         }
 
         List<String> status = new ArrayList<>();
-        Collections.addAll(status,rotation,highlight,changePiece,hint);
+        Collections.addAll(status, rotation, highlight, changePiece, hint);
         return status;
     }
 
