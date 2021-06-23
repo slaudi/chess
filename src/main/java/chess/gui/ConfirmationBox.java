@@ -1,5 +1,6 @@
 package chess.gui;
 
+import chess.game.Language;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -21,7 +22,7 @@ public class ConfirmationBox {
      * @param message Content of PopUp-Window
      * @return Returns the Answer of User(Yes or No) as a Boolean
      */
-    public static boolean display(String title, String message){
+    public static boolean display(String title, String message, Language language){
         Alert alert = new Alert(Alert.AlertType.NONE);
 
         alert.initModality(Modality.APPLICATION_MODAL); //blocks user interaction with other windows
@@ -30,10 +31,15 @@ public class ConfirmationBox {
 
         ButtonType yesButton = new ButtonType("Yes");
         ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+        if (language == Language.German) {
+            yesButton = new ButtonType("Ja");
+            noButton = new ButtonType("Nein", ButtonBar.ButtonData.CANCEL_CLOSE);
+        }
         alert.getButtonTypes().addAll(yesButton,noButton);
 
         Optional<ButtonType> result = alert.showAndWait();
-        result.ifPresent(buttonType -> answer = buttonType == yesButton); // answer = true if 'Yes'-Button is clicked
+        ButtonType finalYesButton = yesButton;
+        result.ifPresent(buttonType -> answer = buttonType == finalYesButton); // answer = true if 'Yes'-Button is clicked
 
         return answer;
     }
