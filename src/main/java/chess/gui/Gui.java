@@ -57,6 +57,7 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
+
     private Scene startWindow(Stage primaryStage){
         BorderPane pane = new BorderPane();
         Image chessboard = new Image(Objects.requireNonNull(Gui.class.getResourceAsStream("chessboard.jpeg")));
@@ -76,6 +77,7 @@ public class Gui extends Application {
         }
         return startScene;
     }
+
 
     private void startWindowEnglish(Stage primaryStage, BorderPane pane) {
         Button welcome = new Button("Welcome to a new Game of Chess!");
@@ -103,7 +105,7 @@ public class Gui extends Application {
         Button loadGame = new Button("Load Game");
         loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
-                boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?");
+                boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", Language.English);
 
                 if (result) {
                     File f = new File("src/main/resources/saves");
@@ -134,6 +136,7 @@ public class Gui extends Application {
         pane.setCenter(layout1);
     }
 
+
     private void startWindowGerman(Stage primaryStage, BorderPane pane) {
         Button welcome = new Button("Willkommen zu einer neuen Partie Schach!");
         welcome.getStyleClass().add("startLabel");
@@ -159,8 +162,7 @@ public class Gui extends Application {
         Button loadGame = new Button("Lade Spiel");
         loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
-            boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?");
-
+            boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?",Language.German);
             if (result) {
                 File f = new File("src/main/resources/saves");
                 String[] fileArray = f.list();
@@ -192,9 +194,9 @@ public class Gui extends Application {
 
 
     private void loadingGame(ChoiceDialog<String> dialog){
-        Optional<String> result2 = dialog.showAndWait();
-        if (result2.isPresent()) {
-            File loadingFile = new File("src/main/resources/saves/" + result2.get());
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            File loadingFile = new File("src/main/resources/saves/" + result.get());
             Scanner sc = null;
             try {
                 sc = new Scanner(loadingFile);
@@ -376,8 +378,7 @@ public class Gui extends Application {
         //Define New Game-Button
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?");
-
+            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?",Language.English);
             if (result) {
                 guiGame = new GuiGame();
                 startScene = startWindow(primaryStage);
@@ -389,11 +390,10 @@ public class Gui extends Application {
             }
         });
 
-        //Define New Game-Button
+        //Define Save Game-Button
         Button btnSaveGame = new Button("Save Game");
         btnSaveGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Save Game", "Do you really want to save this Game?");
-
+            boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",Language.English);
             if (result) {
                 SaveGame.save(guiGame.game);
             }
@@ -459,8 +459,7 @@ public class Gui extends Application {
         //Define New Game-Button
         Button btnNewGame = new Button("Neues Spiel");
         btnNewGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?");
-
+            boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?",Language.German);
             if (result) {
                 guiGame = new GuiGame();
                 startScene = startWindow(primaryStage);
@@ -469,6 +468,15 @@ public class Gui extends Application {
                 primaryStage.setScene(startScene);
                 primaryStage.setTitle(schach);
                 primaryStage.show();
+            }
+        });
+
+        //Define Save Game-Button
+        Button btnSaveGame = new Button("Spiel speichern");
+        btnSaveGame.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du das Spiel speichern?",Language.English);
+            if (result) {
+                SaveGame.save(guiGame.game);
             }
         });
 
