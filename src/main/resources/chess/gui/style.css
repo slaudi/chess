@@ -1,7 +1,7 @@
-.orangeStart {
+.startLabel {
     -fx-background-color:
             linear-gradient(rgb(180,80,0), rgb(255,228,196)),
-            radial-gradient(center 70% -40%, radius 50%, rgb(255,228,196) 20%, rgb(180,80,0) 30%);
+            radial-gradient(center 40%-40%, radius 150%, rgb(255,228,196) 30%, rgb(180,80,0) 35%);
     -fx-background-radius: 6, 5;
     -fx-background-insets: 0, 1;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
@@ -12,12 +12,24 @@
     -fx-padding: 10;
 }
 
-.orangeStart {
+.startButtons {
     -fx-background-color:
-            linear-gradient(rgb(180,80,0), rgb(255,228,196)),
-            radial-gradient(center 70% -40%, radius 50%, rgb(255,228,196) 20%, rgb(180,80,0) 30%);
-    -fx-background-radius: 6, 5;
-    -fx-background-insets: 0, 1;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+            linear-gradient(from 0% 50% to 0% 50%, #a34313 15%, rgb(180,80,0) 75%),
+            linear-gradient(rgb(255,228,196), Darkgrey),
+            radial-gradient(center 70%-40%, radius 50%, rgb(255,228,196) 20%, rgb(180,80,0) 30%);
+    -fx-background-insets: 0,1,4,5;
+    -fx-background-radius: 9,8,5,4;
+    -fx-padding: 12 25 12 25;
+    -fx-effect: dropshadow( three-pass-box , Black , 1, 0.0 , 0 , 1);
+    -fx-font-size: 15;
+    -fx-font-weight: Bold;
     -fx-text-fill: rgb(255,228,196);
+}
+
+.startButtons:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, rgb(180,80,0) 0%, #903b12 100%),
+            #9d4024,
+            #d86e3a,
+            radial-gradient(center 50% 50%, radius 100%, #ea7f4b, rgb(180,80,0));
 }

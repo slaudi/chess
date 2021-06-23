@@ -48,13 +48,7 @@ public class Gui extends Application {
         guiGame = new GuiGame();
 
         // Start
-        if (guiGame.game.getLanguage() == Language.German) {
-            startScene = startWindowGerman(primaryStage);
-            primaryStage.setTitle(schach);
-        } else {
-            startScene = startWindowEnglish(primaryStage);
-            primaryStage.setTitle(chess);
-        }
+        startScene = startWindow(primaryStage);
 
         // Chess board
         chessScene = chessWindow(primaryStage);
@@ -63,21 +57,38 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
+    private Scene startWindow(Stage primaryStage){
+        BorderPane pane = new BorderPane();
+        Image chessboard = new Image(Objects.requireNonNull(Gui.class.getResourceAsStream("chessboard.jpeg")));
+        pane.setBackground(new Background(new BackgroundImage(chessboard,BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize(40,40,
+                false,false,false,true))));
 
-    private Scene startWindowEnglish(Stage primaryStage) {
-        VBox layout1 = new VBox(25);
-        Scene scene = new Scene(layout1,550,450);
-        scene.getStylesheets().add(Objects.requireNonNull(Gui.class.getResource("style.css")).toString());
+        Scene startScene = new Scene(pane,500,480);
+        startScene.getStylesheets().add(Objects.requireNonNull(Gui.class.getResource("style.css")).toString());
 
+        if (guiGame.game.getLanguage() == Language.German) {
+            startWindowGerman(primaryStage, pane);
+            primaryStage.setTitle(schach);
+        } else {
+            startWindowEnglish(primaryStage, pane);
+            primaryStage.setTitle(chess);
+        }
+        return startScene;
+    }
+
+    private void startWindowEnglish(Stage primaryStage, BorderPane pane) {
         Button welcome = new Button("Welcome to a new Game of Chess!");
-        //welcome.setFont(Font.font("Times New Roman", FontWeight.BOLD,15));
-        welcome.getStyleClass().add("orangeStart");
+        welcome.getStyleClass().add("startLabel");
+        BorderPane.setAlignment(welcome,Pos.TOP_CENTER);
+        BorderPane.setMargin(welcome,new Insets(50,0,60,0));
+        pane.setTop(welcome);
 
         // Define Start Game-Button
         Button startLocalGame = new Button("Start Game");
         startLocalGame.setDefaultButton(true);
-        startLocalGame.getStyleClass().add("orange");
-            startLocalGame.setOnAction(e -> {
+        startLocalGame.getStyleClass().add("startButtons");
+        startLocalGame.setOnAction(e -> {
             chooseEnemyEnglish();
             chessScene = chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
@@ -86,9 +97,11 @@ public class Gui extends Application {
         // Define Network Game-Button
         Button startNetworkGame = new Button("Network Game");
         startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
+        startNetworkGame.getStyleClass().add("startButtons");
 
         // Define Load Game-Button
         Button loadGame = new Button("Load Game");
+        loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
                 boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?");
 
@@ -112,23 +125,25 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button language = new Button("Language");
+        language.getStyleClass().add("startButtons");
         language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
 
-
-        Image chessboard = new Image(Objects.requireNonNull(Gui.class.getResourceAsStream("chessboard.jpeg")));
-        layout1.setBackground(new Background(new BackgroundImage(chessboard,BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize(40,40,false,false,false,true))));
-        layout1.getChildren().addAll(welcome, startLocalGame, startNetworkGame, loadGame, language);
-        layout1.setAlignment(Pos.CENTER);
-
-        return scene;
+        VBox layout1 = new VBox(25);
+        layout1.getChildren().addAll(startLocalGame, startNetworkGame, loadGame, language);
+        layout1.setAlignment(Pos.TOP_CENTER);
+        pane.setCenter(layout1);
     }
 
-    private Scene startWindowGerman(Stage primaryStage) {
-        Label label = new Label("Willkommen zu einer neuen Partie Schach!");
+    private void startWindowGerman(Stage primaryStage, BorderPane pane) {
+        Button welcome = new Button("Willkommen zu einer neuen Partie Schach!");
+        welcome.getStyleClass().add("startLabel");
+        BorderPane.setAlignment(welcome,Pos.TOP_CENTER);
+        BorderPane.setMargin(welcome,new Insets(50,0,60,0));
+        pane.setTop(welcome);
 
         // Define Start Game-Button
         Button startLocalGame = new Button("Starte Spiel");
+        startLocalGame.getStyleClass().add("startButtons");
         startLocalGame.setOnAction(e -> {
             chooseEnemyGerman();
             chessScene = chessWindow(primaryStage);
@@ -137,10 +152,12 @@ public class Gui extends Application {
 
         // Define Network Game-Button
         Button startNetworkGame = new Button("Netzwerk-Spiel");
+        startNetworkGame.getStyleClass().add("startButtons");
         startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
 
         // Define Load Game-Button
         Button loadGame = new Button("Lade Spiel");
+        loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
             boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?");
 
@@ -164,13 +181,13 @@ public class Gui extends Application {
 
         // Define Language-Button
         Button language = new Button("Sprache");
+        language.getStyleClass().add("startButtons");
         language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
 
         VBox layout1 = new VBox(25);
-        layout1.getChildren().addAll(label, startLocalGame, startNetworkGame, loadGame, language);
-        layout1.setAlignment(Pos.CENTER);
-
-        return new Scene(layout1,300,300);
+        layout1.getChildren().addAll( startLocalGame, startNetworkGame, loadGame, language);
+        layout1.setAlignment(Pos.TOP_CENTER);
+        pane.setCenter(layout1);
     }
 
 
@@ -315,10 +332,10 @@ public class Gui extends Application {
 
         if (source.equals("start")) {
             if (guiGame.game.getLanguage() == Language.German) {
-                startScene = startWindowGerman(primaryStage);
+                startScene = startWindow(primaryStage);
                 primaryStage.setTitle(schach);
             } else {
-                startScene = startWindowEnglish(primaryStage);
+                startScene = startWindow(primaryStage);
                 primaryStage.setTitle(chess);
             }
             primaryStage.setScene(startScene);
@@ -363,7 +380,7 @@ public class Gui extends Application {
 
             if (result) {
                 guiGame = new GuiGame();
-                startScene = startWindowEnglish(primaryStage);
+                startScene = startWindow(primaryStage);
                 chessScene = chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
@@ -446,7 +463,7 @@ public class Gui extends Application {
 
             if (result) {
                 guiGame = new GuiGame();
-                startScene = startWindowGerman(primaryStage);
+                startScene = startWindow(primaryStage);
                 chessScene = chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
