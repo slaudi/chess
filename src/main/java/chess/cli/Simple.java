@@ -26,7 +26,7 @@ public class Simple {
             while(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
                 String userInput = getInput();
 
-                if (!Cli.isValidMove(userInput)) {
+                if (Cli.isNotValidMove(userInput)) {
                     //validates user-input syntactically
                     System.out.println("!Invalid move\n");
                     continue;

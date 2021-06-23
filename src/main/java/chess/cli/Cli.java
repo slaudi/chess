@@ -95,7 +95,7 @@ public class Cli {
             // Input is a command, not a Move
             return false;
         }
-        if (!isValidMove(userInput)) {
+        if (isNotValidMove(userInput)) {
             // validates user-input syntactically
             System.out.println(invalidMove);
             return false;
@@ -220,7 +220,7 @@ public class Cli {
      * @param consoleInput The console input of the active Player as a String.
      * @return boolean Returns 'true' if the syntax of the input is correct.
      */
-    static boolean isValidMove(String consoleInput){
+    static boolean isNotValidMove(String consoleInput){
         ArrayList<String> keys = new ArrayList<>();
         keys.add("Q");
         keys.add("B");
@@ -230,16 +230,16 @@ public class Cli {
             if (consoleInput.length() == 6) {
                 if (!keys.contains(consoleInput.substring(5, 6))) {//NOPMD a collapse of the statement would cause a false 'true' return of the method
                     // key reached R and the input still doesn't contain a char from keys
-                    return false;
+                    return true;
                 }
             }
             if (consoleInput.charAt(2) == '-') {
-                return Label.contains(consoleInput.substring(0, 2)) && Label.contains(consoleInput.substring(3, 5));
+                return !Label.contains(consoleInput.substring(0, 2)) || !Label.contains(consoleInput.substring(3, 5));
             } else {
-                return false;
+                return true;
             }
         } else {
-            return false;
+            return true;
         }
     }
 
