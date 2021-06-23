@@ -32,13 +32,7 @@ public class Cli {
             toConsole(currentGame);
         }
         //checks if current Player has lost or if game is a draw
-        if (currentGame.currentPlayer.isLoser()) {
-            System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
-            currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite ? currentGame.playerBlack : currentGame.playerWhite;
-            System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
-        } else if (currentGame.isDrawn()) {
-            System.out.println("The game ended in a draw!");
-        }
+        finalWords(currentGame);
     }
 
     /**
@@ -268,6 +262,29 @@ public class Cli {
             System.out.println(" ");
         }
         System.out.println("  a b c d e f g h");
+    }
+
+
+    private static void finalWords(Game currentGame){
+        if (currentGame.getLanguage() == Language.English) {
+            if (currentGame.currentPlayer.isLoser()) {
+                System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
+                currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite
+                        ? currentGame.playerBlack : currentGame.playerWhite;
+                System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
+            } else if (currentGame.isDrawn()) {
+                System.out.println("The game ended in a draw!");
+            }
+        } else {
+            if (currentGame.currentPlayer.isLoser()) {
+                System.out.println(currentGame.currentPlayer.getColour() + " hat verloren!");
+                currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite
+                        ? currentGame.playerBlack : currentGame.playerWhite;
+                System.out.println("Die Partie gewonnen hat " + currentGame.currentPlayer.getColour() + "!");
+            } else if (currentGame.isDrawn()) {
+                System.out.println("Die Partie endet in einem Unentschieden!");
+            }
+        }
     }
 
 }

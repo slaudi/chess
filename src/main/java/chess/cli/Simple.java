@@ -68,6 +68,7 @@ public class Simple {
             }
         }
 
+
     /**
      * Gets the input as a String from the console.
      *
@@ -77,4 +78,5 @@ public class Simple {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
+
 }
