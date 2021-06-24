@@ -84,6 +84,7 @@ public class LoadGame {
                 Square finalSquare = game.chessBoard.getFinalSquareFromInput(s);
                 moveHistory.add(new Move(startSquare, finalSquare));
             }
+            moveHistory.get(moveHistory.size() - 1).setMovingPieceToPieceOnFinalSquare();
         }
         return moveHistory;
     }

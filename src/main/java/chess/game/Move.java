@@ -9,7 +9,7 @@ import chess.pieces.*;
 public class Move {
     private final Square startSquare;
     private final Square finalSquare;
-    private final Piece movingPiece;
+    private Piece movingPiece;
 
     private int boardValueAfterMove = 0;
 
@@ -43,6 +43,10 @@ public class Move {
 
     public void setBoardValueAfterMove(int value){
         this.boardValueAfterMove = value;
+    }
+
+    public void setMovingPieceToPieceOnFinalSquare(){
+        this.movingPiece = this.finalSquare.getOccupiedBy();
     }
 
     /**
