@@ -49,6 +49,11 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public boolean getNotMoved() {
+        return this.notMoved;
+    }
+
+    @Override
     public String toString() {
         if(this.colour == Colour.WHITE){
             return "B";
