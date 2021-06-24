@@ -27,6 +27,7 @@ public class LoadGame {
 
     private static Board stringToBoard(String boardString){
         Board board = new Board(8, 8);
+        board.clearBoard();
         for (int i = 0; i < 64; i++){
             if(boardString.charAt(i) != 'X'){
                 int x = i % 8;
@@ -76,8 +77,8 @@ public class LoadGame {
 
     private static List<Move> stringToMoveHistory(String string, Game game){
         ArrayList<Move> moveHistory = new ArrayList<>();
-        if(!string.isEmpty()){
-            String[] slicedString = string.split(".");
+        if(string.length() > 0){
+            String[] slicedString = string.split("\\.");
             for (String s : slicedString) {
                 Square startSquare = game.chessBoard.getStartSquareFromInput(s);
                 Square finalSquare = game.chessBoard.getFinalSquareFromInput(s);
@@ -100,6 +101,10 @@ public class LoadGame {
 
     private static Piece charToPiece(char c, Square square){
         switch (c) {
+            case 'p':
+                return new Pawn(square, Colour.BLACK);
+            case 'P':
+                return new Pawn(square, Colour.WHITE);
             case 'r':
                 return new Rook(square, Colour.BLACK);
             case 'n':

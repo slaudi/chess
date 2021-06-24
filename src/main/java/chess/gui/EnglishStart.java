@@ -74,6 +74,7 @@ public class EnglishStart {
 
                     gui.loadingGame(dialog);
                 }
+                chessScene = gui.chessWindow(primaryStage);
                 primaryStage.setScene(chessScene);
             }
         });
