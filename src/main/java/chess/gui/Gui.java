@@ -80,7 +80,7 @@ public class Gui extends Application {
     }
 
 
-    void loadingGame(ChoiceDialog<String> dialog){
+    void loadGame(ChoiceDialog<String> dialog){
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             File loadingFile = new File("src/main/resources/saves/" + result.get());
@@ -154,6 +154,21 @@ public class Gui extends Application {
         return new Scene(pane, 900, 800);
     }
 
+   /* MenuBar createMenu() {
+        // File menu
+        Menu gameMenu = new Menu("Game");
+        Menu designMenu = new Menu()
+
+        // Menu items
+        gameMenu.getItems().add(new MenuItem("Settings"));
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(gameMenu);
+
+        return menuBar;
+    }
+    */
 
     List<String> statusChange() {
         String rotation;

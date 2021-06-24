@@ -24,8 +24,8 @@ public class ChessBoardView extends BorderPane {
     public GermanGame germanGame;
     public EnglishGame englishGame;
 
-    String white = "-fx-background-color: floralwhite";
-    String black = "-fx-background-color: slategray";
+    String white;
+    String black;
     private final String highlightColour = "skyblue";
     private final String highlightBackground = "-fx-background-color: " + highlightColour;
     int buttonHeight = 85;
@@ -43,24 +43,11 @@ public class ChessBoardView extends BorderPane {
 
         this.germanGame = new GermanGame(guiGame,this);
         this.englishGame = new EnglishGame(guiGame,this);
-
+        this.white = "-fx-background-color: rgb(180,80,0)";
+        this.black = "-fx-background-color: rgb(255,228,196)";
         generatePane();
     }
 
-/*
-    MenuBar createMenu(){
-        // File menu
-        Menu gameMenu = new Menu("Game");
-
-        // Menu items
-        gameMenu.getItems().add(new MenuItem("Settings"));
-
-        // Menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(gameMenu);
-
-        return menuBar;
-    }*/
 
 
     void generatePane() {

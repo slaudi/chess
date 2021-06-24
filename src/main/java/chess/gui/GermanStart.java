@@ -71,7 +71,7 @@ public class GermanStart {
                     dialog.setHeaderText(null);
                     dialog.setContentText("Wähle einen Speicherstand:");
 
-                    gui.loadingGame(dialog);
+                    gui.loadGame(dialog);
                 }
                 primaryStage.setScene(chessScene);
             }
