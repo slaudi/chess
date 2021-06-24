@@ -72,7 +72,7 @@ public class EnglishStart {
                     dialog.setHeaderText(null);
                     dialog.setContentText("Choose a saved Game:");
 
-                    gui.loadingGame(dialog);
+                    gui.loadGame(dialog);
                 }
                 primaryStage.setScene(chessScene);
             }
