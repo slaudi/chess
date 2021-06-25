@@ -142,7 +142,7 @@ public class Cli {
         }
         if (userInput.equals("deutsch")) {
             currentGame.setLanguage(Language.German);
-            System.out.println("Du hast die Sprache auf Deutsch geändert.");
+            System.out.println("Du hast die Sprache zu Deutsch geändert.");
             return true;
         }
         if (userInput.equals("giveUp")) {

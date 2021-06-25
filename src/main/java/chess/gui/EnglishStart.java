@@ -183,7 +183,9 @@ public class EnglishStart {
 
             ButtonType buttonType;
             do {
-                List<String> status = gui.statusChange();
+                String on = "ON";
+                String off = "OFF";
+                List<String> status = gui.statusChange(on, off);
                 buttonType = OptionBox.display("Game-Settings",
                         " ChessBoard-Rotation: " + status.get(0)
                                 + "\n Highlighting of Moves: " + status.get(1)

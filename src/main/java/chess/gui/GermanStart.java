@@ -168,7 +168,9 @@ public class GermanStart {
 
             ButtonType buttonType;
             do {
-                List<String> status = gui.statusChange();
+                String on = "AN";
+                String off = "AUS";
+                List<String> status = gui.statusChange(on, off);
                 buttonType = OptionBox.display("Spiel-Einstellungen",
                         " Schachbrett rotiert: " + status.get(0)
                                 + "\n Mögliche Züge hervorheben: " + status.get(1)

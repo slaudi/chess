@@ -103,7 +103,7 @@ public class Gui extends Application {
         String startConnection = "Start Connection";
         String cancel = "Cancel";
         if (guiGame.game.getLanguage() == Language.German){
-            ipAddress = "Gebe die IP-Adresse deines Gegners ein: ";
+            ipAddress = "Gib die IP-Adresse deines Gegners ein: ";
             startConnection = "Starte Verbindung";
             cancel = "Abbrechen";
         }
@@ -167,18 +167,11 @@ public class Gui extends Application {
     }
     */
 
-    List<String> statusChange() {
+    List<String> statusChange(String on, String off) {
         String rotation;
         String highlight;
         String changePiece;
         String hint;
-
-        String on = "AN";
-        String off = "AUS";
-        if (guiGame.game.getLanguage() == Language.English){
-            on = "ON";
-            off = "OFF";
-        }
 
         if(guiGame.isRotatingBoard){
             rotation = on;
@@ -200,7 +193,6 @@ public class Gui extends Application {
         } else {
             hint = off;
         }
-
         List<String> status = new ArrayList<>();
         Collections.addAll(status, rotation, highlight, changePiece, hint);
         return status;
