@@ -72,6 +72,7 @@ public class Gui extends Application {
         } else {
             englishStart.startWindowEnglish(primaryStage, pane);
         }
+
         return startScene;
     }
 

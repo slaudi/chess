@@ -26,11 +26,13 @@ public class GermanStart {
 
     public GuiGame guiGame;
     public Gui gui;
+    public Language language;
     private final String chess = "Schach!";
 
     public GermanStart(GuiGame guiGame, Gui gui) {
         this.guiGame = guiGame;
         this.gui = gui;
+        this.language = Language.German;
     }
 
 
@@ -61,7 +63,7 @@ public class GermanStart {
         Button loadGame = new Button("Lade Spiel");
         loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
-            boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?",Language.German);
+            boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?",this.language);
             if (result) {
                 File f = new File("src/main/resources/saves");
                 String[] fileArray = f.list();
@@ -85,8 +87,8 @@ public class GermanStart {
         language.getStyleClass().add("startButtons");
         language.setOnAction(e -> {
             chooseLanguage();
-            chessScene = gui.chessWindow(primaryStage);
-            primaryStage.setScene(chessScene);
+            startScene = gui.startWindow(primaryStage);
+            primaryStage.setScene(startScene);
             primaryStage.show();
         });
 
@@ -132,7 +134,7 @@ public class GermanStart {
         //Define New Game-Button
         Button btnNewGame = new Button("Neues Spiel");
         btnNewGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?",Language.German);
+            boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?",this.language);
             if (result) {
                 guiGame = new GuiGame();
                 startScene = gui.startWindow(primaryStage);
@@ -147,7 +149,7 @@ public class GermanStart {
         //Define Save Game-Button
         Button btnSaveGame = new Button("Spiel speichern");
         btnSaveGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du das Spiel speichern?",Language.English);
+            boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du das Spiel speichern?",this.language);
             if (result) {
                 SaveGame.save(guiGame.game);
             }
@@ -204,8 +206,8 @@ public class GermanStart {
         Button btnLanguage = new Button("Sprache");
         btnLanguage.setOnAction(event -> {
             chooseLanguage();
-            startScene = gui.startWindow(primaryStage);
-            primaryStage.setScene(startScene);
+            chessScene = gui.chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
             primaryStage.show();
         });
 
@@ -218,10 +220,9 @@ public class GermanStart {
     private void chooseLanguage() {
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("Englisch");
-        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         List<ButtonType> language = new ArrayList<>();
-        Collections.addAll(language,german,english,cancel);
+        Collections.addAll(language,german,english);
         ButtonType result;
         result = OptionBox.display("Sprachauswahl", null, "Wähle eine Sprache", language);
         if (result == german) {

@@ -26,11 +26,13 @@ public class EnglishStart {
 
     public GuiGame guiGame;
     public Gui gui;
+    public Language language;
     private final String chess = "Chess!";
 
     public EnglishStart(GuiGame guiGame, Gui gui){
         this.guiGame = guiGame;
         this.gui = gui;
+        this.language = Language.English;
     }
 
     void startWindowEnglish(Stage primaryStage, BorderPane pane) {
@@ -61,7 +63,7 @@ public class EnglishStart {
         Button loadGame = new Button("Load Game");
         loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
-            boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", Language.English);
+            boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
 
             if (result) {
                 File f = new File("src/main/resources/saves");
@@ -91,7 +93,6 @@ public class EnglishStart {
             primaryStage.setScene(startScene);
             primaryStage.show();
         });
-
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(startLocalGame, startNetworkGame, loadGame, language);
         layout1.setAlignment(Pos.TOP_CENTER);
@@ -131,10 +132,9 @@ public class EnglishStart {
     private void chooseLanguage() {
         ButtonType german = new ButtonType("German");
         ButtonType english = new ButtonType("English");
-        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         List<ButtonType> language = new ArrayList<>();
-        Collections.addAll(language,german,english,cancel);
+        Collections.addAll(language,german,english);
         ButtonType result;
         result = OptionBox.display("Language Selection", null, "Choose Language", language);
         if (result == german) {
@@ -149,7 +149,7 @@ public class EnglishStart {
         //Define New Game-Button
         Button btnNewGame = new Button("New Game");
         btnNewGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?",Language.English);
+            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?",this.language);
             if (result) {
                 guiGame = new GuiGame();
                 startScene = gui.startWindow(primaryStage);
@@ -164,7 +164,7 @@ public class EnglishStart {
         //Define Save Game-Button
         Button btnSaveGame = new Button("Save Game");
         btnSaveGame.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",Language.English);
+            boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",this.language);
             if (result) {
                 SaveGame.save(guiGame.game);
             }
