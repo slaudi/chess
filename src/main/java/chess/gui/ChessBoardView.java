@@ -4,7 +4,7 @@ import chess.game.*;
 import chess.pieces.Piece;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -48,6 +48,20 @@ public class ChessBoardView extends BorderPane {
         generatePane();
     }
 
+    MenuBar createMenu() {
+        // File menu
+        Menu gameMenu = new Menu("Game");
+        Menu designMenu = new Menu("Design");
+
+        // Menu items
+        gameMenu.getItems().add(new MenuItem("Settings"));
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(gameMenu,designMenu);
+
+        return menuBar;
+    }
 
 
     void generatePane() {

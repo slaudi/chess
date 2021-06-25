@@ -136,6 +136,8 @@ public class Gui extends Application {
         BorderPane pane = new BorderPane();
 
         ChessBoardView chessBoardView = new ChessBoardView(guiGame);
+        MenuBar menuBar = chessBoardView.createMenu();
+
         VBox right;
         if (guiGame.game.getLanguage() == Language.German) {
             right = germanStart.generateRightMarginColumnGerman(primaryStage);
@@ -145,27 +147,13 @@ public class Gui extends Application {
 
         right.setAlignment(Pos.CENTER);
         right.setPadding(new Insets(30));
+        pane.setTop(menuBar);
         pane.setRight(right);
         pane.setCenter(chessBoardView);
 
-        return new Scene(pane, 900, 800);
+        return new Scene(pane, 900, 825);
     }
 
-   /* MenuBar createMenu() {
-        // File menu
-        Menu gameMenu = new Menu("Game");
-        Menu designMenu = new Menu()
-
-        // Menu items
-        gameMenu.getItems().add(new MenuItem("Settings"));
-
-        // Menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(gameMenu);
-
-        return menuBar;
-    }
-    */
 
     List<String> statusChange(String on, String off) {
         String rotation;
