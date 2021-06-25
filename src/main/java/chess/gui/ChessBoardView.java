@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -21,11 +22,10 @@ public class ChessBoardView extends BorderPane {
      * ChessBoardView class has access to GuiGame class.
      */
     public GuiGame guiGame;
+    public Gui gui;
     public GermanGame germanGame;
     public EnglishGame englishGame;
 
-    String white;
-    String black;
     private final String highlightColour = "skyblue";
     private final String highlightBackground = "-fx-background-color: " + highlightColour;
     int buttonHeight = 85;
@@ -38,28 +38,24 @@ public class ChessBoardView extends BorderPane {
      *
      * @param guiGame The State of the current Game the View needs to display it.
      */
-    public ChessBoardView(GuiGame guiGame) {
+    public ChessBoardView(GuiGame guiGame, Gui gui) {
         this.guiGame = guiGame;
+        this.gui = gui;
 
         this.germanGame = new GermanGame(guiGame,this);
         this.englishGame = new EnglishGame(guiGame,this);
-        this.white = "-fx-background-color: rgb(180,80,0)";
-        this.black = "-fx-background-color: rgb(255,228,196)";
+
         generatePane();
     }
 
-    MenuBar createMenu() {
-        // File menu
-        Menu gameMenu = new Menu("Game");
-        Menu designMenu = new Menu("Design");
 
-        // Menu items
-        gameMenu.getItems().add(new MenuItem("Settings"));
-
-        // Menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(gameMenu,designMenu);
-
+    MenuBar createMenu(Stage primaryStage) {
+        MenuBar menuBar;
+        if (guiGame.game.getLanguage() == Language.English) {
+            menuBar = englishGame.createEnglishMenu(primaryStage);
+        } else {
+            menuBar = germanGame.createGermanMenu( );
+        }
         return menuBar;
     }
 
@@ -84,9 +80,7 @@ public class ChessBoardView extends BorderPane {
         bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(5, 0, 5, 40));
         setBottom(bottom);
-
     }
-
 
 
     GridPane generateGrid(){
@@ -118,6 +112,7 @@ public class ChessBoardView extends BorderPane {
         return generateButtonGrid();
     }
 
+
     private void popUpBoxLanguage(int answer){
         if (guiGame.game.getLanguage() == Language.German){
             germanGame.gridAnswer(answer);
@@ -125,6 +120,7 @@ public class ChessBoardView extends BorderPane {
             englishGame.gridAnswer(answer);
         }
     }
+
 
     private HBox generateBeatenPieces(){
         HBox box = new HBox();
@@ -152,6 +148,7 @@ public class ChessBoardView extends BorderPane {
         return grid;
     }
 
+
     private void setButtons(GridPane grid) {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -162,9 +159,9 @@ public class ChessBoardView extends BorderPane {
                     button.setStyle(highlightBackground);
                 }
                 if ((y+x) %2 == 0) {
-                    button.setStyle(white);
+                    button.setStyle(guiGame.white);
                 } else {
-                    button.setStyle(black);
+                    button.setStyle(guiGame.black);
                 }
                 setButtonsOnGrid(button,grid,x,y);
             }
@@ -188,18 +185,18 @@ public class ChessBoardView extends BorderPane {
                 button.setMinHeight(buttonHeight);
                 button.setMinWidth(buttonWidth);
                 if ((y + x) % 2 == 0) {
-                    button.setStyle(white);
+                    button.setStyle(guiGame.white);
                 } else {
-                    button.setStyle(black);
+                    button.setStyle(guiGame.black);
                 }
                 if (guiGame.getSquareStart() != null && guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
                     button.setStyle(highlightBackground);
 
                 }
                 if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
-                    button.setStyle(highlightBorder + ";" + border + ";" + white);
+                    button.setStyle(highlightBorder + ";" + border + ";" + guiGame.white);
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
-                    button.setStyle(highlightBorder + ";" + border + ";" + black);
+                    button.setStyle(highlightBorder + ";" + border + ";" + guiGame.black);
                 }
                 setButtonsOnGrid(button,grid,x,y);
             }

@@ -3,8 +3,7 @@ package chess.gui;
 
 import chess.game.Colour;
 import chess.game.Square;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -57,6 +56,22 @@ public class GermanGame extends BorderPane {
         } else {
             return Colour.WEISS;
         }
+    }
+
+
+    MenuBar createGermanMenu(){
+        // File menu
+        Menu gameMenu = new Menu("Spiel");
+        Menu designMenu = new Menu("Design");
+
+        // Menu items
+        gameMenu.getItems().add(new MenuItem("Settings"));
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(gameMenu,designMenu);
+
+        return menuBar;
     }
 
 

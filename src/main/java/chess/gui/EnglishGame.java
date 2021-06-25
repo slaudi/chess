@@ -1,16 +1,27 @@
 package chess.gui;
 
 
+import chess.game.Language;
+import chess.game.Move;
 import chess.game.Square;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import chess.savegame.SaveGame;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import static chess.gui.Gui.chessScene;
+import static chess.gui.Gui.startScene;
 
 /**
  * The EnglishGame class defines the output of the game when English is selected as language.
@@ -19,6 +30,7 @@ public class EnglishGame extends BorderPane {
 
     public ChessBoardView chessBoardView;
     public GuiGame guiGame;
+    public Language language = Language.English;
     int fontSize = 17;
 
 
@@ -28,7 +40,7 @@ public class EnglishGame extends BorderPane {
      * @param guiGame           The current guiGame.
      * @param chessBoardView    The current chessBoardView.
      */
-    public EnglishGame(GuiGame guiGame, ChessBoardView chessBoardView) {
+    public EnglishGame(GuiGame guiGame,ChessBoardView chessBoardView) {
         this.guiGame = guiGame;
         this.chessBoardView = chessBoardView;
     }
@@ -47,6 +59,158 @@ public class EnglishGame extends BorderPane {
         }
         label.setFont(new Font(fontSize));
         return new HBox(label);
+    }
+
+
+    MenuBar createEnglishMenu(Stage primaryStage){
+        // Game menu
+        Menu chessMenu = new Menu("Chess");
+        // New Game-Menu item
+        MenuItem newGame = new MenuItem("New Game");
+        newGame.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?",this.language);
+            if (result) {
+                guiGame = new GuiGame();
+                startScene = chessBoardView.gui.startWindow(primaryStage);
+                chessScene = chessBoardView.gui.chessWindow(primaryStage);
+
+                primaryStage.setScene(startScene);
+                primaryStage.setTitle("Chess");
+                primaryStage.show();
+            }
+        });
+        chessMenu.getItems().add(newGame);
+        // Save Game-menu item
+        MenuItem saveGame = new MenuItem("Save Game");
+        saveGame.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",this.language);
+            if (result) {
+                SaveGame.save(guiGame.game);
+            }
+        });
+        chessMenu.getItems().add(saveGame);
+        // Load Game-menu item
+        MenuItem loadGame = new MenuItem("Load Game");
+        loadGame.setOnAction(e -> {
+            boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
+
+            if (result) {
+                File f = new File("src/main/resources/saves");
+                String[] fileArray = f.list();
+                assert fileArray != null;
+                if(fileArray.length != 0) {
+                    List<String> choices = new ArrayList<>();
+                    Collections.addAll(choices, fileArray);
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
+                    dialog.setTitle("Choose Game");
+                    dialog.setHeaderText(null);
+                    dialog.setContentText("Choose a saved Game:");
+
+                    chessBoardView.gui.loadGame(dialog);
+                }
+                chessScene = chessBoardView.gui.chessWindow(primaryStage);
+                primaryStage.setScene(chessScene);
+            }
+        });
+        chessMenu.getItems().add(loadGame);
+        chessMenu.getItems().add(new SeparatorMenuItem());
+        // Language-menu item
+        MenuItem language = new MenuItem("Language");
+        language.setOnAction(event -> {
+            chessBoardView.gui.englishStart.chooseLanguage();
+            chessScene = chessBoardView.gui.chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
+            primaryStage.show();
+        });
+        chessMenu.getItems().add(language);
+        // Move History-Menu item
+        MenuItem moveHistory = new MenuItem("Move History");
+        moveHistory.setOnAction(event -> {
+            List<Move> history = guiGame.game.moveHistory;
+            StringBuilder historyAsString = new StringBuilder();
+            if(!history.isEmpty()){
+                for (Move move : history) {
+                    historyAsString.append(move.getStartSquare().getLabel().toString()).append("-").append(move.getFinalSquare().getLabel().toString()).append("\n");
+                }
+            } else {
+                historyAsString = new StringBuilder(" ");
+            }
+            AlertBox.display("Move History", null, historyAsString.toString());
+        });
+        chessMenu.getItems().add(moveHistory);
+        chessMenu.getItems().add(new SeparatorMenuItem());
+        // Exit-menu item
+        MenuItem exit = new MenuItem("Exit");
+        exit.setOnAction(event -> System.exit(0));
+        chessMenu.getItems().add(exit);
+
+        // Options menu
+        Menu optionsMenu = new Menu("Options");
+        // Rotation-check item
+        CheckMenuItem rotation = new CheckMenuItem("Board Rotation");
+        rotation.setOnAction(event -> {
+            guiGame.isRotatingBoard = rotation.isSelected();
+        });
+        // Highlight-check item
+        CheckMenuItem highlight = new CheckMenuItem("Highlight Moves");
+        highlight.setOnAction(event -> {
+            guiGame.highlightPossibleMoves = highlight.isSelected();
+        });
+        // Change selected-check item
+        CheckMenuItem changeSelected = new CheckMenuItem("Change Selected Piece");
+        changeSelected.setOnAction(event -> {
+            guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected();
+        });
+        optionsMenu.setOnAction(event -> {
+            changeSelected.setDisable(guiGame.getSquareStart() != null);
+        });
+        // checkHint-check item
+        CheckMenuItem checkHint = new CheckMenuItem("Hint: In Check");
+        checkHint.setOnAction(event -> {
+            guiGame.hintInCheck = checkHint.isSelected();
+        });
+        // Set default for Options-items
+        rotation.setSelected(true);
+        highlight.setSelected(true);
+        checkHint.setSelected(true);
+        // add all items to Options-menu
+        optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
+
+        // Style Menu
+        Menu styleMenu = new Menu("Style");
+        // Classic-item
+        MenuItem classicStyle = new MenuItem("Classic");
+        classicStyle.setOnAction(event -> {
+            guiGame.white = "-fx-background-color: rgb(180,80,0)";
+            guiGame.black = "-fx-background-color: rgb(255,228,196)";
+            chessScene = chessBoardView.gui.chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
+            primaryStage.show();
+        });
+        // BlackNWhite-item
+        MenuItem black_n_whiteStyle = new MenuItem("Black'n'White");
+        black_n_whiteStyle.setOnAction(event -> {
+            guiGame.white = "-fx-background-color: white";
+            guiGame.black = "-fx-background-color: black";
+            chessScene = chessBoardView.gui.chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
+            primaryStage.show();
+        });
+        // Christmas-item
+        MenuItem christmasStyle = new MenuItem("Christmas");
+        // add all check items to Style-menu
+        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
+
+        // Help-menu
+        Menu helpMenu = new Menu("Help");
+        // userGuide-item
+        MenuItem userGuide = new MenuItem("User Guide");
+        helpMenu.getItems().add(userGuide);
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(chessMenu,optionsMenu,styleMenu,helpMenu);
+        return menuBar;
     }
 
 

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -135,23 +136,14 @@ public class Gui extends Application {
     Scene chessWindow(Stage primaryStage) {
         BorderPane pane = new BorderPane();
 
-        ChessBoardView chessBoardView = new ChessBoardView(guiGame);
-        MenuBar menuBar = chessBoardView.createMenu();
+        ChessBoardView chessBoardView = new ChessBoardView(guiGame,this);
+        MenuBar menuBar = chessBoardView.createMenu(primaryStage);
 
-        VBox right;
-        if (guiGame.game.getLanguage() == Language.German) {
-            right = germanStart.generateRightMarginColumnGerman(primaryStage);
-        } else {
-            right = englishStart.generateRightMarginColumnEnglish(primaryStage);
-        }
-
-        right.setAlignment(Pos.CENTER);
-        right.setPadding(new Insets(30));
         pane.setTop(menuBar);
-        pane.setRight(right);
         pane.setCenter(chessBoardView);
+        pane.setBackground(new Background(new BackgroundFill(Color.GRAY,CornerRadii.EMPTY,Insets.EMPTY)));
 
-        return new Scene(pane, 900, 825);
+        return new Scene(pane, 800, 825);
     }
 
 
