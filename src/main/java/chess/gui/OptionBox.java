@@ -2,6 +2,7 @@ package chess.gui;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class OptionBox {
     public static ButtonType display(String title, String headerText, String contentText, List<ButtonType> options) {
         Alert alert = new Alert(Alert.AlertType.NONE);
 
+        alert.initModality(Modality.APPLICATION_MODAL); //blocks user interaction with other windows
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
