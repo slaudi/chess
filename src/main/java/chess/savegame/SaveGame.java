@@ -32,6 +32,8 @@ public class SaveGame {
             myWriter.write(System.lineSeparator());
             myWriter.write(languageToLine(game));
             myWriter.write(System.lineSeparator());
+            myWriter.write(movementToLine(game));
+            myWriter.write(System.lineSeparator());
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred during Saving.");
@@ -119,6 +121,76 @@ public class SaveGame {
         }
     }
 
+    private static String movementToLine(Game game) {
+        StringBuilder movementString = new StringBuilder();
+        if (game.chessBoard.getBoard()[0][0].getOccupiedBy() != null){
+            if (game.chessBoard.getBoard()[0][0].getOccupiedBy().getNotMoved()) {
+                movementString.append("n");
+            }
+            else {
+                movementString.append("m");
+            }
+        }
+        else {
+            movementString.append("x");
+        }
+        if (game.chessBoard.getBoard()[4][0].getOccupiedBy() != null){
+            if (game.chessBoard.getBoard()[4][0].getOccupiedBy().getNotMoved()) {
+                movementString.append("n");
+            }
+            else {
+                movementString.append("m");
+            }
+        }
+        else {
+            movementString.append("x");
+        }
+        if (game.chessBoard.getBoard()[7][0].getOccupiedBy() != null){
+            if (game.chessBoard.getBoard()[7][0].getOccupiedBy().getNotMoved()) {
+                movementString.append("n");
+            }
+            else {
+                movementString.append("m");
+            }
+        }
+        else {
+            movementString.append("x");
+        }
+        if (game.chessBoard.getBoard()[0][7].getOccupiedBy() != null){
+            if (game.chessBoard.getBoard()[0][7].getOccupiedBy().getNotMoved()) {
+                movementString.append("n");
+            }
+            else {
+                movementString.append("m");
+            }
+        }
+        else {
+            movementString.append("x");
+        }
+        if (game.chessBoard.getBoard()[4][7].getOccupiedBy() != null){
+            if (game.chessBoard.getBoard()[4][7].getOccupiedBy().getNotMoved()) {
+                movementString.append("n");
+            }
+            else {
+                movementString.append("m");
+            }
+        }
+        else {
+            movementString.append("x");
+        }
+        if (game.chessBoard.getBoard()[7][7].getOccupiedBy() != null){
+            if (game.chessBoard.getBoard()[7][7].getOccupiedBy().getNotMoved()) {
+                movementString.append("n");
+            }
+            else {
+                movementString.append("m");
+            }
+        }
+        else {
+            movementString.append("x");
+        }
+        return movementString.toString();
+    }
 }
 
 /*
@@ -130,4 +202,5 @@ artificialEnemy: true / false
 Beaten-Pieces
 Move-History: like in Cli, seperated by "."
 language: g / e
+Rook/King-Movement: n for not-moved, m for moved, x for empty (a8, e8, h8, a1, e1, h1)
  */

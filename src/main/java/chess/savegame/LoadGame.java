@@ -21,12 +21,14 @@ public class LoadGame {
         loadedGame.beatenPieces = stringToBeatenPieces(loadString.get(4));
         loadedGame.moveHistory = stringToMoveHistory(loadString.get(5), loadedGame);
         loadedGame.setLanguage(stringToLanguage(loadString.get(6)));
+        loadedGame.chessBoard = stringToMovement(loadedGame.chessBoard, loadString.get(7));
         return loadedGame;
     }
 
 
     private static Board stringToBoard(String boardString){
         Board board = new Board(8, 8);
+        board.clearBoard();
         for (int i = 0; i < 64; i++){
             if(boardString.charAt(i) != 'X'){
                 int x = i % 8;
@@ -76,13 +78,14 @@ public class LoadGame {
 
     private static List<Move> stringToMoveHistory(String string, Game game){
         ArrayList<Move> moveHistory = new ArrayList<>();
-        if(!string.isEmpty()){
-            String[] slicedString = string.split(".");
+        if(string.length() > 0){
+            String[] slicedString = string.split("\\.");
             for (String s : slicedString) {
                 Square startSquare = game.chessBoard.getStartSquareFromInput(s);
                 Square finalSquare = game.chessBoard.getFinalSquareFromInput(s);
                 moveHistory.add(new Move(startSquare, finalSquare));
             }
+            moveHistory.get(moveHistory.size() - 1).setMovingPieceToPieceOnFinalSquare();
         }
         return moveHistory;
     }
@@ -97,9 +100,35 @@ public class LoadGame {
         }
     }
 
+    private static Board stringToMovement(Board board, String movementString){
+        for (int i = 0; i < 6; i++){
+            if(movementString.charAt(i) == 'm') {
+                switch (i) {
+                    case 0:
+                        board.getPieceAt(0, 0).setNotMoved(false);
+                    case 1:
+                        board.getPieceAt(4, 0).setNotMoved(false);
+                    case 2:
+                        board.getPieceAt(7, 0).setNotMoved(false);
+                    case 3:
+                        board.getPieceAt(0, 7).setNotMoved(false);
+                    case 4:
+                        board.getPieceAt(4, 7).setNotMoved(false);
+                    case 5:
+                        board.getPieceAt(7, 7).setNotMoved(false);
+                }
+            }
+        }
+        return board;
+    }
+
 
     private static Piece charToPiece(char c, Square square){
         switch (c) {
+            case 'p':
+                return new Pawn(square, Colour.BLACK);
+            case 'P':
+                return new Pawn(square, Colour.WHITE);
             case 'r':
                 return new Rook(square, Colour.BLACK);
             case 'n':

@@ -40,6 +40,8 @@ public abstract class Piece {
 
     public abstract void setNotMoved(boolean x);
 
+    public abstract boolean getNotMoved();
+
     /**
      * A function to determine if a Piece is printed on the chess board in upper or lower case
      * depending on its colour.
