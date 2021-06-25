@@ -26,6 +26,7 @@ public class EnglishStart {
 
     public GuiGame guiGame;
     public Gui gui;
+    private final String chess = "Chess!";
 
     public EnglishStart(GuiGame guiGame, Gui gui){
         this.guiGame = guiGame;
@@ -33,6 +34,8 @@ public class EnglishStart {
     }
 
     void startWindowEnglish(Stage primaryStage, BorderPane pane) {
+        primaryStage.setTitle(chess);
+
         Button welcome = new Button("Welcome to a new Game of Chess!");
         welcome.getStyleClass().add("startLabel");
         BorderPane.setAlignment(welcome, Pos.TOP_CENTER);
@@ -81,7 +84,12 @@ public class EnglishStart {
         // Define Language-Button
         Button language = new Button("Language");
         language.getStyleClass().add("startButtons");
-        language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
+        language.setOnAction(e -> {
+            chooseLanguage();
+            startScene = gui.startWindow(primaryStage);
+            primaryStage.setScene(startScene);
+            primaryStage.show();
+        });
 
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll(startLocalGame, startNetworkGame, loadGame, language);
@@ -119,7 +127,7 @@ public class EnglishStart {
         }
     }
 
-    private void chooseLanguage(Stage primaryStage, String source) {
+    private void chooseLanguage() {
         ButtonType german = new ButtonType("German");
         ButtonType english = new ButtonType("English");
         ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -133,15 +141,6 @@ public class EnglishStart {
         } else {
             guiGame.game.setLanguage(Language.English);
         }
-
-        if (source.equals("start")) {
-            startScene = gui.startWindow(primaryStage);
-            primaryStage.setScene(startScene);
-        } else {
-            chessScene = gui.chessWindow(primaryStage);
-            primaryStage.setScene(chessScene);
-        }
-        primaryStage.show();
     }
 
 
@@ -156,7 +155,7 @@ public class EnglishStart {
                 chessScene = gui.chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
-                primaryStage.setTitle("Chess!");
+                primaryStage.setTitle(chess);
                 primaryStage.show();
             }
         });
@@ -219,7 +218,12 @@ public class EnglishStart {
 
         // Define Language-Button
         Button btnLanguage = new Button("Language");
-        btnLanguage.setOnAction(event -> chooseLanguage( primaryStage, "else"));
+        btnLanguage.setOnAction(event -> {
+            chooseLanguage();
+            chessScene = gui.chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
+            primaryStage.show();
+        });
 
         VBox box = new VBox(20);
         box.getChildren().addAll(btnOptions, btnNewGame, btnSaveGame, btnMoveHistory, btnLanguage);

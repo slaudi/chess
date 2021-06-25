@@ -26,6 +26,7 @@ public class GermanStart {
 
     public GuiGame guiGame;
     public Gui gui;
+    private final String chess = "Schach!";
 
     public GermanStart(GuiGame guiGame, Gui gui) {
         this.guiGame = guiGame;
@@ -34,6 +35,8 @@ public class GermanStart {
 
 
     void startWindowGerman(Stage primaryStage, BorderPane pane) {
+        primaryStage.setTitle(chess);
+
         Button welcome = new Button("Willkommen zu einer neuen Partie Schach!");
         welcome.getStyleClass().add("startLabel");
         BorderPane.setAlignment(welcome,Pos.TOP_CENTER);
@@ -80,7 +83,12 @@ public class GermanStart {
         // Define Language-Button
         Button language = new Button("Sprache");
         language.getStyleClass().add("startButtons");
-        language.setOnAction(e -> chooseLanguage(primaryStage, "start"));
+        language.setOnAction(e -> {
+            chooseLanguage();
+            chessScene = gui.chessWindow(primaryStage);
+            primaryStage.setScene(chessScene);
+            primaryStage.show();
+        });
 
         VBox layout1 = new VBox(25);
         layout1.getChildren().addAll( startLocalGame, startNetworkGame, loadGame, language);
@@ -131,7 +139,7 @@ public class GermanStart {
                 chessScene = gui.chessWindow(primaryStage);
 
                 primaryStage.setScene(startScene);
-                primaryStage.setTitle("Schach!");
+                primaryStage.setTitle(chess);
                 primaryStage.show();
             }
         });
@@ -194,7 +202,12 @@ public class GermanStart {
 
         // Define Language-Button
         Button btnLanguage = new Button("Sprache");
-        btnLanguage.setOnAction(event -> chooseLanguage(primaryStage, "else"));
+        btnLanguage.setOnAction(event -> {
+            chooseLanguage();
+            startScene = gui.startWindow(primaryStage);
+            primaryStage.setScene(startScene);
+            primaryStage.show();
+        });
 
         VBox box = new VBox(20);
         box.getChildren().addAll(btnOptions, btnSaveGame, btnNewGame, btnMoveHistory, btnLanguage);
@@ -202,7 +215,7 @@ public class GermanStart {
     }
 
 
-    private void chooseLanguage(Stage primaryStage, String source) {
+    private void chooseLanguage() {
         ButtonType german = new ButtonType("Deutsch");
         ButtonType english = new ButtonType("Englisch");
         ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -216,16 +229,6 @@ public class GermanStart {
         } else {
             guiGame.game.setLanguage(Language.English);
         }
-
-        if (source.equals("start")) {
-            startScene = gui.startWindow(primaryStage);
-            primaryStage.setScene(startScene);
-        } else {
-            chessScene = gui.chessWindow(primaryStage);
-            primaryStage.setScene(chessScene);
-        }
-        primaryStage.show();
-
     }
 
 }

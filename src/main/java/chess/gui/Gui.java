@@ -69,12 +69,8 @@ public class Gui extends Application {
 
         if (guiGame.game.getLanguage() == Language.German) {
             germanStart.startWindowGerman(primaryStage, pane);
-            String schach = "Schach!";
-            primaryStage.setTitle(schach);
         } else {
             englishStart.startWindowEnglish(primaryStage, pane);
-            String chess = "Chess!";
-            primaryStage.setTitle(chess);
         }
         return startScene;
     }
