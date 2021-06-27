@@ -7,12 +7,18 @@ import chess.game.Move;
 import chess.game.Square;
 import chess.savegame.SaveGame;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -193,6 +199,17 @@ public class GermanGame extends BorderPane {
         Menu helpMenu = new Menu("Hilfe");
         // userGuide-item
         MenuItem userGuide = new MenuItem("Bedienungsanleitung");
+        userGuide.setOnAction(event -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File myFile = new File("Bedienungsanleitung.pdf");
+                    Desktop.getDesktop().open(myFile);
+                } catch (IOException ex) {
+                    // no application registered for PDFs
+                    AlertBox.display("PDF Viewer",null,"Es wurde kein PDF Viewer gefunden!");
+                }
+            }
+        });
         helpMenu.getItems().add(userGuide);
 
         // Menu bar
