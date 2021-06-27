@@ -147,35 +147,4 @@ public class Gui extends Application {
     }
 
 
-    List<String> statusChange(String on, String off) {
-        String rotation;
-        String highlight;
-        String changePiece;
-        String hint;
-
-        if(guiGame.isRotatingBoard){
-            rotation = on;
-        } else {
-            rotation = off;
-        }
-        if(guiGame.highlightPossibleMoves){
-            highlight = on;
-        } else {
-            highlight = off;
-        }
-        if(guiGame.allowedToChangeSelectedPiece){
-            changePiece = on;
-        } else {
-            changePiece = off;
-        }
-        if(guiGame.hintInCheck){
-            hint = on;
-        } else {
-            hint = off;
-        }
-        List<String> status = new ArrayList<>();
-        Collections.addAll(status, rotation, highlight, changePiece, hint);
-        return status;
-    }
-
 }
