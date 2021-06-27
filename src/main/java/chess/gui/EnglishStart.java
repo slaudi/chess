@@ -24,7 +24,6 @@ public class EnglishStart {
     public GuiGame guiGame;
     public Gui gui;
     public Language language;
-    private final String chess = "Chess!";
 
     public EnglishStart(GuiGame guiGame, Gui gui){
         this.guiGame = guiGame;
@@ -33,7 +32,7 @@ public class EnglishStart {
     }
 
     void startWindowEnglish(Stage primaryStage, BorderPane pane) {
-        primaryStage.setTitle(chess);
+        primaryStage.setTitle("Chess!");
 
         Button welcome = new Button("Welcome to a new Game of Chess!");
         welcome.getStyleClass().add("startLabel");
