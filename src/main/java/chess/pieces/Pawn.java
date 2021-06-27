@@ -48,7 +48,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean getNotMoved() {
+    public boolean hasNotMoved() {
         return this.notMoved;
     }
 

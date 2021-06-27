@@ -124,7 +124,7 @@ public class SaveGame {
     private static String movementToLine(Game game) {
         StringBuilder movementString = new StringBuilder();
         if (game.chessBoard.getBoard()[0][0].getOccupiedBy() != null){
-            if (game.chessBoard.getBoard()[0][0].getOccupiedBy().getNotMoved()) {
+            if (game.chessBoard.getBoard()[0][0].getOccupiedBy().hasNotMoved()) {
                 movementString.append("n");
             }
             else {
@@ -135,7 +135,7 @@ public class SaveGame {
             movementString.append("x");
         }
         if (game.chessBoard.getBoard()[4][0].getOccupiedBy() != null){
-            if (game.chessBoard.getBoard()[4][0].getOccupiedBy().getNotMoved()) {
+            if (game.chessBoard.getBoard()[4][0].getOccupiedBy().hasNotMoved()) {
                 movementString.append("n");
             }
             else {
@@ -146,7 +146,7 @@ public class SaveGame {
             movementString.append("x");
         }
         if (game.chessBoard.getBoard()[7][0].getOccupiedBy() != null){
-            if (game.chessBoard.getBoard()[7][0].getOccupiedBy().getNotMoved()) {
+            if (game.chessBoard.getBoard()[7][0].getOccupiedBy().hasNotMoved()) {
                 movementString.append("n");
             }
             else {
@@ -157,7 +157,7 @@ public class SaveGame {
             movementString.append("x");
         }
         if (game.chessBoard.getBoard()[0][7].getOccupiedBy() != null){
-            if (game.chessBoard.getBoard()[0][7].getOccupiedBy().getNotMoved()) {
+            if (game.chessBoard.getBoard()[0][7].getOccupiedBy().hasNotMoved()) {
                 movementString.append("n");
             }
             else {
@@ -168,7 +168,7 @@ public class SaveGame {
             movementString.append("x");
         }
         if (game.chessBoard.getBoard()[4][7].getOccupiedBy() != null){
-            if (game.chessBoard.getBoard()[4][7].getOccupiedBy().getNotMoved()) {
+            if (game.chessBoard.getBoard()[4][7].getOccupiedBy().hasNotMoved()) {
                 movementString.append("n");
             }
             else {
@@ -179,7 +179,7 @@ public class SaveGame {
             movementString.append("x");
         }
         if (game.chessBoard.getBoard()[7][7].getOccupiedBy() != null){
-            if (game.chessBoard.getBoard()[7][7].getOccupiedBy().getNotMoved()) {
+            if (game.chessBoard.getBoard()[7][7].getOccupiedBy().hasNotMoved()) {
                 movementString.append("n");
             }
             else {

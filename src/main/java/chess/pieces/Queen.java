@@ -49,7 +49,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean getNotMoved() {
+    public boolean hasNotMoved() {
         return this.notMoved;
     }
 
