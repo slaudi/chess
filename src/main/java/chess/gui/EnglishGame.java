@@ -6,30 +6,25 @@ import chess.game.Move;
 import chess.game.Square;
 import chess.savegame.SaveGame;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static chess.gui.Gui.chessScene;
-import static chess.gui.Gui.startScene;
 
 /**
  * The EnglishGame class defines the output of the game when English is selected as language.
  */
 public class EnglishGame extends BorderPane {
 
-    public ChessBoardView chessBoardView;
     public GuiGame guiGame;
+    public Gui gui;
     public Language language = Language.English;
     int fontSize = 17;
 
@@ -38,11 +33,10 @@ public class EnglishGame extends BorderPane {
      * The Constructor for EnglishGame.
      *
      * @param guiGame           The current guiGame.
-     * @param chessBoardView    The current chessBoardView.
      */
-    public EnglishGame(GuiGame guiGame,ChessBoardView chessBoardView) {
+    public EnglishGame(GuiGame guiGame, Gui gui) {
         this.guiGame = guiGame;
-        this.chessBoardView = chessBoardView;
+        this.gui = gui;
     }
 
 
@@ -70,13 +64,7 @@ public class EnglishGame extends BorderPane {
         newGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("New Game", "Do you really want to start a new Game?",this.language);
             if (result) {
-                guiGame = new GuiGame();
-                startScene = chessBoardView.gui.startWindow(primaryStage);
-                chessScene = chessBoardView.gui.chessWindow(primaryStage);
-
-                primaryStage.setScene(startScene);
-                primaryStage.setTitle("Chess");
-                primaryStage.show();
+                gui.start(primaryStage);
             }
         });
         chessMenu.getItems().add(newGame);
@@ -93,7 +81,6 @@ public class EnglishGame extends BorderPane {
         MenuItem loadGame = new MenuItem("Load Game");
         loadGame.setOnAction(e -> {
             boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
-
             if (result) {
                 File f = new File("src/main/resources/saves");
                 String[] fileArray = f.list();
@@ -106,9 +93,9 @@ public class EnglishGame extends BorderPane {
                     dialog.setHeaderText(null);
                     dialog.setContentText("Choose a saved Game:");
 
-                    chessBoardView.gui.loadGame(dialog);
+                    gui.loadGame(dialog);
                 }
-                chessScene = chessBoardView.gui.chessWindow(primaryStage);
+                chessScene = gui.chessWindow(primaryStage);
                 primaryStage.setScene(chessScene);
             }
         });
@@ -117,8 +104,8 @@ public class EnglishGame extends BorderPane {
         // Language-menu item
         MenuItem language = new MenuItem("Language");
         language.setOnAction(event -> {
-            chessBoardView.gui.englishStart.chooseLanguage();
-            chessScene = chessBoardView.gui.chessWindow(primaryStage);
+            gui.englishStart.chooseLanguage();
+            chessScene = gui.chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
@@ -148,27 +135,17 @@ public class EnglishGame extends BorderPane {
         Menu optionsMenu = new Menu("Options");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Board Rotation");
-        rotation.setOnAction(event -> {
-            guiGame.isRotatingBoard = rotation.isSelected();
-        });
+        rotation.setOnAction(event -> guiGame.isRotatingBoard = rotation.isSelected());
         // Highlight-check item
         CheckMenuItem highlight = new CheckMenuItem("Highlight Moves");
-        highlight.setOnAction(event -> {
-            guiGame.highlightPossibleMoves = highlight.isSelected();
-        });
+        highlight.setOnAction(event -> guiGame.highlightPossibleMoves = highlight.isSelected());
         // Change selected-check item
         CheckMenuItem changeSelected = new CheckMenuItem("Change Selected Piece");
-        changeSelected.setOnAction(event -> {
-            guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected();
-        });
-        optionsMenu.setOnAction(event -> {
-            changeSelected.setDisable(guiGame.getSquareStart() != null);
-        });
+        changeSelected.setOnAction(event -> guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected());
+        optionsMenu.setOnAction(event -> changeSelected.setDisable(guiGame.getSquareStart() != null));
         // checkHint-check item
         CheckMenuItem checkHint = new CheckMenuItem("Hint: In Check");
-        checkHint.setOnAction(event -> {
-            guiGame.hintInCheck = checkHint.isSelected();
-        });
+        checkHint.setOnAction(event -> guiGame.hintInCheck = checkHint.isSelected());
         // Set default for Options-items
         rotation.setSelected(true);
         highlight.setSelected(true);
@@ -183,7 +160,7 @@ public class EnglishGame extends BorderPane {
         classicStyle.setOnAction(event -> {
             guiGame.white = "-fx-background-color: rgb(180,80,0)";
             guiGame.black = "-fx-background-color: rgb(255,228,196)";
-            chessScene = chessBoardView.gui.chessWindow(primaryStage);
+            chessScene = gui.chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
@@ -192,7 +169,7 @@ public class EnglishGame extends BorderPane {
         black_n_whiteStyle.setOnAction(event -> {
             guiGame.white = "-fx-background-color: white";
             guiGame.black = "-fx-background-color: black";
-            chessScene = chessBoardView.gui.chessWindow(primaryStage);
+            chessScene = gui.chessWindow(primaryStage);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
