@@ -2,12 +2,9 @@ package chess.gui;
 
 import chess.game.Colour;
 import chess.game.Language;
-import chess.game.Move;
-import chess.savegame.SaveGame;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.layout.BorderPane;
@@ -26,18 +23,16 @@ public class GermanStart {
 
     public GuiGame guiGame;
     public Gui gui;
-    public Language language;
-    private final String chess = "Schach!";
+    public Language language = Language.German;
 
     public GermanStart(GuiGame guiGame, Gui gui) {
         this.guiGame = guiGame;
         this.gui = gui;
-        this.language = Language.German;
     }
 
 
     void startWindowGerman(Stage primaryStage, BorderPane pane) {
-        primaryStage.setTitle(chess);
+        primaryStage.setTitle("Schach!");
 
         Button welcome = new Button("Willkommen zu einer neuen Partie Schach!");
         welcome.getStyleClass().add("startLabel");
@@ -63,7 +58,8 @@ public class GermanStart {
         Button loadGame = new Button("Lade Spiel");
         loadGame.getStyleClass().add("startButtons");
         loadGame.setOnAction(e -> {
-            boolean result = ConfirmationBox.display("Lade Spiel","Möchtest du ein gespeichertes Spiel laden?",this.language);
+            boolean result = ConfirmationBox.display("Spiel laden","Möchtest du ein gespeichertes Spiel laden?", this.language);
+
             if (result) {
                 File f = new File("src/main/resources/saves");
                 String[] fileArray = f.list();
@@ -72,12 +68,13 @@ public class GermanStart {
                     List<String> choices = new ArrayList<>();
                     Collections.addAll(choices, fileArray);
                     ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
-                    dialog.setTitle("Speicherstand-Auswahl");
+                    dialog.setTitle("Wähle Spielstand");
                     dialog.setHeaderText(null);
-                    dialog.setContentText("Wähle einen Speicherstand:");
+                    dialog.setContentText("Wähle ein gespeichertes Spiel aus:");
 
                     gui.loadGame(dialog);
                 }
+                chessScene = gui.chessWindow(primaryStage);
                 primaryStage.setScene(chessScene);
             }
         });
