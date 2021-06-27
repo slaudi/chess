@@ -42,8 +42,8 @@ public class ChessBoardView extends BorderPane {
         this.guiGame = guiGame;
         this.gui = gui;
 
-        this.germanGame = new GermanGame(guiGame,this);
-        this.englishGame = new EnglishGame(guiGame,this);
+        this.germanGame = new GermanGame(guiGame, gui);
+        this.englishGame = new EnglishGame(guiGame,gui);
 
         generatePane();
     }
@@ -54,7 +54,7 @@ public class ChessBoardView extends BorderPane {
         if (guiGame.game.getLanguage() == Language.English) {
             menuBar = englishGame.createEnglishMenu(primaryStage);
         } else {
-            menuBar = germanGame.createGermanMenu( );
+            menuBar = germanGame.createGermanMenu(primaryStage);
         }
         return menuBar;
     }
