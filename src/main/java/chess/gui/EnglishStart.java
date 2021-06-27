@@ -46,7 +46,7 @@ public class EnglishStart {
         startLocalGame.getStyleClass().add("startButtons");
         startLocalGame.setOnAction(e -> {
             chooseEnemyEnglish();
-            chessScene = gui.chessWindow(primaryStage);
+            chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
         });
 
@@ -75,7 +75,7 @@ public class EnglishStart {
 
                     gui.loadGame(dialog);
                 }
-                chessScene = gui.chessWindow(primaryStage);
+                chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
             }
         });
@@ -85,7 +85,7 @@ public class EnglishStart {
         language.getStyleClass().add("startButtons");
         language.setOnAction(e -> {
             chooseLanguage();
-            startScene = gui.startWindow(primaryStage);
+            startScene = gui.startWindow(primaryStage,guiGame);
             primaryStage.setScene(startScene);
             primaryStage.show();
         });

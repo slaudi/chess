@@ -23,8 +23,8 @@ import java.util.*;
 public class Gui extends Application {
 
     public GuiGame guiGame;
-    public EnglishStart englishStart;
-    public GermanStart germanStart;
+    public static EnglishStart englishStart;
+    public static GermanStart germanStart;
     static Scene startScene, chessScene;
 
     /**
@@ -48,17 +48,17 @@ public class Gui extends Application {
         germanStart = new GermanStart(guiGame,this);
 
         // Start
-        startScene = startWindow(primaryStage);
+        startScene = startWindow(primaryStage, guiGame);
 
         // Chess board
-        chessScene = chessWindow(primaryStage);
+        chessScene = chessWindow(primaryStage, guiGame);
 
         primaryStage.setScene(startScene);
         primaryStage.show();
     }
 
 
-    Scene startWindow(Stage primaryStage){
+    Scene startWindow(Stage primaryStage, GuiGame guiGame){
         BorderPane pane = new BorderPane();
         Image chessboard = new Image(Objects.requireNonNull(Gui.class.getResourceAsStream("chessboard.jpeg")));
         pane.setBackground(new Background(new BackgroundImage(chessboard,BackgroundRepeat.NO_REPEAT,
@@ -73,7 +73,6 @@ public class Gui extends Application {
         } else {
             englishStart.startWindowEnglish(primaryStage, pane);
         }
-
         return startScene;
     }
 
@@ -133,7 +132,7 @@ public class Gui extends Application {
     }
 
 
-    Scene chessWindow(Stage primaryStage) {
+    Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
         BorderPane pane = new BorderPane();
 
         ChessBoardView chessBoardView = new ChessBoardView(guiGame,this);

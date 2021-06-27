@@ -45,7 +45,7 @@ public class GermanStart {
         startLocalGame.getStyleClass().add("startButtons");
         startLocalGame.setOnAction(e -> {
             chooseEnemyGerman();
-            chessScene = gui.chessWindow(primaryStage);
+            chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
         });
 
@@ -74,7 +74,7 @@ public class GermanStart {
 
                     gui.loadGame(dialog);
                 }
-                chessScene = gui.chessWindow(primaryStage);
+                chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
             }
         });
@@ -84,7 +84,7 @@ public class GermanStart {
         language.getStyleClass().add("startButtons");
         language.setOnAction(e -> {
             chooseLanguage();
-            startScene = gui.startWindow(primaryStage);
+            startScene = gui.startWindow(primaryStage,guiGame);
             primaryStage.setScene(startScene);
             primaryStage.show();
         });

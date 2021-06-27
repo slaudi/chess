@@ -80,7 +80,14 @@ public class GermanGame extends BorderPane {
         newGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?",this.language);
             if (result) {
-                gui.start(primaryStage);
+                guiGame = new GuiGame();
+                guiGame.game.setLanguage(Language.German);
+                Gui.germanStart = new GermanStart(guiGame, gui);
+                Gui.englishStart = new EnglishStart(guiGame,gui);
+                Gui.startScene = gui.startWindow(primaryStage, guiGame);
+                Gui.chessScene = gui.chessWindow(primaryStage, guiGame);
+                primaryStage.setScene(Gui.startScene);
+                primaryStage.show();
             }
         });
         chessMenu.getItems().add(newGame);
@@ -112,7 +119,7 @@ public class GermanGame extends BorderPane {
 
                     gui.loadGame(dialog);
                 }
-                chessScene = gui.chessWindow(primaryStage);
+                chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
             }
         });
@@ -121,8 +128,8 @@ public class GermanGame extends BorderPane {
         // Language-menu item
         MenuItem language = new MenuItem("Sprache");
         language.setOnAction(event -> {
-            gui.englishStart.chooseLanguage();
-            chessScene = gui.chessWindow(primaryStage);
+            Gui.englishStart.chooseLanguage();
+            chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
@@ -177,7 +184,7 @@ public class GermanGame extends BorderPane {
         classicStyle.setOnAction(event -> {
             guiGame.white = "-fx-background-color: rgb(180,80,0)";
             guiGame.black = "-fx-background-color: rgb(255,228,196)";
-            chessScene = gui.chessWindow(primaryStage);
+            chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
@@ -186,7 +193,7 @@ public class GermanGame extends BorderPane {
         black_n_whiteStyle.setOnAction(event -> {
             guiGame.white = "-fx-background-color: white";
             guiGame.black = "-fx-background-color: black";
-            chessScene = gui.chessWindow(primaryStage);
+            chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
