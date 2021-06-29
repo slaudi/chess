@@ -177,34 +177,37 @@ public class GermanGame extends BorderPane {
         // add all items to Options-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
-        // Style Menu
+        // Style RadioMenu
         Menu styleMenu = new Menu("Stil");
         ToggleGroup styleToggle = new ToggleGroup();
-        // Classic-item
+        // Classic-radio item
         RadioMenuItem classicStyle = new RadioMenuItem("Klassik");
-        classicStyle.setOnAction(event -> {
-            guiGame.white = "-fx-background-color: rgb(180,80,0)";
-            guiGame.black = "-fx-background-color: rgb(255,228,196)";
-            gui.chessWindow(primaryStage,guiGame);
-            //chessScene = gui.chessWindow(primaryStage,guiGame);
-            //primaryStage.setScene(chessScene);
-            //primaryStage.show();
-        });
         classicStyle.setToggleGroup(styleToggle);
+        classicStyle.setSelected(true);
         // BlackNWhite-item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Schwarz-Weiß");
-        black_n_whiteStyle.setOnAction(event -> {
-            guiGame.white = "-fx-background-color: white";
-            guiGame.black = "-fx-background-color: black";
-            gui.chessWindow(primaryStage,guiGame);
-        });
         black_n_whiteStyle.setToggleGroup(styleToggle);
         // Christmas-item
-        RadioMenuItem christmasStyle = new RadioMenuItem("Weihnachten");
-        christmasStyle.setToggleGroup(styleToggle);
-        // add all check items to Style-menu
-        classicStyle.setSelected(true);
-        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
+        //RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
+        //christmasStyle.setToggleGroup(styleToggle);
+        // add ChangeListener to Toggle Group
+        styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (classicStyle.isSelected()) {
+                guiGame.white = "-fx-background-color: rgb(180,80,0)";
+                guiGame.black = "-fx-background-color: rgb(255,228,196)";
+                chessScene = gui.chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+                primaryStage.show();
+            } else if (black_n_whiteStyle.isSelected()){
+                guiGame.white = "-fx-background-color: white";
+                guiGame.black = "-fx-background-color: black";
+                chessScene = gui.chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+                primaryStage.show();
+            }
+        });
+        // add all radio menu items to Style-menu
+        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
 
         // Help-menu
         Menu helpMenu = new Menu("Hilfe");
