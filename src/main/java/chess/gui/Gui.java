@@ -84,13 +84,13 @@ public class Gui extends Application {
             englishStart.startButtonsEnglish(startButtons);
         }
 
-
         welcome.getStyleClass().add("startLabel");
         BorderPane.setAlignment(welcome,Pos.TOP_CENTER);
         BorderPane.setMargin(welcome,new Insets(50,0,60,0));
         pane.setTop(welcome);
 
-        startLocalGame.getStyleClass().add("startButtons");
+        String startButtonStyle = "startButtons";
+        startLocalGame.getStyleClass().add(startButtonStyle);
         startLocalGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
                 germanStart.chooseEnemyGerman();
@@ -101,10 +101,10 @@ public class Gui extends Application {
             primaryStage.setScene(chessScene);
         });
 
-        startNetworkGame.getStyleClass().add("startButtons");
+        startNetworkGame.getStyleClass().add(startButtonStyle);
         startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
 
-        loadGame.getStyleClass().add("startButtons");
+        loadGame.getStyleClass().add(startButtonStyle);
         loadGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
                 germanStart.loadGermanGame(primaryStage);
@@ -113,7 +113,7 @@ public class Gui extends Application {
             }
         });
 
-        language.getStyleClass().add("startButtons");
+        language.getStyleClass().add(startButtonStyle);
         language.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
                 germanStart.chooseLanguage();

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static chess.gui.Gui.*;
 import static chess.gui.Gui.chessScene;
 
 /**
@@ -60,7 +61,36 @@ public class EnglishGame extends BorderPane {
 
 
     MenuBar createEnglishMenu(Stage primaryStage){
-        // Game menu
+        Menu chessMenu = gameMenu(primaryStage);
+        Menu optionsMenu = optionsMenu();
+        Menu styleMenu = styleMenu(primaryStage);
+
+        // Help-menu
+        Menu helpMenu = new Menu("Help");
+        // userGuide-item
+        MenuItem userGuide = new MenuItem("User Guide");
+        userGuide.setAccelerator(KeyCombination.keyCombination("Ctrl+U"));
+        userGuide.setOnAction(event -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File myFile = new File("Bedienungsanleitung.pdf");
+                    Desktop.getDesktop().open(myFile);
+                } catch (IOException ex) {
+                    // no application registered for PDFs
+                    AlertBox.display("PDF Viewer",null,"No PDF Viewer detected!");
+                }
+            }
+        });
+        helpMenu.getItems().add(userGuide);
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(chessMenu,optionsMenu,styleMenu,helpMenu);
+        return menuBar;
+    }
+
+
+    private Menu gameMenu(Stage primaryStage){
         Menu chessMenu = new Menu("Chess");
         // New Game-Menu item
         MenuItem newGame = new MenuItem("New Game");
@@ -72,9 +102,9 @@ public class EnglishGame extends BorderPane {
                 guiGame.game.setLanguage(Language.English);
                 gui.englishStart = new EnglishStart(guiGame,gui);
                 gui.germanStart = new GermanStart(guiGame, gui);
-                Gui.startScene = gui.startWindow(primaryStage, guiGame);
-                Gui.chessScene = gui.chessWindow(primaryStage, guiGame);
-                primaryStage.setScene(Gui.startScene);
+                startScene = gui.startWindow(primaryStage, guiGame);
+                chessScene = gui.chessWindow(primaryStage, guiGame);
+                primaryStage.setScene(startScene);
                 primaryStage.show();
             }
         });
@@ -138,7 +168,11 @@ public class EnglishGame extends BorderPane {
         });
         chessMenu.getItems().add(exit);
 
-        // Options menu
+        return chessMenu;
+    }
+
+
+    private Menu optionsMenu(){
         Menu optionsMenu = new Menu("Options");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Board Rotation");
@@ -164,6 +198,11 @@ public class EnglishGame extends BorderPane {
         // add all items to Options-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
+        return optionsMenu;
+    }
+
+
+    private Menu styleMenu(Stage primaryStage){
         // Style RadioMenu
         Menu styleMenu = new Menu("Themes");
         ToggleGroup styleToggle = new ToggleGroup();
@@ -195,30 +234,8 @@ public class EnglishGame extends BorderPane {
         // add all radio menu items to Style-menu
         styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
 
-        // Help-menu
-        Menu helpMenu = new Menu("Help");
-        // userGuide-item
-        MenuItem userGuide = new MenuItem("User Guide");
-        userGuide.setAccelerator(KeyCombination.keyCombination("Ctrl+U"));
-        userGuide.setOnAction(event -> {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File myFile = new File("Bedienungsanleitung.pdf");
-                    Desktop.getDesktop().open(myFile);
-                } catch (IOException ex) {
-                    // no application registered for PDFs
-                    AlertBox.display("PDF Viewer",null,"No PDF Viewer detected!");
-                }
-            }
-        });
-        helpMenu.getItems().add(userGuide);
-
-        // Menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(chessMenu,optionsMenu,styleMenu,helpMenu);
-        return menuBar;
+        return styleMenu;
     }
-
 
     void gridAnswer(int answer) {
         if (answer == 1){

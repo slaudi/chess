@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static chess.gui.Gui.*;
 import static chess.gui.Gui.chessScene;
 
 /**
@@ -74,7 +75,36 @@ public class GermanGame extends BorderPane {
 
 
     MenuBar createGermanMenu(Stage primaryStage){
-        // Game menu
+        Menu chessMenu = gameMenu(primaryStage);
+        Menu optionsMenu = optionsMenu();
+        Menu styleMenu = styleMenu(primaryStage);
+
+        // Help-menu
+        Menu helpMenu = new Menu("Hilfe");
+        // userGuide-item
+        MenuItem userGuide = new MenuItem("Bedienungsanleitung");
+        userGuide.setAccelerator(KeyCombination.keyCombination("Ctrl+U"));
+        userGuide.setOnAction(event -> {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File myFile = new File("Bedienungsanleitung.pdf");
+                    Desktop.getDesktop().open(myFile);
+                } catch (IOException ex) {
+                    // no application registered for PDFs
+                    AlertBox.display("PDF Viewer",null,"Es wurde kein PDF Viewer gefunden!");
+                }
+            }
+        });
+        helpMenu.getItems().add(userGuide);
+
+        // Menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(chessMenu,optionsMenu,styleMenu,helpMenu);
+        return menuBar;
+    }
+
+
+    private Menu gameMenu(Stage primaryStage) {
         Menu chessMenu = new Menu("Schach");
         // New Game-Menu item
         MenuItem newGame = new MenuItem("Neues Spiel");
@@ -86,9 +116,9 @@ public class GermanGame extends BorderPane {
                 guiGame.game.setLanguage(Language.German);
                 gui.germanStart = new GermanStart(guiGame, gui);
                 gui.englishStart = new EnglishStart(guiGame,gui);
-                Gui.startScene = gui.startWindow(primaryStage, guiGame);
-                Gui.chessScene = gui.chessWindow(primaryStage, guiGame);
-                primaryStage.setScene(Gui.startScene);
+                startScene = gui.startWindow(primaryStage, guiGame);
+                chessScene = gui.chessWindow(primaryStage, guiGame);
+                primaryStage.setScene(startScene);
                 primaryStage.show();
             }
         });
@@ -153,7 +183,11 @@ public class GermanGame extends BorderPane {
         });
         chessMenu.getItems().add(exit);
 
-        // Options menu
+        return chessMenu;
+    }
+
+
+    private Menu optionsMenu(){
         Menu optionsMenu = new Menu("Optionen");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Drehung des Spielbretts");
@@ -179,7 +213,20 @@ public class GermanGame extends BorderPane {
         // add all items to Options-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
-        // Style RadioMenu
+        return optionsMenu;
+    }
+
+
+    void gridAnswer(int answer) {
+        if (answer == 1){
+            AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
+        } else {
+            AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
+        }
+    }
+
+
+    private Menu styleMenu(Stage primaryStage) {
         Menu styleMenu = new Menu("Stil");
         ToggleGroup styleToggle = new ToggleGroup();
         // Classic-radio item
@@ -210,37 +257,7 @@ public class GermanGame extends BorderPane {
         // add all radio menu items to Style-menu
         styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
 
-        // Help-menu
-        Menu helpMenu = new Menu("Hilfe");
-        // userGuide-item
-        MenuItem userGuide = new MenuItem("Bedienungsanleitung");
-        userGuide.setAccelerator(KeyCombination.keyCombination("Ctrl+U"));
-        userGuide.setOnAction(event -> {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File myFile = new File("Bedienungsanleitung.pdf");
-                    Desktop.getDesktop().open(myFile);
-                } catch (IOException ex) {
-                    // no application registered for PDFs
-                    AlertBox.display("PDF Viewer",null,"Es wurde kein PDF Viewer gefunden!");
-                }
-            }
-        });
-        helpMenu.getItems().add(userGuide);
-
-        // Menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(chessMenu,optionsMenu,styleMenu,helpMenu);
-        return menuBar;
-    }
-
-
-    void gridAnswer(int answer) {
-        if (answer == 1){
-            AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
-        } else {
-            AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
-        }
+        return styleMenu;
     }
 
 
