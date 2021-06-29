@@ -161,16 +161,20 @@ public class EnglishGame extends BorderPane {
         Menu optionsMenu = new Menu("Options");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Board Rotation");
+        rotation.setAccelerator(KeyCombination.keyCombination("Alt+R"));
         rotation.setOnAction(event -> guiGame.isRotatingBoard = rotation.isSelected());
         // Highlight-check item
         CheckMenuItem highlight = new CheckMenuItem("Highlight Moves");
+        highlight.setAccelerator(KeyCombination.keyCombination("Alt+H"));
         highlight.setOnAction(event -> guiGame.highlightPossibleMoves = highlight.isSelected());
         // Change selected-check item
         CheckMenuItem changeSelected = new CheckMenuItem("Change Selected Piece");
+        changeSelected.setAccelerator(KeyCombination.keyCombination("Alt+S"));
         changeSelected.setOnAction(event -> guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected());
         optionsMenu.setOnAction(event -> changeSelected.setDisable(guiGame.getSquareStart() != null));
         // checkHint-check item
         CheckMenuItem checkHint = new CheckMenuItem("Hint: In Check");
+        checkHint.setAccelerator(KeyCombination.keyCombination("Alt+C"));
         checkHint.setOnAction(event -> guiGame.hintInCheck = checkHint.isSelected());
         // Set default for Options-items
         rotation.setSelected(true);
@@ -214,6 +218,7 @@ public class EnglishGame extends BorderPane {
         Menu helpMenu = new Menu("Help");
         // userGuide-item
         MenuItem userGuide = new MenuItem("User Guide");
+        userGuide.setAccelerator(KeyCombination.keyCombination("Ctrl+U"));
         userGuide.setOnAction(event -> {
             if (Desktop.isDesktopSupported()) {
                 try {

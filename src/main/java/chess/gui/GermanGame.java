@@ -175,16 +175,20 @@ public class GermanGame extends BorderPane {
         Menu optionsMenu = new Menu("Optionen");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Drehung des Spielbretts");
+        rotation.setAccelerator(KeyCombination.keyCombination("Alt+R"));
         rotation.setOnAction(e -> guiGame.isRotatingBoard = rotation.isSelected());
         // Highlight-check item
         CheckMenuItem highlight = new CheckMenuItem("Züge hervorheben");
+        highlight.setAccelerator(KeyCombination.keyCombination("Alt+H"));
         highlight.setOnAction(e -> guiGame.highlightPossibleMoves = highlight.isSelected());
         // Change selected-check item
         CheckMenuItem changeSelected = new CheckMenuItem("Gewählte Figur ändern");
+        changeSelected.setAccelerator(KeyCombination.keyCombination("Alt+S"));
         changeSelected.setOnAction(e -> guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected());
         optionsMenu.setOnAction(event -> changeSelected.setDisable(guiGame.getSquareStart() != null));
         // checkHint-check item
         CheckMenuItem checkHint = new CheckMenuItem("Hinweis: Schach");
+        checkHint.setAccelerator(KeyCombination.keyCombination("Alt+C"));
         checkHint.setOnAction(event -> guiGame.hintInCheck = checkHint.isSelected());
         // Set default for Options-items
         rotation.setSelected(true);
@@ -228,6 +232,7 @@ public class GermanGame extends BorderPane {
         Menu helpMenu = new Menu("Hilfe");
         // userGuide-item
         MenuItem userGuide = new MenuItem("Bedienungsanleitung");
+        userGuide.setAccelerator(KeyCombination.keyCombination("Ctrl+U"));
         userGuide.setOnAction(event -> {
             if (Desktop.isDesktopSupported()) {
                 try {
