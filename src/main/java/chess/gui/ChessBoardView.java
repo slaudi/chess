@@ -163,6 +163,9 @@ public class ChessBoardView extends BorderPane {
                 } else {
                     button.setStyle(guiGame.black);
                 }
+                if (guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
+                    button.setStyle(highlightBackground);
+                }
                 setButtonsOnGrid(button,grid,x,y);
             }
         }
@@ -189,9 +192,8 @@ public class ChessBoardView extends BorderPane {
                 } else {
                     button.setStyle(guiGame.black);
                 }
-                if (guiGame.getSquareStart() != null && guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
+                if (guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
                     button.setStyle(highlightBackground);
-
                 }
                 if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
                     button.setStyle(highlightBorder + ";" + border + ";" + guiGame.white);
