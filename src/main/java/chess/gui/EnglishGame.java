@@ -162,29 +162,33 @@ public class EnglishGame extends BorderPane {
         // add all items to Options-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
-        // Style Menu
+        // Style RadioMenu
         Menu styleMenu = new Menu("Style");
-        // Classic-item
-        MenuItem classicStyle = new MenuItem("Classic");
+        ToggleGroup styleToggle = new ToggleGroup();
+        // Classic-radio item
+        RadioMenuItem classicStyle = new RadioMenuItem("Classic");
         classicStyle.setOnAction(event -> {
             guiGame.white = "-fx-background-color: rgb(180,80,0)";
             guiGame.black = "-fx-background-color: rgb(255,228,196)";
-            chessScene = gui.chessWindow(primaryStage,guiGame);
-            primaryStage.setScene(chessScene);
-            primaryStage.show();
+            gui.chessWindow(primaryStage,guiGame);
+            //chessScene = gui.chessWindow(primaryStage,guiGame);
+            //primaryStage.setScene(chessScene);
+            //primaryStage.show();
         });
+        classicStyle.setToggleGroup(styleToggle);
         // BlackNWhite-item
-        MenuItem black_n_whiteStyle = new MenuItem("Black'n'White");
+        RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Black'n'White");
         black_n_whiteStyle.setOnAction(event -> {
             guiGame.white = "-fx-background-color: white";
             guiGame.black = "-fx-background-color: black";
-            chessScene = gui.chessWindow(primaryStage,guiGame);
-            primaryStage.setScene(chessScene);
-            primaryStage.show();
+            gui.chessWindow(primaryStage,guiGame);
         });
+        black_n_whiteStyle.setToggleGroup(styleToggle);
         // Christmas-item
-        MenuItem christmasStyle = new MenuItem("Christmas");
+        RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
+        christmasStyle.setToggleGroup(styleToggle);
         // add all check items to Style-menu
+        classicStyle.setSelected(true);
         styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
 
         // Help-menu

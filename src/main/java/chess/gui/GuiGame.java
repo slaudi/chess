@@ -4,7 +4,6 @@ import chess.engine.Engine;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
