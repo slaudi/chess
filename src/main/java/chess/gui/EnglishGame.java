@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static chess.gui.Gui.*;
-import static chess.gui.Gui.chessScene;
 
 /**
  * The EnglishGame class defines the output of the game when English is selected as language.
