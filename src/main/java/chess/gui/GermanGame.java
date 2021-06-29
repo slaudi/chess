@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -77,6 +78,7 @@ public class GermanGame extends BorderPane {
         Menu chessMenu = new Menu("Schach");
         // New Game-Menu item
         MenuItem newGame = new MenuItem("Neues Spiel");
+        newGame.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
         newGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("Neues Spiel", "Möchtest du wirklich ein neues Spiel starten?",this.language);
             if (result) {
@@ -93,6 +95,7 @@ public class GermanGame extends BorderPane {
         chessMenu.getItems().add(newGame);
         // Save Game-menu item
         MenuItem saveGame = new MenuItem("Spiel speichern");
+        saveGame.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         saveGame.setOnAction(event -> {
             boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du diesen Spielstand speichern?",this.language);
             if (result) {
@@ -102,6 +105,7 @@ public class GermanGame extends BorderPane {
         chessMenu.getItems().add(saveGame);
         // Load Game-menu item
         MenuItem loadGame = new MenuItem("Spiel laden");
+        loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
         loadGame.setOnAction(e -> {
             boolean result = ConfirmationBox.display("Spiel laden","Möchtest du ein gespeichertes Spiel laden?", this.language);
 
@@ -127,6 +131,7 @@ public class GermanGame extends BorderPane {
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Language-menu item
         MenuItem language = new MenuItem("Sprache");
+        language.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+L"));
         language.setOnAction(event -> {
             Gui.englishStart.chooseLanguage();
             chessScene = gui.chessWindow(primaryStage,guiGame);
@@ -136,6 +141,7 @@ public class GermanGame extends BorderPane {
         chessMenu.getItems().add(language);
         // Move History-Menu item
         MenuItem moveHistory = new MenuItem("Zug-Historie");
+        moveHistory.setAccelerator(KeyCombination.keyCombination("Ctrl+H"));
         moveHistory.setOnAction(event -> {
             List<Move> history = guiGame.game.moveHistory;
             StringBuilder historyAsString = new StringBuilder();
@@ -152,6 +158,7 @@ public class GermanGame extends BorderPane {
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Exit-menu item
         MenuItem exit = new MenuItem("Beenden");
+        exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> System.exit(0));
         chessMenu.getItems().add(exit);
 
@@ -183,7 +190,6 @@ public class GermanGame extends BorderPane {
         // Classic-radio item
         RadioMenuItem classicStyle = new RadioMenuItem("Klassik");
         classicStyle.setToggleGroup(styleToggle);
-        classicStyle.setSelected(true);
         // BlackNWhite-item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Schwarz-Weiß");
         black_n_whiteStyle.setToggleGroup(styleToggle);
