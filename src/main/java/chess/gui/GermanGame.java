@@ -159,7 +159,16 @@ public class GermanGame extends BorderPane {
         // Exit-menu item
         MenuItem exit = new MenuItem("Beenden");
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
-        exit.setOnAction(event -> System.exit(0));
+        exit.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du diesen Spielstand speichern?",this.language);
+            if (result) {
+                SaveGame.save(guiGame.game);
+            }
+            boolean result2 = ConfirmationBox.display("Spiel beenden","Möchtest du das Spiel wirklich beenden?",this.language);
+            if (result2) {
+                System.exit(0);
+            }
+        });
         chessMenu.getItems().add(exit);
 
         // Options menu

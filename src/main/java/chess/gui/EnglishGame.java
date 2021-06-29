@@ -146,7 +146,14 @@ public class EnglishGame extends BorderPane {
         // Shortcut key combination
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> {
-            System.exit(0);
+            boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",this.language);
+            if (result) {
+                SaveGame.save(guiGame.game);
+            }
+            boolean result2 = ConfirmationBox.display("Exit Game","Do you really want to exit the game?",this.language);
+            if (result2) {
+                System.exit(0);
+            }
         });
         chessMenu.getItems().add(exit);
 
