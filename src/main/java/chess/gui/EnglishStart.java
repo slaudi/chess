@@ -2,13 +2,9 @@ package chess.gui;
 
 import chess.game.Colour;
 import chess.game.Language;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -17,85 +13,27 @@ import java.util.Collections;
 import java.util.List;
 
 import static chess.gui.Gui.chessScene;
-import static chess.gui.Gui.startScene;
 
 public class EnglishStart {
 
     public GuiGame guiGame;
     public Gui gui;
-    public Language language;
+    public Language language = Language.English;
 
     public EnglishStart(GuiGame guiGame, Gui gui){
         this.guiGame = guiGame;
         this.gui = gui;
-        this.language = Language.English;
     }
 
-    void startWindowEnglish(Stage primaryStage, BorderPane pane) {
-        primaryStage.setTitle("Chess!");
-
-        Button welcome = new Button("Welcome to a new Game of Chess!");
-        welcome.getStyleClass().add("startLabel");
-        BorderPane.setAlignment(welcome, Pos.TOP_CENTER);
-        BorderPane.setMargin(welcome,new Insets(50,0,60,0));
-        pane.setTop(welcome);
-
-        // Define Start Game-Button
-        Button startLocalGame = new Button("Start Game");
-        startLocalGame.setDefaultButton(true);
-        startLocalGame.getStyleClass().add("startButtons");
-        startLocalGame.setOnAction(e -> {
-            chooseEnemyEnglish();
-            chessScene = gui.chessWindow(primaryStage,guiGame);
-            primaryStage.setScene(chessScene);
-        });
-
-        // Define Network Game-Button
-        Button startNetworkGame = new Button("Network Game");
-        startNetworkGame.setOnAction(e -> gui.startNetworkGame(primaryStage));
-        startNetworkGame.getStyleClass().add("startButtons");
-
-        // Define Load Game-Button
-        Button loadGame = new Button("Load Game");
-        loadGame.getStyleClass().add("startButtons");
-        loadGame.setOnAction(e -> {
-            boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
-
-            if (result) {
-                File f = new File("src/main/resources/saves");
-                String[] fileArray = f.list();
-                assert fileArray != null;
-                if(fileArray.length != 0) {
-                    List<String> choices = new ArrayList<>();
-                    Collections.addAll(choices, fileArray);
-                    ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
-                    dialog.setTitle("Choose Game");
-                    dialog.setHeaderText(null);
-                    dialog.setContentText("Choose a saved Game:");
-
-                    gui.loadGame(dialog);
-                }
-                chessScene = gui.chessWindow(primaryStage,guiGame);
-                primaryStage.setScene(chessScene);
-            }
-        });
-
-        // Define Language-Button
-        Button language = new Button("Language");
-        language.getStyleClass().add("startButtons");
-        language.setOnAction(e -> {
-            chooseLanguage();
-            startScene = gui.startWindow(primaryStage,guiGame);
-            primaryStage.setScene(startScene);
-            primaryStage.show();
-        });
-        VBox layout1 = new VBox(25);
-        layout1.getChildren().addAll(startLocalGame, startNetworkGame, loadGame, language);
-        layout1.setAlignment(Pos.TOP_CENTER);
-        pane.setCenter(layout1);
+    void startButtonsEnglish(List<Button> startButtons) {
+        startButtons.get(0).setText("Welcome to a new Game of Chess!");
+        startButtons.get(1).setText("Start Game");
+        startButtons.get(2).setText("Network Game");
+        startButtons.get(3).setText("Load Game");
+        startButtons.get(4).setText("Language");
     }
 
-    private void chooseEnemyEnglish() {
+    void chooseEnemyEnglish() {
         ButtonType human = new ButtonType("Person");
         ButtonType computer = new ButtonType("AI");
 
@@ -137,6 +75,28 @@ public class EnglishStart {
             guiGame.game.setLanguage(Language.German);
         } else {
             guiGame.game.setLanguage(Language.English);
+        }
+    }
+
+    void loadEnglishGame(Stage primaryStage){
+        boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
+
+        if (result) {
+            File f = new File("src/main/resources/saves");
+            String[] fileArray = f.list();
+            assert fileArray != null;
+            if(fileArray.length != 0) {
+                List<String> choices = new ArrayList<>();
+                Collections.addAll(choices, fileArray);
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
+                dialog.setTitle("Choose Game");
+                dialog.setHeaderText(null);
+                dialog.setContentText("Choose a saved Game:");
+
+                gui.loadGame(dialog);
+            }
+            chessScene = gui.chessWindow(primaryStage,guiGame);
+            primaryStage.setScene(chessScene);
         }
     }
 

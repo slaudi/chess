@@ -70,8 +70,8 @@ public class EnglishGame extends BorderPane {
             if (result) {
                 guiGame = new GuiGame();
                 guiGame.game.setLanguage(Language.English);
-                Gui.englishStart = new EnglishStart(guiGame,gui);
-                Gui.germanStart = new GermanStart(guiGame, gui);
+                gui.englishStart = new EnglishStart(guiGame,gui);
+                gui.germanStart = new GermanStart(guiGame, gui);
                 Gui.startScene = gui.startWindow(primaryStage, guiGame);
                 Gui.chessScene = gui.chessWindow(primaryStage, guiGame);
                 primaryStage.setScene(Gui.startScene);
@@ -92,33 +92,14 @@ public class EnglishGame extends BorderPane {
         // Load Game-menu item
         MenuItem loadGame = new MenuItem("Load Game");
         loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
-        loadGame.setOnAction(e -> {
-            boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
-            if (result) {
-                File f = new File("src/main/resources/saves");
-                String[] fileArray = f.list();
-                assert fileArray != null;
-                if(fileArray.length != 0) {
-                    List<String> choices = new ArrayList<>();
-                    Collections.addAll(choices, fileArray);
-                    ChoiceDialog<String> dialog = new ChoiceDialog<>(fileArray[0], choices);
-                    dialog.setTitle("Choose Game");
-                    dialog.setHeaderText(null);
-                    dialog.setContentText("Choose a saved Game:");
-
-                    gui.loadGame(dialog);
-                }
-                chessScene = gui.chessWindow(primaryStage,guiGame);
-                primaryStage.setScene(chessScene);
-            }
-        });
+        loadGame.setOnAction(e -> gui.englishStart.loadEnglishGame(primaryStage));
         chessMenu.getItems().add(loadGame);
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Language-menu item
         MenuItem language = new MenuItem("Language");
         language.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+L"));
         language.setOnAction(event -> {
-            Gui.englishStart.chooseLanguage();
+            gui.englishStart.chooseLanguage();
             chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
             primaryStage.show();
@@ -184,7 +165,7 @@ public class EnglishGame extends BorderPane {
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
         // Style RadioMenu
-        Menu styleMenu = new Menu("Style");
+        Menu styleMenu = new Menu("Themes");
         ToggleGroup styleToggle = new ToggleGroup();
         // Classic-radio item
         RadioMenuItem classicStyle = new RadioMenuItem("Classic");

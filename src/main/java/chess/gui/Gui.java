@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Starting point of the JavaFX GUI
@@ -23,8 +24,8 @@ import java.util.*;
 public class Gui extends Application {
 
     public GuiGame guiGame;
-    public static EnglishStart englishStart;
-    public static GermanStart germanStart;
+    public EnglishStart englishStart;
+    public GermanStart germanStart;
     static Scene startScene, chessScene;
 
     /**
@@ -65,15 +66,71 @@ public class Gui extends Application {
                 BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize(40,40,
                 false,false,false,true))));
 
-        Scene startScene = new Scene(pane,500,480);
-        startScene.getStylesheets().add(Objects.requireNonNull(Gui.class.getResource("style.css")).toString());
+        AtomicReference<Scene> startScene = new AtomicReference<>(new Scene(pane, 500, 480));
+        startScene.get().getStylesheets().add(Objects.requireNonNull(Gui.class.getResource("style.css")).toString());
 
+        // Define buttons
+        Button welcome = new Button();
+        Button startLocalGame = new Button();
+        Button startNetworkGame = new Button();
+        Button loadGame = new Button();
+        Button language = new Button();
+
+        List<Button> startButtons = new ArrayList<>();
+        Collections.addAll(startButtons,welcome,startLocalGame,startNetworkGame,loadGame,language);
         if (guiGame.game.getLanguage() == Language.German) {
-            germanStart.startWindowGerman(primaryStage, pane);
+            germanStart.startButtonsGerman(startButtons);
         } else {
-            englishStart.startWindowEnglish(primaryStage, pane);
+            englishStart.startButtonsEnglish(startButtons);
         }
-        return startScene;
+
+
+        welcome.getStyleClass().add("startLabel");
+        BorderPane.setAlignment(welcome,Pos.TOP_CENTER);
+        BorderPane.setMargin(welcome,new Insets(50,0,60,0));
+        pane.setTop(welcome);
+
+        startLocalGame.getStyleClass().add("startButtons");
+        startLocalGame.setOnAction(e -> {
+            if (guiGame.game.getLanguage() == Language.German) {
+                germanStart.chooseEnemyGerman();
+            } else {
+                englishStart.chooseEnemyEnglish();
+            }
+            chessScene = chessWindow(primaryStage,guiGame);
+            primaryStage.setScene(chessScene);
+        });
+
+        startNetworkGame.getStyleClass().add("startButtons");
+        startNetworkGame.setOnAction(e -> startNetworkGame(primaryStage));
+
+        loadGame.getStyleClass().add("startButtons");
+        loadGame.setOnAction(e -> {
+            if (guiGame.game.getLanguage() == Language.German) {
+                germanStart.loadGermanGame(primaryStage);
+            } else {
+                englishStart.loadEnglishGame(primaryStage);
+            }
+        });
+
+        language.getStyleClass().add("startButtons");
+        language.setOnAction(e -> {
+            if (guiGame.game.getLanguage() == Language.German) {
+                germanStart.chooseLanguage();
+            } else{
+                englishStart.chooseLanguage();
+            }
+            startScene.set(startWindow(primaryStage, guiGame));
+            primaryStage.setScene(startScene.get());
+            primaryStage.show();
+        });
+
+        VBox layout1 = new VBox(25);
+        layout1.getChildren().addAll( startLocalGame, startNetworkGame, loadGame, language);
+        layout1.setAlignment(Pos.TOP_CENTER);
+        pane.setCenter(layout1);
+
+        return startScene.get();
     }
 
 
