@@ -137,7 +137,7 @@ public class EnglishGame extends BorderPane {
             AlertBox.display("Game Information","Draw","The Game ended in a draw!");
             label = new Label("The Game ended in a draw!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
-            label = new Label(guiGame.game.currentPlayer.getColour() + "s Turn -- " + guiGame.game.currentPlayer.getColour() + " is in Check!");
+            label = new Label(label + " -- " + guiGame.game.currentPlayer.getColour() + " is in Check!");
         }
         label.setFont(new Font(fontSize));
         return new HBox(label);
@@ -322,7 +322,7 @@ public class EnglishGame extends BorderPane {
                 primaryStage.show();
             } else if (black_n_whiteStyle.isSelected()){
                 gui.background = Color.SLATEGRAY;
-                guiGame.white = "-fx-background-color: white";
+                guiGame.white = "-fx-background-color: snow";
                 guiGame.black = "-fx-background-color: black";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
