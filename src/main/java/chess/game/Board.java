@@ -61,7 +61,7 @@ public class Board {
      * @return Returns board
      */
     public Square[][] getBoard(){
-        return this.chessBoard;
+        return this.chessBoard;//NOPMD not a safety issue for the game
     }
 
 

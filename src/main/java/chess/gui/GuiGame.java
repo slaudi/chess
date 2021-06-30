@@ -86,6 +86,9 @@ public class GuiGame {
 
 
     void setButtonAction(ChessBoardView chessBoardView) {
+        if (this.squareStart != null && this.squareFinal == null) {
+            chessBoardView.englishGame.changeSelected.setDisable(true);
+        }
         if (this.squareStart != null && this.squareFinal != null) {
             int result = processingMovement(chessBoardView);
             if (result == 0) {
@@ -103,6 +106,7 @@ public class GuiGame {
                 } else {
                     chessBoardView.englishGame.generateAnswer(result);
                 }
+                chessBoardView.englishGame.changeSelected.setDisable(false);
             } else if (result == 3){
                 // you're allowed to change your selected Piece
                 this.squareStart = this.squareFinal;
