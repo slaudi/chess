@@ -7,7 +7,9 @@ import chess.game.Square;
 import chess.savegame.SaveGame;
 
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -123,18 +125,24 @@ public class EnglishGame extends BorderPane {
         loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
         loadGame.setOnAction(e -> gui.englishStart.loadEnglishGame(primaryStage));
         chessMenu.getItems().add(loadGame);
+
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Language-menu item
-        MenuItem language = new MenuItem("Language");
-        language.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+L"));
-        language.setOnAction(event -> {
-            gui.englishStart.chooseLanguage();
+        Menu language = new Menu("Language");
+        RadioMenuItem german = new RadioMenuItem("German");
+        RadioMenuItem english = new RadioMenuItem("English");
+        german.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+G"));
+        german.setOnAction(event -> {
+            guiGame.game.setLanguage(Language.German);
             chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
             primaryStage.show();
         });
+        english.setSelected(true);
+        english.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+E"));
+        language.getItems().addAll(german,english);
         chessMenu.getItems().add(language);
-        // Move History-Menu item
+        // Move History-menu item
         MenuItem moveHistory = new MenuItem("Move History");
         moveHistory.setAccelerator(KeyCombination.keyCombination("Ctrl+H"));
         moveHistory.setOnAction(event -> {
@@ -150,10 +158,10 @@ public class EnglishGame extends BorderPane {
             AlertBox.display("Move History", null, historyAsString.toString());
         });
         chessMenu.getItems().add(moveHistory);
+
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Exit-menu item
         MenuItem exit = new MenuItem("Exit");
-        // Shortcut key combination
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> {
             boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",this.language);
@@ -207,13 +215,14 @@ public class EnglishGame extends BorderPane {
         ToggleGroup styleToggle = new ToggleGroup();
         // Classic-radio item
         RadioMenuItem classicStyle = new RadioMenuItem("Classic");
+        classicStyle.setSelected(true);
         classicStyle.setToggleGroup(styleToggle);
         // BlackNWhite-item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Black'n'White");
         black_n_whiteStyle.setToggleGroup(styleToggle);
         // Christmas-item
-        //RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
-        //christmasStyle.setToggleGroup(styleToggle);
+        RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
+        christmasStyle.setToggleGroup(styleToggle);
         // add ChangeListener to Toggle Group
         styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (classicStyle.isSelected()) {
@@ -228,10 +237,16 @@ public class EnglishGame extends BorderPane {
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
                 primaryStage.show();
+            } else if (christmasStyle.isSelected()){
+                guiGame.whiteImage = new Image("chess/gui/snow.png");
+                guiGame.whiteBG = new BackgroundImage(guiGame.whiteImage, null,null,null,null);
+                guiGame.blackImage = new Image("chess/gui/xmas_tree");
+                guiGame.blackBG = new BackgroundImage(guiGame.blackImage, null,null,null,null);
             }
         });
         // add all radio menu items to Style-menu
-        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
+        //styleToggle.getSelectedToggle().setSelected(true);
+        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
 
         return styleMenu;
     }

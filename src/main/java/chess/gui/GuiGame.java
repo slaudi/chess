@@ -4,6 +4,8 @@ import chess.engine.Engine;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BackgroundImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,10 @@ public class GuiGame {
 
     String white = "-fx-background-color: rgb(180,80,0)";
     String black = "-fx-background-color: rgb(255,228,196)";
+    Image whiteImage;
+    Image blackImage;
+    BackgroundImage whiteBG;
+    BackgroundImage blackBG;
 
     boolean isRotatingBoard = true;
     boolean highlightPossibleMoves = true;

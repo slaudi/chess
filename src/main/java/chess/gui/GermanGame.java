@@ -11,7 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -139,15 +141,20 @@ public class GermanGame extends BorderPane {
         chessMenu.getItems().add(loadGame);
 
         chessMenu.getItems().add(new SeparatorMenuItem());
-        // Language-menu item
-        MenuItem language = new MenuItem("Sprache");
-        language.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+L"));
-        language.setOnAction(event -> {
-            gui.englishStart.chooseLanguage();
-            chessScene = gui.chessWindow(primaryStage,guiGame);
-            primaryStage.setScene(chessScene);
-            primaryStage.show();
+        // Language-menu
+        Menu language = new Menu("Sprache");
+        RadioMenuItem german = new RadioMenuItem("Deutsch");
+        RadioMenuItem english = new RadioMenuItem("Englisch");
+        english.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+E"));
+        english.setOnAction(event -> {
+                    guiGame.game.setLanguage(Language.English);
+                    chessScene = gui.chessWindow(primaryStage, guiGame);
+                    primaryStage.setScene(chessScene);
+                    primaryStage.show();
         });
+        german.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+G"));
+        german.setSelected(true);
+        language.getItems().addAll(german,english);
         chessMenu.getItems().add(language);
         // Move History-Menu item
         MenuItem moveHistory = new MenuItem("Zug-Historie");
@@ -216,29 +223,21 @@ public class GermanGame extends BorderPane {
     }
 
 
-    void gridAnswer(int answer) {
-        if (answer == 1){
-            AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
-        } else {
-            AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
-        }
-    }
-
-
     private Menu styleMenu(Stage primaryStage) {
         Menu styleMenu = new Menu("Stil");
         ToggleGroup styleToggle = new ToggleGroup();
         // Classic-radio item
         RadioMenuItem classicStyle = new RadioMenuItem("Klassik");
         classicStyle.setToggleGroup(styleToggle);
-        // BlackNWhite-item
+        // BlackNWhite-radio item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Schwarz-Weiß");
         black_n_whiteStyle.setToggleGroup(styleToggle);
-        // Christmas-item
-        //RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
-        //christmasStyle.setToggleGroup(styleToggle);
+        // Christmas-radio item
+        RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
+        christmasStyle.setToggleGroup(styleToggle);
         // add ChangeListener to Toggle Group
         styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            //styleToggle.getSelectedToggle().setSelected(true);
             if (classicStyle.isSelected()) {
                 guiGame.white = "-fx-background-color: rgb(180,80,0)";
                 guiGame.black = "-fx-background-color: rgb(255,228,196)";
@@ -251,12 +250,28 @@ public class GermanGame extends BorderPane {
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
                 primaryStage.show();
+            } else if (christmasStyle.isSelected()){
+                guiGame.whiteImage = new Image("chess/gui/snow.png");
+                guiGame.whiteBG = new BackgroundImage(guiGame.whiteImage, null,null,null,null);
+                guiGame.blackImage = new Image("chess/gui/xmas_tree");
+                guiGame.blackBG = new BackgroundImage(guiGame.blackImage, null,null,null,null);
             }
         });
         // add all radio menu items to Style-menu
-        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
+        //styleToggle.getSelectedToggle().setSelected(true);
+        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
 
         return styleMenu;
+    }
+
+
+
+    void gridAnswer(int answer) {
+        if (answer == 1){
+            AlertBox.display("Figuren-Problem", null, "Die ausgewählte Figur ist nicht deine Figur!");
+        } else {
+            AlertBox.display("Figuren-Problem", null, "Dort steht keine Figur zum Ziehen!");
+        }
     }
 
 
