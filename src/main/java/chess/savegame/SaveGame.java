@@ -9,8 +9,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class SaveGame {
-    //TODO: speichern ob v.a. König/Turm sich schon bewegt haben
 
+    /**
+     * Format of SaveGame: Line-wise
+     *     Board from a8 to h1: X for empty-Square, Letters like in CLI for Non-Empty-Square
+     *     Current Player-Colour: B / W
+     *     User-Colour: B / W
+     *     artificialEnemy: true / false
+     *      Beaten-Pieces
+     *     Move-History: like in Cli, seperated by "."
+     *     language: g / e
+     *     Rook/King-Movement: n for not-moved, m for moved, x for empty (a8, e8, h8, a1, e1, h1)
+     *
+     * @param game The Game that's supposed to be saved
+    **/
     public static void save(Game game) {
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
@@ -121,7 +133,7 @@ public class SaveGame {
         }
     }
 
-    private static String movementToLine(Game game) {//NOPMD dividing this method in submethods would make code harder to read
+    private static String movementToLine(Game game) {//NOPMD dividing this method into sub methods would make code harder to read
         StringBuilder movementString = new StringBuilder();
         if (game.chessBoard.getBoard()[0][0].getOccupiedBy() != null){
             if (game.chessBoard.getBoard()[0][0].getOccupiedBy().hasNotMoved()) {
@@ -193,14 +205,4 @@ public class SaveGame {
     }
 }
 
-/*
-Format of Savegame: Line-wise
-Board from a8 to h1: X for empty-Square, Letters like in CLI for Non-Empty-Square
-Current Player-Colour: B / W
-User-Colour: B / W
-artificialEnemy: true / false
-Beaten-Pieces
-Move-History: like in Cli, seperated by "."
-language: g / e
-Rook/King-Movement: n for not-moved, m for moved, x for empty (a8, e8, h8, a1, e1, h1)
- */
+

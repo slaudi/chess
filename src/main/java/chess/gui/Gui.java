@@ -1,7 +1,5 @@
 package chess.gui;
 
-
-import chess.game.Game;
 import chess.game.Language;
 import chess.savegame.LoadGame;
 import javafx.application.Application;
@@ -15,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
