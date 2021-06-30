@@ -1,6 +1,7 @@
 package chess.gui;
 
 
+import chess.game.Game;
 import chess.game.Language;
 import chess.savegame.LoadGame;
 import javafx.application.Application;
@@ -8,10 +9,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,7 +17,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -141,19 +137,8 @@ public class Gui extends Application {
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             File loadingFile = new File("src/main/resources/saves/" + result.get());
-            Scanner sc = null;
-            try {
-                sc = new Scanner(loadingFile);
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-            ArrayList<String> loadingGame = new ArrayList<>();
-            while (true) {
-                assert sc != null;
-                if (!sc.hasNextLine()) break;
-                loadingGame.add(sc.nextLine());
-            }
-            guiGame.game = LoadGame.load(loadingGame);
+
+            guiGame.game = LoadGame.loadFile(loadingFile);
 
             chessScene = chessWindow(primaryStage, guiGame);
             primaryStage.setScene(chessScene);

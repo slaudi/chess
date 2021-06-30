@@ -3,12 +3,15 @@ package chess.savegame;
 import chess.game.*;
 import chess.pieces.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class LoadGame {
 
-    public static Game load(List<String> loadString){
+    private static Game load(List<String> loadString){
         Game loadedGame = new Game();
         loadedGame.chessBoard.clearBoard();
         loadedGame.chessBoard = stringToBoard(loadString.get(0));
@@ -20,7 +23,7 @@ public class LoadGame {
         loadedGame.beatenPieces = stringToBeatenPieces(loadString.get(4));
         loadedGame.moveHistory = stringToMoveHistory(loadString.get(5), loadedGame);
         loadedGame.setLanguage(stringToLanguage(loadString.get(6)));
-        loadedGame.chessBoard = stringToMovement(loadedGame.chessBoard, loadString.get(7));
+        stringToMovement(loadedGame.chessBoard, loadString.get(7));
         return loadedGame;
     }
 
@@ -31,7 +34,7 @@ public class LoadGame {
         for (int i = 0; i < 64; i++){
             if(boardString.charAt(i) != 'X'){
                 int x = i % 8;
-                int y = (int)(i / 8);
+                int y = i / 8;
                 board.setPieceAt(x, y, charToPiece(boardString.charAt(i), board.getSquareAt(x, y)));
             }
         }
@@ -99,7 +102,7 @@ public class LoadGame {
         }
     }
 
-    private static Board stringToMovement(Board board, String movementString){
+    private static void stringToMovement(Board board, String movementString){
         for (int i = 0; i < 6; i++){
             if(movementString.charAt(i) == 'm') {
                 switch (i) {
@@ -118,7 +121,6 @@ public class LoadGame {
                 }
             }
         }
-        return board;
     }
 
 
@@ -158,6 +160,23 @@ public class LoadGame {
                 return new King(square, Colour.WHITE);
         }
         return null;
+    }
+
+
+    public static Game loadFile(File loadingFile){
+        Scanner sc = null;
+        try {
+            sc = new Scanner(loadingFile);
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+        ArrayList<String> loadingGame = new ArrayList<>();
+        while (true) {
+            assert sc != null;
+            if (!sc.hasNextLine()) break;
+            loadingGame.add(sc.nextLine());
+        }
+        return load(loadingGame);
     }
 
 

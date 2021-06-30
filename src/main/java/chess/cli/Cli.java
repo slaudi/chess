@@ -178,23 +178,12 @@ public class Cli {
             int choice = Integer.parseInt(scanner.nextLine());
             if(choice > 0 && choice < saves.size()){
                 File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
-                Scanner sc = null;
-                try {
-                    sc = new Scanner(loadingFile);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-                ArrayList<String> loadingGame = new ArrayList<>();
-                while (true) {
-                    assert sc != null;
-                    if (!sc.hasNextLine()) break;
-                    loadingGame.add(sc.nextLine());
-                }
-                currentGame = LoadGame.load(loadingGame);
+                currentGame = LoadGame.loadFile(loadingFile);
+                //currentGame = LoadGame.load(loadingGame);
                 toConsole(currentGame);
             }
             else{
-                System.out.println("There is no Savegame for that number.");
+                System.out.println("It exists no saved game for chosen number.");
             }
             return true;
         }
