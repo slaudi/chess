@@ -17,7 +17,6 @@ import java.util.Scanner;
  * Starting point of the command line interface
  */
 public class Cli {
-
     /**
      * The entry point of the CLI application.
      *
@@ -161,41 +160,15 @@ public class Cli {
             return true;
         }
         if (userInput.equals("load")) {
-            System.out.println("Select Save-Game you want to load by entering the number:");
-            List<String> saves = new ArrayList<>();
-            File f = new File("src/main/resources/saves");
-            String[] fileArray = f.list();
-            assert fileArray != null;
-            if(fileArray.length != 0) {
-                Collections.addAll(saves, fileArray);
-                int counter = 0;
-                for (String i : saves) {
-                    System.out.println(counter + ") " + i);
-                    counter++;
-                }
-            }
-            Scanner scanner = new Scanner(System.in);
-            int choice = Integer.parseInt(scanner.nextLine());
-            if(choice > 0 && choice < saves.size()){
-                File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
-                Scanner sc = null;
-                try {
-                    sc = new Scanner(loadingFile);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-                ArrayList<String> loadingGame = new ArrayList<>();
-                while (true) {
-                    assert sc != null;
-                    if (!sc.hasNextLine()) break;
-                    loadingGame.add(sc.nextLine());
-                }
-                currentGame = LoadGame.load(loadingGame);
-                toConsole(currentGame);
-            }
-            else{
-                System.out.println("There is no Savegame for that number.");
-            }
+            Game tempgame = cliLoad(currentGame);
+            currentGame.currentPlayer = tempgame.currentPlayer;
+            currentGame.chessBoard = tempgame.chessBoard;
+            currentGame.setUserColour(tempgame.getUserColour());
+            currentGame.setArtificialEnemy(tempgame.isArtificialEnemy());
+            currentGame.beatenPieces = tempgame.beatenPieces;
+            currentGame.moveHistory = tempgame.moveHistory;
+            currentGame.setLanguage(tempgame.getLanguage());
+            toConsole(currentGame);
             return true;
         }
         return false;
@@ -330,5 +303,42 @@ public class Cli {
         }
     }
 
+    private static Game cliLoad(Game game){
+        System.out.println("Select Save-Game you want to load by entering the number:");
+        List<String> saves = new ArrayList<>();
+        File f = new File("src/main/resources/saves");
+        String[] fileArray = f.list();
+        assert fileArray != null;
+        if(fileArray.length != 0) {
+            Collections.addAll(saves, fileArray);
+            int counter = 0;
+            for (String i : saves) {
+                System.out.println(counter + ") " + i);
+                counter++;
+            }
+        }
+        Scanner scanner = new Scanner(System.in);
+        int choice = Integer.parseInt(scanner.nextLine());
+        if(choice > -1 && choice < saves.size()){
+            File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
+            Scanner sc = null;
+            try {
+                sc = new Scanner(loadingFile);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+            ArrayList<String> loadingGame = new ArrayList<>();
+            while (true) {
+                assert sc != null;
+                if (!sc.hasNextLine()) break;
+                loadingGame.add(sc.nextLine());
+            }
+            game = LoadGame.load(loadingGame);
+            return game;
+        }
+        else{
+            System.out.println("There is no Savegame for that number.");
+            return game;
+        }
+    }
 }
-
