@@ -11,7 +11,6 @@ public class LoadGame {
     public static Game load(List<String> loadString){
         Game loadedGame = new Game();
         loadedGame.chessBoard.clearBoard();
-        System.out.println(loadString);
         loadedGame.chessBoard = stringToBoard(loadString.get(0));
         if(stringToCurrentPlayerColour(loadString.get(1)) == Colour.BLACK){
             loadedGame.changePlayer();
@@ -122,7 +121,7 @@ public class LoadGame {
     }
 
 
-    private static Piece charToPiece(char c, Square square){
+    private static Piece charToPiece(char c, Square square){ //NOPMD dividing this method in submethods would make code harder to read
         switch (c) {
             case 'p':
                 Pawn pawn = new Pawn(square, Colour.BLACK);
