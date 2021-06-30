@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static chess.gui.Gui.chessScene;
+import static chess.gui.Gui.startScene;
 
 public class GermanStart {
 
@@ -96,9 +97,15 @@ public class GermanStart {
                 dialog.setContentText("Wähle ein gespeichertes Spiel aus:");
 
                 gui.loadGame(dialog);
+
+                if (dialog.isShowing()) {
+                    chessScene = gui.chessWindow(primaryStage, guiGame);
+                    primaryStage.setScene(chessScene);
+                } else {
+                    startScene = gui.startWindow(primaryStage,guiGame);
+                    primaryStage.setScene(startScene);
+                }
             }
-            chessScene = gui.chessWindow(primaryStage,guiGame);
-            primaryStage.setScene(chessScene);
         }
     }
 }
