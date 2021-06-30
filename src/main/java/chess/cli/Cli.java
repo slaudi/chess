@@ -160,15 +160,17 @@ public class Cli {
             return true;
         }
         if (userInput.equals("load")) {
-            Game tempgame = cliLoad(currentGame);
-            currentGame.currentPlayer = tempgame.currentPlayer;
-            currentGame.chessBoard = tempgame.chessBoard;
-            currentGame.setUserColour(tempgame.getUserColour());
-            currentGame.setArtificialEnemy(tempgame.isArtificialEnemy());
-            currentGame.beatenPieces = tempgame.beatenPieces;
-            currentGame.moveHistory = tempgame.moveHistory;
-            currentGame.setLanguage(tempgame.getLanguage());
-            toConsole(currentGame);
+            Game tempgame = cliLoad();
+            if(tempgame != null) {
+                currentGame.currentPlayer = tempgame.currentPlayer;
+                currentGame.chessBoard = tempgame.chessBoard;
+                currentGame.setUserColour(tempgame.getUserColour());
+                currentGame.setArtificialEnemy(tempgame.isArtificialEnemy());
+                currentGame.beatenPieces = tempgame.beatenPieces;
+                currentGame.moveHistory = tempgame.moveHistory;
+                currentGame.setLanguage(tempgame.getLanguage());
+                toConsole(currentGame);
+            }
             return true;
         }
         return false;
@@ -303,7 +305,7 @@ public class Cli {
         }
     }
 
-    private static Game cliLoad(Game game){
+    private static Game cliLoad(){
         System.out.println("Select Save-Game you want to load by entering the number:");
         List<String> saves = new ArrayList<>();
         File f = new File("src/main/resources/saves");
@@ -333,12 +335,12 @@ public class Cli {
                 if (!sc.hasNextLine()) break;
                 loadingGame.add(sc.nextLine());
             }
-            game = LoadGame.load(loadingGame);
-            return game;
+            System.out.println(loadingGame);
+            return LoadGame.load(loadingGame);
         }
         else{
             System.out.println("There is no Savegame for that number.");
-            return game;
+            return null;
         }
     }
 }
