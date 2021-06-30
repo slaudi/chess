@@ -4,8 +4,6 @@ import chess.engine.Engine;
 import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BackgroundImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +23,6 @@ public class GuiGame {
 
     String white = "-fx-background-color: rgb(180,80,0)";
     String black = "-fx-background-color: rgb(255,228,196)";
-    Image whiteImage;
-    Image blackImage;
-    BackgroundImage whiteBG;
-    BackgroundImage blackBG;
 
     boolean isRotatingBoard = true;
     boolean highlightPossibleMoves = true;
@@ -87,7 +81,11 @@ public class GuiGame {
 
     void setButtonAction(ChessBoardView chessBoardView) {
         if (this.squareStart != null && this.squareFinal == null) {
-            chessBoardView.englishGame.changeSelected.setDisable(true);
+            if (game.getLanguage() == Language.English) {
+                chessBoardView.englishGame.changeSelected.setDisable(true);
+            } else {
+                chessBoardView.germanGame.changeSelected.setDisable(true);
+            }
         }
         if (this.squareStart != null && this.squareFinal != null) {
             int result = processingMovement(chessBoardView);
@@ -103,10 +101,11 @@ public class GuiGame {
                 game.isCheckMate();
                 if (game.getLanguage() == Language.German){
                     chessBoardView.germanGame.generateAnswer(result);
+                    chessBoardView.germanGame.changeSelected.setDisable(false);
                 } else {
                     chessBoardView.englishGame.generateAnswer(result);
+                    chessBoardView.englishGame.changeSelected.setDisable(false);
                 }
-                chessBoardView.englishGame.changeSelected.setDisable(false);
             } else if (result == 3){
                 // you're allowed to change your selected Piece
                 this.squareStart = this.squareFinal;

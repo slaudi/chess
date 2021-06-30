@@ -158,7 +158,7 @@ public class ChessBoardView extends BorderPane {
                 if (guiGame.getSquareStart() != null && guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
                     button.setStyle(highlightBackground);
                 }
-                if ((y+x) %2 == 0) {
+                if ((y + x) % 2 != 0) {
                     button.setStyle(guiGame.white);
                 } else {
                     button.setStyle(guiGame.black);
@@ -187,7 +187,7 @@ public class ChessBoardView extends BorderPane {
                 Button button = new Button();
                 button.setMinHeight(buttonHeight);
                 button.setMinWidth(buttonWidth);
-                if ((y + x) % 2 == 0) {
+                if ((y + x) % 2 != 0) {
                     button.setStyle(guiGame.white);
                 } else {
                     button.setStyle(guiGame.black);
@@ -195,7 +195,7 @@ public class ChessBoardView extends BorderPane {
                 if (guiGame.game.chessBoard.getSquareAt(x, y) == guiGame.getSquareStart()){
                     button.setStyle(highlightBackground);
                 }
-                if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 == 0) {
+                if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y)) && (y + x) % 2 != 0) {
                     button.setStyle(highlightBorder + ";" + border + ";" + guiGame.white);
                 } else if (allowedSquares.contains(guiGame.game.chessBoard.getSquareAt(x, y))) {
                     button.setStyle(highlightBorder + ";" + border + ";" + guiGame.black);
