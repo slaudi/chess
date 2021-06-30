@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Gui extends Application {
 
     public GuiGame guiGame;
-    public EnglishStart englishStart;
-    public GermanStart germanStart;
+    public EnglishGame englishGame;
+    public GermanGame germanGame;
     static Scene startScene, chessScene;
     Color background = Color.FLORALWHITE;
 
@@ -46,8 +46,8 @@ public class Gui extends Application {
     @Override
     public void start(Stage primaryStage) {
         guiGame = new GuiGame();
-        englishStart = new EnglishStart(guiGame,this);
-        germanStart = new GermanStart(guiGame,this);
+        englishGame = new EnglishGame(guiGame,this);
+        germanGame = new GermanGame(guiGame,this);
 
         // Start
         startScene = startWindow(primaryStage, guiGame);
@@ -80,9 +80,9 @@ public class Gui extends Application {
         List<Button> startButtons = new ArrayList<>();
         Collections.addAll(startButtons,welcome,startLocalGame,startNetworkGame,loadGame,language);
         if (guiGame.game.getLanguage() == Language.German) {
-            germanStart.startButtonsGerman(startButtons);
+            germanGame.startButtonsGerman(startButtons);
         } else {
-            englishStart.startButtonsEnglish(startButtons);
+            englishGame.startButtonsEnglish(startButtons);
         }
 
         welcome.getStyleClass().add("startLabel");
@@ -94,9 +94,9 @@ public class Gui extends Application {
         startLocalGame.getStyleClass().add(startButtonStyle);
         startLocalGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
-                germanStart.chooseEnemyGerman();
+                germanGame.chooseEnemyGerman();
             } else {
-                englishStart.chooseEnemyEnglish();
+                englishGame.chooseEnemyEnglish();
             }
             chessScene = chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
@@ -108,18 +108,18 @@ public class Gui extends Application {
         loadGame.getStyleClass().add(startButtonStyle);
         loadGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
-                germanStart.loadGermanGame(primaryStage);
+                germanGame.loadGermanGame(primaryStage);
             } else {
-                englishStart.loadEnglishGame(primaryStage);
+                englishGame.loadEnglishGame(primaryStage);
             }
         });
 
         language.getStyleClass().add(startButtonStyle);
         language.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
-                germanStart.chooseLanguage();
+                germanGame.chooseLanguage();
             } else{
-                englishStart.chooseLanguage();
+                englishGame.chooseLanguage();
             }
             startScene.set(startWindow(primaryStage, guiGame));
             primaryStage.setScene(startScene.get());
