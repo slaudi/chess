@@ -7,7 +7,6 @@ import chess.game.Move;
 import chess.game.Square;
 import chess.savegame.SaveGame;
 
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
@@ -33,7 +32,7 @@ public class EnglishGame extends BorderPane {
     public GuiGame guiGame;
     public Gui gui;
     public Language language = Language.English;
-    int fontSize = 17;
+    public CheckMenuItem changeSelected;
 
     /**
      * The Constructor for EnglishGame.
@@ -140,7 +139,7 @@ public class EnglishGame extends BorderPane {
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
             label = new Label(label + " -- " + guiGame.game.currentPlayer.getColour() + " is in Check!");
         }
-        label.setFont(new Font(fontSize));
+        label.setFont(new Font(17));
         return new HBox(label);
     }
 
@@ -274,10 +273,9 @@ public class EnglishGame extends BorderPane {
         highlight.setAccelerator(KeyCombination.keyCombination("Alt+H"));
         highlight.setOnAction(event -> guiGame.highlightPossibleMoves = highlight.isSelected());
         // Change selected-check item
-        CheckMenuItem changeSelected = new CheckMenuItem("Change Selected Piece");
+        this.changeSelected = new CheckMenuItem("Change Selected Piece");
         changeSelected.setAccelerator(KeyCombination.keyCombination("Alt+S"));
         changeSelected.setOnAction(event -> guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected());
-        optionsMenu.setOnAction(event -> changeSelected.setDisable(guiGame.getSquareStart() != null));
         // checkHint-check item
         CheckMenuItem checkHint = new CheckMenuItem("Hint: In Check");
         checkHint.setAccelerator(KeyCombination.keyCombination("Alt+C"));
