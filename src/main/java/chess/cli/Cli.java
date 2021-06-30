@@ -5,7 +5,6 @@ import chess.game.*;
 import chess.pieces.Piece;
 import chess.savegame.LoadGame;
 import chess.savegame.SaveGame;
-import javafx.scene.control.ChoiceDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
