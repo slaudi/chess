@@ -7,6 +7,7 @@ import chess.game.Move;
 import chess.game.Square;
 import chess.savegame.SaveGame;
 
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;

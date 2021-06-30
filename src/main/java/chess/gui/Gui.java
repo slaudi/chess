@@ -193,7 +193,7 @@ public class Gui extends Application {
     Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
         BorderPane pane = new BorderPane();
 
-        ChessBoardView chessBoardView = new ChessBoardView(guiGame,this);
+        ChessBoardView chessBoardView = new ChessBoardView(guiGame,this,germanGame,englishGame);
         MenuBar menuBar = chessBoardView.createMenu(primaryStage);
 
         pane.setTop(menuBar);

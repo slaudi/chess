@@ -39,12 +39,11 @@ public class ChessBoardView extends BorderPane {
      *
      * @param guiGame The State of the current Game the View needs to display it.
      */
-    public ChessBoardView(GuiGame guiGame, Gui gui) {
+    public ChessBoardView(GuiGame guiGame, Gui gui, GermanGame germanGame, EnglishGame englishGame) {
         this.guiGame = guiGame;
         this.gui = gui;
-
-        this.germanGame = new GermanGame(guiGame, gui);
-        this.englishGame = new EnglishGame(guiGame,gui);
+        this.germanGame = germanGame;
+        this.englishGame = englishGame;
 
         generatePane();
     }
