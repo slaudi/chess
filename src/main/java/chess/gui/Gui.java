@@ -137,7 +137,7 @@ public class Gui extends Application {
     }
 
 
-    void loadGame(ChoiceDialog<String> dialog){
+    void loadGame(ChoiceDialog<String> dialog, Stage primaryStage){
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             File loadingFile = new File("src/main/resources/saves/" + result.get());
@@ -154,6 +154,9 @@ public class Gui extends Application {
                 loadingGame.add(sc.nextLine());
             }
             guiGame.game = LoadGame.load(loadingGame);
+
+            chessScene = chessWindow(primaryStage, guiGame);
+            primaryStage.setScene(chessScene);
         }
     }
 

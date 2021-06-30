@@ -119,17 +119,9 @@ public class GermanGame extends BorderPane {
                 dialog.setHeaderText(null);
                 dialog.setContentText("Wähle ein gespeichertes Spiel aus:");
 
-                gui.loadGame(dialog);
-
-                if (dialog.isShowing()) {
-                    chessScene = gui.chessWindow(primaryStage, guiGame);
-                    primaryStage.setScene(chessScene);
-                } else {
-                    startScene = gui.startWindow(primaryStage,guiGame);
-                    primaryStage.setScene(startScene);
+                gui.loadGame(dialog,primaryStage);
                 }
             }
-        }
     }
 
 

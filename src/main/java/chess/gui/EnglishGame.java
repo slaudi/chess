@@ -118,18 +118,9 @@ public class EnglishGame extends BorderPane {
                 dialog.setHeaderText(null);
                 dialog.setContentText("Choose a saved Game:");
 
-                gui.loadGame(dialog);
-
-                if (dialog.isShowing()) {
-                    chessScene = gui.chessWindow(primaryStage, guiGame);
-                    primaryStage.setScene(chessScene);
-                } else {
-                    startScene = gui.startWindow(primaryStage,guiGame);
-                    primaryStage.setScene(startScene);
+                gui.loadGame(dialog, primaryStage);
                 }
             }
-
-        }
     }
 
 

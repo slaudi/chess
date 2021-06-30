@@ -20,7 +20,7 @@ public class LoadGame {
         loadedGame.beatenPieces = stringToBeatenPieces(loadString.get(4));
         loadedGame.moveHistory = stringToMoveHistory(loadString.get(5), loadedGame);
         loadedGame.setLanguage(stringToLanguage(loadString.get(6)));
-        stringToMovement(loadedGame.chessBoard, loadString.get(7));
+        loadedGame.chessBoard = stringToMovement(loadedGame.chessBoard, loadString.get(7));
         return loadedGame;
     }
 
@@ -99,7 +99,7 @@ public class LoadGame {
         }
     }
 
-    private static void stringToMovement(Board board, String movementString){
+    private static Board stringToMovement(Board board, String movementString){
         for (int i = 0; i < 6; i++){
             if(movementString.charAt(i) == 'm') {
                 switch (i) {
@@ -118,6 +118,7 @@ public class LoadGame {
                 }
             }
         }
+        return board;
     }
 
 
