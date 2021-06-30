@@ -121,7 +121,7 @@ public class SaveGame {
         }
     }
 
-    private static String movementToLine(Game game) {
+    private static String movementToLine(Game game) {//NOPMD dividing this method in submethods would make code harder to read
         StringBuilder movementString = new StringBuilder();
         if (game.chessBoard.getBoard()[0][0].getOccupiedBy() != null){
             if (game.chessBoard.getBoard()[0][0].getOccupiedBy().hasNotMoved()) {

@@ -87,7 +87,6 @@ public class EnglishStart {
             File f = new File("src/main/resources/saves");
             String[] fileArray = f.list();
             assert fileArray != null;
-            Scene selectedScene = gui.chessWindow(primaryStage, guiGame);
             if(fileArray.length != 0) {
                 List<String> choices = new ArrayList<>();
                 Collections.addAll(choices, fileArray);
