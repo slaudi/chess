@@ -2,6 +2,7 @@ package chess.gui;
 
 import chess.game.*;
 import chess.pieces.Piece;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -215,6 +216,7 @@ public class ChessBoardView extends BorderPane {
             for (int i = columns.length - 1; i >= 0; i--) {
                 Label letter = new Label(columns[i]);
                 letter.setFont(new Font(fontSize));
+                GridPane.setHalignment(letter, HPos.CENTER);
                 grid.add(letter,c,8);
 
                 Label number = new Label(rows[i]);
@@ -226,6 +228,7 @@ public class ChessBoardView extends BorderPane {
             for (int i = 0; i <= columns.length - 1; i++) {
                 Label letter = new Label(columns[i]);
                 letter.setFont(new Font(fontSize));
+                GridPane.setHalignment(letter, HPos.CENTER);
                 grid.add(letter,i,8);
 
                 Label number = new Label(rows[7-i]);
