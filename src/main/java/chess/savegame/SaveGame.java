@@ -8,9 +8,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * class in which game-loading is kept
+ */
 public class SaveGame {
-    //TODO: speichern ob v.a. König/Turm sich schon bewegt haben
 
+    /**
+     * main method when it comes to game-saving
+     * @param game Game which should be saved and converted to txt-File
+     */
     public static void save(Game game) {
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");

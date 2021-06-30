@@ -6,8 +6,16 @@ import chess.pieces.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class in which game-loading is kept
+ */
 public class LoadGame {
 
+    /**
+     * main method when it comes to game-loading
+     * @param loadString String-Version of savegame-file
+     * @return returns a game
+     */
     public static Game load(List<String> loadString){
         Game loadedGame = new Game();
         loadedGame.chessBoard.clearBoard();
