@@ -8,15 +8,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * class in which game-loading is kept
+ */
 public class SaveGame {
 
     /**
+     * main method when it comes to game-saving
+     *
      * Format of SaveGame: Line-wise
      *     Board from a8 to h1: X for empty-Square, Letters like in CLI for Non-Empty-Square
      *     Current Player-Colour: B / W
      *     User-Colour: B / W
      *     artificialEnemy: true / false
-     *      Beaten-Pieces
+     *     Beaten-Pieces
      *     Move-History: like in Cli, seperated by "."
      *     language: g / e
      *     Rook/King-Movement: n for not-moved, m for moved, x for empty (a8, e8, h8, a1, e1, h1)
@@ -203,6 +208,5 @@ public class SaveGame {
         }
         return movementString.toString();
     }
+
 }
-
-

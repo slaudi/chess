@@ -160,29 +160,16 @@ public class Cli {
             return true;
         }
         if (userInput.equals("load")) {
-            System.out.println("Select Save-Game you want to load by entering the number:");
-            List<String> saves = new ArrayList<>();
-            File f = new File("src/main/resources/saves");
-            String[] fileArray = f.list();
-            assert fileArray != null;
-            if(fileArray.length != 0) {
-                Collections.addAll(saves, fileArray);
-                int counter = 0;
-                for (String i : saves) {
-                    System.out.println(counter + ") " + i);
-                    counter++;
-                }
-            }
-            Scanner scanner = new Scanner(System.in);
-            int choice = Integer.parseInt(scanner.nextLine());
-            if(choice > 0 && choice < saves.size()){
-                File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
-                currentGame = LoadGame.loadFile(loadingFile);
-                //currentGame = LoadGame.load(loadingGame);
+            Game tempgame = cliLoad();
+            if(tempgame != null) {
+                currentGame.currentPlayer = tempgame.currentPlayer;
+                currentGame.chessBoard = tempgame.chessBoard;
+                currentGame.setUserColour(tempgame.getUserColour());
+                currentGame.setArtificialEnemy(tempgame.isArtificialEnemy());
+                currentGame.beatenPieces = tempgame.beatenPieces;
+                currentGame.moveHistory = tempgame.moveHistory;
+                currentGame.setLanguage(tempgame.getLanguage());
                 toConsole(currentGame);
-            }
-            else{
-                System.out.println("It exists no saved game for chosen number.");
             }
             return true;
         }
@@ -315,6 +302,32 @@ public class Cli {
             } else if (currentGame.isDrawn()) {
                 System.out.println("Die Partie endet in einem Unentschieden!");
             }
+        }
+    }
+
+    private static Game cliLoad(){
+        System.out.println("Select Save-Game you want to load by entering the number:");
+        List<String> saves = new ArrayList<>();
+        File f = new File("src/main/resources/saves");
+        String[] fileArray = f.list();
+        assert fileArray != null;
+        if(fileArray.length != 0) {
+            Collections.addAll(saves, fileArray);
+            int counter = 0;
+            for (String i : saves) {
+                System.out.println(counter + ") " + i);
+                counter++;
+            }
+        }
+        Scanner scanner = new Scanner(System.in);
+        int choice = Integer.parseInt(scanner.nextLine());
+        if(choice > -1 && choice < saves.size()){
+            File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
+            return LoadGame.loadFile(loadingFile);
+        }
+        else{
+            System.out.println("There is no Savegame for that number.");
+            return null;
         }
     }
 

@@ -45,6 +45,9 @@ public class Move {
         this.boardValueAfterMove = value;
     }
 
+    /**
+     * Helper-Method for Game-Loading. At last move of move-history you need to set the moving piece, so that e.g. enPassant-Evaluation works properly
+     */
     public void setMovingPieceToPieceOnFinalSquare(){
         this.movingPiece = this.finalSquare.getOccupiedBy();
     }

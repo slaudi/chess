@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * The Game class which defines and controls the current game.
  */
+@SuppressWarnings("PMD.CyclomaticComplexity") //this is the main class of the entire programm, cant simplify
 public class Game {
 
     /**
