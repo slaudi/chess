@@ -27,6 +27,7 @@ public class Gui extends Application {
     public EnglishStart englishStart;
     public GermanStart germanStart;
     static Scene startScene, chessScene;
+    Color background = Color.FLORALWHITE;
 
     /**
      * The entry point of the GUI application.
@@ -197,7 +198,7 @@ public class Gui extends Application {
 
         pane.setTop(menuBar);
         pane.setCenter(chessBoardView);
-        pane.setBackground(new Background(new BackgroundFill(Color.GRAY,CornerRadii.EMPTY,Insets.EMPTY)));
+        pane.setBackground(new Background(new BackgroundFill(background,CornerRadii.EMPTY,Insets.EMPTY)));
 
         return new Scene(pane, 800, 825);
     }
