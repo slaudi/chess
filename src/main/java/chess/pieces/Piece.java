@@ -40,6 +40,11 @@ public abstract class Piece {
 
     public abstract void setNotMoved(boolean x);
 
+    /**
+     * Getter for the variable notMoved.
+     *
+     * @return boolean Returns whether a Piece has already moved or not.
+     */
     public abstract boolean hasNotMoved();
 
     /**
