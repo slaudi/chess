@@ -63,7 +63,7 @@ public class Cli {
                 currentGame.currentPlayer = currentGame.playerWhite;
                 currentGame.beatenPieces.clear();
                 currentGame.moveHistory.clear();
-                currentGame.setArtificialEnemy(false);
+                currentGame.setArtificialEnemy(true);
                 toConsole(currentGame);
             } else if (answer.equals("person")) {
                 // default
