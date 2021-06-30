@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -239,12 +240,14 @@ public class GermanGame extends BorderPane {
         styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             //styleToggle.getSelectedToggle().setSelected(true);
             if (classicStyle.isSelected()) {
+                gui.background = Color.FLORALWHITE;
                 guiGame.white = "-fx-background-color: rgb(180,80,0)";
                 guiGame.black = "-fx-background-color: rgb(255,228,196)";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
                 primaryStage.show();
             } else if (black_n_whiteStyle.isSelected()){
+                gui.background = Color.SLATEGRAY;
                 guiGame.white = "-fx-background-color: white";
                 guiGame.black = "-fx-background-color: black";
                 chessScene = gui.chessWindow(primaryStage,guiGame);

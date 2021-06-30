@@ -7,11 +7,10 @@ import chess.game.Square;
 import chess.savegame.SaveGame;
 
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -215,38 +214,46 @@ public class EnglishGame extends BorderPane {
         ToggleGroup styleToggle = new ToggleGroup();
         // Classic-radio item
         RadioMenuItem classicStyle = new RadioMenuItem("Classic");
-        classicStyle.setSelected(true);
         classicStyle.setToggleGroup(styleToggle);
         // BlackNWhite-item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Black'n'White");
         black_n_whiteStyle.setToggleGroup(styleToggle);
         // Christmas-item
-        RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
-        christmasStyle.setToggleGroup(styleToggle);
+        //RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
+        //christmasStyle.setToggleGroup(styleToggle);
+        /*classicStyle.setSelected(true);
+        black_n_whiteStyle.setSelected(false);
+        if (black_n_whiteStyle.isSelected()){
+            classicStyle.setSelected(false);
+            black_n_whiteStyle.setSelected(true);
+        }*/
         // add ChangeListener to Toggle Group
         styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (classicStyle.isSelected()) {
+                gui.background = Color.FLORALWHITE;
                 guiGame.white = "-fx-background-color: rgb(180,80,0)";
                 guiGame.black = "-fx-background-color: rgb(255,228,196)";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
                 primaryStage.show();
             } else if (black_n_whiteStyle.isSelected()){
+                gui.background = Color.SLATEGRAY;
                 guiGame.white = "-fx-background-color: white";
                 guiGame.black = "-fx-background-color: black";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
                 primaryStage.show();
-            } else if (christmasStyle.isSelected()){
+            } /*else if (christmasStyle.isSelected()){
                 guiGame.whiteImage = new Image("chess/gui/snow.png");
                 guiGame.whiteBG = new BackgroundImage(guiGame.whiteImage, null,null,null,null);
                 guiGame.blackImage = new Image("chess/gui/xmas_tree");
                 guiGame.blackBG = new BackgroundImage(guiGame.blackImage, null,null,null,null);
-            }
+            }*/
         });
+
         // add all radio menu items to Style-menu
         //styleToggle.getSelectedToggle().setSelected(true);
-        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
+        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
 
         return styleMenu;
     }
