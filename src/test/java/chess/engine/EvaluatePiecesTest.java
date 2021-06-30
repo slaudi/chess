@@ -32,7 +32,7 @@ public class EvaluatePiecesTest {
     @Test
     public void evaluateBoard() {
         EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour());
-        assertEquals(20, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
+        assertEquals(0, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
 
     }
 
@@ -52,7 +52,7 @@ public class EvaluatePiecesTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(7, 0));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(1, 7));
         game.chessBoard.addWhiteAlliance(game.chessBoard.getPieceAt(6, 1));
-        assertEquals(17, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
+        assertEquals(-1, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class EvaluatePiecesTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(7, 0));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(0, 7));
         game.chessBoard.addWhiteAlliance(game.chessBoard.getPieceAt(6, 1));
-        assertEquals(117, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
+        assertEquals(99, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
     }
 
     /**
