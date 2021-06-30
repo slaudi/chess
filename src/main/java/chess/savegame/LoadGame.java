@@ -126,9 +126,17 @@ public class LoadGame {
     private static Piece charToPiece(char c, Square square){
         switch (c) {
             case 'p':
-                return new Pawn(square, Colour.BLACK);
+                Pawn pawn = new Pawn(square, Colour.BLACK);
+                if(square.getY() != 1){
+                    pawn.setNotMoved(false);
+                }
+                return pawn;
             case 'P':
-                return new Pawn(square, Colour.WHITE);
+                Pawn pawn2 = new Pawn(square, Colour.WHITE);
+                if(square.getY() != 6){
+                    pawn2.setNotMoved(false);
+                }
+                return pawn2;
             case 'r':
                 return new Rook(square, Colour.BLACK);
             case 'n':

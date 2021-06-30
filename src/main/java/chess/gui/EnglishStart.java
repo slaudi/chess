@@ -2,6 +2,7 @@ package chess.gui;
 
 import chess.game.Colour;
 import chess.game.Language;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -86,6 +87,7 @@ public class EnglishStart {
             File f = new File("src/main/resources/saves");
             String[] fileArray = f.list();
             assert fileArray != null;
+            Scene selectedScene = gui.chessWindow(primaryStage, guiGame);
             if(fileArray.length != 0) {
                 List<String> choices = new ArrayList<>();
                 Collections.addAll(choices, fileArray);
@@ -95,16 +97,9 @@ public class EnglishStart {
                 dialog.setContentText("Choose a saved Game:");
 
                 gui.loadGame(dialog);
-
-                if (dialog.isShowing()) {
-                    chessScene = gui.chessWindow(primaryStage, guiGame);
-                    primaryStage.setScene(chessScene);
-                } else {
-                    startScene = gui.startWindow(primaryStage,guiGame);
-                    primaryStage.setScene(startScene);
-                }
             }
-
+            chessScene = gui.chessWindow(primaryStage,guiGame);
+            primaryStage.setScene(chessScene);
         }
     }
 
