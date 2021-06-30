@@ -160,15 +160,15 @@ public class Cli {
             return true;
         }
         if (userInput.equals("load")) {
-            Game tempgame = cliLoad();
-            if(tempgame != null) {
-                currentGame.currentPlayer = tempgame.currentPlayer;
-                currentGame.chessBoard = tempgame.chessBoard;
-                currentGame.setUserColour(tempgame.getUserColour());
-                currentGame.setArtificialEnemy(tempgame.isArtificialEnemy());
-                currentGame.beatenPieces = tempgame.beatenPieces;
-                currentGame.moveHistory = tempgame.moveHistory;
-                currentGame.setLanguage(tempgame.getLanguage());
+            Game tempGame = cliLoad();
+            if(tempGame != null) {
+                currentGame.currentPlayer = tempGame.currentPlayer;
+                currentGame.chessBoard = tempGame.chessBoard;
+                currentGame.setUserColour(tempGame.getUserColour());
+                currentGame.setArtificialEnemy(tempGame.isArtificialEnemy());
+                currentGame.beatenPieces = tempGame.beatenPieces;
+                currentGame.moveHistory = tempGame.moveHistory;
+                currentGame.setLanguage(tempGame.getLanguage());
                 toConsole(currentGame);
             }
             return true;
@@ -326,7 +326,7 @@ public class Cli {
             return LoadGame.loadFile(loadingFile);
         }
         else{
-            System.out.println("There is no Savegame for that number.");
+            System.out.println("It exist no saved game for chosen number.");
             return null;
         }
     }
