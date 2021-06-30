@@ -8,6 +8,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -16,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -51,9 +56,6 @@ public class Gui extends Application {
 
         // Start
         startScene = startWindow(primaryStage, guiGame);
-
-        // Chess board
-        chessScene = chessWindow(primaryStage, guiGame);
 
         primaryStage.setScene(startScene);
         primaryStage.show();
@@ -135,7 +137,7 @@ public class Gui extends Application {
     }
 
 
-    void loadGame(ChoiceDialog<String> dialog){
+    void loadGame(ChoiceDialog<String> dialog, Stage primaryStage){
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             File loadingFile = new File("src/main/resources/saves/" + result.get());
@@ -152,6 +154,9 @@ public class Gui extends Application {
                 loadingGame.add(sc.nextLine());
             }
             guiGame.game = LoadGame.load(loadingGame);
+
+            chessScene = chessWindow(primaryStage, guiGame);
+            primaryStage.setScene(chessScene);
         }
     }
 

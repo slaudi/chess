@@ -12,9 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -38,7 +36,7 @@ public class GermanGame extends BorderPane {
     public GuiGame guiGame;
     public Gui gui;
     public Language language = Language.German;
-    int fontSize = 17;
+    CheckMenuItem changeSelected;
 
 
     /**
@@ -121,17 +119,9 @@ public class GermanGame extends BorderPane {
                 dialog.setHeaderText(null);
                 dialog.setContentText("Wähle ein gespeichertes Spiel aus:");
 
-                gui.loadGame(dialog);
-
-                if (dialog.isShowing()) {
-                    chessScene = gui.chessWindow(primaryStage, guiGame);
-                    primaryStage.setScene(chessScene);
-                } else {
-                    startScene = gui.startWindow(primaryStage,guiGame);
-                    primaryStage.setScene(startScene);
+                gui.loadGame(dialog,primaryStage);
                 }
             }
-        }
     }
 
 
@@ -146,7 +136,7 @@ public class GermanGame extends BorderPane {
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
             label = new Label(getColourName() + " ist am Zug -- " + getColourName() + " steht im Schach!");
         }
-        label.setFont(new Font(fontSize));
+        label.setFont(new Font(17));
         return new HBox(label);
     }
 
@@ -289,7 +279,7 @@ public class GermanGame extends BorderPane {
         highlight.setAccelerator(KeyCombination.keyCombination("Alt+H"));
         highlight.setOnAction(e -> guiGame.highlightPossibleMoves = highlight.isSelected());
         // Change selected-check item
-        CheckMenuItem changeSelected = new CheckMenuItem("Gewählte Figur ändern");
+        changeSelected = new CheckMenuItem("Gewählte Figur ändern");
         changeSelected.setAccelerator(KeyCombination.keyCombination("Alt+S"));
         changeSelected.setOnAction(e -> guiGame.allowedToChangeSelectedPiece = changeSelected.isSelected());
         optionsMenu.setOnAction(event -> changeSelected.setDisable(guiGame.getSquareStart() != null));
@@ -317,9 +307,7 @@ public class GermanGame extends BorderPane {
         // BlackNWhite-radio item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Schwarz-Weiß");
         black_n_whiteStyle.setToggleGroup(styleToggle);
-        // Christmas-radio item
-        RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
-        christmasStyle.setToggleGroup(styleToggle);
+
         // add ChangeListener to Toggle Group
         styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             //styleToggle.getSelectedToggle().setSelected(true);
@@ -332,21 +320,15 @@ public class GermanGame extends BorderPane {
                 primaryStage.show();
             } else if (black_n_whiteStyle.isSelected()){
                 gui.background = Color.SLATEGRAY;
-                guiGame.white = "-fx-background-color: white";
+                guiGame.white = "-fx-background-color: snow";
                 guiGame.black = "-fx-background-color: black";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
                 primaryStage.show();
-            } else if (christmasStyle.isSelected()){
-                guiGame.whiteImage = new Image("chess/gui/snow.png");
-                guiGame.whiteBG = new BackgroundImage(guiGame.whiteImage, null,null,null,null);
-                guiGame.blackImage = new Image("chess/gui/xmas_tree");
-                guiGame.blackBG = new BackgroundImage(guiGame.blackImage, null,null,null,null);
             }
         });
         // add all radio menu items to Style-menu
-        //styleToggle.getSelectedToggle().setSelected(true);
-        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle,christmasStyle);
+        styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
 
         return styleMenu;
     }

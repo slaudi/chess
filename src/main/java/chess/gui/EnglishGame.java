@@ -8,6 +8,11 @@ import chess.game.Square;
 import chess.savegame.SaveGame;
 
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -15,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +37,7 @@ public class EnglishGame extends BorderPane {
     public GuiGame guiGame;
     public Gui gui;
     public Language language = Language.English;
-    public CheckMenuItem changeSelected;
+    CheckMenuItem changeSelected;
 
     /**
      * The Constructor for EnglishGame.
@@ -113,18 +118,9 @@ public class EnglishGame extends BorderPane {
                 dialog.setHeaderText(null);
                 dialog.setContentText("Choose a saved Game:");
 
-                gui.loadGame(dialog);
-
-                if (dialog.isShowing()) {
-                    chessScene = gui.chessWindow(primaryStage, guiGame);
-                    primaryStage.setScene(chessScene);
-                } else {
-                    startScene = gui.startWindow(primaryStage,guiGame);
-                    primaryStage.setScene(startScene);
+                gui.loadGame(dialog, primaryStage);
                 }
             }
-
-        }
     }
 
 
@@ -219,7 +215,6 @@ public class EnglishGame extends BorderPane {
             guiGame.game.setLanguage(Language.German);
             chessScene = gui.chessWindow(primaryStage,guiGame);
             primaryStage.setScene(chessScene);
-            primaryStage.show();
         });
         english.setSelected(true);
         english.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+E"));
@@ -301,41 +296,23 @@ public class EnglishGame extends BorderPane {
         // BlackNWhite-item
         RadioMenuItem black_n_whiteStyle = new RadioMenuItem("Black'n'White");
         black_n_whiteStyle.setToggleGroup(styleToggle);
-        // Christmas-item
-        //RadioMenuItem christmasStyle = new RadioMenuItem("Christmas");
-        //christmasStyle.setToggleGroup(styleToggle);
-        /*classicStyle.setSelected(true);
-        black_n_whiteStyle.setSelected(false);
-        if (black_n_whiteStyle.isSelected()){
-            classicStyle.setSelected(false);
-            black_n_whiteStyle.setSelected(true);
-        }*/
-        // add ChangeListener to Toggle Group
+
         styleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (classicStyle.isSelected()) {
                 gui.background = Color.FLORALWHITE;
-                guiGame.white = "-fx-background-color: rgb(180,80,0)";
-                guiGame.black = "-fx-background-color: rgb(255,228,196)";
+                guiGame.white = "-fx-background-color: rgb(255,228,196)";
+                guiGame.black = "-fx-background-color: rgb(180,80,0)";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
-                primaryStage.show();
             } else if (black_n_whiteStyle.isSelected()){
                 gui.background = Color.SLATEGRAY;
-                guiGame.white = "-fx-background-color: snow";
-                guiGame.black = "-fx-background-color: black";
+                guiGame.black = "-fx-background-color: snow";
+                guiGame.white = "-fx-background-color: black";
                 chessScene = gui.chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
-                primaryStage.show();
-            } /*else if (christmasStyle.isSelected()){
-                guiGame.whiteImage = new Image("chess/gui/snow.png");
-                guiGame.whiteBG = new BackgroundImage(guiGame.whiteImage, null,null,null,null);
-                guiGame.blackImage = new Image("chess/gui/xmas_tree");
-                guiGame.blackBG = new BackgroundImage(guiGame.blackImage, null,null,null,null);
-            }*/
+            }
         });
-
         // add all radio menu items to Style-menu
-        //styleToggle.getSelectedToggle().setSelected(true);
         styleMenu.getItems().addAll(classicStyle,black_n_whiteStyle);
 
         return styleMenu;
