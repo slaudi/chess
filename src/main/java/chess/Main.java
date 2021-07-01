@@ -3,6 +3,7 @@ package chess;
 import chess.cli.Cli;
 import chess.cli.Simple;
 import chess.gui.Gui;
+import chess.network.Network;
 
 import java.util.Arrays;
 
@@ -18,10 +19,13 @@ public class Main {
     public static void main(String[] args) {
         boolean cli = Arrays.asList(args).contains("--no-gui");
         boolean simple = Arrays.asList(args).contains("--simple");
+        boolean network = Arrays.asList(args).contains("--network");
         if (cli && !simple) {
             Cli.main(args);
         } else if (cli && simple) {
             Simple.main(args);
+        } else if (network) {
+            Network.main(args);
         } else {
             Gui.main(args);
         }

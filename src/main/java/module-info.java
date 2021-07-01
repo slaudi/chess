@@ -6,6 +6,7 @@ module chess {
     requires transitive javafx.graphics;
     requires javafx.fxml;
     requires java.desktop;
+    requires ChessProtocol;
 
     opens chess.pieces;
     opens chess.gui;
