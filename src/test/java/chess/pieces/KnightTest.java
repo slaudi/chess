@@ -81,6 +81,14 @@ public class KnightTest {
     }
 
     /**
+     * tests if hasn#t moved is true
+     */
+    @Test
+    public void hasNotMoved() {
+        assertTrue(knight.hasNotMoved());
+    }
+
+    /**
      * tests if movement is allowed for selected piece
      */
     @Test

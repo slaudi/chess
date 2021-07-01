@@ -81,6 +81,14 @@ public class QueenTest {
     }
 
     /**
+     * tests if hasn#t moved is true
+     */
+    @Test
+    public void hasNotMoved() {
+        assertTrue(queen.hasNotMoved());
+    }
+
+    /**
      * tests if piece is allowed to move this way
      */
     @Test

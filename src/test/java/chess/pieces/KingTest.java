@@ -83,6 +83,14 @@ public class KingTest {
     }
 
     /**
+     * tests if hasn#t moved is true
+     */
+    @Test
+    public void hasNotMoved() {
+        assertTrue(king.hasNotMoved());
+    }
+
+    /**
      * tests if piece is able to move as it should
      */
     @Test

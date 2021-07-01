@@ -87,6 +87,14 @@ public class PawnTest {
     }
 
     /**
+     * tests if hasn#t moved is true
+     */
+    @Test
+    public void hasNotMoved() {
+        assertTrue(pawnB.hasNotMoved());
+    }
+
+    /**
      * tests allowed moves for white piece
      */
     @Test

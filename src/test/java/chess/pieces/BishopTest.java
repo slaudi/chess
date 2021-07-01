@@ -174,8 +174,7 @@ public class BishopTest {
      */
     @Test
     public void hasNotMoved() {
-        bishop.setNotMoved(false);
-        assertFalse(bishop.notMoved);
+        assertTrue(bishop.hasNotMoved());
     }
 
     /**

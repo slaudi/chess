@@ -79,6 +79,14 @@ public class RookTest {
     }
 
     /**
+     * tests if hasn#t moved is true
+     */
+    @Test
+    public void hasNotMoved() {
+        assertTrue(rook.hasNotMoved());
+    }
+
+    /**
      * tests if piece is allowed to move this way
      */
     @Test
