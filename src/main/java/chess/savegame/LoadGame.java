@@ -19,7 +19,7 @@ public class LoadGame {
      * @param loadString String-Version of savegame-file
      * @return returns a game
      */
-    private static Game load(List<String> loadString){
+    public static Game load(List<String> loadString){
         Game loadedGame = new Game();
         loadedGame.chessBoard.clearBoard();
         loadedGame.chessBoard = stringToBoard(loadString.get(0));
@@ -171,6 +171,11 @@ public class LoadGame {
     }
 
 
+    /**
+     * converts txt-file to String-Array
+     * @param loadingFile txt-File to be converted
+     * @return a String Array
+     */
     public static Game loadFile(File loadingFile){
         Scanner sc = null;
         try {

@@ -9,17 +9,26 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test-Class for Game-Saving
+ */
 public class SaveGameTest {
     Game game;
     Game game2;
     String name;
     File loadingFile;
 
+    /**
+     * Setup for each Test
+     */
     @BeforeEach
     public void setUp() {
         game = new Game();
     }
 
+    /**
+     * Test for main saving method
+     */
     @Test
     public void save() {
         SaveGame.save(game);
