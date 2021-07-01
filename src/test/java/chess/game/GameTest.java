@@ -691,4 +691,31 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.currentPlayer.setInCheck(true);
         assertFalse(game1.processMove(game1.chessBoard.getSquareAt(3, 3), game1.chessBoard.getSquareAt(2, 2), 'Q'));
     }
+
+    /**
+     * Tests Setter and Getter for drawn
+     */
+    @Test
+    public void isDrawn() {
+        game1.setDrawn(true);
+        assertTrue(game1.isDrawn());
+    }
+
+    /**
+     * Tests not allowed move if artificial enemy moves enemy piece artificial enemy-move
+     */
+    @Test
+    public void aiEnemyPiece() {
+        game1.setArtificialEnemy(true);
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 1), game1.chessBoard.getSquareAt(0, 2)));
+    }
+
+    /**
+     * Tests not allowed move if artificial enemy tries to move a piece where no piece is
+     */
+    @Test
+    public void aiEmptySquare() {
+        game1.setArtificialEnemy(true);
+        assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 4), game1.chessBoard.getSquareAt(0, 5)));
+    }
 }
