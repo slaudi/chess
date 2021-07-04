@@ -83,16 +83,18 @@ public class Cli {
         String invalidMove = "!Invalid move";
         String nowPlaying = "'s move";
         String check = " is in check!";
+        Colour colour = currentGame.currentPlayer.getColour();
         if (currentGame.getLanguage() == Language.German) {
             moveNotAllowed = "!Zug nicht erlaubt";
             invalidMove = "!Keine gültige Eingabe\n";
             nowPlaying = " ist am Zug";
             check = " befindet sich im Schach!";
+            colour = getGermanColourName(currentGame);
         }
         if (currentGame.currentPlayer.isInCheck()) {
-            System.out.println(currentGame.currentPlayer.getColour() + check);
+            System.out.println(colour + check);
         }
-        System.out.println(currentGame.currentPlayer.getColour() + nowPlaying);
+        System.out.println(colour + nowPlaying);
         String userInput = getInput(currentGame);
 
         if(checkForCommand(userInput, currentGame)){
@@ -119,7 +121,7 @@ public class Cli {
                 return true;
             } else {
                 // if move puts King in check
-                System.out.println(moveNotAllowed + "\n" + currentGame.currentPlayer.getColour() + check + "\n");
+                System.out.println(moveNotAllowed + "\n" + colour + check + "\n");
                 return false;
             }
         } else {
@@ -130,6 +132,14 @@ public class Cli {
                 generateAnswerEnglish(selectedPiece,finalSquare,currentGame);
             }
             return false;
+        }
+    }
+
+    private static Colour getGermanColourName(Game game) {
+        if (game.currentPlayer.getColour() == Colour.BLACK) {
+            return Colour.SCHWARZ;
+        } else {
+            return Colour.WEISS;
         }
     }
 
@@ -295,10 +305,10 @@ public class Cli {
             }
         } else {
             if (currentGame.currentPlayer.isLoser()) {
-                System.out.println(currentGame.currentPlayer.getColour() + " hat verloren!");
+                System.out.println(getGermanColourName(currentGame) + " hat verloren!");
                 currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite
                         ? currentGame.playerBlack : currentGame.playerWhite;
-                System.out.println("Die Partie gewonnen hat " + currentGame.currentPlayer.getColour() + "!");
+                System.out.println("Die Partie gewonnen hat " + getGermanColourName(currentGame) + "!");
             } else if (currentGame.isDrawn()) {
                 System.out.println("Die Partie endet in einem Unentschieden!");
             }
