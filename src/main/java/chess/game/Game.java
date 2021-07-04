@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * The Game class which defines and controls the current game.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") //this is the main class of the entire programm, cant simplify
-public class Game {
+public class Game {//NOPMD - this is the main class handling the entire programm, can't be simplified
 
     /**
      * The player associated with the Colour object White in the current game.

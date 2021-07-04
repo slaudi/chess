@@ -144,6 +144,13 @@ public class Cli {
     }
 
 
+    /**
+     * Checks the input given by player for other commands than a move and performs the necessary action.
+     *
+     * @param userInput     The input of the player as a String.
+     * @param currentGame   The current status of the game.
+     * @return boolean Returns 'True' if a valid command was given.
+     */
     public static boolean checkForCommand(String userInput, Game currentGame){
         if (userInput.equals("beaten")) {
             System.out.println(currentGame.beatenPieces);
@@ -209,6 +216,7 @@ public class Cli {
     }
 
     /**
+     * The selected Language of the Game is English:
      * Evaluates console input if a move is not allowed and based on state of current game
      * generates an output as to why it's not allowed.
      *
@@ -229,6 +237,16 @@ public class Cli {
         }
     }
 
+
+    /**
+     * The selected Language of the Game is German:
+     * Evaluates console input if a move is not allowed and based on state of current game
+     * generates an output as to why it's not allowed.
+     *
+     * @param selectedPiece The Piece the player wants to move.
+     * @param finalSquare   The Square the piece wants to move to.
+     * @param currentGame   The current game.
+     */
     public static void generateAnswerGerman(Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (selectedPiece == null) {
@@ -241,6 +259,7 @@ public class Cli {
             System.out.println("Du kannst nicht deine eigene Figur angreifen!\n");
         }
     }
+
 
     /**
      * Checks if the console input is a syntactical correct move.
@@ -256,7 +275,7 @@ public class Cli {
         keys.add("R");
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
-                if (!keys.contains(consoleInput.substring(5, 6))) {//NOPMD a collapse of the statement would cause a false 'true' return of the method
+                if (!keys.contains(consoleInput.substring(5, 6))) {//NOPMD a collapse of the statement would cause an unwanted 'true' return of the method
                     // key reached R and the input still doesn't contain a char from keys
                     return true;
                 }
@@ -293,6 +312,12 @@ public class Cli {
     }
 
 
+    /**
+     * Prints the last statement when a game is lost or a draw is reached in either english or german
+     * depending on the currently selected language.
+     *
+     * @param currentGame The current state of the game.
+     */
     public static void finalWords(Game currentGame){
         if (currentGame.getLanguage() == Language.English) {
             if (currentGame.currentPlayer.isLoser()) {

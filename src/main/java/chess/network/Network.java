@@ -12,8 +12,16 @@ import java.util.Scanner;
 import com.chess.*;
 import com.chess.Move;
 
+/**
+ * This class handles the input and output stream of a network game.
+ */
 public class Network {
 
+    /**
+     * The entry point of the Network application.
+     *
+     * @param args The command line arguments passed to the application.
+     */
     public static void main(String[] args){
 
         // TODO: refactor exceptions handling
@@ -45,7 +53,7 @@ public class Network {
 
             Cli.finalWords(game);
         }
-        catch (java.io.IOException | java.lang.ClassNotFoundException e) {
+        catch (IOException | ClassNotFoundException e) {
             System.out.println(e);
         }
     }
