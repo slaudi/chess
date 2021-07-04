@@ -144,7 +144,7 @@ public class Cli {
     }
 
 
-    private static boolean checkForCommand(String userInput, Game currentGame){
+    public static boolean checkForCommand(String userInput, Game currentGame){
         if (userInput.equals("beaten")) {
             System.out.println(currentGame.beatenPieces);
             return true;

@@ -17,7 +17,11 @@ public class Network {
     public static void main(String[] args){
 
         // TODO: refactor exceptions handling
-        // TODO: add support for commands
+
+        // TODO: wir schicken und empfangen nur die Moves als String: "a2-a4", alles andere wird nur lokal geregelt:
+        //  wenn uns ein String geschickt wird, wurde der schon von der anderen Seite geprüft, wir müssen also keine Antwort
+        //  zurück schicken (wie "!Move not allowed!" oder "WHITE is in check!" oder ähnliches) und auch andere commands
+        //  wie "beaten" oder Sprachauswahl müssen wir den anderen nicht schicken
         try {
             ServerSocket server = new ServerSocket(9876);
 
@@ -50,6 +54,8 @@ public class Network {
         while(true) {
             String inputData = getInputFromClient(inputStream);
 
+            Cli.checkForCommand(inputData, game);
+
             if (Cli.isNotValidMove(inputData)) {
                 sendMoveStatusToClient(outputStream, new MoveStatus(false, "Invalid input data"));
                 continue;
@@ -78,6 +84,8 @@ public class Network {
     private static void processLocalPlayer(Game game, ObjectInputStream inputStream, ObjectOutputStream outputStream) throws IOException {
         while(true) {
             String inputData = getInputFromCLI();
+
+            Cli.checkForCommand(inputData, game);
 
             if (Cli.isNotValidMove(inputData)) {
                 System.out.println("Invalid input data");
