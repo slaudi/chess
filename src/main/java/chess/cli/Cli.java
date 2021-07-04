@@ -78,12 +78,12 @@ public class Cli {
     }
 
 
-    private static boolean canPieceMove(Game currentGame) {
+    private static boolean canPieceMove(Game currentGame) {//NOPMD - no reasonable way to split the code, would make it harder to read
         String moveNotAllowed = "!Move not allowed";
         String invalidMove = "!Invalid move";
         String nowPlaying = "'s move";
         String check = " is in check!";
-        Colour colour = currentGame.currentPlayer.getColour();
+        String  colour = currentGame.currentPlayer.getColour().toString();
         if (currentGame.getLanguage() == Language.German) {
             moveNotAllowed = "!Zug nicht erlaubt";
             invalidMove = "!Keine gültige Eingabe\n";
@@ -91,6 +91,7 @@ public class Cli {
             check = " befindet sich im Schach!";
             colour = getGermanColourName(currentGame);
         }
+
         if (currentGame.currentPlayer.isInCheck()) {
             System.out.println(colour + check);
         }
@@ -135,11 +136,12 @@ public class Cli {
         }
     }
 
-    private static Colour getGermanColourName(Game game) {
+
+    private static String getGermanColourName(Game game) {
         if (game.currentPlayer.getColour() == Colour.BLACK) {
-            return Colour.SCHWARZ;
+            return Colour.SCHWARZ.toString();
         } else {
-            return Colour.WEISS;
+            return Colour.WEISS.toString();
         }
     }
 

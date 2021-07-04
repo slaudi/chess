@@ -163,7 +163,7 @@ public class Game {//NOPMD - this is the main class handling the entire programm
      * @param key           The char for a potential promotion.
      * @return boolean Returns 'true' if the move doesn't put the player in check.
      */
-    public boolean processMove(Square startSquare, Square finalSquare, char key) {
+    public boolean processMove(Square startSquare, Square finalSquare, char key) {//NOPMD - can't be simplified or divided reasonably
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
@@ -187,7 +187,7 @@ public class Game {//NOPMD - this is the main class handling the entire programm
         } else {
             currentMove.doMove(this.chessBoard);
             if (targetPiece != null) {
-                // add a beaten piece to the ArrayList before isInCheck() (don't test it, it's already beaten)
+                // add a beaten piece to the ArrayList before isInCheck() (don't test with it in isInCheck(), it's already beaten)
                 beatenPieces.add(targetPiece);
             }
             if (!canMoveStay(targetPiece, currentMove)) {
