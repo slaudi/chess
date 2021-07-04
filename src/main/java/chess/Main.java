@@ -22,7 +22,7 @@ public class Main {
         boolean network = Arrays.asList(args).contains("--network");
         if (cli && !simple) {
             Cli.main(args);
-        } else if (cli && simple) {
+        } else if (simple) {
             Simple.main(args);
         } else if (network) {
             Network.main(args);
