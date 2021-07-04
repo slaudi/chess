@@ -2,11 +2,14 @@ package chess.cli;
 
 import chess.engine.Engine;
 import chess.game.*;
+import chess.game.Label;
 import chess.pieces.Piece;
 import chess.savegame.LoadGame;
 import chess.savegame.SaveGame;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,9 +27,13 @@ public class Cli {
      */
     public static void main(String[] args) {
         Game currentGame = new Game();
+        playGame(currentGame);
+    }
+
+    private static void playGame(Game currentGame){
         checkForModus(currentGame);
 
-        while (!currentGame.isCheckMate() && !currentGame.isADraw()) {
+        while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             // to keep the game running
 
             if (!canPieceMove(currentGame)) {
@@ -96,6 +103,7 @@ public class Cli {
             System.out.println(colour + check);
         }
         System.out.println(colour + nowPlaying);
+
         String userInput = getInput(currentGame);
 
         if(checkForCommand(userInput, currentGame)){
@@ -153,7 +161,7 @@ public class Cli {
      * @param currentGame   The current status of the game.
      * @return boolean Returns 'True' if a valid command was given.
      */
-    public static boolean checkForCommand(String userInput, Game currentGame){
+    public static boolean checkForCommand(String userInput, Game currentGame){//NOPMD - dividing into sub methods would make code harder to read
         if (userInput.equals("beaten")) {
             System.out.println(currentGame.beatenPieces);
             return true;
@@ -191,6 +199,29 @@ public class Cli {
                 toConsole(currentGame);
             }
             return true;
+        }
+        if (userInput.equals("newGame")){
+            Game newGame = new Game();
+            playGame(newGame);
+        }
+        if (userInput.equals("help")){
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File myFile = new File("Bedienungsanleitung.pdf");
+                    Desktop.getDesktop().open(myFile);
+                } catch (IOException ex) {
+                    // no application registered for PDFs
+                    if (currentGame.getLanguage() == Language.German) {
+                        System.out.println("Es wurde kein PDF Viewer gefunden!");
+                    } else {
+                        System.out.println("No PDF viewer found!");
+                    }
+                }
+            }
+            return true;
+        }
+        if (userInput.equals("quit")){
+            System.exit(0);
         }
         return false;
     }
@@ -326,21 +357,24 @@ public class Cli {
                 System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
                 currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite
                         ? currentGame.playerBlack : currentGame.playerWhite;
-                System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!");
+                System.out.println("The Winner is " + currentGame.currentPlayer.getColour() + "!\n");
             } else if (currentGame.isDrawn()) {
-                System.out.println("The game ended in a draw!");
+                System.out.println("The game ended in a draw!\n");
             }
         } else {
             if (currentGame.currentPlayer.isLoser()) {
                 System.out.println(getGermanColourName(currentGame) + " hat verloren!");
                 currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite
                         ? currentGame.playerBlack : currentGame.playerWhite;
-                System.out.println("Die Partie gewonnen hat " + getGermanColourName(currentGame) + "!");
+                System.out.println("Die Partie gewonnen hat " + getGermanColourName(currentGame) + "!\n");
             } else if (currentGame.isDrawn()) {
-                System.out.println("Die Partie endet in einem Unentschieden!");
+                System.out.println("Die Partie endet in einem Unentschieden!\n");
             }
         }
+        Game newGame = new Game();
+        playGame(newGame);
     }
+
 
     private static Game cliLoad(){
         System.out.println("Select Save-Game you want to load by entering the number:");
