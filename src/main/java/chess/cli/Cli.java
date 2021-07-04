@@ -216,7 +216,7 @@ public class Cli {
      * @param finalSquare   The Square the piece wants to move to.
      * @param currentGame   The current game.
      */
-    private static void generateAnswerEnglish (Piece selectedPiece, Square finalSquare, Game currentGame){
+    public static void generateAnswerEnglish(Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (selectedPiece == null) {
             System.out.println("There is no Piece to move!\n");
@@ -229,7 +229,7 @@ public class Cli {
         }
     }
 
-    private static void generateAnswerGerman (Piece selectedPiece, Square finalSquare, Game currentGame){
+    public static void generateAnswerGerman(Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (selectedPiece == null) {
             System.out.println("Auf dem ausgewählten Feld steht keine Figur!\n");
@@ -248,7 +248,7 @@ public class Cli {
      * @param consoleInput The console input of the active Player as a String.
      * @return boolean Returns 'true' if the syntax of the input is correct.
      */
-    static boolean isNotValidMove(String consoleInput){
+    public static boolean isNotValidMove(String consoleInput){
         ArrayList<String> keys = new ArrayList<>();
         keys.add("Q");
         keys.add("B");
@@ -293,7 +293,7 @@ public class Cli {
     }
 
 
-    private static void finalWords(Game currentGame){
+    public static void finalWords(Game currentGame){
         if (currentGame.getLanguage() == Language.English) {
             if (currentGame.currentPlayer.isLoser()) {
                 System.out.println(currentGame.currentPlayer.getColour() + " has lost!");
