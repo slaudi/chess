@@ -54,7 +54,9 @@ public class Network {
         while(true) {
             String inputData = getInputFromClient(inputStream);
 
-            Cli.checkForCommand(inputData, game);
+            if (Cli.checkForCommand(inputData, game)){
+                continue;
+            }
 
             if (Cli.isNotValidMove(inputData)) {
                 sendMoveStatusToClient(outputStream, new MoveStatus(false, "Invalid input data"));
@@ -85,7 +87,9 @@ public class Network {
         while(true) {
             String inputData = getInputFromCLI();
 
-            Cli.checkForCommand(inputData, game);
+            if (Cli.checkForCommand(inputData, game)){
+                continue;
+            }
 
             if (Cli.isNotValidMove(inputData)) {
                 System.out.println("Invalid input data");
