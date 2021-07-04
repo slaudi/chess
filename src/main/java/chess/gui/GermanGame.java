@@ -253,9 +253,12 @@ public class GermanGame extends BorderPane {
         MenuItem exit = new MenuItem("Beenden");
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du diesen Spielstand speichern?",this.language);
-            if (result) {
-                SaveGame.save(guiGame.game);
+            if (!(guiGame.game.isCheckMate() || guiGame.game.isDrawn()) && !guiGame.game.moveHistory.isEmpty()) {
+                // only asked when the has already started with a move made or the game is not finished yet
+                boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du diesen Spielstand speichern?", this.language);
+                if (result) {
+                    SaveGame.save(guiGame.game);
+                }
             }
             boolean result2 = ConfirmationBox.display("Spiel beenden","Möchtest du das Spiel wirklich beenden?",this.language);
             if (result2) {
