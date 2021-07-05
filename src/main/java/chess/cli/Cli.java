@@ -21,6 +21,11 @@ import java.util.Scanner;
  */
 public class Cli {
 
+    private static String moveNotAllowed = "!Move not allowed";
+    private static String invalidMove = "!Invalid move";
+    private static String nowPlaying = "'s move";
+    private static String check = " is in check!";
+
     /**
      * The entry point of the CLI application.
      *
@@ -36,11 +41,9 @@ public class Cli {
 
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             // to keep the game running
-
             if (!canPieceMove(currentGame)) {
                 continue;
             }
-
             toConsole(currentGame);
         }
         //checks if current Player has lost or if game is a draw
@@ -76,7 +79,6 @@ public class Cli {
                 startLocalGame(currentGame);
             }
         } while (!answer.equals("network"));
-
     }
 
 
@@ -100,11 +102,8 @@ public class Cli {
         } while (!(answer.equals("ai") || answer.equals("person")));
     }
 
-    private static boolean canPieceMove(Game currentGame) {//NOPMD - no reasonable way to split the code, would make it harder to read
-        String moveNotAllowed = "!Move not allowed";
-        String invalidMove = "!Invalid move";
-        String nowPlaying = "'s move";
-        String check = " is in check!";
+
+    private static boolean canPieceMove(Game currentGame) {
         String  colour = currentGame.currentPlayer.getColour().toString();
         if (currentGame.getLanguage() == Language.German) {
             moveNotAllowed = "!Zug nicht erlaubt";
@@ -197,8 +196,12 @@ public class Cli {
             return true;
         }
         if (userInput.equals("save")) {
-            System.out.println("You saved the current stage of the game!");
             SaveGame.save(currentGame);
+            if (currentGame.getLanguage() == Language.English) {
+                System.out.println("You saved the current stage of the game!");
+            } else {
+                System.out.println("Du hast den aktuellen Spielstand gespeichert!");
+            }
             return true;
         }
         if (userInput.equals("load")) {
@@ -240,6 +243,7 @@ public class Cli {
         }
         return false;
     }
+
 
     private static void makeAIMove(Game currentGame){
         Square startSquareEnemy = null;

@@ -3,7 +3,6 @@ package chess;
 import chess.cli.Cli;
 import chess.cli.Simple;
 import chess.gui.Gui;
-import chess.network.Network;
 
 import java.util.Arrays;
 
