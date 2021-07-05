@@ -19,7 +19,6 @@ public class Main {
     public static void main(String[] args) {
         boolean cli = Arrays.asList(args).contains("--no-gui");
         boolean simple = Arrays.asList(args).contains("--simple");
-        boolean network = Arrays.asList(args).contains("--network");
         if (cli && !simple) {
             Cli.main(args);
         } else if (simple) {
