@@ -109,11 +109,7 @@ public class Network {
             char key = game.chessBoard.getPromotionKey(inputData);
 
             if (!game.isMoveAllowed(startSquare.getOccupiedBy(), finalSquare)) {
-                if (game.getLanguage() == Language.German) {
-                    Cli.generateAnswerGerman(selectedPiece, finalSquare, game);
-                } else {
-                    Cli.generateAnswerEnglish(selectedPiece,finalSquare,game);
-                }
+                Cli.generateAnswer(selectedPiece,finalSquare,game);
                 continue;
             }
 

@@ -147,11 +147,7 @@ public class Cli {
             }
         } else {
             System.out.println(moveNotAllowed + "\n");
-            if (currentGame.getLanguage() == Language.German) {
-                generateAnswerGerman(selectedPiece, finalSquare, currentGame);
-            } else {
-                generateAnswerEnglish(selectedPiece,finalSquare,currentGame);
-            }
+            generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
         }
     }
@@ -173,58 +169,57 @@ public class Cli {
      * @param currentGame   The current status of the game.
      * @return boolean Returns 'True' if a valid command was given.
      */
-    public static boolean checkForCommand(String userInput, Game currentGame){//NOPMD - dividing into sub methods would make code harder to read
-        if (userInput.equals("beaten")) {
-            System.out.println(currentGame.beatenPieces);
-            return true;
-        }
-        if (userInput.equals("english")) {
-            currentGame.setLanguage(Language.English);
-            System.out.println("You changed the language to English.");
-            return true;
-        }
-        if (userInput.equals("deutsch")) {
-            currentGame.setLanguage(Language.German);
-            System.out.println("Du hast die Sprache zu Deutsch geändert.");
-            return true;
-        }
-        if (userInput.equals("giveUp")) {
-            languageOutput(currentGame.currentPlayer.getColour()+" gave up!",
-                    getGermanColourName(currentGame)+" hat aufgegeben!",currentGame);
-            currentGame.currentPlayer.setLoser(true);
-            return true;
-        }
-        if (userInput.equals("save")) {
-            SaveGame.save(currentGame);
-            languageOutput("You saved the current stage of the game!",
-                    "Du hast den aktuellen Spielstand gespeichert!",currentGame);
-            return true;
-        }
-        if (userInput.equals("load")) {
-            cliLoad(currentGame);
-            return true;
-        }
-        if (userInput.equals("newGame")){
-            Game newGame = new Game();
-            newGame.setLanguage(currentGame.getLanguage());
-            playGame(newGame);
-        }
-        if (userInput.equals("help")){
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File myFile = new File("Bedienungsanleitung.pdf");
-                    Desktop.getDesktop().open(myFile);
-                } catch (IOException ex) {
-                    // no application registered for PDFs
-                    languageOutput("Es wurde kein PDF Viewer gefunden!","No PDF viewer found!",currentGame);
-                }
-            }
-            return true;
-        }
-        if (userInput.equals("quit")){
-            System.exit(0);
+    public static boolean checkForCommand(String userInput, Game currentGame){//NOPMD - need to check for every command available
+        switch (userInput) {
+            case "beaten":
+                System.out.println(currentGame.beatenPieces);
+                return true;
+            case "english":
+                currentGame.setLanguage(Language.English);
+                System.out.println("You changed the language to English.");
+                return true;
+            case "deutsch":
+                currentGame.setLanguage(Language.German);
+                System.out.println("Du hast die Sprache zu Deutsch geändert.");
+                return true;
+            case "giveUp":
+                languageOutput(currentGame.currentPlayer.getColour() + " gave up!",
+                        getGermanColourName(currentGame) + " hat aufgegeben!", currentGame);
+                currentGame.currentPlayer.setLoser(true);
+                return true;
+            case "save":
+                SaveGame.save(currentGame);
+                languageOutput("You saved the current stage of the game!",
+                        "Du hast den aktuellen Spielstand gespeichert!", currentGame);
+                return true;
+            case "load":
+                cliLoad(currentGame);
+                return true;
+            case "newGame":
+                Game newGame = new Game();
+                newGame.setLanguage(currentGame.getLanguage());
+                playGame(newGame);
+                break;
+            case "help":
+                openPDF(currentGame);
+                return true;
+            case "quit":
+                System.exit(0);
         }
         return false;
+    }
+
+
+    private static void openPDF(Game currentGame){
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File("Bedienungsanleitung.pdf");
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                // no application registered for PDFs
+                languageOutput("Es wurde kein PDF Viewer gefunden!", "No PDF viewer found!", currentGame);
+            }
+        }
     }
 
 
@@ -259,39 +254,16 @@ public class Cli {
      * @param finalSquare   The Square the piece wants to move to.
      * @param currentGame   The current game.
      */
-    public static void generateAnswerEnglish(Piece selectedPiece, Square finalSquare, Game currentGame){
+    public static void generateAnswer(Piece selectedPiece, Square finalSquare, Game currentGame){
         Piece targetPiece = finalSquare.getOccupiedBy();
         if (selectedPiece == null) {
-            System.out.println("There is no Piece to move!\n");
+            languageOutput("There is no Piece to move!\n","Auf dem ausgewählten Feld steht keine Figur!\n",currentGame);
         } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
-            System.out.println("This is not your Piece to move!\n");
+            languageOutput("This is not your Piece to move!\n","Auf dem ausgewählten Feld steht keine Figur!\n",currentGame);
         } else if (targetPiece != null && selectedPiece.getSquare() == finalSquare) {
-            System.out.println("You have to move!\n");
+            languageOutput("You have to move!\n","Du musst einen Zug machen!\n",currentGame);
         } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
-            System.out.println("You cannot attack your own Piece!\n");
-        }
-    }
-
-
-    /**
-     * The selected Language of the Game is German:
-     * Evaluates console input if a move is not allowed and based on state of current game
-     * generates an output as to why it's not allowed.
-     *
-     * @param selectedPiece The Piece the player wants to move.
-     * @param finalSquare   The Square the piece wants to move to.
-     * @param currentGame   The current game.
-     */
-    public static void generateAnswerGerman(Piece selectedPiece, Square finalSquare, Game currentGame){
-        Piece targetPiece = finalSquare.getOccupiedBy();
-        if (selectedPiece == null) {
-            System.out.println("Auf dem ausgewählten Feld steht keine Figur!\n");
-        } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
-            System.out.println("Die ausgewählte Figur ist nicht deine Figur!\n");
-        } else if (targetPiece != null && selectedPiece.getSquare() == finalSquare) {
-            System.out.println("Du musst einen Zug machen!\n");
-        } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
-            System.out.println("Du kannst nicht deine eigene Figur angreifen!\n");
+            languageOutput("You cannot attack your own Piece!\n","Du kannst nicht deine eigene Figur angreifen!\n",currentGame);
         }
     }
 
@@ -310,7 +282,7 @@ public class Cli {
         keys.add("R");
         if(consoleInput.length() > 4 && consoleInput.length() < 7) {
             if (consoleInput.length() == 6) {
-                if (!keys.contains(consoleInput.substring(5, 6))) {//NOPMD a collapse of the statement would cause an unwanted 'true' return of the method
+                if (!keys.contains(consoleInput.substring(5, 6))) {//NOPMD - a collapse of the statement would cause an unwanted 'false' return of the method
                     // key reached R and the input still doesn't contain a char from keys
                     return true;
                 }
