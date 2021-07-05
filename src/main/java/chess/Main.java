@@ -24,8 +24,6 @@ public class Main {
             Cli.main(args);
         } else if (simple) {
             Simple.main(args);
-        } else if (network) {
-            Network.main(args);
         } else {
             Gui.main(args);
         }

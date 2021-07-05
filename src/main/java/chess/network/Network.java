@@ -22,7 +22,8 @@ public class Network {
      *
      * @param args The command line arguments passed to the application.
      */
-    public static void main(String[] args){
+    //public static void main(String[] args){
+    public static void startNetworkGame (Game game) {
 
         // TODO: refactor exceptions handling
 
@@ -39,7 +40,7 @@ public class Network {
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 
-            Game game = new Game();
+            //Game game = new Game();
 
             while (!game.isCheckMate() && !game.isADraw()) {
                 if (game.currentPlayer.getColour() == Colour.WHITE) {

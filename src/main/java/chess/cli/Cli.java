@@ -3,6 +3,7 @@ package chess.cli;
 import chess.engine.Engine;
 import chess.game.*;
 import chess.game.Label;
+import chess.network.Network;
 import chess.pieces.Piece;
 import chess.savegame.LoadGame;
 import chess.savegame.SaveGame;
@@ -65,6 +66,21 @@ public class Cli {
 
 
     private static void checkForModus(Game currentGame) {
+        String answer;
+        System.out.println("Do you want to play a network or a local game? \n network/local");
+        do {
+            answer = getInput(currentGame);
+            if (answer.equals("network")) {
+                Network.startNetworkGame(currentGame);
+            } else if (answer.equals("local")) {
+                startLocalGame(currentGame);
+            }
+        } while (!answer.equals("network"));
+
+    }
+
+
+    private static void startLocalGame(Game currentGame){
         System.out.println("Do you want to play against a person or an AI? \n person/ai");
         String answer;
         do {
@@ -83,7 +99,6 @@ public class Cli {
             }
         } while (!(answer.equals("ai") || answer.equals("person")));
     }
-
 
     private static boolean canPieceMove(Game currentGame) {//NOPMD - no reasonable way to split the code, would make it harder to read
         String moveNotAllowed = "!Move not allowed";
