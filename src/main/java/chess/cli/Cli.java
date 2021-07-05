@@ -78,7 +78,7 @@ public class Cli {
             } else if (answer.equals("local")) {
                 startLocalGame(currentGame);
             }
-        } while (!answer.equals("network"));
+        } while (!(answer.equals("network") || answer.equals("local")));
     }
 
 
