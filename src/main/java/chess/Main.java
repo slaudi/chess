@@ -6,6 +6,7 @@ import chess.gui.Gui;
 import chess.network.NetworkClient;
 import chess.network.NetworkServer;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -17,19 +18,19 @@ public class Main {
      * The external entry point of the application.
      * @param args The command line arguments passed to the application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         boolean cli = Arrays.asList(args).contains("--no-gui");
         boolean simple = Arrays.asList(args).contains("--simple");
         boolean networkServer = Arrays.asList(args).contains("--network-server");
         boolean networkClient = Arrays.asList(args).contains("--network-client");
         if (cli && !simple) {
             Cli.main(args);
-        } else if (cli && simple) {
+        } else if (simple) {
             Simple.main(args);
-        } else if (networkServer) {
+        /*} else if (networkServer) {
             NetworkServer.main(args);
         } else if (networkClient) {
-            NetworkClient.main(args);
+            NetworkClient.main(args);*/
         } else {
             Gui.main(args);
         }

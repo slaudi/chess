@@ -1,13 +1,17 @@
+
 package chess.network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import chess.cli.HelperClass;
 import chess.game.Board;
+import chess.game.Game;
 import chess.game.Label;
 import chess.game.Square;
 import com.chess.*;
@@ -15,46 +19,68 @@ import com.chess.*;
 public class NetworkClient {
 
     static boolean gameEnd = false;
+    static boolean isServerWhite;
+    static Socket socket;
 
-    public static void main(String[] args){
+    // Sends ping request to a provided IP address
+    public static boolean sendPingRequest(String ipAddress, Game game) {
         try {
-            Socket socket = new Socket("127.0.0.1", 9876);
+            InetAddress enemy = InetAddress.getByName(ipAddress);
+            if (enemy.isReachable(5000)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+    public static void startClient() {
+        try {
+            socket = new Socket("127.0.0.1", 9876);
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-
-            Board board = new Board(8, 8);
-
             ChooseColor chooseColor = (ChooseColor) inputStream.readObject();
+            isServerWhite = chooseColor.color.equals("white");
 
-            boolean isServerWhite = chooseColor.color.equals("white");
-
-            if(isServerWhite) {
-                processServerPlayer(outputStream, inputStream, board);
-            }
-
-            if (gameEnd) return;
-
-            while(true) {
-                processLocalPlayer(outputStream, inputStream, board);
-                if (gameEnd) return;
-
-                processServerPlayer(outputStream, inputStream, board);
-                if (gameEnd) return;
-            }
-
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    private static void processServerPlayer(ObjectOutputStream outputStream, ObjectInputStream inputStream, Board board) throws IOException, ClassNotFoundException {
+ /*   public static String runClient(Game game){
+
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+            if(isServerWhite) {
+                return processServerPlayer(inputStream, game.chessBoard);
+            }
+
+            //if (gameEnd) return;
+
+            while(true) {
+                processLocalPlayer(outputStream, inputStream, game.chessBoard);
+                if (gameEnd) return;
+
+                processServerPlayer(inputStream, game.chessBoard);
+                if (gameEnd) return;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private static String processServerPlayer(ObjectInputStream inputStream, Board board) throws IOException, ClassNotFoundException {
         System.out.println("Waiting for server move or end game message...");
         Object moveOrEndGame = inputStream.readObject();
+        return moveOrEndGame.toString();
 
         if (moveOrEndGame instanceof EndGame) {
-            System.out.println("Received EndGame: " + (EndGame) moveOrEndGame);
+            System.out.println("Received EndGame: " + moveOrEndGame);
             gameEnd = true;
             return;
         }
@@ -68,12 +94,13 @@ public class NetworkClient {
         Object makeMoveOrEndGame = inputStream.readObject();
 
         if (makeMoveOrEndGame instanceof EndGame) {
-            System.out.println("Received EndGame: " + (EndGame) moveOrEndGame);
+            System.out.println("Received EndGame: " + moveOrEndGame);
             gameEnd = true;
             return;
         }
 
-        System.out.println("Received make move message");
+        System.out.println("Received make move message");*//*
+
     }
 
     private static void processLocalPlayer(ObjectOutputStream outputStream, ObjectInputStream inputStream, Board board) throws IOException, ClassNotFoundException {
@@ -183,4 +210,6 @@ public class NetworkClient {
         }
         System.out.println("  a b c d e f g h");
     }
+            */
+
 }

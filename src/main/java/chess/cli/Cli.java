@@ -3,7 +3,8 @@ package chess.cli;
 import chess.engine.Engine;
 import chess.game.*;
 import chess.game.Label;
-import chess.network.Network;
+import chess.network.NetworkClient;
+import chess.network.NetworkServer;
 import chess.pieces.Piece;
 import chess.savegame.LoadGame;
 import chess.savegame.SaveGame;
@@ -25,6 +26,7 @@ public class Cli {
     private static String invalidMove = "!Invalid move";
     private static String nowPlaying = "'s move";
     private static String check = " is in check!";
+    private static String  colour;
 
     /**
      * The entry point of the CLI application.
@@ -39,89 +41,152 @@ public class Cli {
     private static void playGame(Game currentGame){
         checkForModus(currentGame);
 
-        while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
-            // to keep the game running
-            if (!canPieceMove(currentGame)) {
-                continue;
-            }
-            toConsole(currentGame);
-        }
         //checks if current Player has lost or if game is a draw
-        finalWords(currentGame);
+        HelperClass.finalWords(currentGame);
+        HelperClass.languageOutput("Do you want to start a new game?    y/n",
+                "Möchtest du ein neues Spiel starten?   y/n",currentGame);
+        String input = new Scanner(System.in).nextLine();
+        if (input.equals("y")) {
+            Game newGame = new Game();
+            playGame(newGame);
+        } else {
+            System.exit(0);
+        }
     }
 
-    /**
-     * Gets the input as a String from the console.
-     *
-     * @return String A String of the console input.
-     */
-    private static String getInput (Game currentGame) {
-        Scanner scanner = new Scanner(System.in);
-        languageOutput("Enter Move or Command: ","Zug oder Kommando: ",currentGame);
-        return scanner.nextLine();
-    }
 
 
     private static void checkForModus(Game currentGame) {
-        languageOutput("Do you want to play a network or a local game?  network/local",
+        HelperClass.languageOutput("Do you want to play a network or a local game?  network/local",
                 "Möchtest du ein Netzwerk-Spiel oder ein lokales Spiel starten? network/local", currentGame);
         String answer;
         do {
-            answer = getInput(currentGame);
+            answer = HelperClass.getInput(currentGame);
             checkForCommand(answer, currentGame);
             if (answer.equals("network")) {
-                Network.startNetworkGame(currentGame);
+                startNetworkGame(currentGame);
             } else if (answer.equals("local")) {
                 startLocalGame(currentGame);
             }
         } while (!(answer.equals("network") || answer.equals("local")));
     }
 
+    private static void startNetworkGame(Game currentGame){
+        HelperClass.languageOutput("Enter IP address:","Gib IP Adresse ein:",currentGame);
+        String ipAddress = new Scanner(System.in).nextLine();
+        if (ipAddress.equals("0")){
+            NetworkServer.startServer(currentGame);
+            currentGame.setNetworkServer(true);
+        } else {
+            HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
+                    "Sende Ping-Anfrage an" + ipAddress,currentGame);
+            if (NetworkClient.sendPingRequest(ipAddress,currentGame)){
+                NetworkClient.startClient();
+                currentGame.setNetworkClient(true);
+            } else {
+                HelperClass.languageOutput("Sorry ! We can't reach to this host.",
+                        "Sorry! Wir können diesen Host nicht erreichen.",currentGame);
+                startNetworkGame(currentGame);
+            }
+        }
+        HelperClass.toConsole(currentGame);
+        runNetworkGame(currentGame);
+    }
+
+    private static void runNetworkGame(Game currentGame){
+        while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
+            colour = currentGame.currentPlayer.getColour().toString();
+            if (currentGame.getLanguage() == Language.German) {
+                moveNotAllowed = "!Zug nicht erlaubt\n";
+                invalidMove = "!Keine gültige Eingabe\n";
+                nowPlaying = " ist am Zug";
+                check = " befindet sich im Schach!";
+                colour = HelperClass.getGermanColourName(currentGame);
+            }
+
+            if (currentGame.currentPlayer.isInCheck()) {
+                System.out.println(colour + check);
+            }
+            System.out.println(colour + nowPlaying);
+            String input;
+            if (currentGame.isNetworkServer()) {
+                input = NetworkServer.processClientPlayer();
+                canPieceMove(input, currentGame);
+                input = HelperClass.getInput(currentGame);
+                if (!canPieceMove(input,currentGame)) {
+                    continue;
+                }
+                NetworkServer.processLocalPlayer(input);
+            } else {
+                input = HelperClass.getInput(currentGame);
+                if (!canPieceMove(input,currentGame)) {
+                    continue;
+                }
+                NetworkServer.processLocalPlayer(input);
+                input = NetworkServer.processClientPlayer();
+                canPieceMove(input, currentGame);
+            }
+        }
+    }
+
 
     private static void startLocalGame(Game currentGame){
-        languageOutput("Do you want to play against a person or an AI?  person/ai",
+        HelperClass.languageOutput("Do you want to play against a person or an AI?  person/ai",
                 "Möchtest du gegen einen Menschen oder eine KI spielen? person/ai", currentGame);
         String answer;
         do {
-            answer = getInput(currentGame);
+            answer = HelperClass.getInput(currentGame);
             checkForCommand(answer, currentGame);
             if (answer.equals("ai")) {
-                languageOutput("Starting new Game against AI.","Starte ein neues Spiel gegen die KI", currentGame);
+                HelperClass.languageOutput("Starting new Game against AI.","Starte ein neues Spiel gegen die KI", currentGame);
                 currentGame.currentPlayer = currentGame.playerWhite;
                 currentGame.beatenPieces.clear();
                 currentGame.moveHistory.clear();
                 currentGame.setArtificialEnemy(true);
-                toConsole(currentGame);
+                HelperClass.toConsole(currentGame);
             } else if (answer.equals("person")) {
-                languageOutput("Starting new Game against another person.",
+                HelperClass.languageOutput("Starting new Game against another person.",
                         "Starte ein neues Spiel gegen eine andere Person", currentGame);
-                toConsole(currentGame);
+                HelperClass.toConsole(currentGame);
             }
         } while (!(answer.equals("ai") || answer.equals("person")));
+        runLocalGame(currentGame);
     }
 
 
-    private static boolean canPieceMove(Game currentGame) {
-        String  colour = currentGame.currentPlayer.getColour().toString();
-        if (currentGame.getLanguage() == Language.German) {
-            moveNotAllowed = "!Zug nicht erlaubt\n";
-            invalidMove = "!Keine gültige Eingabe\n";
-            nowPlaying = " ist am Zug";
-            check = " befindet sich im Schach!";
-            colour = getGermanColourName(currentGame);
-        }
+    private static void runLocalGame(Game currentGame){
+        while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
+            colour = currentGame.currentPlayer.getColour().toString();
+            if (currentGame.getLanguage() == Language.German) {
+                moveNotAllowed = "!Zug nicht erlaubt\n";
+                invalidMove = "!Keine gültige Eingabe\n";
+                nowPlaying = " ist am Zug";
+                check = " befindet sich im Schach!";
+                colour = HelperClass.getGermanColourName(currentGame);
+            }
 
-        if (currentGame.currentPlayer.isInCheck()) {
-            System.out.println(colour + check);
-        }
-        System.out.println(colour + nowPlaying);
+            if (currentGame.currentPlayer.isInCheck()) {
+                System.out.println(colour + check);
+            }
+            System.out.println(colour + nowPlaying);
 
-        String userInput = getInput(currentGame);
+            String userInput = HelperClass.getInput(currentGame);
 
-        if(checkForCommand(userInput, currentGame)){
-            // Input is a command, not a Move
-            return false;
+            if(checkForCommand(userInput, currentGame)){
+                // Input is a command, not a Move
+                continue;
+            }
+            // to keep the game running
+            if (!canPieceMove(userInput, currentGame)) {
+                continue;
+            }
+            HelperClass.toConsole(currentGame);
         }
+    }
+
+
+    private static boolean canPieceMove(String userInput, Game currentGame) {
+
         if (isNotValidMove(userInput)) {
             // validates user-input syntactically
             System.out.println(invalidMove);
@@ -147,17 +212,8 @@ public class Cli {
             }
         } else {
             System.out.println(moveNotAllowed + "\n");
-            generateAnswer(selectedPiece, finalSquare, currentGame);
+            HelperClass.generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
-        }
-    }
-
-
-    private static String getGermanColourName(Game game) {
-        if (game.currentPlayer.getColour() == Colour.BLACK) {
-            return Colour.SCHWARZ.toString();
-        } else {
-            return Colour.WEISS.toString();
         }
     }
 
@@ -183,13 +239,13 @@ public class Cli {
                 System.out.println("Du hast die Sprache zu Deutsch geändert.");
                 return true;
             case "giveUp":
-                languageOutput(currentGame.currentPlayer.getColour() + " gave up!",
-                        getGermanColourName(currentGame) + " hat aufgegeben!", currentGame);
+                HelperClass.languageOutput(currentGame.currentPlayer.getColour() + " gave up!",
+                        HelperClass.getGermanColourName(currentGame) + " hat aufgegeben!", currentGame);
                 currentGame.currentPlayer.setLoser(true);
                 return true;
             case "save":
                 SaveGame.save(currentGame);
-                languageOutput("You saved the current stage of the game!",
+                HelperClass.languageOutput("You saved the current stage of the game!",
                         "Du hast den aktuellen Spielstand gespeichert!", currentGame);
                 return true;
             case "load":
@@ -201,25 +257,12 @@ public class Cli {
                 playGame(newGame);
                 break;
             case "help":
-                openPDF(currentGame);
+                HelperClass.openPDF(currentGame);
                 return true;
             case "quit":
                 System.exit(0);
         }
         return false;
-    }
-
-
-    private static void openPDF(Game currentGame){
-        if (Desktop.isDesktopSupported()) {
-            try {
-                File myFile = new File("Bedienungsanleitung.pdf");
-                Desktop.getDesktop().open(myFile);
-            } catch (IOException ex) {
-                // no application registered for PDFs
-                languageOutput("Es wurde kein PDF Viewer gefunden!", "No PDF viewer found!", currentGame);
-            }
-        }
     }
 
 
@@ -245,27 +288,6 @@ public class Cli {
         }
     }
 
-    /**
-     * The selected Language of the Game is English:
-     * Evaluates console input if a move is not allowed and based on state of current game
-     * generates an output as to why it's not allowed.
-     *
-     * @param selectedPiece The Piece the player wants to move.
-     * @param finalSquare   The Square the piece wants to move to.
-     * @param currentGame   The current game.
-     */
-    public static void generateAnswer(Piece selectedPiece, Square finalSquare, Game currentGame){
-        Piece targetPiece = finalSquare.getOccupiedBy();
-        if (selectedPiece == null) {
-            languageOutput("There is no Piece to move!\n","Auf dem ausgewählten Feld steht keine Figur!\n",currentGame);
-        } else if (selectedPiece.getColour() != currentGame.currentPlayer.getColour()) {
-            languageOutput("This is not your Piece to move!\n","Auf dem ausgewählten Feld steht keine Figur!\n",currentGame);
-        } else if (targetPiece != null && selectedPiece.getSquare() == finalSquare) {
-            languageOutput("You have to move!\n","Du musst einen Zug machen!\n",currentGame);
-        } else if (targetPiece != null && targetPiece.getColour() == currentGame.currentPlayer.getColour()) {
-            languageOutput("You cannot attack your own Piece!\n","Du kannst nicht deine eigene Figur angreifen!\n",currentGame);
-        }
-    }
 
 
     /**
@@ -297,52 +319,9 @@ public class Cli {
         }
     }
 
-    /**
-     * Prints current state of game to console.
-     *
-     * @param game The current game.
-     */
-    public static void toConsole(Game game){
-        for (int y = 0; y < game.chessBoard.getHeight(); y++){
-            System.out.print(8-y);
-            for (int x = 0; x < game.chessBoard.getWidth(); x++){
-                if (game.chessBoard.getBoard()[x][y].getOccupiedBy() != null){
-                    System.out.print(" " + game.chessBoard.getBoard()[x][y].getOccupiedBy().toString());
-                }
-                else{
-                    System.out.print("  ");
-                }
-            }
-            System.out.println(" ");
-        }
-        System.out.println("  a b c d e f g h");
-    }
-
-
-    /**
-     * Prints the last statement when a game is lost or a draw is reached in either english or german
-     * depending on the currently selected language.
-     *
-     * @param currentGame The current state of the game.
-     */
-    public static void finalWords(Game currentGame){
-        if (currentGame.currentPlayer.isLoser()) {
-            languageOutput(currentGame.currentPlayer.getColour() + " has lost!",
-                    getGermanColourName(currentGame)+" hat verloren!",currentGame);
-            currentGame.currentPlayer = currentGame.currentPlayer == currentGame.playerWhite
-                    ? currentGame.playerBlack : currentGame.playerWhite;
-            languageOutput("The Winner is " + currentGame.currentPlayer.getColour() + "!\n",
-                    "Die Partie gewonnen hat " + getGermanColourName(currentGame) + "!\n",currentGame);
-        } else if (currentGame.isDrawn()) {
-            languageOutput("The game ended in a draw!\n","Die Partie endet in einem Unentschieden!\n",currentGame);
-        }
-        Game newGame = new Game();
-        playGame(newGame);
-    }
-
 
     private static void cliLoad(Game currentGame){
-        languageOutput("Select a saved Game you want to load by entering the number:",
+        HelperClass.languageOutput("Select a saved Game you want to load by entering the number:",
                 "Wähle eine Nummer um ein gespeichertes Spiel zu laden:",currentGame);
         List<String> saves = new ArrayList<>();
         File f = new File("src/main/resources/saves");
@@ -356,16 +335,14 @@ public class Cli {
                 counter++;
             }
         }
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        checkForCommand(input,currentGame);
+        String input = HelperClass.checkForInt(currentGame);
         int choice = Integer.parseInt(input);
         Game tempGame = null;
         if(choice > -1 && choice < saves.size()){
             File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
             tempGame = LoadGame.loadFile(loadingFile);
         } else {
-            languageOutput("No saved game exists for chosen number.\n",
+            HelperClass.languageOutput("No saved game exists for chosen number.\n",
                     "Es existiert kein gespeichertes Spiel unter der angegebenen Nummer.\n",currentGame);
             cliLoad(currentGame);
         }
@@ -377,16 +354,7 @@ public class Cli {
         currentGame.beatenPieces = tempGame.beatenPieces;
         currentGame.moveHistory = tempGame.moveHistory;
         currentGame.setLanguage(tempGame.getLanguage());
-        toConsole(currentGame);
-    }
-
-
-    private static void languageOutput(String messageEnglish, String messageGerman, Game game){
-        if (game.getLanguage() == Language.English) {
-            System.out.println(messageEnglish);
-        } else {
-            System.out.println(messageGerman);
-        }
+        HelperClass.toConsole(currentGame);
     }
 
 }

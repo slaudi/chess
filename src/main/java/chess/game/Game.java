@@ -36,12 +36,11 @@ public class Game {//NOPMD - this is the main class handling the entire programm
      */
     public List<Move> moveHistory = new ArrayList<>();
 
-    // variables to help control the chess engine
+    private boolean networkServer = false;
+    private boolean networkClient = false;
     private Colour userColour = Colour.BLACK;
     private boolean artificialEnemy = false;
     private boolean drawn = false;
-
-    // variable to determine which language the user chose
     private Language language = Language.English;
 
     /**
@@ -61,6 +60,22 @@ public class Game {//NOPMD - this is the main class handling the entire programm
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public boolean isNetworkServer() {
+        return this.networkServer;
+    }
+
+    public void setNetworkServer(boolean bool){
+        this.networkServer = bool;
+    }
+
+    public boolean isNetworkClient(){
+        return this.networkClient;
+    }
+
+    public void setNetworkClient(boolean bool){
+        this.networkClient = bool;
     }
 
     public Colour getUserColour(){

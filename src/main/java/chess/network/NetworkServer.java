@@ -1,5 +1,7 @@
 package chess.network;
 
+import chess.cli.HelperClass;
+import chess.game.Colour;
 import chess.game.Game;
 import chess.game.Label;
 import chess.game.Square;
@@ -15,7 +17,10 @@ import com.chess.*;
 
 public class NetworkServer {
 
-    public static void main(String[] args){
+    static Socket socket;
+    static boolean isWhite;
+
+    public static void startServer(Game game){
 
         // TODO: refactor exceptions handling
         try {
@@ -23,17 +28,19 @@ public class NetworkServer {
 
             System.out.println("Waiting for client...");
             Socket socket = server.accept();
+            socket.getRemoteSocketAddress();
             System.out.println("Client connected!");
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 
-            Game game = new Game();
+            game.setUserColour(Colour.WHITE);
 
-            boolean isWhite = false;
+            /*ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+
+            isWhite = false;
             ChooseColor chooseColor = new ChooseColor(isWhite ? "white" : "black");
             System.out.println("Sending ChooseColor message: " + chooseColor);
-            outputStream.writeObject(chooseColor);
+            outputStream.writeObject(chooseColor);*/
 
+/*
             if (isWhite)
             {
                 processLocalPlayer(game, inputStream, outputStream);
@@ -62,22 +69,73 @@ public class NetworkServer {
                 }
             }
 
-            finalWords(game);
+            finalWords(game);*/
         }
-        catch (java.io.IOException | java.lang.ClassNotFoundException e)
-        {
+        catch (IOException e) {
             System.out.println(e);
         }
     }
 
-    private static void processClientPlayer(Game game, ObjectInputStream inputStream, ObjectOutputStream outputStream) throws IOException, ClassNotFoundException {
-        while(true)
-        {
+
+//    public static String runServer(String input, Game game){
+//        try {
+//            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+//            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+//
+//            if (game.getUserColour() == Colour.WHITE) {
+//                processLocalPlayer(input, outputStream);
+//            } else {
+//                return processClientPlayer(inputStream);
+//            }
+//
+//            /*while(true) {
+//                processClientPlayer(game, inputStream, outputStream);
+//                printChessBoard(game);
+//                boolean isEndGame = game.isCheckMate() || game.isADraw() || game.currentPlayer.isLoser();
+//
+//                if (isEndGame)
+//                {
+//                    sendEndGameToClient(outputStream, "todo");
+//                    break;
+//                }
+//
+//                processLocalPlayer(game, inputStream, outputStream);
+//                printChessBoard(game);
+//                isEndGame = game.isCheckMate() || game.isADraw() || game.currentPlayer.isLoser();
+//
+//                if (isEndGame)
+//                {
+//                    sendEndGameToClient(outputStream, "todo");
+//                    break;
+//                }
+//            }
+//
+//            finalWords(game);
+//        */
+//        }
+//        catch (IOException | ClassNotFoundException e) {
+//            System.out.println(e);
+//        }
+//        return null;
+//    }
+
+    public static String processClientPlayer(){
+        //while(true)
+        //{
+        Object moveOrGiveUp = null;
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             System.out.println("Waiting for client move or give up...");
 
-            Object moveOrGiveUp = inputStream.readObject();
+            moveOrGiveUp = inputStream.readObject();
 
-            if (moveOrGiveUp instanceof GiveUp)
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e);
+        }
+        assert moveOrGiveUp != null;
+        return moveOrGiveUp.toString();
+
+            /*if (moveOrGiveUp instanceof GiveUp)
             {
                 System.out.println("Received GiveUp message");
                 game.currentPlayer.setLoser(true);
@@ -113,11 +171,11 @@ public class NetworkServer {
 
             sendMoveStatusToClient(outputStream, new MoveStatus(true, ""));
             break;
-        }
+        }*/
     }
 
-    private static void processLocalPlayer(Game game, ObjectInputStream inputStream, ObjectOutputStream outputStream) throws IOException {
-        while(true)
+    public static void processLocalPlayer(String input){
+        /*while(true)
         {
             String inputData = getInputFromCLI();
 
@@ -148,14 +206,20 @@ public class NetworkServer {
                 // if move puts King in check
                 System.out.println(game.currentPlayer.getColour() + " is in check!");
                 continue;
-            }
+            }*/
 
-            String[] tokens = inputData.split("-");
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            String[] tokens = input.split("-");
             sendMoveToClient(outputStream, new Move(tokens[0], tokens[1], ' '));
-            sendMakeMoveToClient(outputStream);
-
-            break;
         }
+        catch (IOException e) {
+            System.out.println(e);
+        }
+            //sendMakeMoveToClient(outputStream);
+
+            //break;
+        //}
     }
 
     private static void sendEndGameToClient(ObjectOutputStream outputStream, String reason) throws IOException {
