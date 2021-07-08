@@ -192,6 +192,7 @@
                         <exclude>chess/cli/**/*</exclude>
                         <exclude>chess/gui/**/*</exclude>
                         <exclude>chess/Main.class</exclude>
+                        <exclude>chess/network/Network.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>
