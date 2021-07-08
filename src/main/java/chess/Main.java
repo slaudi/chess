@@ -4,6 +4,7 @@ import chess.cli.Cli;
 import chess.cli.Simple;
 import chess.gui.Gui;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -15,12 +16,12 @@ public class Main {
      * The external entry point of the application.
      * @param args The command line arguments passed to the application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         boolean cli = Arrays.asList(args).contains("--no-gui");
         boolean simple = Arrays.asList(args).contains("--simple");
         if (cli && !simple) {
             Cli.main(args);
-        } else if (cli && simple) {
+        } else if (simple) {
             Simple.main(args);
         } else {
             Gui.main(args);

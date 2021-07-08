@@ -132,7 +132,7 @@ public class LoadGame {
     }
 
 
-    private static Piece charToPiece(char c, Square square){ //NOPMD dividing this method in submethods would make code harder to read
+    private static Piece charToPiece(char c, Square square){ //NOPMD dividing this method into sub methods would make code harder to read
         switch (c) {
             case 'p':
                 Pawn pawn = new Pawn(square, Colour.BLACK);

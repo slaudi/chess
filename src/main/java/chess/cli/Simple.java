@@ -18,7 +18,7 @@ public class Simple {
      */
     public static void main(String[] args) {
         Game currentGame = new Game();
-        Cli.toConsole(currentGame);
+        HelperClass.toConsole(currentGame);
 
         while(!currentGame.currentPlayer.isLoser() || !currentGame.isADraw()) {
             String userInput = getInput();
@@ -47,16 +47,12 @@ public class Simple {
                 System.out.println("!Move not allowed\n");
                 continue;
             }
-            Cli.toConsole(currentGame);
+            HelperClass.toConsole(currentGame);
         }
     }
 
-    /**
-     * Gets the input as a String from the console.
-     *
-     * @return String A String of the console input.
-     */
-    public static String getInput () {
+
+    private static String getInput () {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }

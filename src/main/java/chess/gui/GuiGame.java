@@ -161,7 +161,7 @@ public class GuiGame {
 
 
     private int processingMovement(ChessBoardView chessBoardView) {
-        if(!game.currentPlayer.isLoser() || !game.isADraw() || !game.isCheckMate()
+        if(!(game.currentPlayer.isLoser() || game.isADraw() || game.isCheckMate() )
                 && this.squareStart != null && this.squareFinal != null) {
             return isMoveAllowed(chessBoardView);
         }
@@ -172,7 +172,11 @@ public class GuiGame {
         if(game.isADraw()){
             return 6;
         }
-        return 7;
+        if (game.currentPlayer.isLoser()){
+            // player gave up
+            return 7;
+        }
+        return 8;
     }
 
 

@@ -134,6 +134,9 @@ public class EnglishGame extends BorderPane {
             label = new Label("The Game ended in a draw!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
             label = new Label(label + " -- " + guiGame.game.currentPlayer.getColour() + " is in Check!");
+        } else if (guiGame.game.currentPlayer.isLoser()) {
+            AlertBox.display("Game Information","Giving Up",guiGame.game.currentPlayer.getColour() + " gave up the game.");
+            label = new Label(guiGame.game.currentPlayer.getColour() + " gave up.");
         }
         label.setFont(new Font(17));
         return new HBox(label);
@@ -204,6 +207,17 @@ public class EnglishGame extends BorderPane {
         loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
         loadGame.setOnAction(e -> loadEnglishGame(primaryStage));
         chessMenu.getItems().add(loadGame);
+        // Giving up
+        MenuItem giveUp = new MenuItem("Give Up");
+        giveUp.setAccelerator(KeyCombination.keyCombination("Ctrl+G"));
+        giveUp.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Give Up","Do you really want to give up?",Language.English);
+            if (result) {
+                guiGame.game.currentPlayer.setLoser(true);
+                generatePlayersMoveLabelBox();
+            }
+        });
+        chessMenu.getItems().add(giveUp);
 
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Language-menu item
@@ -242,9 +256,12 @@ public class EnglishGame extends BorderPane {
         MenuItem exit = new MenuItem("Exit");
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?",this.language);
-            if (result) {
-                SaveGame.save(guiGame.game);
+            if (!(guiGame.game.isCheckMate() || guiGame.game.isDrawn()) && !guiGame.game.moveHistory.isEmpty()) {
+                // only asked when the has already started with a move made or the game is not finished yet
+                boolean result = ConfirmationBox.display("Save Game", "Do you want to save this Game?", this.language);
+                if (result) {
+                    SaveGame.save(guiGame.game);
+                }
             }
             boolean result2 = ConfirmationBox.display("Exit Game","Do you really want to exit the game?",this.language);
             if (result2) {
@@ -258,7 +275,7 @@ public class EnglishGame extends BorderPane {
 
 
     private Menu optionsMenu(){
-        Menu optionsMenu = new Menu("Options");
+        Menu optionsMenu = new Menu("Settings");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Board Rotation");
         rotation.setAccelerator(KeyCombination.keyCombination("Alt+R"));
@@ -279,7 +296,8 @@ public class EnglishGame extends BorderPane {
         rotation.setSelected(true);
         highlight.setSelected(true);
         checkHint.setSelected(true);
-        // add all items to Options-menu
+
+        // add all items to Settings-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
         return optionsMenu;
@@ -342,7 +360,7 @@ public class EnglishGame extends BorderPane {
             AlertBox.display("Movement Error", null, "Move not allowed: Your King would be in Check!");
         } else if (result == 4){
             AlertBox.display("Movement Error",null,"Move not allowed: Not possible!");
-        } else if (result == 7){
+        } else if (result == 8){
             AlertBox.display("Game-Error",null,"Something unexpected happened!?");
         }
         if (result == 0 && guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){

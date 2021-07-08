@@ -135,6 +135,9 @@ public class GermanGame extends BorderPane {
             label = new Label("Das Spiel endet in einem Unentschieden!");
         } else if (guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){
             label = new Label(getColourName() + " ist am Zug -- " + getColourName() + " steht im Schach!");
+        } else if (guiGame.game.currentPlayer.isLoser()) {
+            AlertBox.display("Spiel-Information","Aufgabe",getColourName() + " hat aufgegeben.");
+            label = new Label(getColourName() + " hat aufgegeben.");
         }
         label.setFont(new Font(17));
         return new HBox(label);
@@ -214,7 +217,17 @@ public class GermanGame extends BorderPane {
         loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
         loadGame.setOnAction(e -> loadGermanGame(primaryStage));
         chessMenu.getItems().add(loadGame);
-
+        // Giving up
+        MenuItem giveUp = new MenuItem("Aufgeben");
+        giveUp.setAccelerator(KeyCombination.keyCombination("Ctrl+G"));
+        giveUp.setOnAction(event -> {
+            boolean result = ConfirmationBox.display("Aufgeben","Möchtest du wirklich aufgeben?",Language.German);
+            if (result) {
+                guiGame.game.currentPlayer.setLoser(true);
+                generatePlayersMoveLabelBox();
+            }
+        });
+        chessMenu.getItems().add(giveUp);
         chessMenu.getItems().add(new SeparatorMenuItem());
         // Language-menu
         Menu language = new Menu("Sprache");
@@ -253,9 +266,12 @@ public class GermanGame extends BorderPane {
         MenuItem exit = new MenuItem("Beenden");
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> {
-            boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du diesen Spielstand speichern?",this.language);
-            if (result) {
-                SaveGame.save(guiGame.game);
+            if (!(guiGame.game.isCheckMate() || guiGame.game.isDrawn()) && !guiGame.game.moveHistory.isEmpty()) {
+                // only asked when the has already started with a move made or the game is not finished yet
+                boolean result = ConfirmationBox.display("Spiel speichern", "Möchtest du diesen Spielstand speichern?", this.language);
+                if (result) {
+                    SaveGame.save(guiGame.game);
+                }
             }
             boolean result2 = ConfirmationBox.display("Spiel beenden","Möchtest du das Spiel wirklich beenden?",this.language);
             if (result2) {
@@ -269,7 +285,7 @@ public class GermanGame extends BorderPane {
 
 
     private Menu optionsMenu(){
-        Menu optionsMenu = new Menu("Optionen");
+        Menu optionsMenu = new Menu("Einstellungen");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Drehung des Spielbretts");
         rotation.setAccelerator(KeyCombination.keyCombination("Alt+R"));
@@ -291,7 +307,8 @@ public class GermanGame extends BorderPane {
         rotation.setSelected(true);
         highlight.setSelected(true);
         checkHint.setSelected(true);
-        // add all items to Options-menu
+
+        // add all items to Settings-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
 
         return optionsMenu;
@@ -347,7 +364,7 @@ public class GermanGame extends BorderPane {
     void noAllowedSquares(List<Square> allowedSquares) {
         if (allowedSquares.isEmpty()) {
             guiGame.setSquareStartNull();
-            AlertBox.display("Keine Züge möglich", null, "Diese Figur kann sich nicht bewegen. Versuch eine andere!!");
+            AlertBox.display("Keine Züge möglich", null, "Diese Figur kann sich nicht bewegen. Versuch eine andere!");
         }
     }
 
@@ -359,7 +376,7 @@ public class GermanGame extends BorderPane {
             AlertBox.display("Fehler",null,"Zug nicht erlaubt: Dein König wäre im Schach!");
         } else if (result == 4){
             AlertBox.display("Fehler",null,"Zug nicht möglich!");
-        } else if (result == 7){
+        } else if (result == 8){
             AlertBox.display("Spiel-Fehler",null,"Etwas unerwartetes ist passiert!?");
         }
         if (result == 0 && guiGame.hintInCheck && guiGame.game.currentPlayer.isInCheck()){

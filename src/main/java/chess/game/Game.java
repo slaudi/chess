@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * The Game class which defines and controls the current game.
  */
-@SuppressWarnings("PMD.CyclomaticComplexity") //this is the main class of the entire programm, cant simplify
-public class Game {
+public class Game {//NOPMD - this is the main class handling the entire programm, can't be simplified
 
     /**
      * The player associated with the Colour object White in the current game.
@@ -37,13 +36,13 @@ public class Game {
      */
     public List<Move> moveHistory = new ArrayList<>();
 
-    // variables to help control the chess engine
+    private boolean networkServer = false;
+    private boolean networkClient = false;
     private Colour userColour = Colour.BLACK;
     private boolean artificialEnemy = false;
     private boolean drawn = false;
-
-    // variable to determine which language the user chose
     private Language language = Language.English;
+    public boolean freshGame = true;
 
     /**
      * Constructor for creating a new Game.
@@ -62,6 +61,22 @@ public class Game {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public boolean isNetworkServer() {
+        return this.networkServer;
+    }
+
+    public void setNetworkServer(boolean bool){
+        this.networkServer = bool;
+    }
+
+    public boolean isNetworkClient(){
+        return this.networkClient;
+    }
+
+    public void setNetworkClient(boolean bool){
+        this.networkClient = bool;
     }
 
     public Colour getUserColour(){
@@ -164,7 +179,7 @@ public class Game {
      * @param key           The char for a potential promotion.
      * @return boolean Returns 'true' if the move doesn't put the player in check.
      */
-    public boolean processMove(Square startSquare, Square finalSquare, char key) {
+    public boolean processMove(Square startSquare, Square finalSquare, char key) {//NOPMD - can't be simplified or divided reasonably
         Move currentMove = new Move(startSquare, finalSquare);
         Piece selectedPiece = startSquare.getOccupiedBy();
         Piece targetPiece = finalSquare.getOccupiedBy();
@@ -188,7 +203,7 @@ public class Game {
         } else {
             currentMove.doMove(this.chessBoard);
             if (targetPiece != null) {
-                // add a beaten piece to the ArrayList before isInCheck() (don't test it, it's already beaten)
+                // add a beaten piece to the ArrayList before isInCheck() (don't test with it in isInCheck(), it's already beaten)
                 beatenPieces.add(targetPiece);
             }
             if (!canMoveStay(targetPiece, currentMove)) {
