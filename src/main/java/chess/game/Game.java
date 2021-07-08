@@ -42,6 +42,7 @@ public class Game {//NOPMD - this is the main class handling the entire programm
     private boolean artificialEnemy = false;
     private boolean drawn = false;
     private Language language = Language.English;
+    public boolean freshgame = true;
 
     /**
      * Constructor for creating a new Game.

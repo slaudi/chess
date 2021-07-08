@@ -12,6 +12,8 @@ import chess.savegame.SaveGame;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +30,8 @@ public class Cli {
     private static String nowPlaying = "'s move";
     private static String check = " is in check!";
     private static String  colour;
+    public static ObjectOutputStream outStream;
+    public static ObjectInputStream inStream;
 
 
     /**
@@ -40,7 +44,7 @@ public class Cli {
         playGame(currentGame);
     }
 
-    private static void playGame(Game currentGame) {
+    private static void playGame(Game currentGame) throws IOException {
         checkForModus(currentGame);
 
         //checks if current Player has lost or if game is a draw
@@ -58,7 +62,7 @@ public class Cli {
 
 
 
-    private static void checkForModus(Game currentGame) {
+    private static void checkForModus(Game currentGame) throws IOException {
         HelperClass.languageOutput("Do you want to play a network or a local game?  network/local",
                 "Möchtest du ein Netzwerk-Spiel oder ein lokales Spiel starten? network/local", currentGame);
         String answer;
@@ -73,7 +77,7 @@ public class Cli {
         } while (!(answer.equals("network") || answer.equals("local")));
     }
 
-    private static void startNetworkGame(Game currentGame) {
+    private static void startNetworkGame(Game currentGame) throws IOException {
         HelperClass.languageOutput("Enter IP address:","Gib IP Adresse ein:",currentGame);
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
@@ -81,6 +85,7 @@ public class Cli {
             currentGame.setNetworkServer(true);
             HelperClass.toConsole(currentGame);
             runNetworkGame(currentGame, connectionSocket);
+
         } else {
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
@@ -97,12 +102,33 @@ public class Cli {
         }
     }
 
-    private static void runNetworkGame(Game currentGame, Socket testSocket) {
-        if(currentGame.isNetworkServer()){
-            currentGame.setUserColour(Colour.WHITE);
-        }
-        else {
-            currentGame.setUserColour(Colour.BLACK);
+    private static void runNetworkGame(Game currentGame, Socket testSocket) throws IOException {
+        System.out.println("geladen");
+        //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
+        //ObjectOutputStream outStream;
+        //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
+        //ObjectInputStream inStream;
+        System.out.println("geladen 3");
+        if(currentGame.freshgame){
+            if(currentGame.isNetworkServer()){
+                currentGame.setUserColour(Colour.WHITE);
+                //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
+                ObjectOutputStream outStream = new ObjectOutputStream(testSocket.getOutputStream());
+                //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
+                ObjectInputStream inStream = new ObjectInputStream(testSocket.getInputStream());
+                System.out.println("geladen 3");
+                NetworkServer.pingClientStart("start", outStream);
+                System.out.println("geladen2");
+                currentGame.freshgame = false;
+            }
+            else {
+                currentGame.setUserColour(Colour.BLACK);
+                //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
+                ObjectInputStream inStream = new ObjectInputStream(testSocket.getInputStream());
+                //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
+                ObjectOutputStream outStream = new ObjectOutputStream(testSocket.getOutputStream());
+                currentGame.freshgame = false;
+            }
         }
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             colour = currentGame.currentPlayer.getColour().toString();
@@ -119,6 +145,7 @@ public class Cli {
             }
             System.out.println(colour + nowPlaying);
             if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
+                NetworkServer.pingClientStart("robo", outStream);
                 String userInput = HelperClass.getInput(currentGame);
                 if(checkForCommand(userInput, currentGame)){
                     continue;
@@ -127,9 +154,9 @@ public class Cli {
                     continue;
                 }
                 HelperClass.toConsole(currentGame);
-                NetworkServer.processLocalPlayer(userInput, testSocket);
+                NetworkServer.sendMoveToClient(outStream, userInput);
             } else {
-                String enemyInput = NetworkServer.processClientPlayer(testSocket);
+                String enemyInput = NetworkServer.processClientPlayer(inStream);
                 if (!canPieceMove(enemyInput, currentGame)) {
                     continue;
                 }
@@ -139,7 +166,7 @@ public class Cli {
     }
 
 
-    private static void startLocalGame(Game currentGame){
+    private static void startLocalGame(Game currentGame) throws IOException {
         HelperClass.languageOutput("Do you want to play against a person or an AI?  person/ai",
                 "Möchtest du gegen einen Menschen oder eine KI spielen? person/ai", currentGame);
         String answer;
@@ -163,7 +190,7 @@ public class Cli {
     }
 
 
-    private static void runLocalGame(Game currentGame){
+    private static void runLocalGame(Game currentGame) throws IOException {
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             colour = currentGame.currentPlayer.getColour().toString();
             if (currentGame.getLanguage() == Language.German) {
@@ -234,7 +261,7 @@ public class Cli {
      * @param currentGame   The current status of the game.
      * @return boolean Returns 'True' if a valid command was given.
      */
-    public static boolean checkForCommand(String userInput, Game currentGame) {//NOPMD - need to check for every command available
+    public static boolean checkForCommand(String userInput, Game currentGame) throws IOException {//NOPMD - need to check for every command available
         switch (userInput) {
             case "beaten":
                 System.out.println(currentGame.beatenPieces);
@@ -329,7 +356,7 @@ public class Cli {
     }
 
 
-    private static void cliLoad(Game currentGame){
+    private static void cliLoad(Game currentGame) throws IOException {
         HelperClass.languageOutput("Select a saved Game you want to load by entering the number:",
                 "Wähle eine Nummer um ein gespeichertes Spiel zu laden:",currentGame);
         List<String> saves = new ArrayList<>();

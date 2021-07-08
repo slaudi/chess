@@ -119,69 +119,22 @@ public class NetworkServer {
 //        return null;
 //    }
 
-    public static String processClientPlayer(Socket inputSocket) {
-        //while(true)
-        //{
+    public static String processClientPlayer(ObjectInputStream in) {
         try {
-
-            DataInputStream inputStream = new DataInputStream(inputSocket.getInputStream());
-            System.out.println("Waiting for client move or give up...");
-            BufferedReader br=new BufferedReader(new InputStreamReader(inputSocket.getInputStream()));
+            System.out.println("Waiting for client move or give up.2..");
+            String testo = in.readUTF();
+            //String outString = br.readLine();
             System.out.println("vorbei");
-
-            return br.readLine();
+            return testo;
         } catch (IOException e) {
             System.out.println(e);
             System.out.println("inputFehler");
         }
         return null;
-
-
-        //assert moveOrGiveUp != null;
-        //return moveOrGiveUp.toString();
-
-            /*if (moveOrGiveUp instanceof GiveUp)
-            {
-                System.out.println("Received GiveUp message");
-                game.currentPlayer.setLoser(true);
-                break;
-            }
-
-            Move move = (Move) moveOrGiveUp;
-            System.out.println("Received client move: " + move);
-            String inputData = move.from + "-" + move.to;
-
-            if (!checkMoveSyntax(inputData))
-            {
-                sendMoveStatusToClient(outputStream, new MoveStatus(false, "Invalid input data"));
-                continue;
-            }
-
-            Square startSquare = game.chessBoard.getStartSquareFromInput(inputData);
-            Square finalSquare = game.chessBoard.getFinalSquareFromInput(inputData);
-            char key = game.chessBoard.getPromotionKey(inputData);
-
-            if (!game.isMoveAllowed(startSquare.getOccupiedBy(), finalSquare))
-            {
-                sendMoveStatusToClient(outputStream, new MoveStatus(false, getMoveAllowedErrorMessage(startSquare, finalSquare, game)));
-                continue;
-            }
-
-            if (!game.processMove(startSquare, finalSquare, key))
-            {
-                // if move puts King in check
-                sendMoveStatusToClient(outputStream, new MoveStatus(false, game.currentPlayer.getColour() + " is in check!"));
-                continue;
-            }
-
-            sendMoveStatusToClient(outputStream, new MoveStatus(true, ""));
-            break;
-        }*/
-
     }
 
-    public static void processLocalPlayer(String input, Socket outputSocket){
-        /*while(true)
+    /*public static void processLocalPlayer(String input, Socket outputSocket){
+        while(true)
         {
             String inputData = getInputFromCLI();
 
@@ -212,7 +165,7 @@ public class NetworkServer {
                 // if move puts King in check
                 System.out.println(game.currentPlayer.getColour() + " is in check!");
                 continue;
-            }*/
+            }
 
         try {
             System.out.println(input);
@@ -228,7 +181,7 @@ public class NetworkServer {
 
             //break;
         //}
-    }
+    } */
 
     private static void sendEndGameToClient(ObjectOutputStream outputStream, String reason) throws IOException {
         EndGame endGame = new EndGame(reason);
@@ -241,9 +194,13 @@ public class NetworkServer {
         outputStream.writeObject(new MakeMove());
     }
 
-    private static void sendMoveToClient(ObjectOutputStream outputStream, String move) throws IOException {
+    public static void sendMoveToClient(ObjectOutputStream outputStream, String move){
         System.out.println("Sending move: " + move);
-        outputStream.writeObject(move);
+        try {
+            outputStream.writeUTF(move);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     private static void sendMoveStatusToClient(ObjectOutputStream outputStream, MoveStatus status) throws IOException {
@@ -317,5 +274,16 @@ public class NetworkServer {
         }
     }
 
+    public static void pingClientStart(String input, ObjectOutputStream out){
+        sendMoveToClient(out, input);
+    }
+
+    public static ObjectInputStream generateInputStream(Socket inputSocket) throws IOException {
+        return new ObjectInputStream(inputSocket.getInputStream());
+    }
+
+    public static ObjectOutputStream generateOutputStream(Socket outputSocket) throws IOException {
+        return new ObjectOutputStream(outputSocket.getOutputStream());
+    }
 }
 
