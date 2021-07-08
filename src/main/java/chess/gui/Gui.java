@@ -1,6 +1,8 @@
 package chess.gui;
 
+import chess.game.Colour;
 import chess.game.Language;
+import chess.network.NetworkGame;
 import chess.savegame.LoadGame;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -165,10 +167,33 @@ public class Gui extends Application {
         btn.setPadding(new Insets(5));
         btn.setSpacing(10);
         btn.setAlignment(Pos.BOTTOM_CENTER);
+
         // Define buttons
         Button btnStartGame = new Button(startConnection);
+        btnStartGame.setOnAction(event -> {
+            String ipAddressText = IPAddress.getText();
+            if (ipAddressText.equals("0")){
+                guiGame.connectionSocket = NetworkGame.startServer();
+                guiGame.game.setNetworkServer(true);
+                guiGame.game.setUserColour(Colour.BLACK);
+                chessScene = chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+            } else {
+                if (NetworkGame.sendPingRequest(ipAddressText)) {
+                    guiGame.connectionSocket = NetworkGame.startClient();
+                    guiGame.game.setNetworkClient(true);
+                    guiGame.game.setUserColour(Colour.WHITE);
+                    chessScene = chessWindow(primaryStage,guiGame);
+                    primaryStage.setScene(chessScene);
+                } else {
+                    //TODO AlertBox oder so
+                }
+            }
+        });
+
         Button btnCancel = new Button(cancel);
         btnCancel.setOnAction(e -> primaryStage.setScene(startScene));
+
         btn.getChildren().addAll(btnStartGame,btnCancel);
         grid.add(btn,0,4);
 

@@ -5,6 +5,7 @@ import chess.game.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,10 @@ public class GuiGame {
     boolean highlightPossibleMoves = true;
     boolean allowedToChangeSelectedPiece = false;
     boolean hintInCheck = true;
+
     boolean turnAI = false;
+
+    Socket connectionSocket = null;
 
     /**
      * Constructor for GuiGame-Objects

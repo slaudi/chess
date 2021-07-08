@@ -110,9 +110,8 @@ public class Cli {
                 }
                 NetworkGame.sendMove(userInput,testSocket);
             } else {
-                String enemyInput;
                 HelperClass.languageOutput("Waiting for move...","Warte auf Zug...",currentGame);
-                enemyInput = NetworkGame.receiveMove(testSocket);
+                String enemyInput = NetworkGame.receiveMove(testSocket);
                 canPieceMove(enemyInput, currentGame);
             }
             HelperClass.toConsole(currentGame);
