@@ -3,8 +3,7 @@ package chess.cli;
 import chess.engine.Engine;
 import chess.game.*;
 import chess.game.Label;
-import chess.network.NetworkClient;
-import chess.network.NetworkServer;
+import chess.network.NetworkGame;
 import chess.pieces.Piece;
 import chess.savegame.LoadGame;
 import chess.savegame.SaveGame;
@@ -68,7 +67,7 @@ public class Cli {
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
             HelperClass.languageOutput("Waiting for client...","Warte auf Client...",currentGame);
-            Socket connectionSocket = NetworkServer.startServer();
+            Socket connectionSocket = NetworkGame.startServer();
             HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
             currentGame.setNetworkServer(true);
             HelperClass.toConsole(currentGame);
@@ -77,8 +76,8 @@ public class Cli {
             // IP Address != 0
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
-            if (NetworkClient.sendPingRequest(ipAddress)){
-                Socket connectionSocket = NetworkClient.startClient();
+            if (NetworkGame.sendPingRequest(ipAddress)){
+                Socket connectionSocket = NetworkGame.startClient();
                 HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
                 currentGame.setNetworkClient(true);
                 HelperClass.toConsole(currentGame);
@@ -109,33 +108,18 @@ public class Cli {
             HelperClass.languageOutput(currentGame.currentPlayer.getColour() + "'s move",
                     HelperClass.getGermanColourName(currentGame) + " ist am Zug",currentGame);
             if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
-                if (currentGame.isNetworkServer()) {
-                    String userInput = HelperClass.getInput(currentGame);
-                    if (checkForCommand(userInput, currentGame)) {
-                        continue;
-                    }
-                    if (!canPieceMove(userInput, currentGame)) {
-                        continue;
-                    }
-                    NetworkServer.sendMoveToClient(userInput,testSocket);
-                } else {
-                    String userInput = HelperClass.getInput(currentGame);
-                    if (checkForCommand(userInput, currentGame)) {
-                        continue;
-                    }
-                    if (!canPieceMove(userInput, currentGame)) {
-                        continue;
-                    }
-                    NetworkClient.sendMoveToServer(userInput,testSocket);
+                String userInput = HelperClass.getInput(currentGame);
+                if (checkForCommand(userInput, currentGame)) {
+                    continue;
                 }
+                if (!canPieceMove(userInput, currentGame)) {
+                    continue;
+                }
+                NetworkGame.sendMove(userInput,testSocket);
             } else {
                 String enemyInput;
                 HelperClass.languageOutput("Waiting for move...","Warte auf Zug...",currentGame);
-                if (currentGame.isNetworkServer()) {
-                    enemyInput = NetworkServer.getMoveFromClient(testSocket);
-                } else {
-                    enemyInput = NetworkClient.getMoveFromServer(testSocket);
-                }
+                enemyInput = NetworkGame.receiveMove(testSocket);
                 canPieceMove(enemyInput, currentGame);
             }
             HelperClass.toConsole(currentGame);
