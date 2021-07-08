@@ -173,7 +173,7 @@ public class Gui extends Application {
         btnStartGame.setOnAction(event -> {
             String ipAddressText = IPAddress.getText();
             if (ipAddressText.equals("0")){
-                guiGame.connectionSocket = NetworkGame.startServer();
+                guiGame.connectionSocket = NetworkGame.startServer(ipAddressText);
                 guiGame.game.setNetworkServer(true);
                 guiGame.game.setUserColour(Colour.BLACK);
                 chessScene = chessWindow(primaryStage,guiGame);

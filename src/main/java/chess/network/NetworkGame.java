@@ -8,6 +8,7 @@ import java.net.Socket;
 public class NetworkGame {
 
     static Socket socket = null;
+    static ServerSocket server = null;
     static InputStreamReader inputStreamReader = null;
     static OutputStreamWriter outputStreamWriter = null;
     static BufferedReader bufferedReader = null;
@@ -34,12 +35,16 @@ public class NetworkGame {
         return socket;
     }
 
-    public static Socket startServer(){
+    public static Socket startServer(String ipAddress){
         try {
-            ServerSocket server = new ServerSocket(9876);
-            socket = server.accept();
-            socket.getRemoteSocketAddress();
-            return socket;
+            if (ipAddress != null && !ipAddress.isEmpty())
+                server = new ServerSocket(0, 1, InetAddress.getByName(ipAddress));
+            else
+                server = new ServerSocket(0, 1, InetAddress.getLocalHost());
+            server = new ServerSocket(9876);
+            Socket client = server.accept();
+            client.getRemoteSocketAddress();
+            return client;
         } catch (IOException e) {
             e.printStackTrace();
         }
