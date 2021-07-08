@@ -12,6 +12,7 @@ import chess.savegame.SaveGame;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,17 +29,18 @@ public class Cli {
     private static String check = " is in check!";
     private static String  colour;
 
+
     /**
      * The entry point of the CLI application.
      *
      * @param args The command line arguments passed to the application
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Game currentGame = new Game();
         playGame(currentGame);
     }
 
-    private static void playGame(Game currentGame){
+    private static void playGame(Game currentGame) {
         checkForModus(currentGame);
 
         //checks if current Player has lost or if game is a draw
@@ -71,29 +73,37 @@ public class Cli {
         } while (!(answer.equals("network") || answer.equals("local")));
     }
 
-    private static void startNetworkGame(Game currentGame){
+    private static void startNetworkGame(Game currentGame) {
         HelperClass.languageOutput("Enter IP address:","Gib IP Adresse ein:",currentGame);
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
-            NetworkServer.startServer(currentGame);
+            Socket connectionSocket = NetworkServer.startServer();
             currentGame.setNetworkServer(true);
+            HelperClass.toConsole(currentGame);
+            runNetworkGame(currentGame, connectionSocket);
         } else {
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
             if (NetworkClient.sendPingRequest(ipAddress,currentGame)){
-                NetworkClient.startClient();
+                Socket connectionSocket = NetworkClient.startClient();
                 currentGame.setNetworkClient(true);
+                HelperClass.toConsole(currentGame);
+                runNetworkGame(currentGame, connectionSocket);
             } else {
                 HelperClass.languageOutput("Sorry ! We can't reach to this host.",
                         "Sorry! Wir können diesen Host nicht erreichen.",currentGame);
                 startNetworkGame(currentGame);
             }
         }
-        HelperClass.toConsole(currentGame);
-        runNetworkGame(currentGame);
     }
 
-    private static void runNetworkGame(Game currentGame){
+    private static void runNetworkGame(Game currentGame, Socket testSocket) {
+        if(currentGame.isNetworkServer()){
+            currentGame.setUserColour(Colour.WHITE);
+        }
+        else {
+            currentGame.setUserColour(Colour.BLACK);
+        }
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             colour = currentGame.currentPlayer.getColour().toString();
             if (currentGame.getLanguage() == Language.German) {
@@ -108,23 +118,22 @@ public class Cli {
                 System.out.println(colour + check);
             }
             System.out.println(colour + nowPlaying);
-            String input;
-            if (currentGame.isNetworkServer()) {
-                input = NetworkServer.processClientPlayer();
-                canPieceMove(input, currentGame);
-                input = HelperClass.getInput(currentGame);
-                if (!canPieceMove(input,currentGame)) {
+            if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
+                String userInput = HelperClass.getInput(currentGame);
+                if(checkForCommand(userInput, currentGame)){
                     continue;
                 }
-                NetworkServer.processLocalPlayer(input);
+                if (!canPieceMove(userInput, currentGame)) {
+                    continue;
+                }
+                HelperClass.toConsole(currentGame);
+                NetworkServer.processLocalPlayer(userInput, testSocket);
             } else {
-                input = HelperClass.getInput(currentGame);
-                if (!canPieceMove(input,currentGame)) {
+                String enemyInput = NetworkServer.processClientPlayer(testSocket);
+                if (!canPieceMove(enemyInput, currentGame)) {
                     continue;
                 }
-                NetworkServer.processLocalPlayer(input);
-                input = NetworkServer.processClientPlayer();
-                canPieceMove(input, currentGame);
+                HelperClass.toConsole(currentGame);
             }
         }
     }
@@ -225,7 +234,7 @@ public class Cli {
      * @param currentGame   The current status of the game.
      * @return boolean Returns 'True' if a valid command was given.
      */
-    public static boolean checkForCommand(String userInput, Game currentGame){//NOPMD - need to check for every command available
+    public static boolean checkForCommand(String userInput, Game currentGame) {//NOPMD - need to check for every command available
         switch (userInput) {
             case "beaten":
                 System.out.println(currentGame.beatenPieces);

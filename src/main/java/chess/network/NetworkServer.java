@@ -17,10 +17,10 @@ import com.chess.*;
 
 public class NetworkServer {
 
-    static Socket socket;
+    //static Socket socket;
     static boolean isWhite;
 
-    public static void startServer(Game game){
+    public static Socket startServer(){
 
         // TODO: refactor exceptions handling
         try {
@@ -30,8 +30,7 @@ public class NetworkServer {
             Socket socket = server.accept();
             socket.getRemoteSocketAddress();
             System.out.println("Client connected!");
-
-            game.setUserColour(Colour.WHITE);
+            return socket;
 
             /*ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 
@@ -74,6 +73,7 @@ public class NetworkServer {
         catch (IOException e) {
             System.out.println(e);
         }
+        return null;
     }
 
 
@@ -119,21 +119,26 @@ public class NetworkServer {
 //        return null;
 //    }
 
-    public static String processClientPlayer(){
+    public static String processClientPlayer(Socket inputSocket) {
         //while(true)
         //{
-        Object moveOrGiveUp = null;
         try {
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+            DataInputStream inputStream = new DataInputStream(inputSocket.getInputStream());
             System.out.println("Waiting for client move or give up...");
+            BufferedReader br=new BufferedReader(new InputStreamReader(inputSocket.getInputStream()));
+            System.out.println("vorbei");
 
-            moveOrGiveUp = inputStream.readObject();
-
-        } catch (IOException | ClassNotFoundException e) {
+            return br.readLine();
+        } catch (IOException e) {
             System.out.println(e);
+            System.out.println("inputFehler");
         }
-        assert moveOrGiveUp != null;
-        return moveOrGiveUp.toString();
+        return null;
+
+
+        //assert moveOrGiveUp != null;
+        //return moveOrGiveUp.toString();
 
             /*if (moveOrGiveUp instanceof GiveUp)
             {
@@ -172,9 +177,10 @@ public class NetworkServer {
             sendMoveStatusToClient(outputStream, new MoveStatus(true, ""));
             break;
         }*/
+
     }
 
-    public static void processLocalPlayer(String input){
+    public static void processLocalPlayer(String input, Socket outputSocket){
         /*while(true)
         {
             String inputData = getInputFromCLI();
@@ -209,9 +215,11 @@ public class NetworkServer {
             }*/
 
         try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println(input);
+            ObjectOutputStream outputStream = new ObjectOutputStream(outputSocket.getOutputStream());
             String[] tokens = input.split("-");
-            sendMoveToClient(outputStream, new Move(tokens[0], tokens[1], ' '));
+            //sendMoveToClient(outputStream, new Move(tokens[0], tokens[1], ' '));
+            sendMoveToClient(outputStream, input);
         }
         catch (IOException e) {
             System.out.println(e);
@@ -233,7 +241,7 @@ public class NetworkServer {
         outputStream.writeObject(new MakeMove());
     }
 
-    private static void sendMoveToClient(ObjectOutputStream outputStream, Move move) throws IOException {
+    private static void sendMoveToClient(ObjectOutputStream outputStream, String move) throws IOException {
         System.out.println("Sending move: " + move);
         outputStream.writeObject(move);
     }

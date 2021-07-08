@@ -37,16 +37,17 @@ public class NetworkClient {
         return false;
     }
 
-    public static void startClient() {
+    public static Socket startClient() {
         try {
             socket = new Socket("127.0.0.1", 9876);
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-            ChooseColor chooseColor = (ChooseColor) inputStream.readObject();
-            isServerWhite = chooseColor.color.equals("white");
+            //ChooseColor chooseColor = (ChooseColor) inputStream.readObject();
+            //isServerWhite = chooseColor.color.equals("white");
 
         } catch (Exception e) {
             System.out.println(e);
         }
+        return socket;
     }
 
  /*   public static String runClient(Game game){
