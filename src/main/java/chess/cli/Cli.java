@@ -92,7 +92,8 @@ public class Cli {
         }
     }
 
-    private static void runNetworkGame(Game currentGame, Socket testSocket) {
+
+    private static void runNetworkGame(Game currentGame, Socket connectionSocket) {
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             if (currentGame.currentPlayer.isInCheck()) {
                 HelperClass.languageOutput(currentGame.currentPlayer.getColour() + " is in check!",
@@ -102,22 +103,43 @@ public class Cli {
                     HelperClass.getGermanColourName(currentGame) + " ist am Zug",currentGame);
             if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
                 String userInput = HelperClass.getInput(currentGame);
-                if (checkForCommand(userInput, currentGame)) {
+                if (sendingInvalidMove(currentGame,connectionSocket,userInput)) {
                     continue;
                 }
-                if (!canPieceMove(userInput, currentGame)) {
-                    continue;
-                }
-                NetworkGame.sendMove(userInput,testSocket);
+                NetworkGame.sendMove(userInput,connectionSocket);
             } else {
                 HelperClass.languageOutput("Waiting for move...","Warte auf Zug...",currentGame);
-                String enemyInput = NetworkGame.receiveMove(testSocket);
+                String enemyInput = NetworkGame.receiveMove(connectionSocket);
+                assert enemyInput != null;
+                if (enemyInput.equals("giveUp")) {
+                    currentGame.changePlayer();
+                    currentGame.currentPlayer.setLoser(true);
+                    continue;
+                }
                 canPieceMove(enemyInput, currentGame);
             }
             HelperClass.toConsole(currentGame);
         }
+        try {
+            connectionSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+
+    private static boolean sendingInvalidMove(Game currentGame, Socket connectionSocket, String userInput) {
+        if (checkForCommand(userInput, currentGame)) {
+            if (userInput.equals("giveUp")) {
+                NetworkGame.sendMove(userInput,connectionSocket);
+            }
+            return true;
+        }
+        if (!canPieceMove(userInput, currentGame)) {
+            return true;
+        }
+        return false;
+    }
 
 
     private static void startLocalGame(Game currentGame) {
