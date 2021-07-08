@@ -1,12 +1,5 @@
 package chess.network;
 
-import chess.cli.HelperClass;
-import chess.game.Colour;
-import chess.game.Game;
-import chess.game.Label;
-import chess.game.Square;
-import chess.pieces.Piece;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,8 +13,6 @@ public class NetworkServer {
     static BufferedWriter bufferedWriter = null;
 
     public static Socket startServer(){
-
-        // TODO: refactor exceptions handling
         try {
             ServerSocket server = new ServerSocket(9876);
 
@@ -29,11 +20,8 @@ public class NetworkServer {
             socket = server.accept();
             socket.getRemoteSocketAddress();
             System.out.println("Client connected!");
-
-
             return socket;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -42,18 +30,12 @@ public class NetworkServer {
 
     public static String getMoveFromClient(Socket inSocket) {
         try {
+            System.out.println("Waiting for client move...");
             inputStreamReader = new InputStreamReader(inSocket.getInputStream());
             bufferedReader = new BufferedReader(inputStreamReader);
-            System.out.println("Waiting for client move or give up.2..");
-            String input = bufferedReader.readLine();
-            System.out.println(input);
-            //String testo = in.readUTF();
-            //String outString = br.readLine();
-            System.out.println("vorbei");
-            return input;
+            return bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("inputFehler");
             return null;
         }
     }
@@ -63,7 +45,6 @@ public class NetworkServer {
     public static void sendMoveToClient(String move, Socket outSocket){
         System.out.println("Sending move: " + move);
         try {
-
             outputStreamWriter = new OutputStreamWriter(outSocket.getOutputStream());
             bufferedWriter = new BufferedWriter(outputStreamWriter);
             bufferedWriter.write(move);
