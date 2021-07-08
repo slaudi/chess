@@ -9,11 +9,7 @@ import chess.pieces.Piece;
 import chess.savegame.LoadGame;
 import chess.savegame.SaveGame;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,14 +83,16 @@ public class Cli {
             runNetworkGame(currentGame, connectionSocket);
 
         } else {
+            // IP Address != 0
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
-            if (NetworkClient.sendPingRequest(ipAddress,currentGame)){
+            if (NetworkClient.sendPingRequest(ipAddress)){
                 Socket connectionSocket = NetworkClient.startClient();
                 currentGame.setNetworkClient(true);
                 HelperClass.toConsole(currentGame);
                 runNetworkGame(currentGame, connectionSocket);
             } else {
+                // couldn't connect
                 HelperClass.languageOutput("Sorry ! We can't reach to this host.",
                         "Sorry! Wir können diesen Host nicht erreichen.",currentGame);
                 startNetworkGame(currentGame);
@@ -109,26 +107,25 @@ public class Cli {
         //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
         //ObjectInputStream inStream;
         System.out.println("geladen 3");
-        if(currentGame.freshgame){
-            if(currentGame.isNetworkServer()){
-                currentGame.setUserColour(Colour.WHITE);
+        if(currentGame.freshGame){
+            if (currentGame.isNetworkServer()){
+                currentGame.setUserColour(Colour.BLACK);
                 //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
                 ObjectOutputStream outStream = new ObjectOutputStream(testSocket.getOutputStream());
                 //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
                 ObjectInputStream inStream = new ObjectInputStream(testSocket.getInputStream());
                 System.out.println("geladen 3");
-                NetworkServer.pingClientStart("start", outStream);
+                NetworkServer.sendMoveToClient("Server started",testSocket);
                 System.out.println("geladen2");
-                currentGame.freshgame = false;
-            }
-            else {
-                currentGame.setUserColour(Colour.BLACK);
+            } else {
+                currentGame.setUserColour(Colour.WHITE);
                 //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
                 ObjectInputStream inStream = new ObjectInputStream(testSocket.getInputStream());
                 //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
                 ObjectOutputStream outStream = new ObjectOutputStream(testSocket.getOutputStream());
-                currentGame.freshgame = false;
+                NetworkClient.sendMoveToServer("Client started",testSocket);
             }
+            currentGame.freshGame = false;
         }
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             colour = currentGame.currentPlayer.getColour().toString();
@@ -145,23 +142,38 @@ public class Cli {
             }
             System.out.println(colour + nowPlaying);
             if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
-                NetworkServer.pingClientStart("robo", outStream);
-                String userInput = HelperClass.getInput(currentGame);
-                if(checkForCommand(userInput, currentGame)){
-                    continue;
+                System.out.println(currentGame.currentPlayer.getColour());
+                if (currentGame.isNetworkServer()) {
+                    NetworkServer.sendMoveToClient("server",testSocket);
+                    String userInput = HelperClass.getInput(currentGame);
+                    if (checkForCommand(userInput, currentGame)) {
+                        continue;
+                    }
+                    if (!canPieceMove(userInput, currentGame)) {
+                        continue;
+                    }
+                    NetworkServer.sendMoveToClient(userInput,testSocket);
+                } else {
+                    NetworkClient.sendMoveToServer("client",testSocket);
+                    String userInput = HelperClass.getInput(currentGame);
+                    if (checkForCommand(userInput, currentGame)) {
+                        continue;
+                    }
+                    if (!canPieceMove(userInput, currentGame)) {
+                        continue;
+                    }
+                    NetworkClient.sendMoveToServer(userInput,testSocket);
                 }
-                if (!canPieceMove(userInput, currentGame)) {
-                    continue;
-                }
-                HelperClass.toConsole(currentGame);
-                NetworkServer.sendMoveToClient(outStream, userInput);
             } else {
-                String enemyInput = NetworkServer.processClientPlayer(inStream);
-                if (!canPieceMove(enemyInput, currentGame)) {
-                    continue;
+                String enemyInput;
+                if (currentGame.isNetworkServer()) {
+                    enemyInput = NetworkServer.getMoveFromClient(testSocket);
+                } else {
+                    enemyInput = NetworkClient.getMoveFromServer(testSocket);
                 }
-                HelperClass.toConsole(currentGame);
+                canPieceMove(enemyInput, currentGame);
             }
+            HelperClass.toConsole(currentGame);
         }
     }
 
