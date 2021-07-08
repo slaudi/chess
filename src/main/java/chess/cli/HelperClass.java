@@ -37,9 +37,8 @@ public class HelperClass {
     }
 
 
-    public static String checkForInt(Game currentGame) throws IOException {
+    public static String checkForInt(Game currentGame) {
         String input = new Scanner(System.in).nextLine();
-        // TODO IP Adresse einfach ohne Punkte eingegeben? Könnten wir ja in die Anleitung schreiben
         checkForCommand(input,currentGame);
         try {
             Integer.parseInt(input);
