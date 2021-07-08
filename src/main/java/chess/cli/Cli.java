@@ -2,7 +2,6 @@ package chess.cli;
 
 import chess.engine.Engine;
 import chess.game.*;
-import chess.game.Label;
 import chess.network.NetworkGame;
 import chess.pieces.Piece;
 import chess.savegame.LoadGame;
@@ -70,6 +69,7 @@ public class Cli {
             Socket connectionSocket = NetworkGame.startServer();
             HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
             currentGame.setNetworkServer(true);
+            currentGame.setUserColour(Colour.BLACK);
             HelperClass.toConsole(currentGame);
             runNetworkGame(currentGame, connectionSocket);
         } else {
@@ -80,6 +80,7 @@ public class Cli {
                 Socket connectionSocket = NetworkGame.startClient();
                 HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
                 currentGame.setNetworkClient(true);
+                currentGame.setUserColour(Colour.WHITE);
                 HelperClass.toConsole(currentGame);
                 runNetworkGame(currentGame, connectionSocket);
             } else {
@@ -92,14 +93,6 @@ public class Cli {
     }
 
     private static void runNetworkGame(Game currentGame, Socket testSocket) {
-        if(currentGame.freshGame){
-            if (currentGame.isNetworkServer()){
-                currentGame.setUserColour(Colour.BLACK);
-            } else {
-                currentGame.setUserColour(Colour.WHITE);
-            }
-            currentGame.freshGame = false;
-        }
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
             if (currentGame.currentPlayer.isInCheck()) {
                 HelperClass.languageOutput(currentGame.currentPlayer.getColour() + " is in check!",
