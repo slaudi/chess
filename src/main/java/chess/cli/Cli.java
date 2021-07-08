@@ -48,7 +48,6 @@ public class Cli {
     }
 
 
-
     private static void checkForModus(Game currentGame){
         HelperClass.languageOutput("Do you want to play a network or a local game?  network/local",
                 "Möchtest du ein Netzwerk-Spiel oder ein lokales Spiel starten? network/local", currentGame);
