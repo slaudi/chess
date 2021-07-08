@@ -3,8 +3,6 @@ package chess;
 import chess.cli.Cli;
 import chess.cli.Simple;
 import chess.gui.Gui;
-import chess.network.NetworkClient;
-import chess.network.NetworkServer;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -21,16 +19,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         boolean cli = Arrays.asList(args).contains("--no-gui");
         boolean simple = Arrays.asList(args).contains("--simple");
-        boolean networkServer = Arrays.asList(args).contains("--network-server");
-        boolean networkClient = Arrays.asList(args).contains("--network-client");
         if (cli && !simple) {
             Cli.main(args);
         } else if (simple) {
             Simple.main(args);
-        /*} else if (networkServer) {
-            NetworkServer.main(args);
-        } else if (networkClient) {
-            NetworkClient.main(args);*/
         } else {
             Gui.main(args);
         }
