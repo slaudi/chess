@@ -21,26 +21,17 @@ import java.util.Scanner;
  */
 public class Cli {
 
-    private static String moveNotAllowed = "!Move not allowed";
-    private static String invalidMove = "!Invalid move";
-    private static String nowPlaying = "'s move";
-    private static String check = " is in check!";
-    private static String  colour;
-    public static ObjectOutputStream outStream;
-    public static ObjectInputStream inStream;
-
-
     /**
      * The entry point of the CLI application.
      *
      * @param args The command line arguments passed to the application
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Game currentGame = new Game();
         playGame(currentGame);
     }
 
-    private static void playGame(Game currentGame) throws IOException {
+    private static void playGame(Game currentGame) {
         checkForModus(currentGame);
 
         //checks if current Player has lost or if game is a draw
@@ -58,7 +49,7 @@ public class Cli {
 
 
 
-    private static void checkForModus(Game currentGame) throws IOException {
+    private static void checkForModus(Game currentGame){
         HelperClass.languageOutput("Do you want to play a network or a local game?  network/local",
                 "Möchtest du ein Netzwerk-Spiel oder ein lokales Spiel starten? network/local", currentGame);
         String answer;
@@ -73,7 +64,7 @@ public class Cli {
         } while (!(answer.equals("network") || answer.equals("local")));
     }
 
-    private static void startNetworkGame(Game currentGame) throws IOException {
+    private static void startNetworkGame(Game currentGame) {
         HelperClass.languageOutput("Enter IP address:","Gib IP Adresse ein:",currentGame);
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
@@ -81,7 +72,6 @@ public class Cli {
             currentGame.setNetworkServer(true);
             HelperClass.toConsole(currentGame);
             runNetworkGame(currentGame, connectionSocket);
-
         } else {
             // IP Address != 0
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
@@ -100,51 +90,24 @@ public class Cli {
         }
     }
 
-    private static void runNetworkGame(Game currentGame, Socket testSocket) throws IOException {
-        System.out.println("geladen");
-        //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
-        //ObjectOutputStream outStream;
-        //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
-        //ObjectInputStream inStream;
-        System.out.println("geladen 3");
+    private static void runNetworkGame(Game currentGame, Socket testSocket) {
         if(currentGame.freshGame){
             if (currentGame.isNetworkServer()){
                 currentGame.setUserColour(Colour.BLACK);
-                //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
-                ObjectOutputStream outStream = new ObjectOutputStream(testSocket.getOutputStream());
-                //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
-                ObjectInputStream inStream = new ObjectInputStream(testSocket.getInputStream());
-                System.out.println("geladen 3");
-                NetworkServer.sendMoveToClient("Server started",testSocket);
-                System.out.println("geladen2");
             } else {
                 currentGame.setUserColour(Colour.WHITE);
-                //ObjectInputStream inStream = NetworkServer.generateInputStream(testSocket);
-                ObjectInputStream inStream = new ObjectInputStream(testSocket.getInputStream());
-                //ObjectOutputStream outStream = NetworkServer.generateOutputStream(testSocket);
-                ObjectOutputStream outStream = new ObjectOutputStream(testSocket.getOutputStream());
-                NetworkClient.sendMoveToServer("Client started",testSocket);
             }
             currentGame.freshGame = false;
         }
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
-            colour = currentGame.currentPlayer.getColour().toString();
-            if (currentGame.getLanguage() == Language.German) {
-                moveNotAllowed = "!Zug nicht erlaubt\n";
-                invalidMove = "!Keine gültige Eingabe\n";
-                nowPlaying = " ist am Zug";
-                check = " befindet sich im Schach!";
-                colour = HelperClass.getGermanColourName(currentGame);
-            }
-
             if (currentGame.currentPlayer.isInCheck()) {
-                System.out.println(colour + check);
+                HelperClass.languageOutput(currentGame.currentPlayer.getColour() + " is in check!",
+                        HelperClass.getGermanColourName(currentGame) + " befindet sich im Schach!",currentGame);
             }
-            System.out.println(colour + nowPlaying);
+            HelperClass.languageOutput(currentGame.currentPlayer.getColour() + "'s move",
+                    HelperClass.getGermanColourName(currentGame) + " ist am Zug",currentGame);
             if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
-                System.out.println(currentGame.currentPlayer.getColour());
                 if (currentGame.isNetworkServer()) {
-                    NetworkServer.sendMoveToClient("server",testSocket);
                     String userInput = HelperClass.getInput(currentGame);
                     if (checkForCommand(userInput, currentGame)) {
                         continue;
@@ -154,7 +117,6 @@ public class Cli {
                     }
                     NetworkServer.sendMoveToClient(userInput,testSocket);
                 } else {
-                    NetworkClient.sendMoveToServer("client",testSocket);
                     String userInput = HelperClass.getInput(currentGame);
                     if (checkForCommand(userInput, currentGame)) {
                         continue;
@@ -178,7 +140,8 @@ public class Cli {
     }
 
 
-    private static void startLocalGame(Game currentGame) throws IOException {
+
+    private static void startLocalGame(Game currentGame) {
         HelperClass.languageOutput("Do you want to play against a person or an AI?  person/ai",
                 "Möchtest du gegen einen Menschen oder eine KI spielen? person/ai", currentGame);
         String answer;
@@ -202,24 +165,16 @@ public class Cli {
     }
 
 
-    private static void runLocalGame(Game currentGame) throws IOException {
+    private static void runLocalGame(Game currentGame) {
         while (!currentGame.isCheckMate() && !currentGame.isADraw() && !currentGame.currentPlayer.isLoser()) {
-            colour = currentGame.currentPlayer.getColour().toString();
-            if (currentGame.getLanguage() == Language.German) {
-                moveNotAllowed = "!Zug nicht erlaubt\n";
-                invalidMove = "!Keine gültige Eingabe\n";
-                nowPlaying = " ist am Zug";
-                check = " befindet sich im Schach!";
-                colour = HelperClass.getGermanColourName(currentGame);
-            }
-
             if (currentGame.currentPlayer.isInCheck()) {
-                System.out.println(colour + check);
+                HelperClass.languageOutput(currentGame.currentPlayer.getColour() + " is in check!",
+                        HelperClass.getGermanColourName(currentGame) + " befindet sich im Schach!",currentGame);
             }
-            System.out.println(colour + nowPlaying);
+            HelperClass.languageOutput(currentGame.currentPlayer.getColour() + "'s move",
+                    HelperClass.getGermanColourName(currentGame) + " ist am Zug",currentGame);
 
             String userInput = HelperClass.getInput(currentGame);
-
             if(checkForCommand(userInput, currentGame)){
                 // Input is a command, not a Move
                 continue;
@@ -234,10 +189,9 @@ public class Cli {
 
 
     private static boolean canPieceMove(String userInput, Game currentGame) {
-
         if (isNotValidMove(userInput)) {
             // validates user-input syntactically
-            System.out.println(invalidMove);
+            HelperClass.languageOutput("!Invalid move\n","!Keine gültige Eingabe\n",currentGame);
             return false;
         }
         Piece selectedPiece = currentGame.chessBoard.getMovingPieceFromInput(userInput);
@@ -255,11 +209,12 @@ public class Cli {
                 return true;
             } else {
                 // if move puts King in check
-                System.out.println(moveNotAllowed + "\n" + colour + check + "\n");
+                HelperClass.languageOutput("!Move not allowed\n" + currentGame.currentPlayer.getColour() + " would be in check!\n",
+                        "!Zug nicht erlaubt\n" + HelperClass.getGermanColourName(currentGame) + " befände sich im Schach!",currentGame);
                 return false;
             }
         } else {
-            System.out.println(moveNotAllowed + "\n");
+            HelperClass.languageOutput("!Move not allowed\n","!Zug nicht erlaubt\n",currentGame);
             HelperClass.generateAnswer(selectedPiece, finalSquare, currentGame);
             return false;
         }
@@ -273,7 +228,7 @@ public class Cli {
      * @param currentGame   The current status of the game.
      * @return boolean Returns 'True' if a valid command was given.
      */
-    public static boolean checkForCommand(String userInput, Game currentGame) throws IOException {//NOPMD - need to check for every command available
+    public static boolean checkForCommand(String userInput, Game currentGame) {//NOPMD - need to check for every command available
         switch (userInput) {
             case "beaten":
                 System.out.println(currentGame.beatenPieces);
@@ -358,7 +313,7 @@ public class Cli {
                 }
             }
             if (consoleInput.charAt(2) == '-') {
-                return !Label.contains(consoleInput.substring(0, 2)) || !Label.contains(consoleInput.substring(3, 5));
+                return !chess.game.Label.contains(consoleInput.substring(0, 2)) || !Label.contains(consoleInput.substring(3, 5));
             } else {
                 return true;
             }
@@ -368,7 +323,7 @@ public class Cli {
     }
 
 
-    private static void cliLoad(Game currentGame) throws IOException {
+    private static void cliLoad(Game currentGame) {
         HelperClass.languageOutput("Select a saved Game you want to load by entering the number:",
                 "Wähle eine Nummer um ein gespeichertes Spiel zu laden:",currentGame);
         List<String> saves = new ArrayList<>();
@@ -406,4 +361,3 @@ public class Cli {
     }
 
 }
-
