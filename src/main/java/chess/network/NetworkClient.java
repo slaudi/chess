@@ -38,7 +38,6 @@ public class NetworkClient {
     public static String getMoveFromServer(Socket inSocket) {
         try {
             inputStreamReader = new InputStreamReader(inSocket.getInputStream());
-            System.out.println("Waiting for server move...");
             bufferedReader = new BufferedReader(inputStreamReader);
             return bufferedReader.readLine();
         }
@@ -50,7 +49,6 @@ public class NetworkClient {
 
 
     public static void sendMoveToServer(String move,Socket outSocket){
-        System.out.println("Sending move: " + move);
         try {
             outputStreamWriter = new OutputStreamWriter(outSocket.getOutputStream());
             bufferedWriter = new BufferedWriter(outputStreamWriter);

@@ -15,11 +15,8 @@ public class NetworkServer {
     public static Socket startServer(){
         try {
             ServerSocket server = new ServerSocket(9876);
-
-            System.out.println("Waiting for client...");
             socket = server.accept();
             socket.getRemoteSocketAddress();
-            System.out.println("Client connected!");
             return socket;
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,7 +27,6 @@ public class NetworkServer {
 
     public static String getMoveFromClient(Socket inSocket) {
         try {
-            System.out.println("Waiting for client move...");
             inputStreamReader = new InputStreamReader(inSocket.getInputStream());
             bufferedReader = new BufferedReader(inputStreamReader);
             return bufferedReader.readLine();
@@ -41,9 +37,7 @@ public class NetworkServer {
     }
 
 
-
     public static void sendMoveToClient(String move, Socket outSocket){
-        System.out.println("Sending move: " + move);
         try {
             outputStreamWriter = new OutputStreamWriter(outSocket.getOutputStream());
             bufferedWriter = new BufferedWriter(outputStreamWriter);
@@ -54,7 +48,6 @@ public class NetworkServer {
             ioException.printStackTrace();
         }
     }
-
 
 }
 

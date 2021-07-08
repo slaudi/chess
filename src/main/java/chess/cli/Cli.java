@@ -67,7 +67,9 @@ public class Cli {
         HelperClass.languageOutput("Enter IP address:","Gib IP Adresse ein:",currentGame);
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
+            HelperClass.languageOutput("Waiting for client...","Warte auf Client...",currentGame);
             Socket connectionSocket = NetworkServer.startServer();
+            HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
             currentGame.setNetworkServer(true);
             HelperClass.toConsole(currentGame);
             runNetworkGame(currentGame, connectionSocket);
@@ -77,6 +79,7 @@ public class Cli {
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
             if (NetworkClient.sendPingRequest(ipAddress)){
                 Socket connectionSocket = NetworkClient.startClient();
+                HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
                 currentGame.setNetworkClient(true);
                 HelperClass.toConsole(currentGame);
                 runNetworkGame(currentGame, connectionSocket);
@@ -127,6 +130,7 @@ public class Cli {
                 }
             } else {
                 String enemyInput;
+                HelperClass.languageOutput("Waiting for move...","Warte auf Zug...",currentGame);
                 if (currentGame.isNetworkServer()) {
                     enemyInput = NetworkServer.getMoveFromClient(testSocket);
                 } else {
