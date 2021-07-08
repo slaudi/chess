@@ -66,7 +66,7 @@ public class Cli {
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
             HelperClass.languageOutput("Waiting for client...","Warte auf Client...",currentGame);
-            Socket connectionSocket = NetworkGame.startServer();
+            Socket connectionSocket = NetworkGame.startServer(ipAddress);
             HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
             currentGame.setNetworkServer(true);
             currentGame.setUserColour(Colour.BLACK);
@@ -112,7 +112,6 @@ public class Cli {
                 String enemyInput = NetworkGame.receiveMove(connectionSocket);
                 assert enemyInput != null;
                 if (enemyInput.equals("giveUp")) {
-                    currentGame.changePlayer();
                     currentGame.currentPlayer.setLoser(true);
                     continue;
                 }
@@ -135,10 +134,7 @@ public class Cli {
             }
             return true;
         }
-        if (!canPieceMove(userInput, currentGame)) {
-            return true;
-        }
-        return false;
+        return !canPieceMove(userInput, currentGame);
     }
 
 
