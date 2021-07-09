@@ -335,7 +335,11 @@ public class Cli {
                 counter++;
             }
         }
-        String input = HelperClass.checkForInt(currentGame);
+        String input = new Scanner(System.in).nextLine();
+        checkForCommand(input,currentGame);
+        if (!HelperClass.checkForInt(input, currentGame)) {
+            cliLoad(currentGame);
+        }
         int choice = Integer.parseInt(input);
         Game tempGame = null;
         if(choice > -1 && choice < saves.size()){
