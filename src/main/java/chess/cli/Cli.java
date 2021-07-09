@@ -244,13 +244,27 @@ public class Cli {
                 currentGame.currentPlayer.setLoser(true);
                 return true;
             case "save":
-                SaveGame.save(currentGame);
-                HelperClass.languageOutput("You saved the current stage of the game!",
-                        "Du hast den aktuellen Spielstand gespeichert!", currentGame);
-                return true;
+                if(!currentGame.isNetworkServer() && !currentGame.isNetworkClient()){
+                    SaveGame.save(currentGame);
+                    HelperClass.languageOutput("You saved the current stage of the game!",
+                            "Du hast den aktuellen Spielstand gespeichert!", currentGame);
+                    return true;
+                }
+                else {
+                    HelperClass.languageOutput("Game-Saving while Network-Gaming is enabled!",
+                            "Während eines Netzwerk-Spiels ist Speichern nicht möglich!", currentGame);
+                    return true;
+                }
             case "load":
-                cliLoad(currentGame);
-                return true;
+                if(!currentGame.isNetworkServer() && !currentGame.isNetworkClient()){
+                    cliLoad(currentGame);
+                    return true;
+                }
+                else{
+                    HelperClass.languageOutput("Game-Loading while Network-Gaming is enabled!",
+                            "Während eines Netzwerk-Spiels ist Laden nicht möglich!", currentGame);
+                    return true;
+                }
             case "newGame":
                 Game newGame = new Game();
                 newGame.setLanguage(currentGame.getLanguage());
