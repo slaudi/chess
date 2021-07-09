@@ -5,16 +5,18 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
+/**
+ * The class handles the network connection when playing a network game.
+ */
 public class NetworkGame {
 
-    static Socket socket = null;
-    static ServerSocket server = null;
-    static InputStreamReader inputStreamReader = null;
-    static OutputStreamWriter outputStreamWriter = null;
-    static BufferedReader bufferedReader = null;
-    static BufferedWriter bufferedWriter = null;
-
-    // Sends ping request to a provided IP address
+    /**
+     * Sends ping request to a provided IP address.
+     *
+     * @param ipAddress The IP address as a String given by the user.
+     * @return boolean Returns 'true' if the given IP address is reachable.
+     */
     public static boolean sendPingRequest(String ipAddress) {
         try {
             InetAddress enemy = InetAddress.getByName(ipAddress);
@@ -25,18 +27,33 @@ public class NetworkGame {
         return false;
     }
 
+
+    /**
+     * Method starts the client by creating a local socket.
+     *
+     * @return Socket The socket which was created to handle the network connection.
+     */
     public static Socket startClient() {
         try {
-            socket = new Socket("127.0.0.1", 9876);
+            return new Socket("127.0.0.1", 9876);
         }
         catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return socket;
     }
 
+
+    /**
+     * Method starts the server by creating a new server socket depending on the given IP address
+     * which accepts an ingoing request from a client and a socket for the network.
+     *
+     * @param ipAddress The IP address as a String given by the user.
+     * @return Socket The created socket to handle the network connection.
+     */
     public static Socket startServer(String ipAddress){
         try {
+            ServerSocket server = null;
             if (ipAddress != null && !ipAddress.isEmpty())
                 server = new ServerSocket(0, 1, InetAddress.getByName(ipAddress));
             else
@@ -52,10 +69,16 @@ public class NetworkGame {
     }
 
 
+    /**
+     * Method which reads an incoming message.
+     *
+     * @param inSocket The socket handling the network connection.
+     * @return String The received message as a String.
+     */
     public static String receiveMove(Socket inSocket) {
         try {
-            inputStreamReader = new InputStreamReader(inSocket.getInputStream());
-            bufferedReader = new BufferedReader(inputStreamReader);
+            InputStreamReader inputStreamReader = new InputStreamReader(inSocket.getInputStream());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             return bufferedReader.readLine();
         }
         catch (IOException e) {
@@ -65,10 +88,17 @@ public class NetworkGame {
     }
 
 
-    public static void sendMove(String move,Socket outSocket){
+    /**
+     * Method which sends an outgoing message.
+     *
+     * @param move The message to send as a String.
+     * @param outSocket The socket handling the network connection.
+     */
+    public static void sendMove(String move, Socket outSocket){
         try {
-            outputStreamWriter = new OutputStreamWriter(outSocket.getOutputStream());
-            bufferedWriter = new BufferedWriter(outputStreamWriter);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outSocket.getOutputStream());
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+
             bufferedWriter.write(move);
             bufferedWriter.newLine();
             bufferedWriter.flush();
