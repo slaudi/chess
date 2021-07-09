@@ -53,12 +53,12 @@ public class NetworkGame {
      */
     public static Socket startServer(String ipAddress){
         try {
-            ServerSocket server = null;
-            if (ipAddress != null && !ipAddress.isEmpty())
+            ServerSocket server;
+            if (ipAddress != null && !ipAddress.isEmpty()) {
                 server = new ServerSocket(0, 1, InetAddress.getByName(ipAddress));
-            else
+            } else {
                 server = new ServerSocket(0, 1, InetAddress.getLocalHost());
-            server = new ServerSocket(9876);
+            }
             Socket client = server.accept();
             client.getRemoteSocketAddress();
             return client;
