@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Starting point of the command line interface
+ * Starting point of the command line interface.
  */
 public class Cli {
 
@@ -30,7 +30,7 @@ public class Cli {
     }
 
     private static void playGame(Game currentGame) {
-        checkForModus(currentGame);
+        startChessGame(currentGame);
 
         //checks if current Player has lost or if game is a draw
         HelperClass.finalWords(currentGame);
@@ -46,7 +46,7 @@ public class Cli {
     }
 
 
-    private static void checkForModus(Game currentGame){
+    private static void startChessGame(Game currentGame){
         HelperClass.languageOutput("Do you want to play a network or a local game?  network/local",
                 "Möchtest du ein Netzwerk-Spiel oder ein lokales Spiel starten? network/local", currentGame);
         String answer;
@@ -69,7 +69,7 @@ public class Cli {
             Socket connectionSocket = NetworkGame.startServer(ipAddress);
             HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
             currentGame.setNetworkServer(true);
-            currentGame.setUserColour(Colour.BLACK);
+            currentGame.setUserColour(Colour.WHITE);
             HelperClass.toConsole(currentGame);
             runNetworkGame(currentGame, connectionSocket);
         } else {
@@ -77,16 +77,16 @@ public class Cli {
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
             if (NetworkGame.sendPingRequest(ipAddress)){
-                Socket connectionSocket = NetworkGame.startClient();
+                Socket connectionSocket = NetworkGame.startServer(ipAddress);
                 HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
                 currentGame.setNetworkClient(true);
-                currentGame.setUserColour(Colour.WHITE);
+                currentGame.setUserColour(Colour.BLACK);
                 HelperClass.toConsole(currentGame);
                 runNetworkGame(currentGame, connectionSocket);
             } else {
                 // couldn't connect
-                HelperClass.languageOutput("Sorry ! We can't reach to this host.",
-                        "Sorry! Wir können diesen Host nicht erreichen.",currentGame);
+                HelperClass.languageOutput("Sorry ! We can't reach this host: " + ipAddress,
+                        "Sorry! Wir können diesen Host nicht erreichen: " + ipAddress,currentGame);
                 startNetworkGame(currentGame);
             }
         }
@@ -103,18 +103,16 @@ public class Cli {
                     HelperClass.getGermanColourName(currentGame) + " ist am Zug",currentGame);
             if (currentGame.getUserColour() == currentGame.currentPlayer.getColour()) {
                 String userInput = HelperClass.getInput(currentGame);
-                if (sendingInvalidMove(currentGame,connectionSocket,userInput)) {
+                if (checkForCommand(userInput, currentGame)) {
+                    continue;
+                }
+                if (!canPieceMove(userInput, currentGame)) {
                     continue;
                 }
                 NetworkGame.sendMove(userInput,connectionSocket);
             } else {
                 HelperClass.languageOutput("Waiting for move...","Warte auf Zug...",currentGame);
                 String enemyInput = NetworkGame.receiveMove(connectionSocket);
-                assert enemyInput != null;
-                if (enemyInput.equals("giveUp")) {
-                    currentGame.currentPlayer.setLoser(true);
-                    continue;
-                }
                 canPieceMove(enemyInput, currentGame);
             }
             HelperClass.toConsole(currentGame);
@@ -124,17 +122,6 @@ public class Cli {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    private static boolean sendingInvalidMove(Game currentGame, Socket connectionSocket, String userInput) {
-        if (checkForCommand(userInput, currentGame)) {
-            if (userInput.equals("giveUp")) {
-                NetworkGame.sendMove(userInput,connectionSocket);
-            }
-            return true;
-        }
-        return !canPieceMove(userInput, currentGame);
     }
 
 
@@ -225,7 +212,7 @@ public class Cli {
      * @param currentGame   The current status of the game.
      * @return boolean Returns 'True' if a valid command was given.
      */
-    public static boolean checkForCommand(String userInput, Game currentGame) {//NOPMD - need to check for every command available
+    private static boolean checkForCommand(String userInput, Game currentGame) {//NOPMD - need to check for every command available
         switch (userInput) {
             case "beaten":
                 System.out.println(currentGame.beatenPieces);
@@ -248,23 +235,19 @@ public class Cli {
                     SaveGame.save(currentGame);
                     HelperClass.languageOutput("You saved the current stage of the game!",
                             "Du hast den aktuellen Spielstand gespeichert!", currentGame);
-                    return true;
-                }
-                else {
-                    HelperClass.languageOutput("Game-Saving while Network-Gaming is enabled!",
+                } else {
+                    HelperClass.languageOutput("Saving the game while playing a network game is enabled!",
                             "Während eines Netzwerk-Spiels ist Speichern nicht möglich!", currentGame);
-                    return true;
                 }
+                return true;
             case "load":
                 if(!currentGame.isNetworkServer() && !currentGame.isNetworkClient()){
                     cliLoad(currentGame);
-                    return true;
-                }
-                else{
-                    HelperClass.languageOutput("Game-Loading while Network-Gaming is enabled!",
+                } else{
+                    HelperClass.languageOutput("Loading a game while playing a network game is enabled!",
                             "Während eines Netzwerk-Spiels ist Laden nicht möglich!", currentGame);
-                    return true;
                 }
+                return true;
             case "newGame":
                 Game newGame = new Game();
                 newGame.setLanguage(currentGame.getLanguage());
@@ -310,7 +293,7 @@ public class Cli {
      * @param consoleInput The console input of the active Player as a String.
      * @return boolean Returns 'true' if the syntax of the input is correct.
      */
-    public static boolean isNotValidMove(String consoleInput){
+    static boolean isNotValidMove(String consoleInput){
         ArrayList<String> keys = new ArrayList<>();
         keys.add("Q");
         keys.add("B");

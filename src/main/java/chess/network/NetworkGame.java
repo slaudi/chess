@@ -53,19 +53,15 @@ public class NetworkGame {
      */
     public static Socket startServer(String ipAddress){
         try {
-            ServerSocket server;
-            if (ipAddress != null && !ipAddress.isEmpty()) {
-                server = new ServerSocket(0, 1, InetAddress.getByName(ipAddress));
-            } else {
-                server = new ServerSocket(0, 1, InetAddress.getLocalHost());
-            }
-            Socket client = server.accept();
-            client.getRemoteSocketAddress();
-            return client;
+            ServerSocket server = new ServerSocket(9876);
+            Socket socket = server.accept();
+            socket.getRemoteSocketAddress();
+            return socket;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+
     }
 
 
