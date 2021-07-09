@@ -1,5 +1,8 @@
 package chess.network;
 
+import chess.game.Game;
+import chess.game.Square;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -46,7 +49,7 @@ public class NetworkGame {
 
     /**
      * Method starts the server by creating a new server socket depending on the given IP address
-     * which accepts an ingoing request from a client and a socket for the network.
+     * which accepts an ingoing request from a client and creates a socket for the network.
      *
      * @return Socket The created socket to handle the network connection.
      */
@@ -61,6 +64,22 @@ public class NetworkGame {
         }
         return null;
 
+    }
+
+
+    /**
+     * Makes the move received over the network connection.
+     *
+     * @param game              The current state of the game.
+     * @param connectionSocket  The socket handling the network connection.
+     */
+    public static void makeNetworkMove(Game game, Socket connectionSocket){
+        String enemyInput = receiveMove(connectionSocket);
+        assert enemyInput != null;
+        Square startSquare = game.chessBoard.getStartSquareFromInput(enemyInput);
+        Square finalSquare = game.chessBoard.getFinalSquareFromInput(enemyInput);
+        char key = game.chessBoard.getPromotionKey(enemyInput);
+        game.processMove(startSquare, finalSquare, key);
     }
 
 
