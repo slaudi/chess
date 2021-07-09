@@ -43,13 +43,7 @@
             <artifactId>javafx-fxml</artifactId>
             <version>16</version>
         </dependency>
-        <dependency>
-            <groupId>com.chess</groupId>
-            <artifactId>chess</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/external/ChessProtocol.jar</systemPath>
-        </dependency>
+
 
     </dependencies>
 
