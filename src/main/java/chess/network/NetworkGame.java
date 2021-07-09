@@ -35,7 +35,7 @@ public class NetworkGame {
      */
     public static Socket startClient() {
         try {
-            return new Socket("127.0.0.1", 9876);
+            return new Socket("127.0.0.1", 4999);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,12 +48,11 @@ public class NetworkGame {
      * Method starts the server by creating a new server socket depending on the given IP address
      * which accepts an ingoing request from a client and a socket for the network.
      *
-     * @param ipAddress The IP address as a String given by the user.
      * @return Socket The created socket to handle the network connection.
      */
-    public static Socket startServer(String ipAddress){
+    public static Socket startServer(){
         try {
-            ServerSocket server = new ServerSocket(9876);
+            ServerSocket server = new ServerSocket(4999);
             Socket socket = server.accept();
             socket.getRemoteSocketAddress();
             return socket;
@@ -73,9 +72,9 @@ public class NetworkGame {
      */
     public static String receiveMove(Socket inSocket) {
         try {
-            InputStreamReader inputStreamReader = new InputStreamReader(inSocket.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            return bufferedReader.readLine();
+            InputStream in = inSocket.getInputStream();
+            DataInputStream dataInputStream = new DataInputStream(in);
+            return dataInputStream.readUTF();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -92,12 +91,10 @@ public class NetworkGame {
      */
     public static void sendMove(String move, Socket outSocket){
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outSocket.getOutputStream());
-            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-
-            bufferedWriter.write(move);
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
+            OutputStream out = outSocket.getOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(out);
+            dataOutputStream.writeUTF(move);
+            dataOutputStream.flush();
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

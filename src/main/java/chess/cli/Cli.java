@@ -66,7 +66,7 @@ public class Cli {
         String ipAddress = new Scanner(System.in).nextLine();
         if (ipAddress.equals("0")){
             HelperClass.languageOutput("Waiting for client...","Warte auf Client...",currentGame);
-            Socket connectionSocket = NetworkGame.startServer(ipAddress);
+            Socket connectionSocket = NetworkGame.startServer();
             HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
             currentGame.setNetworkServer(true);
             currentGame.setUserColour(Colour.WHITE);
@@ -77,7 +77,7 @@ public class Cli {
             HelperClass.languageOutput("Sending Ping Request to " + ipAddress,
                     "Sende Ping-Anfrage an" + ipAddress,currentGame);
             if (NetworkGame.sendPingRequest(ipAddress)){
-                Socket connectionSocket = NetworkGame.startServer(ipAddress);
+                Socket connectionSocket = NetworkGame.startClient();
                 HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",currentGame);
                 currentGame.setNetworkClient(true);
                 currentGame.setUserColour(Colour.BLACK);
