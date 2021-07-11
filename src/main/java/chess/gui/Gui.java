@@ -149,10 +149,14 @@ public class Gui extends Application {
         String ipAddress = "Enter IP Address of Enemy: ";
         String startConnection = "Start Connection";
         String cancel = "Cancel";
+        String netError = "Network-Error";
+        String connectionError = "Not possible to connect to entered IP-Address.";
         if (guiGame.game.getLanguage() == Language.German){
             ipAddress = "Gib die IP-Adresse deines Gegners ein: ";
             startConnection = "Starte Verbindung";
             cancel = "Abbrechen";
+            netError = "Netzwerk-Fehler";
+            connectionError = "Keine Verbindung zu eingegebener IP-Addresse möglich";
         }
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
@@ -170,10 +174,12 @@ public class Gui extends Application {
 
         // Define buttons
         Button btnStartGame = new Button(startConnection);
+        String finalNetError = netError;
+        String finalConnectionError = connectionError;
         btnStartGame.setOnAction(event -> {
             String ipAddressText = IPAddress.getText();
             if (ipAddressText.equals("0")){
-                guiGame.connectionSocket = NetworkGame.startServer(ipAddressText);
+                guiGame.connectionSocket = NetworkGame.startServer();
                 guiGame.game.setNetworkServer(true);
                 guiGame.game.setUserColour(Colour.BLACK);
                 chessScene = chessWindow(primaryStage,guiGame);
@@ -186,7 +192,11 @@ public class Gui extends Application {
                     chessScene = chessWindow(primaryStage,guiGame);
                     primaryStage.setScene(chessScene);
                 } else {
-                    //TODO AlertBox oder so
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(finalNetError);
+                    alert.setHeaderText(null);
+                    alert.setContentText(finalConnectionError);
+                    alert.showAndWait();
                 }
             }
         });
