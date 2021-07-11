@@ -1,7 +1,9 @@
 package chess.gui;
 
+import chess.cli.HelperClass;
 import chess.engine.Engine;
 import chess.game.*;
+import chess.network.NetworkGame;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 
@@ -95,6 +97,9 @@ public class GuiGame {
             int result = processingMovement(chessBoardView);
             if (result == 0) {
                 // Move is allowed
+                if(game.isNetworkClient() || game.isNetworkServer()){
+                    NetworkGame.sendMove(HelperClass.generateMoveString(this.squareStart, this.squareFinal), connectionSocket);
+                }
                 this.squareStart = null;
                 this.squareFinal = null;
                 game.isInCheck();
@@ -161,6 +166,10 @@ public class GuiGame {
             turnAI = false;
             chessBoardView.generatePane();
         }
+    }
+
+    void doNetworkMove(){
+        NetworkGame.makeNetworkMove(this.game, this.connectionSocket);
     }
 
 

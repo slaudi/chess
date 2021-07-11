@@ -181,14 +181,14 @@ public class Gui extends Application {
             if (ipAddressText.equals("0")){
                 guiGame.connectionSocket = NetworkGame.startServer();
                 guiGame.game.setNetworkServer(true);
-                guiGame.game.setUserColour(Colour.BLACK);
+                guiGame.game.setUserColour(Colour.WHITE);
                 chessScene = chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
             } else {
                 if (NetworkGame.sendPingRequest(ipAddressText)) {
                     guiGame.connectionSocket = NetworkGame.startClient();
                     guiGame.game.setNetworkClient(true);
-                    guiGame.game.setUserColour(Colour.WHITE);
+                    guiGame.game.setUserColour(Colour.BLACK);
                     chessScene = chessWindow(primaryStage,guiGame);
                     primaryStage.setScene(chessScene);
                 } else {

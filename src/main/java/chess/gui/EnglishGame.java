@@ -390,6 +390,4 @@ public class EnglishGame extends BorderPane {
             return 'Q';
         }
     }
-
-
 }

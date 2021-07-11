@@ -167,4 +167,10 @@ public class HelperClass {
         }
     }
 
+    public static String generateMoveString (Square start, Square end){
+        String moveString;
+        moveString = String.valueOf(start.getCharFromX() + start.getCharFromY() + '-' + end.getCharFromX() + end.getCharFromY());
+        return moveString;
+    }
+
 }
