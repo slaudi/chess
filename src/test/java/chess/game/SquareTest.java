@@ -15,6 +15,14 @@ public class SquareTest {
     Game game;
     Square square;
     Rook rook;
+    Square a1;
+    Square b2;
+    Square c3;
+    Square d4;
+    Square e5;
+    Square f6;
+    Square g7;
+    Square h8;
 
     /**
      * Set up for testing the Square class
@@ -23,6 +31,14 @@ public class SquareTest {
     public void setUp() {
         game =  new Game();
         square = new Square(Label.a3,0,5);
+        a1 = new Square(Label.a1, 0, 7);
+        b2 = new Square(Label.b2, 1, 6);
+        c3 = new Square(Label.c3, 2, 5);
+        d4 = new Square(Label.d4, 3, 4);
+        e5 = new Square(Label.e5, 4, 3);
+        f6 = new Square(Label.f6, 5, 2);
+        g7 = new Square(Label.g7, 6, 1);
+        h8 = new Square(Label.h8, 7, 0);
     }
 
     /**
@@ -143,4 +159,35 @@ public class SquareTest {
         assertEquals(9, Square.getYFromString("j9"));
     }
 
+    @Test
+    public void getCharFromY() {
+        assertEquals('1', a1.getCharFromY());
+        assertEquals('2', b2.getCharFromY());
+        assertEquals('3', c3.getCharFromY());
+        assertEquals('4', d4.getCharFromY());
+    }
+
+    @Test
+    public void getCharFromY2() {
+        assertEquals('5', e5.getCharFromY());
+        assertEquals('6', f6.getCharFromY());
+        assertEquals('7', g7.getCharFromY());
+        assertEquals('8', h8.getCharFromY());
+    }
+
+    @Test
+    public void getCharFromX() {
+        assertEquals('a', a1.getCharFromX());
+        assertEquals('b', b2.getCharFromX());
+        assertEquals('c', c3.getCharFromX());
+        assertEquals('d', d4.getCharFromX());
+    }
+
+    @Test
+    public void getCharFromX2() {
+        assertEquals('e', e5.getCharFromX());
+        assertEquals('f', f6.getCharFromX());
+        assertEquals('g', g7.getCharFromX());
+        assertEquals('h', h8.getCharFromX());
+    }
 }
