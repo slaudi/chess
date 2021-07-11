@@ -137,48 +137,44 @@ public class Square {
 
     public char getCharFromY() {
         char y;
-        if (this.getY() == 0) {
+        if (this.y == 0) {
             y = '8';
-        } else if (this.getY() == 1) {
+        } else if (this.y == 1) {
             y = '7';
-        } else if (this.getY() == 2) {
+        } else if (this.y == 2) {
             y = '6';
-        } else if (this.getY() == 3) {
+        } else if (this.y == 3) {
             y = '5';
-        } else if (this.getY() == 4) {
+        } else if (this.y == 4) {
             y = '4';
-        } else if (this.getY() == 5) {
+        } else if (this.y == 5) {
             y = '3';
-        } else if (this.getY() == 6) {
+        } else if (this.y == 6) {
             y = '2';
-        } else if (this.getY() == 7) {
-            y = '1';
         } else {
-            y = '9';
+            y = '1';
         }
         return y;
     }
 
     public char getCharFromX() {
         char x;
-        if (this.getX() == 0) {
+        if (this.x == 0) {
             x = 'a';
-        } else if (this.getX() == 1) {
+        } else if (this.x == 1) {
             x = 'b';
-        } else if (this.getX() == 2) {
+        } else if (this.x == 2) {
             x = 'c';
-        } else if (this.getX() == 3) {
+        } else if (this.x == 3) {
             x = 'd';
-        } else if (this.getX() == 4) {
+        } else if (this.x == 4) {
             x = 'e';
-        } else if (this.getX() == 5) {
+        } else if (this.x == 5) {
             x = 'f';
-        } else if (this.getX() == 6) {
+        } else if (this.x == 6) {
             x = 'g';
-        } else if (this.getX() == 7) {
-            x = 'h';
         } else {
-            x = '9';
+            x = 'h';
         }
         return x;
     }
