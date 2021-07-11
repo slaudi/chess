@@ -20,6 +20,7 @@ public class ConfirmationBox {
      *
      * @param title Title of PopUp-Window
      * @param message Content of PopUp-Window
+     * @param language language to be displayed
      * @return Returns the Answer of User(Yes or No) as a Boolean
      */
     public static boolean display(String title, String message, Language language){

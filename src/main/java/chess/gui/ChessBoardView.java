@@ -38,6 +38,9 @@ public class ChessBoardView extends BorderPane {
      * Constructor for GuiGame-Class.
      *
      * @param guiGame The State of the current Game the View needs to display it.
+     * @param gui Parameters of gui need to be accessible
+     * @param germanGame instance of game in german language
+     * @param englishGame instance of game in english language
      */
     public ChessBoardView(GuiGame guiGame, Gui gui, GermanGame germanGame, EnglishGame englishGame) {
         this.guiGame = guiGame;

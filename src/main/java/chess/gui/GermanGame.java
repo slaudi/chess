@@ -43,6 +43,7 @@ public class GermanGame extends BorderPane {
      * The Constructor for GermanGame.
      *
      * @param guiGame           The current guiGame.
+     * @param gui gui-parameters
      */
     public GermanGame(GuiGame guiGame, Gui gui) {
         this.guiGame = guiGame;
