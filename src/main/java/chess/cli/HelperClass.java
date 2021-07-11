@@ -167,6 +167,11 @@ public class HelperClass {
         }
     }
 
+    /**
+     * @param start Square from which Movement starts
+     * @param end Square on which Movement ends
+     * @return A String which represents Movement
+     */
     public static String generateMoveString (Square start, Square end){
         String moveString = "";
         moveString = moveString + start.getCharFromX() + start.getCharFromY() + '-' + end.getCharFromX() + end.getCharFromY();

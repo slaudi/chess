@@ -135,6 +135,11 @@ public class Square {
         return result;
     }
 
+    /**
+     *
+     * Helper-Method generating a Character from Squares Y-Coordinate
+     * @return returns a Character which names line on chessboard
+     */
     public char getCharFromY() {
         char y;
         if (this.y == 0) {
@@ -157,6 +162,10 @@ public class Square {
         return y;
     }
 
+    /**
+     * Helper-Method generating a Character from Squares X-Coordinate
+     * @return returns a Character which names column on chessboard
+     */
     public char getCharFromX() {
         char x;
         if (this.x == 0) {

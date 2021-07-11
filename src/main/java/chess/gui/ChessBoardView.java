@@ -1,7 +1,6 @@
 package chess.gui;
 
 import chess.game.*;
-import chess.network.NetworkGame;
 import chess.pieces.Piece;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -257,10 +256,8 @@ public class ChessBoardView extends BorderPane {
         if (guiGame.game.isArtificialEnemy() && guiGame.turnAI) {
             guiGame.makeAIMove(this);
         }
-        if(guiGame.game.isNetworkServer() || guiGame.game.isNetworkClient()){
-            if(guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()){
-                guiGame.doNetworkMove();
-            }
+        if ((guiGame.game.isNetworkServer() || guiGame.game.isNetworkClient()) && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
+            guiGame.doNetworkMove();
         }
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
