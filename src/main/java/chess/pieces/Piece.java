@@ -206,4 +206,23 @@ public abstract class Piece {
         return dir;
     }
 
+    /**
+     * Helper-Method for Promotion in Gui
+     * @return Char for Promotion in GUI
+     */
+    public char getPromotionChar(){
+        if(this.getType() == Type.ROOK){
+            return 'R';
+        }
+        else if (this.getType() == Type.KNIGHT){
+            return 'N';
+        }
+        else if (this.getType() == Type.BISHOP){
+            return 'B';
+        }
+        else {
+            return 'Q';
+        }
+    }
+
 }

@@ -174,7 +174,7 @@ public class HelperClass {
      */
     public static String generateMoveString (Square start, Square end){
         String moveString = "";
-        moveString = moveString + start.getCharFromX() + start.getCharFromY() + '-' + end.getCharFromX() + end.getCharFromY();
+        moveString = moveString + start.getCharFromX() + start.getCharFromY() + '-' + end.getCharFromX() + end.getCharFromY() + end.getOccupiedBy().getPromotionChar();
         System.out.println(moveString);
         return moveString;
     }

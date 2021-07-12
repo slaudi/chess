@@ -21,6 +21,9 @@ public class PieceTest {
     Square squareD4;
     Square squareH5;
     Square squareE4;
+    Piece queen;
+    Piece rook;
+    Piece knight;
 
     /**
      * Set up for the Piece class tests
@@ -32,7 +35,10 @@ public class PieceTest {
         squareD4 = new Square(d4,3,4);
         squareH5 = new Square(h5,7,3);
         squareE4 = new Square(e4,5,4);
-        bishop = new Bishop(squareD3, Colour.WHITE);
+        bishop = new Bishop(squareD3, Colour.BLACK);
+        queen = new Queen(squareD4, Colour.BLACK);
+        rook = new Rook(squareH5, Colour.BLACK);
+        knight = new Knight(squareE4, Colour.BLACK);
     }
 
     /**
@@ -88,5 +94,35 @@ public class PieceTest {
     }
 
 
+    /**
+     * Tests if right Promotion-Char is returned
+     */
+    @Test
+    public void getPromotionCharQueen() {
+        assertEquals('Q', queen.getPromotionChar());
+    }
 
+    /**
+     * Tests if right Promotion-Char is returned
+     */
+    @Test
+    public void getPromotionCharRook() {
+        assertEquals('R', rook.getPromotionChar());
+    }
+
+    /**
+     * Tests if right Promotion-Char is returned
+     */
+    @Test
+    public void getPromotionCharBishop() {
+        assertEquals('B', bishop.getPromotionChar());
+    }
+
+    /**
+     * Tests if right Promotion-Char is returned
+     */
+    @Test
+    public void getPromotionCharKnight() {
+        assertEquals('N', knight.getPromotionChar());
+    }
 }
