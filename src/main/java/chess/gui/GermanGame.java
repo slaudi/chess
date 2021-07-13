@@ -51,7 +51,7 @@ public class GermanGame extends BorderPane {
     }
 
 
-    void startButtonsGerman(List<Button> startButtons) {
+    void startButtons(List<Button> startButtons) {
         startButtons.get(0).setText("Willkommen zu einer neuen Partie Schach!");
         startButtons.get(1).setText("Starte Spiel");
         startButtons.get(2).setText("Netzwerk-Spiel");
@@ -60,7 +60,7 @@ public class GermanGame extends BorderPane {
     }
 
 
-    void chooseEnemyGerman(Stage primaryStage) {
+    void chooseEnemy(Stage primaryStage) {
         ButtonType human = new ButtonType("Mensch");
         ButtonType computer = new ButtonType("KI");
 
@@ -118,7 +118,7 @@ public class GermanGame extends BorderPane {
     }
 
 
-    void loadGermanGame(Stage primaryStage){
+    void loadGame(Stage primaryStage){
         boolean result = ConfirmationBox.display("Spiel laden","Möchtest du ein gespeichertes Spiel laden?", this.language);
         if (result) {
             File f = new File(System.getProperty("user.home") + "/saves");
@@ -166,7 +166,7 @@ public class GermanGame extends BorderPane {
     }
 
 
-    MenuBar createGermanMenu(Stage primaryStage){
+    MenuBar createMenu(Stage primaryStage){
         Menu chessMenu = gameMenu(primaryStage);
         Menu optionsMenu = optionsMenu();
         Menu styleMenu = styleMenu(primaryStage);
@@ -228,7 +228,7 @@ public class GermanGame extends BorderPane {
         // Load Game-menu item
         MenuItem loadGame = new MenuItem("Spiel laden");
         loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
-        loadGame.setOnAction(e -> loadGermanGame(primaryStage));
+        loadGame.setOnAction(e -> loadGame(primaryStage));
         chessMenu.getItems().add(loadGame);
         // Giving up
         MenuItem giveUp = new MenuItem("Aufgeben");

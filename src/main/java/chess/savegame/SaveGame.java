@@ -35,7 +35,7 @@ public class SaveGame {
             File savingFile = new File(System.getProperty("user.home") + "/saves");
             if (!savingFile.exists()) {
                 if (!savingFile.mkdir()){
-                    System.out.println("Error while creating Savegame-Directory");
+                    System.out.println("Error while creating SaveGame-Directory");
                 }
             }
             String filename = System.getProperty("user.home") + "/saves/SaveGame" + date + ".txt";

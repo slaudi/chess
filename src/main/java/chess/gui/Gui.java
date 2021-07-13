@@ -77,7 +77,7 @@ public class Gui extends Application {
         List<Button> startButtons = new ArrayList<>();
         Collections.addAll(startButtons,welcome,startLocalGame,startNetworkGame,loadGame,language);
         if (guiGame.game.getLanguage() == Language.German) {
-            germanGame.startButtonsGerman(startButtons);
+            germanGame.startButtons(startButtons);
         } else {
             englishGame.startButtonsEnglish(startButtons);
         }
@@ -91,9 +91,9 @@ public class Gui extends Application {
         startLocalGame.getStyleClass().add(startButtonStyle);
         startLocalGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
-                germanGame.chooseEnemyGerman(primaryStage);
+                germanGame.chooseEnemy(primaryStage);
             } else {
-                englishGame.chooseEnemyEnglish(primaryStage);
+                englishGame.chooseEnemy(primaryStage);
             }
         });
 
@@ -103,9 +103,9 @@ public class Gui extends Application {
         loadGame.getStyleClass().add(startButtonStyle);
         loadGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
-                germanGame.loadGermanGame(primaryStage);
+                germanGame.loadGame(primaryStage);
             } else {
-                englishGame.loadEnglishGame(primaryStage);
+                englishGame.loadGame(primaryStage);
             }
         });
 
@@ -230,9 +230,9 @@ public class Gui extends Application {
     MenuBar createMenu(Stage primaryStage) {
         MenuBar menuBar;
         if (guiGame.game.getLanguage() == Language.English) {
-            menuBar = englishGame.createEnglishMenu(primaryStage);
+            menuBar = englishGame.generateMenu(primaryStage);
         } else {
-            menuBar = germanGame.createGermanMenu(primaryStage);
+            menuBar = germanGame.createMenu(primaryStage);
         }
         return menuBar;
     }

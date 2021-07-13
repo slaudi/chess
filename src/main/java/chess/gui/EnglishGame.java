@@ -59,7 +59,7 @@ public class EnglishGame extends BorderPane {
         startButtons.get(4).setText("Language");
     }
 
-    void chooseEnemyEnglish(Stage primaryStage) {
+    void chooseEnemy(Stage primaryStage) {
         ButtonType human = new ButtonType("Person");
         ButtonType computer = new ButtonType("AI");
 
@@ -116,7 +116,7 @@ public class EnglishGame extends BorderPane {
         }
     }
 
-    void loadEnglishGame(Stage primaryStage){
+    void loadGame(Stage primaryStage){
         boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
 
         if (result) {
@@ -156,7 +156,7 @@ public class EnglishGame extends BorderPane {
     }
 
 
-    MenuBar createEnglishMenu(Stage primaryStage){
+    MenuBar generateMenu(Stage primaryStage){
         Menu chessMenu = gameMenu(primaryStage);
         Menu optionsMenu = optionsMenu();
         Menu styleMenu = styleMenu(primaryStage);
@@ -218,7 +218,7 @@ public class EnglishGame extends BorderPane {
         // Load Game-menu item
         MenuItem loadGame = new MenuItem("Load Game");
         loadGame.setAccelerator(KeyCombination.keyCombination("Ctrl+L"));
-        loadGame.setOnAction(e -> loadEnglishGame(primaryStage));
+        loadGame.setOnAction(e -> loadGame(primaryStage));
         chessMenu.getItems().add(loadGame);
         // Giving up
         MenuItem giveUp = new MenuItem("Give Up");
