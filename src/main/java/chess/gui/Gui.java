@@ -18,8 +18,6 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static chess.gui.Gui.startScene;
-
 /**
  * Starting point of the JavaFX GUI
  */
