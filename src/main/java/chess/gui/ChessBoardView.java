@@ -18,12 +18,9 @@ import java.util.List;
  */
 public class ChessBoardView extends BorderPane {
 
-    /**
-     * ChessBoardView class has access to GuiGame class.
-     */
-    public final GuiGame guiGame;
-    public final GermanGame germanGame;
-    public final EnglishGame englishGame;
+    private final GuiGame guiGame;
+    final GermanGame germanGame;
+    final EnglishGame englishGame;
 
     private final String highlightBackground = "-fx-background-color: SKYBLUE";
     private final int buttonHeight = 85;
@@ -126,7 +123,7 @@ public class ChessBoardView extends BorderPane {
 
     GridPane generateButtonGrid() {
         GridPane grid = new GridPane();
-        setButtons(grid);
+        selectButtons(grid);
         addIndices(grid);
         return grid;
     }
@@ -134,13 +131,13 @@ public class ChessBoardView extends BorderPane {
 
     GridPane generateHighlightedButtonGrid() {
         GridPane grid = new GridPane();
-        setHighlightedButtons(grid);
+        selectHighlightedButtons(grid);
         addIndices(grid);
         return grid;
     }
 
 
-    private void setButtons(GridPane grid) {
+    private void selectButtons(GridPane grid) {
         for (int y = 0; y < guiGame.game.chessBoard.getHeight(); y++) {
             for (int x = 0; x < guiGame.game.chessBoard.getWidth(); x++) {
                 Button button = new Button();
@@ -163,7 +160,7 @@ public class ChessBoardView extends BorderPane {
     }
 
 
-    private void setHighlightedButtons(GridPane grid) {
+    private void selectHighlightedButtons(GridPane grid) {
         List<Square> allowedSquares = guiGame.computePossibleSquares();
 
         if (guiGame.game.getLanguage() == Language.German){
