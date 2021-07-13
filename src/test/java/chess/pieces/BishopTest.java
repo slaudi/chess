@@ -170,7 +170,7 @@ public class BishopTest {
     }
 
     /**
-     * tests if hasn#t moved is true
+     * tests if hasn't moved is true
      */
     @Test
     public void hasNotMoved() {

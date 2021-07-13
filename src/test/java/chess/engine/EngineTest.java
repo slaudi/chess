@@ -8,6 +8,8 @@ import chess.pieces.Pawn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -38,7 +40,7 @@ public class EngineTest {
         game.chessBoard.addWhiteAlliance(game.chessBoard.getPieceAt(0, 0));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(7, 0));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(1, 7));
-        assertEquals(1, Engine.nextBestMove(game).getFinalSquare().getY());
+        assertEquals(1, Objects.requireNonNull(Engine.nextBestMove(game)).getFinalSquare().getY());
     }
 
     /**
@@ -59,6 +61,6 @@ public class EngineTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(7, 0));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(1, 7));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(6, 0));
-        assertEquals(1, Engine.nextBestMove(game).getFinalSquare().getY());
+        assertEquals(1, Objects.requireNonNull(Engine.nextBestMove(game)).getFinalSquare().getY());
     }
 }

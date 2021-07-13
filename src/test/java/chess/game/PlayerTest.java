@@ -42,7 +42,7 @@ public class PlayerTest {
     }
 
     /**
-     * tests setter for incheck
+     * tests setter for inCheck
      */
     @Test
     public void setInCheck() {
@@ -60,7 +60,7 @@ public class PlayerTest {
     }
 
     /**
-     * tests if isincheck works
+     * tests if isInCheck works
      */
     @Test
     public void isInCheck() {
@@ -69,7 +69,7 @@ public class PlayerTest {
     }
 
     /**
-     * tests if isloser works
+     * tests if isLoser works
      */
     @Test
     public void isLoser() {
@@ -95,7 +95,7 @@ public class PlayerTest {
     }
 
     /**
-     * tests if white has no enemypieces
+     * tests if white has no enemy pieces
      */
     @Test
     public void notWhiteEnemyPieces() {
@@ -104,7 +104,7 @@ public class PlayerTest {
     }
 
     /**
-     * tests if black has no enemypieces
+     * tests if black has no enemy pieces
      */
     @Test
     public void notBlackEnemyPieces(){

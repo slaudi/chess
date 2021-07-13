@@ -83,7 +83,7 @@ public class KingTest {
     }
 
     /**
-     * tests if hasn#t moved is true
+     * tests if hasn't moved is true
      */
     @Test
     public void hasNotMoved() {
@@ -162,10 +162,10 @@ public class KingTest {
     @Test
     public void cannotCastle(){
         // Y is not null
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 1),blackEnemies, game1.chessBoard));
+        assertFalse(king.canDoCastling(game1.chessBoard.getSquareAt(2, 1),blackEnemies, game1.chessBoard));
         // king already moved
         king.setNotMoved(false);
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(2, 0),blackEnemies, game1.chessBoard));
+        assertFalse(king.canDoCastling(game1.chessBoard.getSquareAt(2, 0),blackEnemies, game1.chessBoard));
         // castling path under attack
         game1.chessBoard.clearBoard();
         king = new King(game1.chessBoard.getSquareAt(4,7),Colour.WHITE);
@@ -176,7 +176,7 @@ public class KingTest {
         game1.chessBoard.setPieceAt(5,3,enemyRook);
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.addBlackAlliance(enemyRook);
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6,7),whiteEnemies,game1.chessBoard));
+        assertFalse(king.canDoCastling(game1.chessBoard.getSquareAt(6,7),whiteEnemies,game1.chessBoard));
         // castling path under attack by pawn
         game1.chessBoard.clearBoard();
         game1.chessBoard.setPieceAt(4,7,king);
@@ -185,7 +185,7 @@ public class KingTest {
         game1.chessBoard.setPieceAt(6,6,enemyPawn);
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.addBlackAlliance(enemyPawn);
-        assertFalse(((King)king).canDoCastling(game1.chessBoard.getSquareAt(6,7),whiteEnemies,game1.chessBoard));
+        assertFalse(king.canDoCastling(game1.chessBoard.getSquareAt(6,7),whiteEnemies,game1.chessBoard));
     }
 
     /**

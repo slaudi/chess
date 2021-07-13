@@ -81,7 +81,7 @@ public class QueenTest {
     }
 
     /**
-     * tests if hasn#t moved is true
+     * tests if hasn't moved is true
      */
     @Test
     public void hasNotMoved() {
