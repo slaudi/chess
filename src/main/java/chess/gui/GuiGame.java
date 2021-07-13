@@ -229,5 +229,4 @@ public class GuiGame { //NOPMD - this is the main class for handling gui; all fi
         }
         return key;
     }
-
 }
