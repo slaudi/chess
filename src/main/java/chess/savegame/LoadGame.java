@@ -16,7 +16,7 @@ public class LoadGame {
 
     /**
      * main method when it comes to game-loading
-     * @param loadString String-Version of savegame-file
+     * @param loadString String-Version of the saveGame-file
      * @return returns a game
      */
     public static Game load(List<String> loadString){

@@ -46,12 +46,6 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         assertFalse(game1.isMoveAllowed(board1.getMovingPieceFromInput("e1-e5"), board1.getFinalSquareFromInput("e1-e5")));
         // selected Piece is null
         assertFalse(game1.isMoveAllowed(board1.getSquareAt(0,3).getOccupiedBy(), board1.getSquareAt(0,4)));
-        // King and castling TODO: gibt false zurück, funktioniert defendKing richtig?
-        /*board1.setPieceAt(5, 0, null);
-        board1.setPieceAt(6, 0, null);
-        Piece king = board1.getPieceAt(4,0);
-        Cli.toConsole(game1);
-        assertTrue(game1.isMoveAllowed(king, board1.getSquareAt(6,0)));*/
     }
 
     /**
@@ -489,8 +483,8 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      * tests if defending King-Method is working
      */
     @Test
-    public void testcanDefendKing(){
-        //attaking Piece can be beaten
+    public void testCanDefendKing(){
+        //attacking Piece can be beaten
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(0, 1));
         game1.chessBoard.setPieceAt(0, 1, null);
         game1.chessBoard.getPieceAt(3, 6).setSquare(game1.chessBoard.getSquareAt(3, 6));

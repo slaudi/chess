@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Gui extends Application {
 
-    public GuiGame guiGame;
-    public EnglishGame englishGame;
-    public GermanGame germanGame;
+    private GuiGame guiGame;
+    EnglishGame englishGame;
+    GermanGame germanGame;
     static Scene startScene, chessScene;
     Color background = Color.FLORALWHITE;
 
@@ -156,7 +156,7 @@ public class Gui extends Application {
             startConnection = "Starte Verbindung";
             cancel = "Abbrechen";
             netError = "Netzwerk-Fehler";
-            connectionError = "Keine Verbindung zu eingegebener IP-Addresse möglich";
+            connectionError = "Keine Verbindung zu eingegebener IP-Adresse möglich";
         }
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
@@ -180,14 +180,14 @@ public class Gui extends Application {
             String ipAddressText = IPAddress.getText();
             if (ipAddressText.equals("0")){
                 guiGame.connectionSocket = NetworkGame.startServer();
-                guiGame.game.setNetworkServer(true);
+                guiGame.game.setNetworkGame(true);
                 guiGame.game.setUserColour(Colour.WHITE);
                 chessScene = chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
             } else {
                 if (NetworkGame.sendPingRequest(ipAddressText)) {
                     guiGame.connectionSocket = NetworkGame.startClient();
-                    guiGame.game.setNetworkClient(true);
+                    guiGame.game.setNetworkGame(true);
                     guiGame.game.setUserColour(Colour.BLACK);
                     chessScene = chessWindow(primaryStage,guiGame);
                     primaryStage.setScene(chessScene);
@@ -215,14 +215,25 @@ public class Gui extends Application {
     Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
         BorderPane pane = new BorderPane();
 
-        ChessBoardView chessBoardView = new ChessBoardView(guiGame,this,germanGame,englishGame);
-        MenuBar menuBar = chessBoardView.createMenu(primaryStage);
+        ChessBoardView chessBoardView = new ChessBoardView(guiGame,germanGame,englishGame);
+        MenuBar menuBar = createMenu(primaryStage);
 
         pane.setTop(menuBar);
         pane.setCenter(chessBoardView);
         pane.setBackground(new Background(new BackgroundFill(background,CornerRadii.EMPTY,Insets.EMPTY)));
 
         return new Scene(pane, 800, 825);
+    }
+
+
+    MenuBar createMenu(Stage primaryStage) {
+        MenuBar menuBar;
+        if (guiGame.game.getLanguage() == Language.English) {
+            menuBar = englishGame.createEnglishMenu(primaryStage);
+        } else {
+            menuBar = germanGame.createGermanMenu(primaryStage);
+        }
+        return menuBar;
     }
 
 

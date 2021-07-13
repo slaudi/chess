@@ -59,7 +59,7 @@ public class EvaluatePiecesTest {
      * an evaluation of a nearly empty board with only a King and a Rook for each Player. White King in Check.
      */
     @Test
-    public void evaluateBoardinCheck(){
+    public void evaluateBoardInCheck(){
         game.chessBoard.clearBoard();
         game.chessBoard.clearBlackAlliance();
         game.chessBoard.clearWhiteAlliance();

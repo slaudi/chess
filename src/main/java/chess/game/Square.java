@@ -11,7 +11,6 @@ public class Square {
     private final int y;
     private Piece occupiedBy = null;
     private final Label label;
-    private final Colour colour;
 
     /**
      * Constructor for creating a single square when starting a new Game.
@@ -24,19 +23,6 @@ public class Square {
         this.x = x;
         this.y = y;
         this.label = label;
-        if (y % 2 == 0){
-            if (x % 2 == 0){
-                this.colour = Colour.WHITE;
-            } else {
-                this.colour = Colour.BLACK;
-            }
-        } else {
-            if (x % 2 == 0){
-                this.colour = Colour.BLACK;
-            } else {
-                this.colour = Colour.WHITE;
-            }
-        }
     }
 
     public Label getLabel(){
@@ -69,9 +55,6 @@ public class Square {
         this.occupiedBy = occupiedBy;
     }
 
-    public Colour getColour(){
-        return this.colour;
-    }
 
     /**
      * A function determining the x-coordinate of a selected square from the console input.

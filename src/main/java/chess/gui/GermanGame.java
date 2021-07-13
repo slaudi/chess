@@ -33,9 +33,9 @@ import static chess.gui.Gui.*;
  */
 public class GermanGame extends BorderPane {
 
-    public GuiGame guiGame;
-    public Gui gui;
-    public Language language = Language.German;
+    private GuiGame guiGame;
+    private final Gui gui;
+    private final Language language = Language.German;
     CheckMenuItem changeSelected;
 
 
@@ -79,7 +79,7 @@ public class GermanGame extends BorderPane {
             List<ButtonType> colour = new ArrayList<>();
             Collections.addAll(colour,white,black);
 
-            ButtonType colourResult = OptionBox.display("Farb-Auswahl",null,"Wähle deine Farbe:", colour);
+            ButtonType colourResult = OptionBox.display("Farbauswahl",null,"Wähle deine Farbe:", colour);
             if (colourResult == white) {
                 guiGame.game.setUserColour(Colour.WHITE);
             } else {

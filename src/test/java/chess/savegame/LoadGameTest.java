@@ -114,7 +114,7 @@ public class LoadGameTest {
             loadingFile = new File(directory + name);
         }
         game8 = LoadGame.loadFile(loadingFile);
-        assertEquals(null, game8.chessBoard.getPieceAt(0, 0));
+        assertNull(game8.chessBoard.getPieceAt(0, 0));
     }
 
     /**
@@ -142,7 +142,7 @@ public class LoadGameTest {
     }
 
     /**
-     * test for loading beatne pieces list
+     * test for loading beaten pieces list
      */
     @Test
     public void BeatenPiecesLoading(){

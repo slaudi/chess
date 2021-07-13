@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * HelperClass for Game class for Methods only needed when Playing in GUI.
  */
-public class GuiGame { //NOPMD - this is the main class for handling gui; all fields needed
+public class GuiGame { //NOPMD - this is the main class for handling gui - all fields needed
 
     /**
      * The GuiGame class can access the actual Game class to make moves.
      */
-    public Game game;
+    Game game;
 
     private Square squareStart = null;
     private Square squareFinal = null;
@@ -97,7 +97,7 @@ public class GuiGame { //NOPMD - this is the main class for handling gui; all fi
             int result = processingMovement(chessBoardView);
             if (result == 0) {
                 // Move is allowed
-                if(game.isNetworkClient() || game.isNetworkServer()){
+                if(game.isNetworkGame()){
                     NetworkGame.sendMove(HelperClass.generateMoveString(this.squareStart, this.squareFinal), connectionSocket);
                 }
                 this.squareStart = null;

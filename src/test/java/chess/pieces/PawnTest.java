@@ -87,7 +87,7 @@ public class PawnTest {
     }
 
     /**
-     * tests if hasn#t moved is true
+     * tests if hasn't moved is true
      */
     @Test
     public void hasNotMoved() {

@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -22,45 +21,30 @@ public class ChessBoardView extends BorderPane {
     /**
      * ChessBoardView class has access to GuiGame class.
      */
-    public GuiGame guiGame;
-    public Gui gui;
-    public GermanGame germanGame;
-    public EnglishGame englishGame;
+    public final GuiGame guiGame;
+    public final GermanGame germanGame;
+    public final EnglishGame englishGame;
 
-    private final String highlightColour = "skyblue";
-    private final String highlightBackground = "-fx-background-color: " + highlightColour;
-    int buttonHeight = 85;
-    int buttonWidth = 85;
-    int fontSize = 17;
+    private final String highlightBackground = "-fx-background-color: SKYBLUE";
+    private final int buttonHeight = 85;
+    private final int buttonWidth = 85;
 
 
     /**
      * Constructor for GuiGame-Class.
      *
      * @param guiGame The State of the current Game the View needs to display it.
-     * @param gui Parameters of gui need to be accessible
      * @param germanGame instance of game in german language
      * @param englishGame instance of game in english language
      */
-    public ChessBoardView(GuiGame guiGame, Gui gui, GermanGame germanGame, EnglishGame englishGame) {
+    public ChessBoardView(GuiGame guiGame, GermanGame germanGame, EnglishGame englishGame) {
         this.guiGame = guiGame;
-        this.gui = gui;
         this.germanGame = germanGame;
         this.englishGame = englishGame;
 
         generatePane();
     }
 
-
-    MenuBar createMenu(Stage primaryStage) {
-        MenuBar menuBar;
-        if (guiGame.game.getLanguage() == Language.English) {
-            menuBar = englishGame.createEnglishMenu(primaryStage);
-        } else {
-            menuBar = germanGame.createGermanMenu(primaryStage);
-        }
-        return menuBar;
-    }
 
 
     void generatePane() {
@@ -83,6 +67,10 @@ public class ChessBoardView extends BorderPane {
         bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(5, 0, 5, 40));
         setBottom(bottom);
+
+        if (guiGame.game.isNetworkGame() && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
+            guiGame.doNetworkMove();
+        }
     }
 
 
@@ -183,7 +171,7 @@ public class ChessBoardView extends BorderPane {
         } else {
             englishGame.noAllowedSquares(allowedSquares);
         }
-        String highlightBorder = "-fx-border-color: " + highlightColour;
+        String highlightBorder = "-fx-border-color: SKYBLUE";
         String border = "-fx-border-width: 3px";
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -212,6 +200,7 @@ public class ChessBoardView extends BorderPane {
     private void addIndices(GridPane grid) {
         String[] columns = {"A","B","C","D","E","F","G","H"};
         String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        int fontSize = 17;
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard
                 || guiGame.game.isArtificialEnemy() && guiGame.game.getUserColour() == Colour.BLACK) {
             int c = 0;
@@ -258,9 +247,6 @@ public class ChessBoardView extends BorderPane {
 
         if (guiGame.game.isArtificialEnemy() && guiGame.turnAI) {
             guiGame.makeAIMove(this);
-        }
-        if ((guiGame.game.isNetworkServer() || guiGame.game.isNetworkClient()) && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
-            guiGame.doNetworkMove();
         }
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
