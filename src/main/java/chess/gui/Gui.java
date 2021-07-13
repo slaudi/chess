@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Gui extends Application {
 
-    public GuiGame guiGame;
-    public EnglishGame englishGame;
-    public GermanGame germanGame;
+    private GuiGame guiGame;
+    EnglishGame englishGame;
+    GermanGame germanGame;
     static Scene startScene, chessScene;
     Color background = Color.FLORALWHITE;
 
@@ -156,7 +156,7 @@ public class Gui extends Application {
             startConnection = "Starte Verbindung";
             cancel = "Abbrechen";
             netError = "Netzwerk-Fehler";
-            connectionError = "Keine Verbindung zu eingegebener IP-Addresse möglich";
+            connectionError = "Keine Verbindung zu eingegebener IP-Adresse möglich";
         }
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
@@ -215,7 +215,7 @@ public class Gui extends Application {
     Scene chessWindow(Stage primaryStage, GuiGame guiGame) {
         BorderPane pane = new BorderPane();
 
-        ChessBoardView chessBoardView = new ChessBoardView(guiGame,this,germanGame,englishGame);
+        ChessBoardView chessBoardView = new ChessBoardView(guiGame,germanGame,englishGame);
         MenuBar menuBar = createMenu(primaryStage);
 
         pane.setTop(menuBar);

@@ -19,7 +19,7 @@ public class GuiGame { //NOPMD - this is the main class for handling gui; all fi
     /**
      * The GuiGame class can access the actual Game class to make moves.
      */
-    public Game game;
+    Game game;
 
     private Square squareStart = null;
     private Square squareFinal = null;

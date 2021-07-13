@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Piece {
 
     Square square;
-    Colour colour;
+    final Colour colour;
     boolean notMoved = true;
 
     /**

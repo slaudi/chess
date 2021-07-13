@@ -34,9 +34,9 @@ import static chess.gui.Gui.*;
  */
 public class EnglishGame extends BorderPane {
 
-    public GuiGame guiGame;
-    public Gui gui;
-    public Language language = Language.English;
+    private GuiGame guiGame;
+    private final Gui gui;
+    private final Language language = Language.English;
     CheckMenuItem changeSelected;
 
     /**

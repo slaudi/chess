@@ -23,7 +23,6 @@ public class Player {
         this.colour = colour;
     }
 
-
     public Colour getColour() {
         return colour;
     }

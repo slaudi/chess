@@ -11,7 +11,6 @@ import chess.pieces.Piece;
  */
 public class EvaluatePieces {
 
-
     /**
      *
      * @param game current game

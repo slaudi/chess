@@ -21,15 +21,13 @@ public class ChessBoardView extends BorderPane {
     /**
      * ChessBoardView class has access to GuiGame class.
      */
-    public GuiGame guiGame;
-    public GermanGame germanGame;
-    public EnglishGame englishGame;
+    public final GuiGame guiGame;
+    public final GermanGame germanGame;
+    public final EnglishGame englishGame;
 
-    private final String highlightColour = "skyblue";
-    private final String highlightBackground = "-fx-background-color: " + highlightColour;
-    int buttonHeight = 85;
-    int buttonWidth = 85;
-    int fontSize = 17;
+    private final String highlightBackground = "-fx-background-color: SKYBLUE";
+    private final int buttonHeight = 85;
+    private final int buttonWidth = 85;
 
 
     /**
@@ -174,7 +172,7 @@ public class ChessBoardView extends BorderPane {
         } else {
             englishGame.noAllowedSquares(allowedSquares);
         }
-        String highlightBorder = "-fx-border-color: " + highlightColour;
+        String highlightBorder = "-fx-border-color: SKYBLUE";
         String border = "-fx-border-width: 3px";
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -203,6 +201,7 @@ public class ChessBoardView extends BorderPane {
     private void addIndices(GridPane grid) {
         String[] columns = {"A","B","C","D","E","F","G","H"};
         String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        int fontSize = 17;
         if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard
                 || guiGame.game.isArtificialEnemy() && guiGame.game.getUserColour() == Colour.BLACK) {
             int c = 0;
