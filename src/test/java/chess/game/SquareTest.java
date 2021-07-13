@@ -50,13 +50,6 @@ public class SquareTest {
         assertEquals(labelA3,square.getLabel());
     }
 
-    /**
-     * Tests if the Square has the right colour.
-     */
-    @Test
-    public void getColour(){
-        assertEquals(Colour.WHITE, game.chessBoard.getSquareAt(0,0).getColour());
-    }
 
     /**
      * Tests 'toString' if an empty Square is printed empty.
