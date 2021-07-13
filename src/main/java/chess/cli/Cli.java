@@ -66,6 +66,7 @@ public class Cli {
     private static void startNetworkGame(Game game) {
         HelperClass.languageOutput("Enter IP address:","Gib IP Adresse ein:",game);
         String ipAddress = new Scanner(System.in).nextLine();
+        checkForCommand(ipAddress,game);
         if (ipAddress.equals("0")){
             // IP address = 0 starts server
             HelperClass.languageOutput("Waiting for client...","Warte auf Client...",game);
