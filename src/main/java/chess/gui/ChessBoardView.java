@@ -141,8 +141,8 @@ public class ChessBoardView extends BorderPane {
 
 
     private void setButtons(GridPane grid) {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < guiGame.game.chessBoard.getHeight(); y++) {
+            for (int x = 0; x < guiGame.game.chessBoard.getWidth(); x++) {
                 Button button = new Button();
                 button.setMinHeight(buttonHeight);
                 button.setMinWidth(buttonWidth);
@@ -173,8 +173,8 @@ public class ChessBoardView extends BorderPane {
         }
         String highlightBorder = "-fx-border-color: SKYBLUE";
         String border = "-fx-border-width: 3px";
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < guiGame.game.chessBoard.getHeight(); y++) {
+            for (int x = 0; x < guiGame.game.chessBoard.getWidth(); x++) {
                 Button button = new Button();
                 button.setMinHeight(buttonHeight);
                 button.setMinWidth(buttonWidth);
@@ -208,11 +208,11 @@ public class ChessBoardView extends BorderPane {
                 Label letter = new Label(columns[i]);
                 letter.setFont(new Font(fontSize));
                 GridPane.setHalignment(letter, HPos.CENTER);
-                grid.add(letter,c,8);
+                grid.add(letter,c,rows.length);
 
                 Label number = new Label(rows[i]);
                 number.setFont(new Font(fontSize));
-                grid.add(number,8,i);
+                grid.add(number,columns.length,i);
                 c++;
             }
         } else {
@@ -220,11 +220,11 @@ public class ChessBoardView extends BorderPane {
                 Label letter = new Label(columns[i]);
                 letter.setFont(new Font(fontSize));
                 GridPane.setHalignment(letter, HPos.CENTER);
-                grid.add(letter,i,8);
+                grid.add(letter,i,rows.length);
 
-                Label number = new Label(rows[7-i]);
+                Label number = new Label(rows[rows.length-1 - i]);
                 number.setFont(new Font(fontSize));
-                grid.add(number,8,i);
+                grid.add(number,columns.length,i);
             }
         }
     }
@@ -235,12 +235,12 @@ public class ChessBoardView extends BorderPane {
 
         if (guiGame.game.isArtificialEnemy()) {
             if (guiGame.game.getUserColour() == Colour.BLACK) {
-                grid.add(button, 7 - x, 7 - y);
+                grid.add(button, guiGame.game.chessBoard.getWidth()-1 - x, guiGame.game.chessBoard.getHeight()-1 - y);
             } else {
                 grid.add(button, x, y);
             }
         } else if (guiGame.game.currentPlayer.getColour() == Colour.BLACK && guiGame.isRotatingBoard) {
-            grid.add(button, 7 - x, 7 - y);
+            grid.add(button, guiGame.game.chessBoard.getWidth()-1 - x, guiGame.game.chessBoard.getHeight()-1 - y);
         } else {
             grid.add(button, x, y);
         }
