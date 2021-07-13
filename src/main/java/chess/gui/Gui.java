@@ -133,7 +133,7 @@ public class Gui extends Application {
     void loadGame(ChoiceDialog<String> dialog, Stage primaryStage){
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            File loadingFile = new File("src/main/resources/saves/" + result.get());
+            File loadingFile = new File(System.getProperty("user.home") + "/saves/" + result.get());
 
             guiGame.game = LoadGame.loadFile(loadingFile);
 
