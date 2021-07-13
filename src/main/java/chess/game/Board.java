@@ -68,7 +68,7 @@ public class Board {
     /**
      * Sets each Chess-Piece on its initial position when starting a new Game.
      */
-    void startingFormation() {
+    private void startingFormation() {
         // Black pieces
         this.chessBoard[0][0].setOccupiedBy(new Rook(this.chessBoard[0][0],BLACK));
         this.chessBoard[1][0].setOccupiedBy(new Knight(this.chessBoard[1][0], BLACK));
@@ -183,7 +183,7 @@ public class Board {
      * @param colour The colour of the player which needs the position of their King.
      * @return Square The Square the King currently stands on
      */
-    protected Square getSquareOfKing(Colour colour){
+    Square getSquareOfKing(Colour colour){
         for(int i = 0; i < this.height; i++) {
             for(int j = 0; j < this.width; j++) {
                 if(this.chessBoard[i][j].getOccupiedBy() != null && this.chessBoard[i][j].getOccupiedBy().getType() == Type.KING

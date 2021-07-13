@@ -168,9 +168,11 @@ public class HelperClass {
     }
 
     /**
-     * @param start Square from which Movement starts
-     * @param end Square on which Movement ends
-     * @return A String which represents Movement
+     * Method which extracts the associated String from a move which was made.
+     *
+     * @param start The Square from which the movement starts.
+     * @param end   The Square on which the movement ends.
+     * @return A String which represents the Movement.
      */
     public static String generateMoveString (Square start, Square end){
         String moveString = "";

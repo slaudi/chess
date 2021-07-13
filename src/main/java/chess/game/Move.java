@@ -93,7 +93,7 @@ public class Move {
      *
      * @param board The current board.
      */
-    public void castlingMove(Board board) {
+    void castlingMove(Board board) {
         Piece rook;
         if(this.finalSquare.getX() == 2 && this.finalSquare.getY() == 7){           //queenside white
             rook = board.getPieceAt(0, 7);
