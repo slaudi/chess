@@ -109,7 +109,7 @@ public class GermanGame extends BorderPane {
     void loadGermanGame(Stage primaryStage){
         boolean result = ConfirmationBox.display("Spiel laden","Möchtest du ein gespeichertes Spiel laden?", this.language);
         if (result) {
-            File f = new File("src/main/resources/saves");
+            File f = new File(System.getProperty("user.home") + "/saves");
             String[] fileArray = f.list();
             assert fileArray != null;
             if(fileArray.length != 0) {

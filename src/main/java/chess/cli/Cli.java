@@ -323,7 +323,7 @@ public class Cli {
         HelperClass.languageOutput("Select a saved Game you want to load by entering the number:",
                 "Wähle eine Nummer um ein gespeichertes Spiel zu laden:",game);
         List<String> saves = new ArrayList<>();
-        File f = new File("src/main/resources/saves");
+        File f = new File(System.getProperty("user.home") + "/saves");
         String[] fileArray = f.list();
         assert fileArray != null;
         if(fileArray.length != 0) {
@@ -342,7 +342,7 @@ public class Cli {
         int choice = Integer.parseInt(input);
         Game tempGame = null;
         if(choice > -1 && choice < saves.size()){
-            File loadingFile = new File("src/main/resources/saves/" + saves.get(choice));
+            File loadingFile = new File(System.getProperty("user.home") + "/saves/" + saves.get(choice));
             tempGame = LoadGame.loadFile(loadingFile);
         } else {
             HelperClass.languageOutput("No saved game exists for chosen number.\n",

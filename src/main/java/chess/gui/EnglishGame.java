@@ -108,7 +108,7 @@ public class EnglishGame extends BorderPane {
         boolean result = ConfirmationBox.display("Load Game","Do you want to load a saved Game?", this.language);
 
         if (result) {
-            File f = new File("src/main/resources/saves");
+            File f = new File(System.getProperty("user.home") + "/saves");
             String[] fileArray = f.list();
             assert fileArray != null;
             if(fileArray.length != 0) {
