@@ -2,7 +2,6 @@ package chess.gui;
 
 import chess.game.*;
 import chess.pieces.Piece;
-import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class ChessBoardView extends BorderPane {
      * ChessBoardView class has access to GuiGame class.
      */
     public GuiGame guiGame;
-    public Gui gui;
     public GermanGame germanGame;
     public EnglishGame englishGame;
 
@@ -39,13 +36,11 @@ public class ChessBoardView extends BorderPane {
      * Constructor for GuiGame-Class.
      *
      * @param guiGame The State of the current Game the View needs to display it.
-     * @param gui Parameters of gui need to be accessible
      * @param germanGame instance of game in german language
      * @param englishGame instance of game in english language
      */
-    public ChessBoardView(GuiGame guiGame, Gui gui, GermanGame germanGame, EnglishGame englishGame) {
+    public ChessBoardView(GuiGame guiGame, GermanGame germanGame, EnglishGame englishGame) {
         this.guiGame = guiGame;
-        this.gui = gui;
         this.germanGame = germanGame;
         this.englishGame = englishGame;
 
@@ -74,6 +69,11 @@ public class ChessBoardView extends BorderPane {
         bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(5, 0, 5, 40));
         setBottom(bottom);
+
+        if ((guiGame.game.isNetworkServer() || guiGame.game.isNetworkClient())
+                && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
+            guiGame.doNetworkMove();
+        }
     }
 
 
@@ -249,9 +249,6 @@ public class ChessBoardView extends BorderPane {
 
         if (guiGame.game.isArtificialEnemy() && guiGame.turnAI) {
             guiGame.makeAIMove(this);
-        }
-        if ((guiGame.game.isNetworkServer() || guiGame.game.isNetworkClient()) && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
-            guiGame.doNetworkMove();
         }
         if (!guiGame.game.isADraw() && !guiGame.game.isCheckMate()) {
             button.setOnAction(event -> {
