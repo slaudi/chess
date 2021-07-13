@@ -1,8 +1,11 @@
 package chess.gui;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
+import javafx.stage.Window;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +33,8 @@ public class OptionBox {
         for (ButtonType opt : options){
             alert.getButtonTypes().add(opt);
         }
+        Window window = alert.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(event -> window.hide());
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.orElse(null);

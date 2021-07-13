@@ -18,6 +18,8 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static chess.gui.Gui.startScene;
+
 /**
  * Starting point of the JavaFX GUI
  */
@@ -91,12 +93,10 @@ public class Gui extends Application {
         startLocalGame.getStyleClass().add(startButtonStyle);
         startLocalGame.setOnAction(e -> {
             if (guiGame.game.getLanguage() == Language.German) {
-                germanGame.chooseEnemyGerman();
+                germanGame.chooseEnemyGerman(primaryStage);
             } else {
-                englishGame.chooseEnemyEnglish();
+                englishGame.chooseEnemyEnglish(primaryStage);
             }
-            chessScene = chessWindow(primaryStage,guiGame);
-            primaryStage.setScene(chessScene);
         });
 
         startNetworkGame.getStyleClass().add(startButtonStyle);
@@ -146,6 +146,8 @@ public class Gui extends Application {
 
 
     void startNetworkGame(Stage primaryStage) {
+        Stage networkStage = new Stage();
+
         String ipAddress = "Enter IP Address of Enemy: ";
         String startConnection = "Start Connection";
         String cancel = "Cancel";
@@ -174,6 +176,7 @@ public class Gui extends Application {
 
         // Define buttons
         Button btnStartGame = new Button(startConnection);
+        btnStartGame.setDefaultButton(true);
         String finalNetError = netError;
         String finalConnectionError = connectionError;
         btnStartGame.setOnAction(event -> {
@@ -202,13 +205,13 @@ public class Gui extends Application {
         });
 
         Button btnCancel = new Button(cancel);
-        btnCancel.setOnAction(e -> primaryStage.setScene(startScene));
+        btnCancel.setOnAction(e -> networkStage.hide());
 
         btn.getChildren().addAll(btnStartGame,btnCancel);
         grid.add(btn,0,4);
 
-        primaryStage.setScene(IP_scene);
-        primaryStage.show();
+        networkStage.setScene(IP_scene);
+        networkStage.show();
     }
 
 

@@ -59,7 +59,7 @@ public class EnglishGame extends BorderPane {
         startButtons.get(4).setText("Language");
     }
 
-    void chooseEnemyEnglish() {
+    void chooseEnemyEnglish(Stage primaryStage) {
         ButtonType human = new ButtonType("Person");
         ButtonType computer = new ButtonType("AI");
 
@@ -70,6 +70,11 @@ public class EnglishGame extends BorderPane {
         if (enemyResult == computer){
             guiGame.game.setArtificialEnemy(true);
             guiGame.isRotatingBoard = false;
+        } else if (enemyResult == human) {
+            chessScene = gui.chessWindow(primaryStage,guiGame);
+            primaryStage.setScene(chessScene);
+        } else {
+            primaryStage.setScene(startScene);
         }
 
         if(guiGame.game.isArtificialEnemy()) {
@@ -82,9 +87,16 @@ public class EnglishGame extends BorderPane {
             ButtonType colourResult = OptionBox.display("Colour Selection",null,"Choose your Colour", colour);
             if (colourResult == white) {
                 guiGame.game.setUserColour(Colour.WHITE);
-            } else {
+                chessScene = gui.chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+            } else if (colourResult == black){
                 guiGame.game.setUserColour(Colour.BLACK);
                 guiGame.turnAI = true;
+                chessScene = gui.chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+            } else {
+                guiGame.game.setArtificialEnemy(false);
+                primaryStage.setScene(startScene);
             }
         }
     }
@@ -294,7 +306,11 @@ public class EnglishGame extends BorderPane {
         checkHint.setAccelerator(KeyCombination.keyCombination("Alt+C"));
         checkHint.setOnAction(event -> guiGame.hintInCheck = checkHint.isSelected());
         // Set default for Options-items
-        rotation.setSelected(true);
+        if (guiGame.game.isArtificialEnemy()) {
+            rotation.setDisable(true);
+        } else {
+            rotation.setSelected(true);
+        }
         highlight.setSelected(true);
         checkHint.setSelected(true);
 

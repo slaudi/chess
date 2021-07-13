@@ -60,7 +60,7 @@ public class GermanGame extends BorderPane {
     }
 
 
-    void chooseEnemyGerman() {
+    void chooseEnemyGerman(Stage primaryStage) {
         ButtonType human = new ButtonType("Mensch");
         ButtonType computer = new ButtonType("KI");
 
@@ -70,6 +70,11 @@ public class GermanGame extends BorderPane {
         if (enemyResult == computer){
             guiGame.game.setArtificialEnemy(true);
             guiGame.isRotatingBoard = false;
+        } else if (enemyResult == human) {
+            chessScene = gui.chessWindow(primaryStage,guiGame);
+            primaryStage.setScene(chessScene);
+        } else {
+            primaryStage.setScene(startScene);
         }
 
         if(guiGame.game.isArtificialEnemy()) {
@@ -80,11 +85,18 @@ public class GermanGame extends BorderPane {
             Collections.addAll(colour,white,black);
 
             ButtonType colourResult = OptionBox.display("Farbauswahl",null,"Wähle deine Farbe:", colour);
-            if (colourResult == white) {
-                guiGame.game.setUserColour(Colour.WHITE);
-            } else {
-                guiGame.game.setUserColour(Colour.BLACK);
+            if (colourResult == black) {
                 guiGame.turnAI = true;
+                guiGame.game.setUserColour(Colour.BLACK);
+                chessScene = gui.chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+            } else if (colourResult == white){
+                guiGame.game.setUserColour(Colour.WHITE);
+                chessScene = gui.chessWindow(primaryStage,guiGame);
+                primaryStage.setScene(chessScene);
+            } else {
+                guiGame.game.setArtificialEnemy(false);
+                primaryStage.setScene(startScene);
             }
         }
     }
@@ -289,10 +301,16 @@ public class GermanGame extends BorderPane {
         Menu optionsMenu = new Menu("Einstellungen");
         // Rotation-check item
         CheckMenuItem rotation = new CheckMenuItem("Drehung des Spielbretts");
+        if (guiGame.game.isArtificialEnemy()) {
+            rotation.setDisable(true);
+        } else {
+            rotation.setSelected(true);
+        }
         rotation.setAccelerator(KeyCombination.keyCombination("Alt+R"));
         rotation.setOnAction(e -> guiGame.isRotatingBoard = rotation.isSelected());
         // Highlight-check item
         CheckMenuItem highlight = new CheckMenuItem("Züge hervorheben");
+        highlight.setSelected(true);
         highlight.setAccelerator(KeyCombination.keyCombination("Alt+H"));
         highlight.setOnAction(e -> guiGame.highlightPossibleMoves = highlight.isSelected());
         // Change selected-check item
@@ -304,14 +322,9 @@ public class GermanGame extends BorderPane {
         CheckMenuItem checkHint = new CheckMenuItem("Hinweis: Schach");
         checkHint.setAccelerator(KeyCombination.keyCombination("Alt+C"));
         checkHint.setOnAction(event -> guiGame.hintInCheck = checkHint.isSelected());
-        // Set default for Options-items
-        rotation.setSelected(true);
-        highlight.setSelected(true);
         checkHint.setSelected(true);
-
         // add all items to Settings-menu
         optionsMenu.getItems().addAll(rotation,highlight,changeSelected,checkHint);
-
         return optionsMenu;
     }
 
