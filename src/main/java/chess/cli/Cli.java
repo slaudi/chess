@@ -72,7 +72,7 @@ public class Cli {
             HelperClass.languageOutput("Waiting for client...","Warte auf Client...",game);
             Socket connectionSocket = NetworkGame.startServer();
             HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",game);
-            game.setNetworkServer(true);
+            game.setNetworkGame(true);
             game.setUserColour(Colour.WHITE);
             HelperClass.toConsole(game);
             runNetworkGame(game, connectionSocket);
@@ -83,7 +83,7 @@ public class Cli {
             if (NetworkGame.sendPingRequest(ipAddress)){
                 Socket connectionSocket = NetworkGame.startClient();
                 HelperClass.languageOutput("Connection successful!","Verbindung hergestellt!",game);
-                game.setNetworkClient(true);
+                game.setNetworkGame(true);
                 game.setUserColour(Colour.BLACK);
                 HelperClass.toConsole(game);
                 runNetworkGame(game, connectionSocket);
@@ -233,7 +233,7 @@ public class Cli {
                 game.currentPlayer.setLoser(true);
                 return true;
             case "save":
-                if(!game.isNetworkServer() && !game.isNetworkClient()){
+                if(!game.isNetworkGame()){
                     SaveGame.save(game);
                     HelperClass.languageOutput("You saved the current stage of the game!",
                             "Du hast den aktuellen Spielstand gespeichert!", game);
@@ -243,7 +243,7 @@ public class Cli {
                 }
                 return true;
             case "load":
-                if(!game.isNetworkServer() && !game.isNetworkClient()){
+                if(!game.isNetworkGame()){
                     cliLoad(game);
                 } else{
                     HelperClass.languageOutput("Loading a game while playing a network game is enabled!",

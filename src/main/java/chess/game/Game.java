@@ -36,8 +36,7 @@ public class Game {//NOPMD - this is the main class handling the entire programm
      */
     public List<Move> moveHistory = new ArrayList<>();
 
-    private boolean networkServer = false;
-    private boolean networkClient = false;
+    private boolean networkGame = false;
     private Colour userColour = Colour.BLACK;
     private boolean artificialEnemy = false;
     private boolean drawn = false;
@@ -62,20 +61,12 @@ public class Game {//NOPMD - this is the main class handling the entire programm
         this.language = language;
     }
 
-    public boolean isNetworkServer() {
-        return this.networkServer;
+    public boolean isNetworkGame() {
+        return networkGame;
     }
 
-    public void setNetworkServer(boolean bool){
-        this.networkServer = bool;
-    }
-
-    public boolean isNetworkClient(){
-        return this.networkClient;
-    }
-
-    public void setNetworkClient(boolean bool){
-        this.networkClient = bool;
+    public void setNetworkGame(boolean networkGame) {
+        this.networkGame = networkGame;
     }
 
     public Colour getUserColour(){
@@ -434,7 +425,6 @@ public class Game {//NOPMD - this is the main class handling the entire programm
         // move doesn't put King in check
         return true;
     }
-
 
 }
 

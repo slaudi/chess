@@ -68,8 +68,7 @@ public class ChessBoardView extends BorderPane {
         bottom.setPadding(new Insets(5, 0, 5, 40));
         setBottom(bottom);
 
-        if ((guiGame.game.isNetworkServer() || guiGame.game.isNetworkClient())
-                && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
+        if (guiGame.game.isNetworkGame() && guiGame.game.currentPlayer.getColour() != guiGame.game.getUserColour()) {
             guiGame.doNetworkMove();
         }
     }

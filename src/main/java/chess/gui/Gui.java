@@ -180,14 +180,14 @@ public class Gui extends Application {
             String ipAddressText = IPAddress.getText();
             if (ipAddressText.equals("0")){
                 guiGame.connectionSocket = NetworkGame.startServer();
-                guiGame.game.setNetworkServer(true);
+                guiGame.game.setNetworkGame(true);
                 guiGame.game.setUserColour(Colour.WHITE);
                 chessScene = chessWindow(primaryStage,guiGame);
                 primaryStage.setScene(chessScene);
             } else {
                 if (NetworkGame.sendPingRequest(ipAddressText)) {
                     guiGame.connectionSocket = NetworkGame.startClient();
-                    guiGame.game.setNetworkClient(true);
+                    guiGame.game.setNetworkGame(true);
                     guiGame.game.setUserColour(Colour.BLACK);
                     chessScene = chessWindow(primaryStage,guiGame);
                     primaryStage.setScene(chessScene);
