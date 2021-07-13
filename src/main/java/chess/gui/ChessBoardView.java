@@ -2,6 +2,7 @@ package chess.gui;
 
 import chess.game.*;
 import chess.pieces.Piece;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -51,16 +52,6 @@ public class ChessBoardView extends BorderPane {
         generatePane();
     }
 
-
-    MenuBar createMenu(Stage primaryStage) {
-        MenuBar menuBar;
-        if (guiGame.game.getLanguage() == Language.English) {
-            menuBar = englishGame.createEnglishMenu(primaryStage);
-        } else {
-            menuBar = germanGame.createGermanMenu(primaryStage);
-        }
-        return menuBar;
-    }
 
 
     void generatePane() {

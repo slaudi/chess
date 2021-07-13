@@ -216,13 +216,24 @@ public class Gui extends Application {
         BorderPane pane = new BorderPane();
 
         ChessBoardView chessBoardView = new ChessBoardView(guiGame,this,germanGame,englishGame);
-        MenuBar menuBar = chessBoardView.createMenu(primaryStage);
+        MenuBar menuBar = createMenu(primaryStage);
 
         pane.setTop(menuBar);
         pane.setCenter(chessBoardView);
         pane.setBackground(new Background(new BackgroundFill(background,CornerRadii.EMPTY,Insets.EMPTY)));
 
         return new Scene(pane, 800, 825);
+    }
+
+
+    MenuBar createMenu(Stage primaryStage) {
+        MenuBar menuBar;
+        if (guiGame.game.getLanguage() == Language.English) {
+            menuBar = englishGame.createEnglishMenu(primaryStage);
+        } else {
+            menuBar = germanGame.createGermanMenu(primaryStage);
+        }
+        return menuBar;
     }
 
 
