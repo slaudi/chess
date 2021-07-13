@@ -1,6 +1,6 @@
 package chess.game;
 
-import chess.pieces.Rook;
+import chess.pieces.Piece;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ public class SquareTest {
 
     Game game;
     Square square;
-    Rook rook;
     Square a1;
     Square b2;
     Square c3;
@@ -98,6 +97,7 @@ public class SquareTest {
      */
     @Test
     public void setOccupiedBy() {
+        Piece rook = game.chessBoard.getPieceAt(0,0);
         square.setOccupiedBy(rook);
         assertEquals(rook, square.getOccupiedBy());
     }
@@ -152,6 +152,9 @@ public class SquareTest {
         assertEquals(9, Square.getYFromString("j9"));
     }
 
+    /**
+     * Tests if the method returns the right char from certain square for the y axes.
+     */
     @Test
     public void getCharFromY() {
         assertEquals('1', a1.getCharFromY());
@@ -160,6 +163,9 @@ public class SquareTest {
         assertEquals('4', d4.getCharFromY());
     }
 
+    /**
+     * Tests if the method returns the right char from certain square for the y axes.
+     */
     @Test
     public void getCharFromY2() {
         assertEquals('5', e5.getCharFromY());
@@ -168,6 +174,9 @@ public class SquareTest {
         assertEquals('8', h8.getCharFromY());
     }
 
+    /**
+     * Tests if the method returns the right char from certain square for the x axes.
+     */
     @Test
     public void getCharFromX() {
         assertEquals('a', a1.getCharFromX());
@@ -176,6 +185,9 @@ public class SquareTest {
         assertEquals('d', d4.getCharFromX());
     }
 
+    /**
+     * Tests if the method returns the right char from certain square for the x axes.
+     */
     @Test
     public void getCharFromX2() {
         assertEquals('e', e5.getCharFromX());

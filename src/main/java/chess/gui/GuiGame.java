@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * HelperClass for Game class for Methods only needed when Playing in GUI.
  */
-public class GuiGame { //NOPMD - this is the main class for handling gui; all fields needed
+public class GuiGame { //NOPMD - this is the main class for handling gui - all fields needed
 
     /**
      * The GuiGame class can access the actual Game class to make moves.

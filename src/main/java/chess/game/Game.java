@@ -193,7 +193,7 @@ public class Game {//NOPMD - this is the main class handling the entire programm
         } else {
             currentMove.doMove(this.chessBoard);
             if (targetPiece != null) {
-                // add a beaten piece to the ArrayList before isInCheck() (don't test with it in isInCheck(), it's already beaten)
+                // add a beaten piece to the ArrayList before canMoveStay() (don't test with it in isInCheck(), it's already beaten)
                 beatenPieces.add(targetPiece);
             }
             if (!canMoveStay(targetPiece, currentMove)) {
