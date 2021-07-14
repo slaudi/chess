@@ -14,7 +14,7 @@ another person on the same computer or in a local network.
 # Known bugs
 * when playing a network GUI-game your own move will only be shown after the other player sent their move and a button 
   has been clicked
-
+  
 
 # Maven
 
