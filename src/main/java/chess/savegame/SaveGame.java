@@ -33,10 +33,8 @@ public class SaveGame {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
             String date = dtf.format(LocalDateTime.now());
             File savingFile = new File(System.getProperty("user.home") + "/saves");
-            if (!savingFile.exists()) {
-                if (!savingFile.mkdir()){
-                    System.out.println("Error while creating SaveGame-Directory");
-                }
+            if (!savingFile.exists() && !savingFile.mkdir()){
+                    System.out.println("Error while creating a SaveGame-directory \"saves\".");
             }
             String filename = System.getProperty("user.home") + "/saves/SaveGame" + date + ".txt";
             FileWriter myWriter;

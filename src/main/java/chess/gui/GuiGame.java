@@ -96,24 +96,7 @@ public class GuiGame { //NOPMD - this is the main class for handling gui - all f
             int result = processingMovement(chessBoardView);
             if (result == 0) {
                 // Move is allowed
-                if(game.isNetworkGame()){
-                    NetworkGame.sendMove(HelperClass.generateMoveString(this.squareStart, this.squareFinal), connectionSocket);
-                }
-                this.squareStart = null;
-                this.squareFinal = null;
-                game.isInCheck();
-                game.isCheckMate();
-                turnAI = true;
-                chessBoardView.generatePane();
-                game.isInCheck();
-                game.isCheckMate();
-                if (game.getLanguage() == Language.German){
-                    chessBoardView.germanGame.generateAnswer(result);
-                    chessBoardView.germanGame.changeSelected.setDisable(false);
-                } else {
-                    chessBoardView.englishGame.generateAnswer(result);
-                    chessBoardView.englishGame.changeSelected.setDisable(false);
-                }
+                makeMove(result, chessBoardView);
             } else if (result == 3){
                 // you're allowed to change your selected Piece
                 this.squareStart = this.squareFinal;
@@ -125,6 +108,28 @@ public class GuiGame { //NOPMD - this is the main class for handling gui - all f
             }
         } else {
             chessBoardView.generatePane();
+        }
+    }
+
+
+    private void makeMove(int result, ChessBoardView chessBoardView) {
+        if(game.isNetworkGame()){
+            NetworkGame.sendMove(HelperClass.generateMoveString(this.squareStart, this.squareFinal), connectionSocket);
+        }
+        this.squareStart = null;
+        this.squareFinal = null;
+        game.isInCheck();
+        game.isCheckMate();
+        turnAI = true;
+        chessBoardView.generatePane();
+        game.isInCheck();
+        game.isCheckMate();
+        if (game.getLanguage() == Language.German){
+            chessBoardView.germanGame.generateAnswer(result);
+            chessBoardView.germanGame.changeSelected.setDisable(false);
+        } else {
+            chessBoardView.englishGame.generateAnswer(result);
+            chessBoardView.englishGame.changeSelected.setDisable(false);
         }
     }
 
