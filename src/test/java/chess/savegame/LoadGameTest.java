@@ -24,7 +24,7 @@ public class LoadGameTest {
     Game game14;
     String name;
     File loadingFile;
-    String directory = "src/main/resources/saves/";
+    String directory = System.getProperty("user.home") + "/saves/";
 
     /**
      * SetUp for each Test
