@@ -10,7 +10,7 @@ import java.util.List;
  * and represents a Piece of the Type King.
  */
 public class King extends Piece {
-
+    //CPD-OFF
     final Type type = Type.KING;
 
     /**
@@ -19,49 +19,49 @@ public class King extends Piece {
      * @param square The location of the King on the board.
      * @param colour The Colour associated with the King.
      */
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public King(Square square, Colour colour) {
         super(square, colour);
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Square getSquare() {
         return this.square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setSquare(Square square) {
         this.square = square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Colour getColour() {
         return this.colour;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Type getType() {
         return this.type;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public boolean hasNotMoved() {
         return this.notMoved;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public String toString() {
         if (this.colour == Colour.WHITE) {
             return "K";
@@ -88,7 +88,7 @@ public class King extends Piece {
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public int getPositionalValue(int x, int y, boolean endgame) {
         int[][] kingSquareTable;
         if(endgame) {
@@ -148,7 +148,7 @@ public class King extends Piece {
         }
         return kingSquareTable[y][x];
     }
-
+    // CPD-ON
 
     /**
      * Evaluates if the castling move is possible by checking the selected King and Rook.

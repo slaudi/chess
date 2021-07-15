@@ -9,7 +9,7 @@ import chess.game.Type;
  * The Knight class is a Subclass of the Piece class and represents a Piece of the Type Knight.
  */
 public class Knight extends Piece {
-
+    // CPD-OFF
     final Type type = Type.KNIGHT;
 
     /**
@@ -18,49 +18,49 @@ public class Knight extends Piece {
      * @param square The location of the Knight on the board.
      * @param colour The Colour associated with the Knight.
      */
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Knight(Square square, Colour colour) {
         super(square, colour);
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Square getSquare() {
         return this.square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setSquare(Square square) {
         this.square = square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Colour getColour() {
         return this.colour;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Type getType() {
         return this.type;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public boolean hasNotMoved() {
         return this.notMoved;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public String toString() {
         if(this.colour == Colour.WHITE){
             return "N";
@@ -117,4 +117,5 @@ public class Knight extends Piece {
         }
         return knightSquareTable[y][x];
     }
+    //CPD-ON
 }

@@ -10,7 +10,7 @@ import chess.game.Type;
  * and represents a Piece of the Type Rook.
  */
 public class Rook extends Piece {
-
+    // CPD-OFF
     final Type type = Type.ROOK;
 
     /**
@@ -19,49 +19,49 @@ public class Rook extends Piece {
      * @param square The location of the Bishop on the board.
      * @param colour The Colour associated with the Rook.
      */
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Rook(Square square, Colour colour) {
         super(square, colour);
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Square getSquare() {
         return this.square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setSquare(Square square) {
         this.square = square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Colour getColour() {
         return this.colour;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Type getType() {
         return this.type;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public boolean hasNotMoved() {
         return this.notMoved;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public String toString() {
         if (this.colour == Colour.WHITE) {
             return "R";
@@ -89,7 +89,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public int getPositionalValue(int x, int y, boolean endgame) {
         int[][] rookSquareTable;
         if (this.colour == Colour.BLACK){
@@ -119,5 +119,5 @@ public class Rook extends Piece {
         }
         return rookSquareTable[y][x];
     }
-
+    // CPD-ON
 }

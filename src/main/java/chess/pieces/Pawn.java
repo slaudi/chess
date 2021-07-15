@@ -9,7 +9,7 @@ import java.util.List;
  * and represents a Piece of the Type Pawn.
  */
 public class Pawn extends Piece {
-
+    // CPD-OFF
     final Type type = Type.PAWN;
 
     /**
@@ -18,25 +18,25 @@ public class Pawn extends Piece {
      * @param square The location of the Pawn on the board.
      * @param colour The Colour associated with the Pawn.
      */
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Pawn(Square square, Colour colour) {
         super(square, colour);
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Square getSquare() {
         return this.square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setSquare(Square square) {
         this.square = square;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public Colour getColour() {
         return this.colour;
     }
@@ -47,19 +47,19 @@ public class Pawn extends Piece {
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public boolean hasNotMoved() {
         return this.notMoved;
     }
 
     @Override
-    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
+    //it's overriding abstract methods from super class
     public String toString() {
         if(this.colour == Colour.WHITE){
             return "P";
@@ -135,7 +135,7 @@ public class Pawn extends Piece {
         }
         return pawnSquareTable[y][x];
     }
-
+    // CPD-ON
 
     /**
      * A function determining if the piece a Pawn wants to capture is standing on a square
