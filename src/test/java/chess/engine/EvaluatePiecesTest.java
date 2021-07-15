@@ -41,6 +41,7 @@ public class EvaluatePiecesTest {
      */
     @Test
     public void evaluateBoardWithOnlyKing(){
+        //CPD-OFF
         game.chessBoard.clearBoard();
         game.chessBoard.clearBlackAlliance();
         game.chessBoard.clearWhiteAlliance();
@@ -53,6 +54,7 @@ public class EvaluatePiecesTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(1, 7));
         game.chessBoard.addWhiteAlliance(game.chessBoard.getPieceAt(6, 1));
         assertEquals(-1, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
+        // CPD-ON
     }
 
     /**
@@ -60,6 +62,7 @@ public class EvaluatePiecesTest {
      */
     @Test
     public void evaluateBoardInCheck(){
+        //CPD-OFF
         game.chessBoard.clearBoard();
         game.chessBoard.clearBlackAlliance();
         game.chessBoard.clearWhiteAlliance();
@@ -72,6 +75,7 @@ public class EvaluatePiecesTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(0, 7));
         game.chessBoard.addWhiteAlliance(game.chessBoard.getPieceAt(6, 1));
         assertEquals(99, EvaluatePieces.evaluateBoard(game, game.currentPlayer.getColour()));
+        // CPD-ON
     }
 
     /**

@@ -29,6 +29,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         board2 = game2.chessBoard;
     }
 
+
     /**
      * tests processing of moves
      */
@@ -115,6 +116,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
     public void testPawnEnPassant()
     {
         Game currentGame = new Game();
+        //CPD-OFF
 
         // only to switch player
         {
@@ -153,6 +155,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         Square finalSquare = currentGame.chessBoard.getBoard()[0][5];
         assertTrue(currentGame.isMoveAllowed(selectedPiece, finalSquare));
         assertTrue(currentGame.processMove(startSquare, finalSquare, ' '));
+        //CPD-ON
     }
 
     /**
@@ -175,7 +178,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testRook() {
-        // leap
+        // leap CPD-OFF
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[0][4]));
         // vertically
         game1.chessBoard.setPieceAt(0, 6, null);
@@ -188,6 +191,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1 = new Game();
         game1.chessBoard.setPieceAt(1, 6, null);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 7), game1.chessBoard.getBoard()[2][5]));
+        //CPD-ON
     }
 
     /**
@@ -352,12 +356,14 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testKingMovement() {
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
         game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
         assertFalse(game1.canKingMove());
+        //CPD-OFF
     }
 
     /**
@@ -365,7 +371,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testDrawFalse() {
-        //king can move
+        //king can move CPD-OFF
         game1.chessBoard.setPieceAt(3, 7, null);
         assertFalse(game1.isADraw());
 
@@ -382,6 +388,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertFalse(game1.isADraw());
+        //CPD-ON
     }
 
     /**
@@ -389,6 +396,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testDrawWhileTrue() {
+        // CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -401,6 +409,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertTrue(game1.isADraw());
+        // CPD-ON
     }
 
     /**
@@ -408,6 +417,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testDrawWithAlly() {
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -424,6 +434,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertTrue(game1.isADraw());
+        //CPD-ON
     }
 
     /**
@@ -431,6 +442,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testDrawWhileNoDraw() {
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -447,6 +459,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 7));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(4, 1));
         assertFalse(game1.isADraw());
+        //CPD-ON
     }
 
     /**
@@ -454,12 +467,14 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testDrawWhileCheckmate() {
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.setPieceAt(0, 0, new King(game1.chessBoard.getSquareAt(0, 0), Colour.WHITE));
         game1.chessBoard.setPieceAt(7, 0, new King(game1.chessBoard.getSquareAt(7, 0), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 0, new Rook(game1.chessBoard.getSquareAt(1, 7), Colour.BLACK));
         game1.chessBoard.setPieceAt(5, 1, new Rook(game1.chessBoard.getSquareAt(4, 1), Colour.BLACK));
         assertFalse(game1.isADraw());
+        //CPD-ON
     }
 
     /**
@@ -467,6 +482,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testPromotion(){
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -477,6 +493,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addWhiteAlliance(game1.chessBoard.getPieceAt(3, 1));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
         assertTrue(game1.processMove(game1.chessBoard.getSquareAt(3, 1), game1.chessBoard.getSquareAt(3, 0), 'Q'));
+        //CPD-ON
     }
 
     /**
@@ -484,7 +501,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testCanDefendKing(){
-        //attacking Piece can be beaten
+        //attacking Piece can be beaten CPD-OFF
         game1.chessBoard.setPieceAt(3, 6, game1.chessBoard.getPieceAt(0, 1));
         game1.chessBoard.setPieceAt(0, 1, null);
         game1.chessBoard.getPieceAt(3, 6).setSquare(game1.chessBoard.getSquareAt(3, 6));
@@ -515,6 +532,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         assertFalse(game1.canDefendKing(game1.chessBoard.getPieceAt(6, 0)));
+        // CPD-ON
     }
 
     /**
@@ -522,6 +540,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testCheckMate() {
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -534,6 +553,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertTrue(game1.isCheckMate());
+        //CPD-ON
     }
 
     /**
@@ -541,7 +561,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testCheckMateRescueByRook(){
-        //one last white move possible(Rook)
+        //one last white move possible(Rook) CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -556,13 +576,14 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertFalse(game1.isCheckMate());
+        //CPD-ON
     }
     /**
      * tests checkmate-method while checked King can be saved by Pawn
      */
     @Test
     public void testCheckMateRescueByPawn(){
-        //one last white move possible(Pawn)
+        //one last white move possible(Pawn) CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -577,6 +598,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(6, 1));
         assertFalse(game1.isCheckMate());
+        //CPD-ON
     }
 
     /**
@@ -584,7 +606,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testCheckMateWhileAttackingPawn(){
-        //white can beat attacking black pawn
+        //white can beat attacking black pawn CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -595,6 +617,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(7, 0));
         game1.chessBoard.addBlackAlliance(game1.chessBoard.getPieceAt(1, 1));
         assertFalse(game1.isCheckMate());
+        // CPD-ON
     }
 
     /**
@@ -602,6 +625,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testCanMoveStay() {
+        //CPD-OFF
         game1.chessBoard.clearBoard();
         game1.chessBoard.clearBlackAlliance();
         game1.chessBoard.clearWhiteAlliance();
@@ -639,6 +663,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.currentPlayer.setInCheck(true);
         game1.playerBlack.setInCheck(true);
         assertFalse(game1.canMoveStay(null, game1.moveHistory.get(0)));
+        //CPD-ON
     }
 
     /**
@@ -646,7 +671,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
      */
     @Test
     public void testProcessMove() {
-        //castling Move
+        //castling Move CPD-OFF
         game1.chessBoard.setPieceAt(1, 7, null);
         game1.chessBoard.setPieceAt(2, 7, null);
         game1.chessBoard.setPieceAt(3, 7, null);
@@ -684,6 +709,7 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.playerBlack.setInCheck(true);
         game1.currentPlayer.setInCheck(true);
         assertFalse(game1.processMove(game1.chessBoard.getSquareAt(3, 3), game1.chessBoard.getSquareAt(2, 2), 'Q'));
+        //CPD-ON
     }
 
     /**
@@ -712,4 +738,6 @@ public class GameTest {//NOPMD Game class controls the game, needs to be tested 
         game1.setArtificialEnemy(true);
         assertFalse(game1.isMoveAllowed(game1.chessBoard.getPieceAt(0, 4), game1.chessBoard.getSquareAt(0, 5)));
     }
+
+
 }

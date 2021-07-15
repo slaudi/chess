@@ -103,6 +103,7 @@ public class MoveTest {
      */
     @Test
     public void enPassantMove() {
+        // CPD-OFF
         Square squareW = game1.chessBoard.getBoard()[0][3];
         Square squareW2 = game1.chessBoard.getBoard()[1][2];
         Piece pawnW = new Pawn(squareW,Colour.WHITE);
@@ -119,7 +120,7 @@ public class MoveTest {
         assertNull(squareW.getOccupiedBy());
         assertEquals(pawnW, squareW2.getOccupiedBy());
         assertNull(squareB2.getOccupiedBy());
-
+        //CPD-ON
     }
 
     /**

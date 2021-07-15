@@ -247,7 +247,7 @@ public class EnglishGame extends BorderPane {
         english.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+E"));
         language.getItems().addAll(german,english);
         chessMenu.getItems().add(language);
-        // Move History-menu item
+        // Move History-menu item CPD-OFF
         MenuItem moveHistory = new MenuItem("Move History");
         moveHistory.setAccelerator(KeyCombination.keyCombination("Ctrl+H"));
         moveHistory.setOnAction(event -> {
@@ -265,7 +265,7 @@ public class EnglishGame extends BorderPane {
         chessMenu.getItems().add(moveHistory);
 
         chessMenu.getItems().add(new SeparatorMenuItem());
-        // Exit-menu item
+        // Exit-menu item CPD-ON
         MenuItem exit = new MenuItem("Exit");
         exit.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
         exit.setOnAction(event -> {

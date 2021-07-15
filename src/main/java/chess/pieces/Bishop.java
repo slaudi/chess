@@ -62,6 +62,7 @@ public class Bishop extends Piece {
         }
     }
 
+
     /**
      * A function determining if the Bishop is only moving diagonally in any direction and doesn't
      * stay on its original square.

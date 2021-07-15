@@ -31,6 +31,7 @@ public class EngineTest {
      */
     @Test
     public void nextBestMove() {
+        // CPD-OFF
         game.chessBoard.clearBoard();
         game.chessBoard.clearBlackAlliance();
         game.chessBoard.clearWhiteAlliance();
@@ -41,6 +42,7 @@ public class EngineTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(7, 0));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(1, 7));
         assertEquals(1, Objects.requireNonNull(Engine.nextBestMove(game)).getFinalSquare().getY());
+        // CPD-ON
     }
 
     /**
@@ -48,6 +50,7 @@ public class EngineTest {
      */
     @Test
     public void nextBestMoveWithPawn() {
+        // CPD-OFF
         game.chessBoard.clearBoard();
         game.chessBoard.clearBlackAlliance();
         game.chessBoard.clearWhiteAlliance();
@@ -62,5 +65,6 @@ public class EngineTest {
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(1, 7));
         game.chessBoard.addBlackAlliance(game.chessBoard.getPieceAt(6, 0));
         assertEquals(1, Objects.requireNonNull(Engine.nextBestMove(game)).getFinalSquare().getY());
+        //CPD-ON
     }
 }
