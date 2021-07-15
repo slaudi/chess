@@ -32,12 +32,12 @@ public class SaveGameTest {
     @Test
     public void save() {
         SaveGame.save(game);
-        File f = new File("src/main/resources/saves");
+        File f = new File(System.getProperty("user.home") + "/saves");
         String[] fileArray = f.list();
         assert fileArray != null;
         if(fileArray.length != 0) {
             name = fileArray[fileArray.length - 1];
-            loadingFile = new File("src/main/resources/saves/" + name);
+            loadingFile = new File(System.getProperty("user.home") + "/saves/" + name);
         }
         game2 = LoadGame.loadFile(loadingFile);
         assertEquals(Type.ROOK, game2.chessBoard.getPieceAt(0,0).getType());
