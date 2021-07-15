@@ -19,6 +19,7 @@ public class Queen extends Piece {
      * @param square The location of the Queen on the board.
      * @param colour The Colour associated with the Queen.
      */
+    @SuppressWarnings("Duplicates")
     public Queen(Square square, Colour colour) {
         super(square, colour);
     }

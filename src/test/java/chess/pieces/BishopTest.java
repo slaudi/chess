@@ -13,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BishopTest {
 
-    public Bishop bishop;
-    public Square finalSquare;
-    public Game game;
-    public Square squareF4;
-    public Square squareH6;
-    public Square squareE6;
-    public Square squareC4;
-    public Square squareA1;
-    public Square squareD4;
+    Bishop bishop;
+    Square finalSquare;
+    Game game;
+    Square squareF4;
+    Square squareH6;
+    Square squareE6;
+    Square squareC4;
+    Square squareA1;
+    Square squareD4;
 
 
     /**

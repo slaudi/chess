@@ -53,42 +53,84 @@ public class Game {//NOPMD - this is the main class handling the entire programm
         this.chessBoard = new Board(8,8);
     }
 
+    /**
+     * Getter for current language.
+     *
+     * @return The current language.
+     */
     public Language getLanguage() {
         return this.language;
     }
 
+    /**
+     * Setter for current language.
+     *
+     * @param language The language the user set.
+     */
     public void setLanguage(Language language) {
         this.language = language;
     }
 
+    /**
+     * Getter for if the game is a network game.
+     * @return Returns 'true' if the game is a network game.
+     */
     public boolean isNetworkGame() {
         return networkGame;
     }
 
+    /**
+     * Setter for the variable 'networkGame'.
+     * @param networkGame Sets the variable 'networkGame' accordingly.
+     */
     public void setNetworkGame(boolean networkGame) {
         this.networkGame = networkGame;
     }
 
+    /**
+     * Getter for the user colour.
+     * @return The colour of the user.
+     */
     public Colour getUserColour(){
         return this.userColour;
     }
 
+    /**
+     * Setter for the user colour.
+     * @param userColour Sets the colour of the suer accordingly.
+     */
     public void setUserColour(Colour userColour){
         this.userColour = userColour;
     }
 
+    /**
+     * Getter for weather the enemy is the AI.
+     * @return Returns 'true' if the enemy is the AI.
+     */
     public boolean isArtificialEnemy() {
         return artificialEnemy;
     }
 
+    /**
+     * Setter for the enemy mode.
+     * @param artificialEnemy Sets the enemy mode accordingly.
+     */
     public void setArtificialEnemy(boolean artificialEnemy) {
         this.artificialEnemy = artificialEnemy;
     }
 
+    /**
+     * Getter for weather a game is a draw.
+     * @return Returns 'true' if the game is a draw.
+     */
     public boolean isDrawn() {
         return drawn;
     }
 
+    /**
+     * Setter for weather the game is a draw.
+     * @param bool Sets the variable accordingly.
+     */
     public void setDrawn(boolean bool){
         this.drawn = bool;
     }
