@@ -18,21 +18,25 @@ public class Pawn extends Piece {
      * @param square The location of the Pawn on the board.
      * @param colour The Colour associated with the Pawn.
      */
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public Pawn(Square square, Colour colour) {
         super(square, colour);
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public Square getSquare() {
         return this.square;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public void setSquare(Square square) {
         this.square = square;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public Colour getColour() {
         return this.colour;
     }
@@ -43,16 +47,19 @@ public class Pawn extends Piece {
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public boolean hasNotMoved() {
         return this.notMoved;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public String toString() {
         if(this.colour == Colour.WHITE){
             return "P";
@@ -105,8 +112,8 @@ public class Pawn extends Piece {
             pawnSquareTable = new int[][]
                     {
                         {0,  0,  0,  0,  0,  0,  0,  0},
-                        {50, 50, 50, 50, 50, 50, 50, 50},
-                        {10, 10, 20, 30, 30, 20, 10, 10},
+                        {50,50, 50, 50, 50, 50, 50, 50},
+                        {10,10, 20, 30, 30, 20, 10, 10},
                         {5,  5, 10, 25, 25, 10,  5,  5},
                         {0,  0,  0, 20, 20,  0,  0,  0},
                         {5, -5,-10,  0,  0,-10, -5,  5},
@@ -121,8 +128,8 @@ public class Pawn extends Piece {
                         {5, -5,-10,  0,  0,-10, -5,  5},
                         {0,  0,  0, 20, 20,  0,  0,  0},
                         {5,  5, 10, 25, 25, 10,  5,  5},
-                        {10, 10, 20, 30, 30, 20, 10, 10},
-                        {50, 50, 50, 50, 50, 50, 50, 50},
+                        {10,10, 20, 30, 30, 20, 10, 10},
+                        {50,50, 50, 50, 50, 50, 50, 50},
                         {0,  0,  0,  0,  0,  0,  0,  0}
                     };
         }

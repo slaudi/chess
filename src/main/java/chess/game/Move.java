@@ -25,22 +25,33 @@ public class Move {
         this.movingPiece = start.getOccupiedBy();
     }
 
+
     public Square getStartSquare() {
         return this.startSquare;
     }
+
 
     public Square getFinalSquare() {
         return this.finalSquare;
     }
 
+
     public Piece getMovingPiece() {
         return movingPiece;
     }
 
+    /**
+     * Getter for the board value after a move for the AI.
+     * @return The value of the board.
+     */
     public int getBoardValueAfterMove() {
         return boardValueAfterMove;
     }
 
+    /**
+     * Setter for the board value after a move for the AI.
+     * @param value The new value of the board.
+     */
     public void setBoardValueAfterMove(int value){
         this.boardValueAfterMove = value;
     }
