@@ -89,6 +89,7 @@ public class Rook extends Piece {
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public int getPositionalValue(int x, int y, boolean endgame) {
         int[][] rookSquareTable;
         if (this.colour == Colour.BLACK){

@@ -88,6 +88,7 @@ public class King extends Piece {
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public int getPositionalValue(int x, int y, boolean endgame) {
         int[][] kingSquareTable;
         if(endgame) {
