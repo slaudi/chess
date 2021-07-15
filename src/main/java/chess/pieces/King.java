@@ -19,41 +19,49 @@ public class King extends Piece {
      * @param square The location of the King on the board.
      * @param colour The Colour associated with the King.
      */
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public King(Square square, Colour colour) {
         super(square, colour);
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public Square getSquare() {
         return this.square;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public void setSquare(Square square) {
         this.square = square;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public Colour getColour() {
         return this.colour;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public Type getType() {
         return this.type;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public void setNotMoved(boolean x) {
         this.notMoved = x;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public boolean hasNotMoved() {
         return this.notMoved;
     }
 
     @Override
+    @SuppressWarnings("Duplicates") //it's overriding abstract methods from super class
     public String toString() {
         if (this.colour == Colour.WHITE) {
             return "K";
